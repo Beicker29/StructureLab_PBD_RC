@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.matplotlib_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+.venv_*/
+venv/
+env/
+
+# Local editor state
+.idea/
+*.swp
+*.swo
+
+# Generated outputs: keep the directory skeleton only.
+outputs/**
+!outputs/
+!outputs/**/
+!outputs/**/.gitkeep
+
+# OS files
+Thumbs.db
+.DS_Store

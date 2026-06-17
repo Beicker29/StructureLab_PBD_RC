@@ -1,0 +1,8 @@
+workshop_id: workshop_02
+title: "Diseno convencional de un portico plano"
+inputs: {}
+outputs:
+  root: outputs/workshop_02
+notes:
+  - "Plantilla inicial. Completar cuando se formalice el Taller 2."
+

@@ -1,0 +1,248 @@
+workshop_id: workshop_01
+title: "Caracterizacion mecanica monotonica de materiales"
+source_reference:
+  pdf: "references/pdfs/ACTIVIDAD 1 CARACTERIZACIA_N MECA_NICA DE MATERIALES.pdf"
+  pdf_search_pattern: "references/pdfs/ACTIVIDAD 1*.pdf"
+  instructor: "William Valencia Mina"
+  course_topic: "Introduccion al diseno sismico basado en desempeno"
+
+base_section:
+  type: square_reinforced_concrete_column
+  dimensions:
+    width:
+      value: 75.0
+      unit: cm
+    height:
+      value: 75.0
+      unit: cm
+  clear_cover_to_tie:
+    value: 4.0
+    unit: cm
+  geometry_assumptions:
+    confined_core_boundary: tie_centerline
+    longitudinal_bars_per_side: 5
+    transverse_legs_x: 2
+    transverse_legs_y: 2
+    tie_clear_spacing_convention: "s_clear = s_center_to_center - tie_diameter"
+    confinement_clear_spacing_convention: "wi is approximated from symmetric perimeter bar spacing inside the tie centerline."
+  assumptions:
+    - "Las dimensiones internas no mostradas en la figura deben adoptarse y justificarse por simetria."
+    - "El nucleo confinado se identificara a partir de los ejes o caras de flejes segun el modelo que se implemente."
+    - "Se adopta nucleo confinado medido al eje del fleje porque el PDF solo entrega el recubrimiento libre al fleje."
+    - "Se adopta distribucion simetrica de 16 barras como 5 barras por lado, contando barras de esquina en ambos lados."
+
+concrete:
+  compressive_strength:
+    symbol: f_c
+    value: 28.0
+    unit: MPa
+  elastic_modulus:
+    symbol: E_c
+    expression: "4700 * sqrt(f_c_mpa)"
+    unit: MPa
+  strain_parameters:
+    epsilon_co:
+      value: 0.002
+      unit: m/m
+      editable: true
+      note: "Valor inicial para concreto no confinado; ajustar segun modelo adoptado."
+    epsilon_cu_unconfined:
+      value: 0.004
+      unit: m/m
+      editable: true
+  models_to_prepare:
+    - name: unconfined_concrete
+      module: materials.concrete.unconfined
+      status: todo
+    - name: mander_classic
+      module: materials.concrete.mander_classic
+      status: todo
+    - name: mander_adjusted
+      module: materials.concrete.mander_adjusted
+      status: todo
+    - name: attard_setunge
+      module: materials.concrete.attard_setunge
+      status: todo
+
+longitudinal_reinforcement:
+  count: 16
+  bar_mark: "#7"
+  diameter:
+    value: 22.2
+    unit: mm
+    note: "Diametro nominal #7; verificar contra la tabla adoptada por el curso."
+  steel:
+    expected_yield_strength:
+      symbol: f_y
+      value: 470.30
+      unit: MPa
+      source_statistic: "mu"
+    yield_strain:
+      symbol: epsilon_y
+      value: 0.0024
+      unit: m/m
+      source_statistic: "mu"
+    elastic_modulus:
+      symbol: E_s
+      value: 200000.0
+      unit: MPa
+    hardening_start_stress:
+      symbol: f_sh
+      value: 472.16
+      unit: MPa
+      source_statistic: "mu"
+    ultimate_strength:
+      symbol: f_su
+      value: 659.74
+      unit: MPa
+      source_statistic: "mu"
+    ultimate_strain:
+      symbol: epsilon_su
+      value: 0.1141
+      unit: m/m
+      source_statistic: "mu"
+      editable: true
+    strain_hardening:
+      enabled: true
+      post_yield_modulus:
+        value: auto
+        unit: MPa
+        expression: "(f_sh - f_y) / (epsilon_sh - epsilon_y)"
+        computed_from_mu: true
+      hardening_start_strain:
+        value: 0.0138
+        unit: m/m
+        source_statistic: "mu"
+      parameter_p:
+        value: 3.087
+        editable: true
+        source_statistic: "mu"
+        note: "Valor medio de la tabla de aceros colombianos."
+    compression_buckling:
+      enabled: true
+      degradation_alpha:
+        value: 3.0
+        editable: true
+      compression_ultimate_strain:
+        value: 0.08
+        unit: m/m
+        editable: true
+      maximum_axial_strain_before_buckling:
+        value: null
+        editable: true
+      note: "Reservado para expresiones de Massone et al. y Zhao-Sritharan."
+
+transverse_reinforcement:
+  type: rectangular_ties
+  bar_mark: "#4"
+  diameter:
+    value: 12.7
+    unit: mm
+    note: "Diametro nominal #4; verificar contra la tabla adoptada por el curso."
+  spacing:
+    value: 10.0
+    unit: cm
+  expected_yield_strength:
+    symbol: f_yh
+    value: 470.0
+    unit: MPa
+  ultimate_strain:
+    symbol: epsilon_su_tie
+    value: 0.10
+    unit: m/m
+    editable: true
+  role:
+    - confinement
+    - longitudinal_bar_buckling_stabilization
+
+welded_wire_mesh:
+  include_for_comparison: true
+  default_diameter:
+    value: 5
+    unit: mm
+  selectable_diameters_mm: [4, 5, 6]
+  mechanical_properties:
+    4:
+      fy_mpa: 612.0
+      fu_mpa: 689.0
+      epsilon_u: 0.0124
+    5:
+      fy_mpa: 610.0
+      fu_mpa: 681.0
+      epsilon_u: 0.0113
+    6:
+      fy_mpa: 641.0
+      fu_mpa: 691.0
+      epsilon_u: 0.0095
+  model_to_prepare:
+    name: carrillo_2019_welded_wire_mesh
+    module: materials.steel.welded_wire_mesh
+    status: todo
+
+curve_generation:
+  num_points: 401
+  concrete:
+    max_strain: auto
+  steel:
+    max_strain: auto
+  mesh:
+    max_strain: auto
+  sign_convention:
+    compression: positive
+    tension: positive
+
+outputs:
+  root: outputs/workshop_01
+  required_directories:
+    - figures
+    - tables
+    - reports
+    - data
+  initial_results_file: data/workshop_01_results.json
+  expected_artifacts:
+    figures:
+      - concrete_models_comparison.png
+      - steel_tension_comparison.png
+      - steel_compression_buckling.png
+      - welded_wire_mesh.png
+      - confined_core_sketch.png
+    tables:
+      - material_parameters.xlsx
+      - confinement_parameters.xlsx
+      - curve_metrics.xlsx
+      - assumptions_table.xlsx
+    data:
+      - concrete_curves.csv
+      - steel_curves.csv
+      - mesh_curves.csv
+      - workshop_01_results.json
+    reports:
+      - workshop_01_report.pdf
+
+analysis_questions:
+  - "Cual es la diferencia conceptual entre el concreto no confinado y el concreto confinado en esta columna?"
+  - "Que papel cumplen los flejes #4 @ 10 cm en el desempeno sismico de la columna?"
+  - "Que riesgos existen si se adoptan deformaciones ultimas demasiado altas para el concreto confinado?"
+  - "Como influye el refuerzo transversal en la estabilidad del acero longitudinal a compresion?"
+  - "Por que no siempre es correcto asumir que el acero en compresion se comporta igual que en traccion?"
+  - "Que implicaciones tendria usar un modelo demasiado optimista del material en un analisis no lineal?"
+  - "Que diferencias importantes existen entre el acero convencional y la malla electrosoldada desde el punto de vista del desempeno sismico?"
+
+pending_implementation:
+  geometry:
+    - "TODO: definir convencion para geometria de nucleo confinado."
+    - "TODO: calcular cuantia volumetrica del refuerzo transversal."
+    - "TODO: calcular factor de efectividad de confinamiento."
+  concrete_models:
+    - "TODO: implementar modelo de Mander clasico."
+    - "TODO: implementar modelo de Mander ajustado."
+    - "TODO: implementar modelo de Attard-Setunge."
+  steel_models:
+    - "TODO: implementar modelo de acero en traccion."
+    - "TODO: implementar modelo de acero en compresion con pandeo."
+    - "TODO: implementar modelo de malla electrosoldada."
+  reporting:
+    - "TODO: calcular metricas comparativas."
+    - "TODO: generar graficas."
+    - "TODO: generar tablas."
+    - "TODO: construir reporte."

@@ -1,0 +1,8 @@
+workshop_id: workshop_04
+title: "Relacion entre respuesta monotonica y respuesta ciclica"
+inputs: {}
+outputs:
+  root: outputs/workshop_04
+notes:
+  - "Plantilla inicial. No duplicar modelos constitutivos dentro del workflow."
+

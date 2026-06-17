@@ -1,0 +1,8 @@
+workshop_id: workshop_06
+title: "Diseno por capacidad, pushover y desempeno de un portico plano"
+inputs: {}
+outputs:
+  root: outputs/workshop_06
+notes:
+  - "Plantilla inicial. La logica de porticos y pushover debe vivir en frames/."
+

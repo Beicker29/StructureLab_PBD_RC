@@ -1,0 +1,8 @@
+workshop_id: workshop_03
+title: "Capacidad de desplazamiento y estados limite de una columna"
+inputs: {}
+outputs:
+  root: outputs/workshop_03
+notes:
+  - "Plantilla inicial. Reutilizara materiales, geometria, secciones y elementos."
+

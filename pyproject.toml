@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structurelab-pbd-rc"
+version = "0.1.0"
+description = "Herramienta progresiva para talleres de diseno sismico basado en desempeno de concreto reforzado."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "StructureLab PBD RC" }
+]
+keywords = [
+  "concreto reforzado",
+  "performance based design",
+  "seismic design",
+  "structural engineering"
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Education",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering"
+]
+dependencies = [
+  "matplotlib>=3.8",
+  "PyYAML>=6.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0"
+]
+
+[project.scripts]
+structurelab-workshop-01 = "structurelab_pbd_rc.workflows.workshop_01_material_characterization:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"

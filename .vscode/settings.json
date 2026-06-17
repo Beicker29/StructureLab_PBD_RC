@@ -1,0 +1,15 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv_structurelab_pbd_rc\\Scripts\\python.exe",
+  "python.terminal.activateEnvironment": true,
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.defaultProfile.windows": "StructureLab CMD",
+  "terminal.integrated.profiles.windows": {
+    "StructureLab CMD": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": [
+        "/k",
+        "${workspaceFolder}\\.venv_structurelab_pbd_rc\\Scripts\\activate.bat"
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+workshop_id: workshop_05
+title: "Evaluacion integral del desempeno de una viga"
+inputs: {}
+outputs:
+  root: outputs/workshop_05
+notes:
+  - "Plantilla inicial. La logica de vigas debe vivir en elements/."
+
