@@ -12,7 +12,7 @@ from structurelab_pbd_rc.core.exceptions import RegistryError
 class ModelRegistry:
     """Register named model classes or callables.
 
-    The registry keeps workflows decoupled from specific implementations. A
+    The registry keeps design flows decoupled from specific implementations. A
     future workflow can ask for a model by name without duplicating the model
     logic inside the workflow module.
     """
@@ -49,4 +49,3 @@ class ModelRegistry:
         """Remove all registered models."""
 
         self._models.clear()
-

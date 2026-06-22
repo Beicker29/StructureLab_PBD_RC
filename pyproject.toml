@@ -40,7 +40,7 @@ dev = [
 ]
 
 [project.scripts]
-structurelab-workshop-01 = "structurelab_pbd_rc.workflows.workshop_01_material_characterization:main"
+structurelab-workshop-01 = "structurelab_pbd_rc.cli.run:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,8 +1,9 @@
 workshop_id: workshop_02
 title: "Diseno convencional de un portico plano"
+units: {length: mm, force: kN, moment: kN-m, stress: MPa, strain: m/m}
 inputs: {}
 outputs:
   root: outputs/workshop_02
+  required_directories: [figures, reports, data]
 notes:
   - "Plantilla inicial. Completar cuando se formalice el Taller 2."
-

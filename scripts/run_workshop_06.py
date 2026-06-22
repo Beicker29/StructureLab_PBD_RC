@@ -1,4 +1,4 @@
-"""Run Taller 6 workflow stub."""
+﻿"""Run Taller 6 workflow stub."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ SRC_DIR = PROJECT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from structurelab_pbd_rc.workflows.workshop_06_frame_performance import DEFAULT_CONFIG_PATH, run
+from structurelab_pbd_rc.design.workshops.workshop_06_frame_performance import DEFAULT_CONFIG_PATH, run
 
 
 def main() -> int:
@@ -26,4 +26,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 

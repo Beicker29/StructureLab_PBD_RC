@@ -1,6 +1,14 @@
 # Modelos de materiales
 
-Los modelos de materiales deben vivir en `src/structurelab_pbd_rc/materials/`.
+Los modelos de materiales deben vivir en `src/structurelab_pbd_rc/mechanics/materials/`.
+
+Las ecuaciones mecanicas reutilizables de los modelos constitutivos deben vivir
+en modulos explicitos como `mechanics/materials/concrete/equations.py`.
+
+Los parametros de entrada de cada modelo se definen en
+`configs/workshops/workshop_01_material_characterization.yaml`. Los parametros
+derivados, ecuaciones evaluadas y funciones constitutivas se reportan en
+`outputs/workshop_01/reports/`.
 
 ## Taller 1
 
@@ -16,7 +24,7 @@ El PDF del Taller 1 pide preparar curvas esfuerzo-deformacion para:
 
 ## Implementado en Paso 4
 
-- Concreto no confinado con curva esfuerzo-deformacion de compresion positiva.
+- Concreto no confinado con curva esfuerzo-deformacion de compresion positiva y rama de traccion negativa.
 - Mander clasico para concreto confinado con `fcc`, `eps_cc`, `eps_cu`, `Esec`, `r`, `rho_s`, `ke` y `fl_eff`.
 - Mander ajustado con resistencia confinada ajustada y deformacion ultima conservadora.
 - Attard-Setunge no confinado y confinado con ramas ascendente y descendente explicitas.
@@ -27,9 +35,11 @@ El PDF del Taller 1 pide preparar curvas esfuerzo-deformacion para:
 
 ## Convencion de signos
 
-Para las curvas comparativas del Taller 1 se usa:
+Para las curvas comparativas del Taller 1 la convencion editable vive en
+`configs/workshops/workshop_01_material_characterization.yaml`, dentro de
+`curve_generation.sign_convention`.
 
-- Concreto: compresion positiva.
+- Concreto no confinado: compresion positiva y traccion negativa.
 - Acero en compresion: compresion positiva.
 - Acero en traccion y malla: traccion positiva.
 
@@ -37,3 +47,4 @@ Para las curvas comparativas del Taller 1 se usa:
 
 - La curva de malla electrosoldada usa la forma de alto orden legible del PDF y se limita a `fu` para evitar sobre-resistencia no fisica por el termino elastico.
 - Los modelos son monotonicamente orientados al Taller 1; no sustituyen todavia modelos ciclicos ni modelos de seccion.
+- Cualquier supuesto necesario para reproducir una curva debe quedar como input editable o como parametro calculado en el reporte del modelo correspondiente.

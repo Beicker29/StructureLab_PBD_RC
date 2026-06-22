@@ -1,9 +1,9 @@
-"""Geometry tests for Taller 1."""
+﻿"""Geometry tests for Taller 1."""
 
 from pathlib import Path
 
 from structurelab_pbd_rc.io.read_config import load_yaml_config
-from structurelab_pbd_rc.workflows.workshop_01_material_characterization import build_geometry_and_confinement
+from structurelab_pbd_rc.design.workshops.workshop_01_material_characterization import build_geometry_and_confinement
 
 
 def test_workshop_01_geometry_is_positive() -> None:
@@ -17,4 +17,7 @@ def test_workshop_01_geometry_is_positive() -> None:
     assert confinement["rho_s"] > 0
     assert 0 < confinement["ke"] <= 1
     assert confinement["fl_eff_mpa"] > 0
+    expected_wi_count = len(config["section"]["confined_core"]["clear_spacing_wi"]["values"])
+    assert len(confinement["wi_cm"]) == expected_wi_count
+    assert confinement["sum_wi2_cm2"] == sum(wi**2 for wi in confinement["wi_cm"])
 

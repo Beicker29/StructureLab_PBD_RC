@@ -2,13 +2,16 @@
   "python.defaultInterpreterPath": "${workspaceFolder}\\.venv_structurelab_pbd_rc\\Scripts\\python.exe",
   "python.terminal.activateEnvironment": true,
   "terminal.integrated.cwd": "${workspaceFolder}",
-  "terminal.integrated.defaultProfile.windows": "StructureLab CMD",
+  "terminal.integrated.defaultProfile.windows": "StructureLab PowerShell",
   "terminal.integrated.profiles.windows": {
-    "StructureLab CMD": {
-      "path": "C:\\Windows\\System32\\cmd.exe",
+    "StructureLab PowerShell": {
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
       "args": [
-        "/k",
-        "${workspaceFolder}\\.venv_structurelab_pbd_rc\\Scripts\\activate.bat"
+        "-NoExit",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\scripts\\Activate-StructureLab.ps1"
       ]
     }
   }

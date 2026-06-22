@@ -1,16 +1,17 @@
-"""Material curve tests for Taller 1."""
+﻿"""Material curve tests for Taller 1."""
 
 from inspect import getsource
 from math import isclose
 from pathlib import Path
 
 from structurelab_pbd_rc.io.read_config import load_yaml_config
-from structurelab_pbd_rc.materials.concrete.attard_setunge import AttardSetungeConcreteModel, AttardSetungeParameters
-from structurelab_pbd_rc.materials.library.mesh_database import get_mesh_properties
-from structurelab_pbd_rc.materials.steel.compression_models import SteelCompressionModel
-from structurelab_pbd_rc.materials.steel.tension_models import ManderSteelTensionModel, SteelTensionParameters
-from structurelab_pbd_rc.materials.steel.welded_wire_mesh import CarrilloWeldedWireMeshModel, WeldedWireMeshParameters
-from structurelab_pbd_rc.workflows.workshop_01_material_characterization import (
+from structurelab_pbd_rc.mechanics.materials.concrete.attard_setunge import AttardSetungeConcreteModel, AttardSetungeParameters
+from structurelab_pbd_rc.mechanics.materials.library.mesh_database import get_mesh_properties
+from structurelab_pbd_rc.mechanics.materials.steel.compression_models import SteelCompressionModel
+from structurelab_pbd_rc.mechanics.materials.steel.tension_models import ManderSteelTensionModel, SteelTensionParameters
+from structurelab_pbd_rc.mechanics.materials.steel.welded_wire_mesh import CarrilloWeldedWireMeshModel, WeldedWireMeshParameters
+from structurelab_pbd_rc.design.workshops.workshop_01_material_characterization import (
+    _steel_post_yield_modulus,
     build_geometry_and_confinement,
     generate_material_curves,
 )
@@ -22,10 +23,13 @@ def test_curves_are_non_empty_and_positive() -> None:
     concrete_curves, steel_curves, mesh_curves = generate_material_curves(config, confinement)
 
     for curve_group in (concrete_curves, steel_curves, mesh_curves):
-        for curve in curve_group.values():
+        for curve_name, curve in curve_group.items():
             assert curve["strain"]
             assert curve["stress"]
-            assert min(curve["stress"]) >= 0
+            if curve_name == "mander_classic_unconfined_concrete":
+                assert min(curve["stress"]) < 0
+            else:
+                assert min(curve["stress"]) >= 0
             assert max(curve["stress"]) > 0
 
 
@@ -34,9 +38,35 @@ def test_mander_classic_increases_confined_strength() -> None:
     _, confinement = build_geometry_and_confinement(config)
     concrete_curves, _, _ = generate_material_curves(config, confinement)
 
-    fc = config["concrete"]["compressive_strength"]["value"]
-    fcc = concrete_curves["mander_classic"]["parameters"]["fcc_mpa"]
+    fc = config["concrete"]["f_co"]
+    fcc = concrete_curves["mander_classic_confined_concrete"]["parameters"]["fcc_mpa"]
     assert fcc > fc
+
+
+def test_unconfined_mander_uses_spalling_and_tension_inputs() -> None:
+    config = load_yaml_config(Path("configs/workshops/workshop_01_material_characterization.yaml"))
+    _, confinement = build_geometry_and_confinement(config)
+    concrete_curves, _, _ = generate_material_curves(config, confinement)
+
+    curve = concrete_curves["mander_classic_unconfined_concrete"]
+    parameters = curve["parameters"]
+    fc = float(config["concrete"]["f_co"])
+    ec = 4700.0 * fc**0.5
+    ft = 0.62 * fc**0.5
+
+    assert isclose(parameters["f_co_mpa"], fc, rel_tol=1e-12)
+    assert isclose(parameters["ft_mpa"], ft, rel_tol=1e-12)
+    assert isclose(parameters["Et_mpa"], ec, rel_tol=1e-12)
+    assert isclose(parameters["epsilon_t"], ft / ec, rel_tol=1e-12)
+    assert parameters["tension_sign_convention"] == "negative"
+    assert isclose(parameters["epsilon_t_plot"], -ft / ec, rel_tol=1e-12)
+    assert isclose(parameters["ft_plot_mpa"], -ft, rel_tol=1e-12)
+    assert isclose(parameters["epsilon_2co"], 2.0 * config["concrete"]["epsilon_co"], rel_tol=1e-12)
+    assert isclose(parameters["epsilon_sp"], config["concrete"]["epsilon_sp"], rel_tol=1e-12)
+    assert isclose(curve["strain"][0], -ft / ec, rel_tol=1e-12)
+    assert isclose(curve["stress"][0], -ft, rel_tol=1e-12)
+    assert isclose(curve["strain"][-1], config["concrete"]["epsilon_sp"], rel_tol=1e-12)
+    assert isclose(curve["stress"][-1], 0.0, abs_tol=1e-12)
 
 
 def test_attard_confined_uses_attard_setunge_strength_equation() -> None:
@@ -44,11 +74,11 @@ def test_attard_confined_uses_attard_setunge_strength_equation() -> None:
     _, confinement = build_geometry_and_confinement(config)
     concrete_curves, _, _ = generate_material_curves(config, confinement)
 
-    fc = float(config["concrete"]["compressive_strength"]["value"])
+    fc = float(config["concrete"]["f_co"])
     fl = float(confinement["fl_eff_mpa"])
-    expected_fcc = fc * (1.0 + 10.0 * (fl / fc)) ** 0.6
-    attard_fcc = concrete_curves["attard_setunge_confined"]["parameters"]["f_peak_mpa"]
-    mander_adjusted_fcc = concrete_curves["mander_adjusted"]["parameters"]["fcc_mpa"]
+    expected_fcc = fc * (1.0 + 10.0 * (fl / fc) ** 0.6)
+    attard_fcc = concrete_curves["attard_setunge_confined_concrete"]["parameters"]["f_peak_mpa"]
+    mander_adjusted_fcc = concrete_curves["mander_adjusted_confined_concrete"]["parameters"]["fcc_mpa"]
 
     assert isclose(attard_fcc, expected_fcc, rel_tol=1e-12)
     assert not isclose(attard_fcc, mander_adjusted_fcc, rel_tol=1e-6)
@@ -59,12 +89,12 @@ def test_attard_confined_reaches_descending_control_points() -> None:
     _, confinement = build_geometry_and_confinement(config)
     concrete_curves, _, _ = generate_material_curves(config, confinement)
 
-    curve = concrete_curves["attard_setunge_confined"]
+    curve = concrete_curves["attard_setunge_confined_concrete"]
     parameters = curve["parameters"]
     eps_2i = float(parameters["epsilon_2i"])
     f_2i = float(parameters["f_2i_mpa"])
 
-    fc = float(config["concrete"]["compressive_strength"]["value"])
+    fc = float(config["concrete"]["f_co"])
     assert isclose(float(parameters["fpl_mpa"]), 0.45 * fc, rel_tol=1e-12)
     assert isclose(float(parameters["epsilon_u"]), eps_2i, rel_tol=1e-12)
     assert isclose(curve["strain"][-1], eps_2i, rel_tol=1e-12)
@@ -160,7 +190,7 @@ def test_generated_steel_and_mesh_curves_stop_at_model_ultimate_strain() -> None
     _, confinement = build_geometry_and_confinement(config)
     _, steel_curves, mesh_curves = generate_material_curves(config, confinement)
 
-    assert isclose(steel_curves["steel_tension"]["strain"][-1], 0.1141, rel_tol=1e-12)
+    assert isclose(steel_curves["steel_tension_mander"]["strain"][-1], 0.1141, rel_tol=1e-12)
     assert isclose(steel_curves["steel_compression_no_buckling"]["strain"][-1], 0.08, rel_tol=1e-12)
     assert isclose(steel_curves["steel_compression_with_buckling"]["strain"][-1], 0.08, rel_tol=1e-12)
     assert isclose(mesh_curves["welded_wire_mesh"]["strain"][-1], 0.0113, rel_tol=1e-12)
@@ -171,7 +201,7 @@ def test_generated_longitudinal_steel_uses_mu_column_values() -> None:
     _, confinement = build_geometry_and_confinement(config)
     _, steel_curves, _ = generate_material_curves(config, confinement)
 
-    parameters = steel_curves["steel_tension"]["parameters"]
+    parameters = steel_curves["steel_tension_mander"]["parameters"]
     expected_et = (472.16 - 470.30) / (0.0138 - 0.0024)
 
     assert isclose(parameters["fy_mpa"], 470.30, rel_tol=1e-12)
@@ -181,3 +211,15 @@ def test_generated_longitudinal_steel_uses_mu_column_values() -> None:
     assert isclose(parameters["eps_su"], 0.1141, rel_tol=1e-12)
     assert isclose(parameters["P"], 3.087, rel_tol=1e-12)
     assert isclose(parameters["Et_mpa"], expected_et, rel_tol=1e-12)
+
+
+def test_longitudinal_steel_et_uses_fsh_minus_fy_over_epssh_minus_epsy() -> None:
+    config = load_yaml_config(Path("configs/workshops/workshop_01_material_characterization.yaml"))
+    steel = config["longitudinal_reinforcement"]["steel"]
+
+    expected_et = (steel["f_sh"] - steel["fy"]) / (steel["epsilon_sh"] - steel["epsilon_y"])
+
+    assert steel["Et"]["value"] == "auto"
+    assert steel["Et"]["expression"] == "(f_sh - f_y) / (epsilon_sh - epsilon_y)"
+    assert isclose(_steel_post_yield_modulus(steel), expected_et, rel_tol=1e-12)
+
