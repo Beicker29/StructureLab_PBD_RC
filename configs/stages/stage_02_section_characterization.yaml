@@ -1,0 +1,28 @@
+stage_id: stage_02
+title: "Caracterizacion de la seccion por diagrama momento-curvatura"
+
+units:
+  curvature: "1/m"
+  moment: "kN-m"
+
+source:
+  workbook: "references/stage_02/excel/M-curvatura.xlsx"
+  sheets: all
+
+curve_detection:
+  title_row: 1
+  header_row: 2
+  first_data_row: 4
+  curvature_header_contains: "Curvature"
+  moment_header_contains: "Moment"
+
+bilinearization:
+  method: "asce_fema_energy_equivalent_m_phi"
+  stiffness_fraction: 0.60
+  tolerance: 0.010
+  search_points: 5000
+  my_lower_ratio: 0.05
+  my_upper_ratio: 1.00
+  ultimate:
+    mode: "first_post_peak_strength_drop"
+    post_peak_strength_ratio: 0.80  # Se adopta phi_u cuando la resistencia cae al 80% del momento maximo post-pico.

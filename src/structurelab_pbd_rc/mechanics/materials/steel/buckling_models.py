@@ -24,7 +24,7 @@ class BarBucklingParameters:
 def estimate_pre_buckling_strain(parameters: BarBucklingParameters) -> float:
     """Estimate strain before buckling.
 
-    Uses the expression from the Taller 1 PDF with s/db in consistent units.
+    Uses the expression from the Etapa 1 PDF with s/db in consistent units.
     """
 
     ratio = spacing_to_diameter_ratio(parameters)
@@ -38,7 +38,7 @@ def spacing_to_diameter_ratio(parameters: BarBucklingParameters) -> float:
 
 
 def estimate_buckling_strength_ratio(parameters: BarBucklingParameters) -> float:
-    """Estimate fbb/fy from the Taller 1 PDF expression."""
+    """Estimate fbb/fy from the Etapa 1 PDF expression."""
 
     ratio = spacing_to_diameter_ratio(parameters)
     return max(1.105 - 0.0211 * ratio - 0.00517 * ratio**2, 0.05)

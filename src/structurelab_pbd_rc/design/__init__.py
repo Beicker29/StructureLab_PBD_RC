@@ -1,2 +1,2 @@
-"""Design orchestration, workshop pipelines and execution flows."""
+"""Design orchestration, stage pipelines and execution flows."""
 

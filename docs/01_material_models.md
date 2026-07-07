@@ -6,13 +6,13 @@ Las ecuaciones mecanicas reutilizables de los modelos constitutivos deben vivir
 en modulos explicitos como `mechanics/materials/concrete/equations.py`.
 
 Los parametros de entrada de cada modelo se definen en
-`configs/workshops/workshop_01_material_characterization.yaml`. Los parametros
+`configs/stages/stage_01_material_characterization.yaml`. Los parametros
 derivados, ecuaciones evaluadas y funciones constitutivas se reportan en
-`outputs/workshop_01/reports/`.
+`outputs/stage_01/reports/`.
 
-## Taller 1
+## Etapa 1
 
-El PDF del Taller 1 pide preparar curvas esfuerzo-deformacion para:
+El documento base de la Etapa 1 pide preparar curvas esfuerzo-deformacion para:
 
 - Concreto no confinado.
 - Concreto confinado con modelo clasico de Mander.
@@ -22,7 +22,7 @@ El PDF del Taller 1 pide preparar curvas esfuerzo-deformacion para:
 - Acero longitudinal a compresion con y sin degradacion por pandeo.
 - Malla electrosoldada con datos de Carrillo et al. 2019.
 
-## Implementado en Paso 4
+## Implementado
 
 - Concreto no confinado con curva esfuerzo-deformacion de compresion positiva y rama de traccion negativa.
 - Mander clasico para concreto confinado con `fcc`, `eps_cc`, `eps_cu`, `Esec`, `r`, `rho_s`, `ke` y `fl_eff`.
@@ -35,8 +35,8 @@ El PDF del Taller 1 pide preparar curvas esfuerzo-deformacion para:
 
 ## Convencion de signos
 
-Para las curvas comparativas del Taller 1 la convencion editable vive en
-`configs/workshops/workshop_01_material_characterization.yaml`, dentro de
+Para las curvas comparativas de la Etapa 1 la convencion editable vive en
+`configs/stages/stage_01_material_characterization.yaml`, dentro de
 `curve_generation.sign_convention`.
 
 - Concreto no confinado: compresion positiva y traccion negativa.
@@ -46,5 +46,5 @@ Para las curvas comparativas del Taller 1 la convencion editable vive en
 ## Limitaciones
 
 - La curva de malla electrosoldada usa la forma de alto orden legible del PDF y se limita a `fu` para evitar sobre-resistencia no fisica por el termino elastico.
-- Los modelos son monotonicamente orientados al Taller 1; no sustituyen todavia modelos ciclicos ni modelos de seccion.
+- Los modelos son monotonicamente orientados a la Etapa 1.
 - Cualquier supuesto necesario para reproducir una curva debe quedar como input editable o como parametro calculado en el reporte del modelo correspondiente.

@@ -1,18 +1,20 @@
-﻿"""Professional plotting helpers for workshop reports."""
+"""Professional plotting helpers for stage reports."""
 
 from __future__ import annotations
 
 import os
 from pathlib import Path
+import tempfile
 from typing import Any
 
-os.environ.setdefault("MPLCONFIGDIR", str(Path.cwd() / ".matplotlib_cache"))
+os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "structurelab_pbd_rc_matplotlib_cache"))
 
 import matplotlib
 
 matplotlib.use("Agg")
 
 from matplotlib import pyplot as plt
+from matplotlib.lines import Line2D
 from matplotlib.patches import Circle, Rectangle
 from matplotlib.ticker import AutoMinorLocator, MaxNLocator
 
@@ -285,7 +287,7 @@ def plot_single_model_curve_with_notable_points(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Taller 1",
+        "StructureLab_PBD_RC | Etapa 1",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -361,7 +363,432 @@ def plot_stress_strain_curves(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Taller 1",
+        "StructureLab_PBD_RC | Etapa 1",
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#7b828a",
+    )
+    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
+    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
+    return output_path
+
+
+def _signed_point_parameters(result: dict[str, object]) -> dict[str, float]:
+    """Return signed notable M-phi parameters for plotting."""
+
+    parameters = result.get("parameters", {})
+    if not isinstance(parameters, dict):
+        return {}
+    bilinear_curve = result.get("bilinear_curve", [])
+    sign = 1.0
+    if isinstance(bilinear_curve, list) and len(bilinear_curve) >= 3:
+        ultimate_phi = float(bilinear_curve[2]["phi"])
+        if ultimate_phi < 0.0:
+            sign = -1.0
+    return {
+        "My": sign * float(parameters["My"]),
+        "phi_y": sign * float(parameters["phi_y"]),
+        "Mu": sign * float(parameters["Mu"]),
+        "phi_u": sign * float(parameters["phi_u"]),
+        "M_60My": sign * float(parameters["M_60My"]),
+        "phi_60My": sign * float(parameters["phi_60My"]),
+    }
+
+
+def _finish_moment_curvature_plot(
+    fig: Any,
+    ax: Any,
+    output_path: Path,
+    *,
+    title: str,
+    subtitle: str | None,
+    xlabel: str,
+    ylabel: str,
+    legend_title: str,
+) -> Path:
+    """Apply shared layout to moment-curvature figures."""
+
+    ax.axhline(0.0, color="#30343b", linewidth=0.8)
+    ax.axvline(0.0, color="#30343b", linewidth=0.8)
+    ax.set_title(title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=16)
+    if subtitle:
+        ax.text(0.0, 1.015, subtitle, transform=ax.transAxes, fontsize=10, color="#5d636b", va="bottom")
+    ax.set_xlabel(xlabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.margins(x=0.04, y=0.10)
+    legend = ax.legend(
+        loc="best",
+        frameon=True,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        framealpha=0.96,
+        fontsize=8.2,
+        title=legend_title,
+        title_fontsize=9,
+    )
+    legend.get_title().set_fontweight("bold")
+    fig.text(
+        0.99,
+        0.015,
+        "StructureLab_PBD_RC | Etapa 2",
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#7b828a",
+    )
+    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
+    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
+    return output_path
+
+
+def plot_moment_curvature_real_curves(
+    curve_results: list[dict[str, object]],
+    path: str | Path,
+    *,
+    title: str = "Diagrama momento-curvatura",
+    subtitle: str = "Curvas reales importadas desde Excel",
+    xlabel: str = "Curvatura, phi [1/m]",
+    ylabel: str = "Momento, M [kN-m]",
+) -> Path:
+    """Plot actual moment-curvature curves."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+    ductility_handles: list[Any] = []
+    ductility_handles: list[Any] = []
+
+    for index, result in enumerate(curve_results):
+        curve_id = str(result["curve_id"])
+        curve_name = str(result.get("name", curve_id))
+        color = COLOR_CYCLE[index % len(COLOR_CYCLE)]
+        actual_curve = result["actual_curve"]
+        if not isinstance(actual_curve, list):
+            continue
+
+        actual_phi = [float(point["phi"]) for point in actual_curve]
+        actual_moment = [float(point["moment"]) for point in actual_curve]
+
+        ax.plot(
+            actual_phi,
+            actual_moment,
+            color=color,
+            linewidth=2.35,
+            label=curve_name,
+        )
+
+    return _finish_moment_curvature_plot(
+        fig,
+        ax,
+        output_path,
+        title=title,
+        subtitle=subtitle,
+        xlabel=xlabel,
+        ylabel=ylabel,
+        legend_title="Curvas reales",
+    )
+
+
+def plot_moment_curvature_bilinear_only(
+    curve_results: list[dict[str, object]],
+    path: str | Path,
+    *,
+    title: str = "Idealizacion bilineal momento-curvatura",
+    subtitle: str = "Puntos notables de fluencia efectiva, ultimo y rigidez secante",
+    xlabel: str = "Curvatura, phi [1/m]",
+    ylabel: str = "Momento, M [kN-m]",
+) -> Path:
+    """Plot bilinearized moment-curvature curves with notable points in the legend."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+    ductility_handles: list[Any] = []
+
+    for index, result in enumerate(curve_results):
+        curve_id = str(result["curve_id"])
+        curve_name = str(result.get("name", curve_id))
+        color = COLOR_CYCLE[index % len(COLOR_CYCLE)]
+        bilinear_curve = result["bilinear_curve"]
+        if not isinstance(bilinear_curve, list):
+            continue
+
+        bilinear_phi = [float(point["phi"]) for point in bilinear_curve]
+        bilinear_moment = [float(point["moment"]) for point in bilinear_curve]
+        point_parameters = _signed_point_parameters(result)
+
+        ax.plot(
+            bilinear_phi,
+            bilinear_moment,
+            color=color,
+            linewidth=2.5,
+            label=f"{curve_name} - bilineal",
+        )
+        if not point_parameters:
+            continue
+
+        point_specs = [
+            (
+                "Fluencia efectiva",
+                point_parameters["phi_y"],
+                point_parameters["My"],
+                "#2f7d4f",
+                (
+                    f"{curve_name} - My: {point_parameters['My']:.3g} [kN-m], "
+                    f"phi_y: {point_parameters['phi_y']:.4g} [1/m]"
+                ),
+            ),
+            (
+                "Ultimo",
+                point_parameters["phi_u"],
+                point_parameters["Mu"],
+                "#c43c2f",
+                (
+                    f"{curve_name} - Mu: {point_parameters['Mu']:.3g} [kN-m], "
+                    f"phi_u: {point_parameters['phi_u']:.4g} [1/m]"
+                ),
+            ),
+            (
+                "Rigidez secante",
+                point_parameters["phi_60My"],
+                point_parameters["M_60My"],
+                "#7a4f9a",
+                (
+                    f"{curve_name} - 0.60My: {point_parameters['M_60My']:.3g} [kN-m], "
+                    f"phi_0.60My: {point_parameters['phi_60My']:.4g} [1/m]"
+                ),
+            ),
+        ]
+        for _, phi_value, moment_value, marker_color, label in point_specs:
+            ax.scatter(
+                [phi_value],
+                [moment_value],
+                s=62,
+                color=marker_color,
+                edgecolor="white",
+                linewidth=1.0,
+                zorder=6,
+                label=label,
+            )
+
+        ductility = abs(point_parameters["phi_u"]) / max(abs(point_parameters["phi_y"]), 1e-15)
+        ductility_handles.append(
+            Line2D(
+                [0],
+                [0],
+                color=color,
+                linewidth=2.5,
+                label=f"{curve_name} | mu_phi = {ductility:.3g}",
+            )
+        )
+
+    ax.axhline(0.0, color="#30343b", linewidth=0.8)
+    ax.axvline(0.0, color="#30343b", linewidth=0.8)
+    ax.set_title(title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=16)
+    if subtitle:
+        ax.text(0.0, 1.015, subtitle, transform=ax.transAxes, fontsize=10, color="#5d636b", va="bottom")
+    ax.set_xlabel(xlabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.margins(x=0.04, y=0.10)
+
+    main_legend = ax.legend(
+        loc="upper left",
+        frameon=True,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        framealpha=0.96,
+        fontsize=8.0,
+        title="Bilinealizacion y puntos notables",
+        title_fontsize=8.8,
+    )
+    main_legend.get_title().set_fontweight("bold")
+    ax.add_artist(main_legend)
+
+    if ductility_handles:
+        ductility_legend = ax.legend(
+            handles=ductility_handles,
+            loc="lower right",
+            frameon=True,
+            facecolor="white",
+            edgecolor="#d7d9d4",
+            framealpha=0.96,
+            fontsize=8.2,
+            title="Ductilidad por curvatura",
+            title_fontsize=8.8,
+        )
+        ductility_legend.get_title().set_fontweight("bold")
+
+    fig.text(
+        0.99,
+        0.015,
+        "StructureLab_PBD_RC | Etapa 2",
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#7b828a",
+    )
+    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
+    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
+    return output_path
+
+
+def plot_moment_curvature_real_vs_bilinear(
+    curve_results: list[dict[str, object]],
+    path: str | Path,
+    *,
+    title: str = "Comparacion momento-curvatura real vs bilineal",
+    subtitle: str = "Curva real e idealizacion ASCE/FEMA en una misma grafica",
+    xlabel: str = "Curvatura, phi [1/m]",
+    ylabel: str = "Momento, M [kN-m]",
+) -> Path:
+    """Plot actual and bilinearized moment-curvature curves together."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+    curve_handles: list[Any] = []
+    point_handles: list[Any] = []
+
+    for index, result in enumerate(curve_results):
+        curve_id = str(result["curve_id"])
+        curve_name = str(result.get("name", curve_id))
+        color = COLOR_CYCLE[index % len(COLOR_CYCLE)]
+        actual_curve = result["actual_curve"]
+        bilinear_curve = result["bilinear_curve"]
+        if not isinstance(actual_curve, list) or not isinstance(bilinear_curve, list):
+            continue
+
+        actual_phi = [float(point["phi"]) for point in actual_curve]
+        actual_moment = [float(point["moment"]) for point in actual_curve]
+        bilinear_phi = [float(point["phi"]) for point in bilinear_curve]
+        bilinear_moment = [float(point["moment"]) for point in bilinear_curve]
+
+        (actual_line,) = ax.plot(
+            actual_phi,
+            actual_moment,
+            color=color,
+            linewidth=2.2,
+            label=f"{curve_name} - curva real",
+        )
+        (bilinear_line,) = ax.plot(
+            bilinear_phi,
+            bilinear_moment,
+            color=color,
+            linestyle="--",
+            linewidth=2.4,
+            label=f"{curve_name} - bilineal",
+        )
+        curve_handles.extend([actual_line, bilinear_line])
+
+        point_parameters = _signed_point_parameters(result)
+        if point_parameters:
+            point_specs = [
+                (
+                    point_parameters["phi_y"],
+                    point_parameters["My"],
+                    "#2f7d4f",
+                    (
+                        f"{curve_name} | My: {point_parameters['My']:.3g} [kN-m], "
+                        f"phi_y: {point_parameters['phi_y']:.4g} [1/m]"
+                    ),
+                ),
+                (
+                    point_parameters["phi_u"],
+                    point_parameters["Mu"],
+                    "#c43c2f",
+                    (
+                        f"{curve_name} | Mu: {point_parameters['Mu']:.3g} [kN-m], "
+                        f"phi_u: {point_parameters['phi_u']:.4g} [1/m]"
+                    ),
+                ),
+                (
+                    point_parameters["phi_60My"],
+                    point_parameters["M_60My"],
+                    "#7a4f9a",
+                    (
+                        f"{curve_name} | 0.60My: {point_parameters['M_60My']:.3g} [kN-m], "
+                        f"phi_0.60My: {point_parameters['phi_60My']:.4g} [1/m]"
+                    ),
+                ),
+            ]
+            for phi_value, moment_value, marker_color, label in point_specs:
+                ax.scatter(
+                    [phi_value],
+                    [moment_value],
+                    s=58,
+                    color=marker_color,
+                    edgecolor="white",
+                    linewidth=1.0,
+                    zorder=6,
+                )
+                point_handles.append(
+                    Line2D(
+                        [0],
+                        [0],
+                        marker="o",
+                        color="none",
+                        markerfacecolor=marker_color,
+                        markeredgecolor="white",
+                        markeredgewidth=1.0,
+                        markersize=8,
+                        label=label,
+                    )
+                )
+
+    ax.axhline(0.0, color="#30343b", linewidth=0.8)
+    ax.axvline(0.0, color="#30343b", linewidth=0.8)
+    ax.set_title(title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=16)
+    if subtitle:
+        ax.text(0.0, 1.015, subtitle, transform=ax.transAxes, fontsize=10, color="#5d636b", va="bottom")
+    ax.set_xlabel(xlabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
+    ax.margins(x=0.04, y=0.10)
+
+    curve_legend = ax.legend(
+        handles=curve_handles,
+        loc="upper left",
+        frameon=True,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        framealpha=0.96,
+        fontsize=8.2,
+        title="Curvas",
+        title_fontsize=9,
+    )
+    curve_legend.get_title().set_fontweight("bold")
+    ax.add_artist(curve_legend)
+
+    if point_handles:
+        point_legend = ax.legend(
+            handles=point_handles,
+            loc="lower right",
+            frameon=True,
+            facecolor="white",
+            edgecolor="#d7d9d4",
+            framealpha=0.96,
+            fontsize=7.2,
+            title="Puntos notables",
+            title_fontsize=8.4,
+        )
+        point_legend.get_title().set_fontweight("bold")
+
+    fig.text(
+        0.99,
+        0.015,
+        "StructureLab_PBD_RC | Etapa 2",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -521,7 +948,7 @@ def plot_confined_core_sketch(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Taller 1",
+        "StructureLab_PBD_RC | Etapa 1",
         ha="right",
         va="bottom",
         fontsize=8,

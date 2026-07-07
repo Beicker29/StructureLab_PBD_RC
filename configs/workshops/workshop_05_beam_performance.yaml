@@ -1,9 +1,0 @@
-workshop_id: workshop_05
-title: "Evaluacion integral del desempeno de una viga"
-units: {length: mm, force: kN, moment: kN-m, stress: MPa, strain: m/m}
-inputs: {}
-outputs:
-  root: outputs/workshop_05
-  required_directories: [figures, reports, data]
-notes:
-  - "Plantilla inicial. La logica de vigas debe vivir en elements/."

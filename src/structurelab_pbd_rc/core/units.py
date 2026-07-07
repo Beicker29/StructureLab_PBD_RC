@@ -1,7 +1,7 @@
 """Unit helpers.
 
 This module intentionally stays light in the scaffold. A full unit system can
-be added later if the workshops need dimensional analysis or automatic
+be added later if the stages need dimensional analysis or automatic
 conversion tracking.
 """
 

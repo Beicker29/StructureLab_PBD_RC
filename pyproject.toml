@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "structurelab-pbd-rc"
 version = "0.1.0"
-description = "Herramienta progresiva para talleres de diseno sismico basado en desempeno de concreto reforzado."
+description = "Herramienta para caracterizacion mecanica de materiales de concreto reforzado."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -40,7 +40,8 @@ dev = [
 ]
 
 [project.scripts]
-structurelab-workshop-01 = "structurelab_pbd_rc.cli.run:main"
+structurelab-stage-01 = "structurelab_pbd_rc.cli.run:main_stage_01"
+structurelab-stage-02 = "structurelab_pbd_rc.cli.run:main_stage_02"
 
 [tool.setuptools.packages.find]
 where = ["src"]

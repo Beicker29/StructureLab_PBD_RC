@@ -1,9 +1,0 @@
-workshop_id: workshop_04
-title: "Relacion entre respuesta monotonica y respuesta ciclica"
-units: {length: mm, force: kN, moment: kN-m, stress: MPa, strain: m/m}
-inputs: {}
-outputs:
-  root: outputs/workshop_04
-  required_directories: [figures, reports, data]
-notes:
-  - "Plantilla inicial. No duplicar modelos constitutivos dentro del workflow."

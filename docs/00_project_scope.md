@@ -1,25 +1,39 @@
 # Alcance del proyecto
 
-`StructureLab_PBD_RC` organiza los talleres como una herramienta progresiva. Cada taller debe aportar modelos, datos o resultados reutilizables por talleres posteriores.
+`StructureLab_PBD_RC` organiza el proyecto por etapas tecnicas. La Etapa 1 implementa una herramienta reproducible de caracterizacion mecanica de materiales y la Etapa 2 caracteriza secciones a partir de diagramas momento-curvatura.
 
 ## Principios
 
-- Los talleres no son scripts independientes.
-- Los flujos de taller solo orquestan lectura de datos, llamadas a modulos y escritura de resultados.
+- Cada etapa no es un script aislado.
+- El flujo de cada etapa solo orquesta lectura de datos, llamadas a modulos y escritura de resultados.
 - La teoria central se implementa una sola vez en los paquetes generales.
 - Los datos del problema se leen desde YAML.
-- Los resultados se guardan bajo `outputs/workshop_xx/`.
+- Los resultados se guardan bajo `outputs/stage_01/`, `outputs/stage_02/`, etc.
 - Los supuestos editables viven en los YAML de entrada; los valores calculados y ecuaciones usadas se reportan en los YAML de salida.
 
 ## Capas principales
 
-- `cli/`: entrada por consola y seleccion de talleres.
+- `cli/`: entrada por consola para ejecutar las etapas disponibles.
 - `core/`: unidades, constantes, validacion, excepciones y registro de modelos.
-- `design/`: orquestacion de talleres y flujos de calculo.
+- `design/`: orquestacion de los flujos de calculo por etapa.
 - `io/`: lectura de configuraciones y escritura de resultados.
-- `mechanics/`: ecuaciones mecanicas, modelos constitutivos, geometria, secciones, elementos, porticos y metricas de desempeno.
+- `mechanics/`: ecuaciones mecanicas, modelos constitutivos, geometria basica, metricas de curvas y herramientas de seccion.
 - `reports/`: tablas, graficas, YAML, PDF y artefactos de salida.
 
 ## Documentacion
 
-Los archivos de `docs/` documentan alcance, arquitectura y responsabilidades de cada capa. No se mantiene una carpeta separada de supuestos por taller: esa informacion debe estar cerca de los datos que controla, en `configs/workshops/`, o en los reportes generados bajo `outputs/workshop_xx/reports/`.
+Los archivos de `docs/` documentan alcance, arquitectura y responsabilidades de cada capa. Los supuestos editables deben estar cerca de los datos que controlan, en los YAML de `configs/stages/`, o en los reportes generados bajo `outputs/<stage_id>/reports/`.
+
+## Referencias
+
+Las referencias externas se organizan por etapa:
+
+- `references/stage_01/`: documentos, imagenes y ecuaciones fuente para caracterizacion de materiales.
+- `references/stage_02/`: documentos, hojas de calculo e imagenes fuente para caracterizacion de seccion.
+- `references/unassigned/`: referencias historicas conservadas que todavia no pertenecen a una etapa vigente.
+
+## Roadmap
+
+- Etapa 1: caracterizacion mecanica de materiales.
+- Etapa 2: caracterizacion de la seccion mediante bilinealizacion del diagrama momento-curvatura.
+- Etapas posteriores: se definiran cuando la Etapa 2 este consolidada.

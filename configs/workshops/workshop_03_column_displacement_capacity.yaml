@@ -1,9 +1,0 @@
-workshop_id: workshop_03
-title: "Capacidad de desplazamiento y estados limite de una columna"
-units: {length: mm, force: kN, moment: kN-m, stress: MPa, strain: m/m}
-inputs: {}
-outputs:
-  root: outputs/workshop_03
-  required_directories: [figures, reports, data]
-notes:
-  - "Plantilla inicial. Reutilizara materiales, geometria, secciones y elementos."

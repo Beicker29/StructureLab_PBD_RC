@@ -1,9 +1,0 @@
-workshop_id: workshop_06
-title: "Diseno por capacidad, pushover y desempeno de un portico plano"
-units: {length: mm, force: kN, moment: kN-m, stress: MPa, strain: m/m}
-inputs: {}
-outputs:
-  root: outputs/workshop_06
-  required_directories: [figures, reports, data]
-notes:
-  - "Plantilla inicial. La logica de porticos y pushover debe vivir en frames/."

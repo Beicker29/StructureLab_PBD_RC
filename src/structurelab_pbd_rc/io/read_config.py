@@ -24,9 +24,9 @@ def load_yaml_config(path: str | Path) -> dict[str, Any]:
     return data
 
 
-def load_workshop_config(path: str | Path, *, required_keys: tuple[str, ...] = ()) -> dict[str, Any]:
-    """Load a workshop YAML file and optionally validate top-level keys."""
+def load_stage_config(path: str | Path, *, required_keys: tuple[str, ...] = ()) -> dict[str, Any]:
+    """Load a stage YAML file and optionally validate top-level keys."""
 
     config = load_yaml_config(path)
-    require_keys(config, ("workshop_id", "title", *required_keys), context=f"workshop config {path}")
+    require_keys(config, ("stage_id", "title", *required_keys), context=f"stage config {path}")
     return config

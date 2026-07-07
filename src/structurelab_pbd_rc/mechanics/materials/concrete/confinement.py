@@ -1,4 +1,4 @@
-﻿"""Confinement geometry and parameter calculations."""
+"""Confinement geometry and parameter calculations."""
 
 from __future__ import annotations
 
@@ -87,7 +87,7 @@ def calculate_rectangular_confinement_effectiveness(
 ) -> float:
     """Return the confinement effectiveness factor.
 
-    Implements the rectangular-tie structure from the Taller 1 PDF using the
+    Implements the rectangular-tie structure from the Etapa 1 PDF using the
     project convention for symmetric perimeter bars. The `wi` spacings are
     inferred from the configured number of longitudinal bars per side.
     """

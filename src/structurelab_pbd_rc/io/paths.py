@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from structurelab_pbd_rc.core.constants import DEFAULT_WORKSHOP_OUTPUT_SUBDIRECTORIES
+from structurelab_pbd_rc.core.constants import DEFAULT_STAGE_OUTPUT_SUBDIRECTORIES
 
 
 @dataclass(frozen=True)
@@ -39,14 +39,14 @@ class ProjectPaths:
         return self.root / "src"
 
 
-def ensure_workshop_output_dirs(
-    workshop_id: str,
+def ensure_stage_output_dirs(
+    stage_id: str,
     output_root: str | Path = "outputs",
-    subdirectories: tuple[str, ...] = DEFAULT_WORKSHOP_OUTPUT_SUBDIRECTORIES,
+    subdirectories: tuple[str, ...] = DEFAULT_STAGE_OUTPUT_SUBDIRECTORIES,
 ) -> dict[str, Path]:
-    """Create and return the standard output directories for a workshop."""
+    """Create and return the standard output directories for a stage."""
 
-    root = Path(output_root) / workshop_id
+    root = Path(output_root) / stage_id
     root.mkdir(parents=True, exist_ok=True)
     paths: dict[str, Path] = {"root": root}
     for subdirectory in subdirectories:
@@ -56,8 +56,8 @@ def ensure_workshop_output_dirs(
     return paths
 
 
-def workshop_results_json_path(output_dirs: dict[str, Path], filename: str = "workshop_01_results.json") -> Path:
-    """Return the JSON results path inside a prepared workshop data directory."""
+def stage_results_json_path(output_dirs: dict[str, Path], filename: str = "stage_01_results.json") -> Path:
+    """Return the JSON results path inside a prepared stage data directory."""
 
     data_dir = output_dirs.get("data")
     if data_dir is None:

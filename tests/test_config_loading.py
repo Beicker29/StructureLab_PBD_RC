@@ -7,10 +7,10 @@ from pathlib import Path
 from structurelab_pbd_rc.io.read_config import load_yaml_config
 
 
-def test_workshop_01_config_contains_pdf_data() -> None:
-    config = load_yaml_config(Path("configs/workshops/workshop_01_material_characterization.yaml"))
+def test_stage_01_config_contains_pdf_data() -> None:
+    config = load_yaml_config(Path("configs/stages/stage_01_material_characterization.yaml"))
 
-    assert config["workshop_id"] == "workshop_01"
+    assert config["stage_id"] == "stage_01"
     assert config["units"] == {"length": "mm", "force": "kN", "moment": "kN-m", "stress": "MPa", "strain": "mm/mm"}
     assert config["section"]["width"] == 750.0
     assert config["section"]["confined_core"]["clear_spacing_wi"]["values"]
@@ -38,3 +38,21 @@ def test_workshop_01_config_contains_pdf_data() -> None:
     assert "welded_wire_mesh" in config["model_inputs"]
     assert "outputs" not in config
     assert "pending_implementation" not in config
+
+
+def test_stage_02_config_contains_excel_bilinearization_inputs() -> None:
+    config = load_yaml_config(Path("configs/stages/stage_02_section_characterization.yaml"))
+
+    assert config["stage_id"] == "stage_02"
+    assert config["units"] == {"curvature": "1/m", "moment": "kN-m"}
+    assert config["source"]["workbook"] == "references/stage_02/excel/M-curvatura.xlsx"
+    assert config["source"]["sheets"] == "all"
+    assert config["curve_detection"]["title_row"] == 1
+    assert config["curve_detection"]["header_row"] == 2
+    assert config["curve_detection"]["first_data_row"] == 4
+    assert config["curve_detection"]["curvature_header_contains"] == "Curvature"
+    assert config["curve_detection"]["moment_header_contains"] == "Moment"
+    assert config["bilinearization"]["method"] == "asce_fema_energy_equivalent_m_phi"
+    assert config["bilinearization"]["stiffness_fraction"] == 0.60
+    assert config["bilinearization"]["tolerance"] == 0.010
+    assert config["bilinearization"]["ultimate"]["post_peak_strength_ratio"] == 0.80

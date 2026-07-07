@@ -13,8 +13,8 @@ class ModelRegistry:
     """Register named model classes or callables.
 
     The registry keeps design flows decoupled from specific implementations. A
-    future workflow can ask for a model by name without duplicating the model
-    logic inside the workflow module.
+    future stage flow can ask for a model by name without duplicating the model
+    logic inside the stage module.
     """
 
     _models: dict[str, Any] = field(default_factory=dict)

@@ -131,7 +131,7 @@ def split_constitutive_model_reports(calculated_parameters_report: dict[str, Any
             datos_de_salida["parametros_de_confinamiento"] = deepcopy(calculated_parameters_report["confinement"])
             datos_de_salida["geometria_resuelta"] = deepcopy(calculated_parameters_report["resolved_geometry"])
         model_report = {
-            "workshop_id": calculated_parameters_report["workshop_id"],
+            "stage_id": calculated_parameters_report["stage_id"],
             "title": calculated_parameters_report["title"],
             "source_inputs": calculated_parameters_report["source_inputs"],
             "units": calculated_parameters_report["units"],

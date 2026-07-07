@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import shutil
 import subprocess
-import os
 from pathlib import Path
 
 
@@ -42,17 +41,12 @@ def render_quarto_pdf(qmd_path: str | Path) -> Path:
     source_path = Path(qmd_path)
     quarto = find_quarto_command()
     command = [str(quarto), "render", source_path.name, "--to", "typst"]
-    project_root = Path.cwd()
-    env = os.environ.copy()
-    env["QUARTO_DATA_DIR"] = str(project_root / ".quarto-data")
-    env["LOCALAPPDATA"] = str(project_root / ".quarto-localappdata")
     completed = subprocess.run(
         command,
         cwd=source_path.parent,
         check=False,
         capture_output=True,
         text=True,
-        env=env,
     )
     if completed.returncode != 0:
         message = completed.stderr.strip() or completed.stdout.strip()
