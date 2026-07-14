@@ -1,0 +1,44 @@
+stage_id: stage_01
+title: Caracterizacion mecanica monotonica de materiales
+source_inputs: configs/stages/stage_01_material_characterization.yaml
+units:
+  length: mm
+  force: kN
+  moment: kN-m
+  stress: MPa
+  strain: mm/mm
+model:
+  key: steel_compression_no_buckling
+  title: Acero longitudinal en compresion sin pandeo
+  description: Parametros de la curva de compresion del acero sin degradacion por pandeo.
+datos_de_entrada:
+  source: Tabla de aceros colombianos; valores deterministicos de la columna mu.
+  fy: 470.3
+  epsilon_y: 0.0024
+  Es: 200000.0
+  f_sh: 472.16
+  epsilon_sh: 0.0138
+  f_su: 659.74
+  epsilon_su: 0.1141
+  P: 3.087
+  Et:
+    value: auto
+    expression: (f_sh - f_y) / (epsilon_sh - epsilon_y)
+  compression_buckling:
+    enabled: true
+    degradation_alpha: 3.0
+    epsilon_su_compression: 0.08
+    epsilon_buckling: null
+datos_de_salida:
+  fy:
+    value: 470.3
+    unit: '[MPa]'
+  f_su:
+    value: 659.74
+    unit: '[MPa]'
+  epsilon_su:
+    value: 0.08
+    unit: '[mm/mm]'
+  Et:
+    value: 163.1578947368433
+    unit: '[MPa]'

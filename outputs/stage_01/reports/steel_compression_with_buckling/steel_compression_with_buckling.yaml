@@ -1,0 +1,38 @@
+stage_id: stage_01
+title: Caracterizacion mecanica monotonica de materiales
+source_inputs: configs/stages/stage_01_material_characterization.yaml
+units:
+  length: mm
+  force: kN
+  moment: kN-m
+  stress: MPa
+  strain: mm/mm
+model:
+  key: steel_compression_with_buckling
+  title: Acero longitudinal en compresion con pandeo
+  description: Parametros de degradacion por pandeo del acero longitudinal.
+datos_de_entrada:
+  tie_spacing: 100.0
+  longitudinal_bar_diameter: 22.2
+  fy: 470.3
+  compression_buckling:
+    enabled: true
+    degradation_alpha: 3.0
+    epsilon_su_compression: 0.08
+    epsilon_buckling: null
+datos_de_salida:
+  s_over_db:
+    equation: s / d_b
+    value: 4.504504504504505
+    unit: '[-]'
+  epsilon_buckling:
+    equation: 0.10 - 0.0146*(s/d_b) + 0.00062*(s/d_b)^2
+    value: 0.046814381949517085
+    unit: '[mm/mm]'
+  fbb_over_fy:
+    equation: 1.105 - 0.0211*(s/d_b) - 0.00517*(s/d_b)^2
+    value: 0.9050527554581608
+    unit: '[-]'
+  fbb:
+    value: 425.64631089197303
+    unit: '[MPa]'

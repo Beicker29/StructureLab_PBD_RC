@@ -1,0 +1,7 @@
+curve_id,curve_name,point_index,point,phi,moment,phi_abs,moment_abs
+positive_bending,VIGA T-P2,0,origin,0.0,0.0,0.0,0.0
+positive_bending,VIGA T-P2,1,yield,0.00349115071014271,386.54865528105626,0.00349115071014271,386.54865528105626
+positive_bending,VIGA T-P2,2,ultimate,0.07215200000000001,484.865,0.07215200000000001,484.865
+negative_bending,VIGA T - INV- P2,0,origin,-0.0,-0.0,0.0,0.0
+negative_bending,VIGA T - INV- P2,1,yield,-0.003770620551113485,-449.87262412482494,0.003770620551113485,449.87262412482494
+negative_bending,VIGA T - INV- P2,2,ultimate,-0.08966800000000001,-505.601,0.08966800000000001,505.601

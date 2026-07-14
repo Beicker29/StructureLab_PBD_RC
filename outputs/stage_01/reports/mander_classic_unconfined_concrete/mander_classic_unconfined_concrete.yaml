@@ -1,0 +1,129 @@
+stage_id: stage_01
+title: Caracterizacion mecanica monotonica de materiales
+source_inputs: configs/stages/stage_01_material_characterization.yaml
+units:
+  length: mm
+  force: kN
+  moment: kN-m
+  stress: MPa
+  strain: mm/mm
+model:
+  key: mander_classic_unconfined_concrete
+  title: Modelo de Mander no confinado
+  description: Parametros de compresion y traccion del concreto no confinado.
+datos_de_entrada:
+  f_co: 28.0
+  ft_expression: 0.62 * sqrt(f_co)
+  Et_expression: Ec
+  epsilon_t_expression: ft / Et
+  epsilon_co: 0.002
+  epsilon_sp: 0.005
+datos_de_salida:
+  f_co:
+    value: 28.0
+    unit: '[MPa]'
+  Ec:
+    equation: 4700 * sqrt(f_co)
+    value: 24870.062324007155
+    unit: '[MPa]'
+    variables:
+      f_co: 28.0
+  ft:
+    equation: 0.62 * sqrt(f_co)
+    value: 3.2807316257200925
+    unit: '[MPa]'
+    variables:
+      f_co: 28.0
+  Et:
+    equation: Et = Ec
+    value: 24870.062324007155
+    unit: '[MPa]'
+    variables:
+      Ec: 24870.062324007155
+  epsilon_t:
+    equation: ft / Et
+    value: 0.00013191489361702127
+    unit: '[mm/mm]'
+    variables:
+      ft: 3.2807316257200925
+      Et: 24870.062324007155
+  epsilon_co:
+    value: 0.002
+    unit: '[mm/mm]'
+  epsilon_2co:
+    equation: 2 * epsilon_co
+    value: 0.004
+    unit: '[mm/mm]'
+  epsilon_sp:
+    value: 0.005
+    unit: '[mm/mm]'
+  Esec:
+    equation: f_co / epsilon_co
+    value: 14000.0
+    unit: '[MPa]'
+    variables:
+      f_co: 28.0
+      epsilon_co: 0.002
+  r:
+    equation: Ec / (Ec - Esec)
+    value: 2.2879410975482815
+    unit: '[-]'
+    variables:
+      Ec: 24870.062324007155
+      Esec: 14000.0
+  constitutive_function:
+    description: Funcion constitutiva usada para graficar el concreto no confinado de Mander.
+    variable: epsilon_c
+    stress: fc
+    branches:
+      - range: -0.000131915 <= epsilon_c < 0
+        equation: fc = 24870.1 * epsilon_c
+        units:
+          epsilon_c: '[mm/mm]'
+          fc: '[MPa]'
+      - range: 0 <= epsilon_c <= 0.004
+        equation: fc = 28 * (epsilon_c / 0.002) * 2.28794 / (2.28794 - 1 + (epsilon_c / 0.002)^2.28794)
+        units:
+          epsilon_c: '[mm/mm]'
+          fc: '[MPa]'
+      - range: 0.004 < epsilon_c <= 0.005
+        equation: fc = 20.7606 * ((0.005 - epsilon_c) / (0.005 - 0.004))
+        units:
+          epsilon_c: '[mm/mm]'
+          fc: '[MPa]'
+      - range: epsilon_c > 0.005
+        equation: fc = 0
+        units:
+          epsilon_c: '[mm/mm]'
+          fc: '[MPa]'
+    reference_values:
+      f_co:
+        value: 28.0
+        unit: '[MPa]'
+      Ec:
+        value: 24870.062324007155
+        unit: '[MPa]'
+      Esec:
+        value: 14000.0
+        unit: '[MPa]'
+      r:
+        value: 2.2879410975482815
+        unit: '[-]'
+      epsilon_co:
+        value: 0.002
+        unit: '[mm/mm]'
+      epsilon_2co:
+        value: 0.004
+        unit: '[mm/mm]'
+      epsilon_sp:
+        value: 0.005
+        unit: '[mm/mm]'
+      ft:
+        value: 3.2807316257200925
+        unit: '[MPa]'
+      Et:
+        value: 24870.062324007155
+        unit: '[MPa]'
+      epsilon_t:
+        value: 0.00013191489361702127
+        unit: '[mm/mm]'
