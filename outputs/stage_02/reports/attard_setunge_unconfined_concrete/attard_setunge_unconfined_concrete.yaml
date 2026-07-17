@@ -1,0 +1,38 @@
+stage_id: stage_02
+title: Caracterizacion mecanica monotonica de materiales
+source_inputs: configs/stage_02/material_characterization.yaml
+units:
+  length: mm
+  force: kN
+  moment: kN-m
+  stress: MPa
+  strain: mm/mm
+model:
+  key: attard_setunge_unconfined_concrete
+  title: Modelo Attard-Setunge no confinado
+  description: Parametros calculados para la rama no confinada del modelo Attard-Setunge.
+datos_de_entrada:
+  f_co: 28.0
+  Ec: 24870.062324007155
+  epsilon_co: 0.002
+datos_de_salida:
+  alpha:
+    equation: limit(1.17 - 0.002125*(f_co - 20), 1.00, 1.17)
+    value: 1.153
+    unit: '[-]'
+  Eti:
+    equation: alpha * Ec
+    value: 28675.18185958025
+    unit: '[MPa]'
+  fpl:
+    equation: 0.45 * f_co
+    value: 12.6
+    unit: '[MPa]'
+  epsilon_ic:
+    equation: epsilon_co*(2.5 - 0.3*ln(f_co))
+    value: 0.003000677293894878
+    unit: '[mm/mm]'
+  f_ic:
+    equation: f_co*(1.41 - 0.17*ln(f_co))
+    value: 23.618706531566026
+    unit: '[MPa]'

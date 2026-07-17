@@ -1,0 +1,198 @@
+{
+  "stage_id": "stage_01",
+  "case_id": "case_02_sgc_ccp14",
+  "title": "Espectros sismicos con datos SGC y forma espectral CCP-14",
+  "status": "completed",
+  "config": {
+    "stage_id": "stage_01",
+    "case_id": "case_02_sgc_ccp14",
+    "title": "Espectros sismicos con datos SGC y forma espectral CCP-14",
+    "units": {
+      "period": "s",
+      "spectral_acceleration": "g"
+    },
+    "hazard": {
+      "seismic": {
+        "source": {
+          "hazard_provider": "Servicio Geologico Colombiano",
+          "spectral_shape_code": "CCP-14",
+          "spectral_shape_section": "3.10"
+        },
+        "period_range": {
+          "start": 0.0,
+          "end": 5.0,
+          "step": 0.01
+        },
+        "site": {
+          "profile": "D"
+        },
+        "hazard_levels": {
+          "service": {
+            "name": "Servicio",
+            "return_period_years": 31,
+            "PGA": 0.06925036758184433,
+            "Sa_0_2": 0.14294783771038055,
+            "Sa_1_0": 0.027019338682293892
+          },
+          "design": {
+            "name": "Diseno",
+            "return_period_years": 475,
+            "PGA": 0.2957822382450104,
+            "Sa_0_2": 0.6149011850357056,
+            "Sa_1_0": 0.12367282807826996
+          },
+          "maximum_considered": {
+            "name": "Maximo considerado",
+            "return_period_years": 2500,
+            "PGA": 0.582956075668335,
+            "Sa_0_2": 1.2084081172943115,
+            "Sa_1_0": 0.265206515789032
+          }
+        }
+      }
+    }
+  },
+  "config_path": "configs\\stage_01\\case_02_sgc_ccp14_spectra.yaml",
+  "output_dirs": {
+    "root": "outputs\\stage_01",
+    "nsr10_spectra": "outputs\\stage_01\\nsr10_spectra",
+    "ccp14_spectra": "outputs\\stage_01\\ccp14_spectra",
+    "active_case_root": "outputs\\stage_01\\ccp14_spectra",
+    "active_case_data": "outputs\\stage_01\\ccp14_spectra\\data",
+    "active_case_figures": "outputs\\stage_01\\ccp14_spectra\\figures",
+    "active_case_reports": "outputs\\stage_01\\ccp14_spectra\\reports"
+  },
+  "generated_files": {
+    "case_02_spectra_csv": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_spectra.csv",
+    "case_02_spectra_xlsx": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_spectra.xlsx",
+    "case_02_parameters_csv": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_parameters.csv",
+    "case_02_parameters_xlsx": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_parameters.xlsx",
+    "case_02_spectra_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_spectra.png",
+    "case_02_service_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_service_spectrum.png",
+    "case_02_design_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_design_spectrum.png",
+    "case_02_maximum_considered_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_maximum_considered_spectrum.png",
+    "case_02_report_yaml": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14_report.yaml",
+    "data_results_json": "outputs\\stage_01\\ccp14_spectra\\data\\stage_01_results.json"
+  },
+  "warnings": [],
+  "case_result": {
+    "case_id": "case_02_sgc_ccp14",
+    "parameter_rows": [
+      {
+        "return_period_years": 31,
+        "PGA": 0.06925036758184433,
+        "Sa_0_2": 0.14294783771038055,
+        "Sa_1_0": 0.027019338682293892,
+        "Fpga": 1.6,
+        "Fa": 1.6,
+        "Fv": 2.4,
+        "As": 0.11080058813095094,
+        "SDS": 0.2287165403366089,
+        "SD1": 0.06484641283750534,
+        "T0": 0.05670461151788057,
+        "Ts": 0.2835230575894028,
+        "Sa_at_T_0": 0.11080058813095094,
+        "Sa_at_T_0_2": 0.2287165403366089,
+        "Sa_at_T_1_0": 0.06484641283750534,
+        "units": "g, s",
+        "source": "SGC hazard values with CCP-14 interpolated site factors"
+      },
+      {
+        "return_period_years": 475,
+        "PGA": 0.2957822382450104,
+        "Sa_0_2": 0.6149011850357056,
+        "Sa_1_0": 0.12367282807826996,
+        "Fpga": 1.208435523509979,
+        "Fa": 1.3080790519714354,
+        "Fv": 2.30530868768692,
+        "As": 0.35743376391856246,
+        "SDS": 0.8043393591776179,
+        "SD1": 0.2851040449996466,
+        "T0": 0.07089148174749176,
+        "Ts": 0.3544574087374588,
+        "Sa_at_T_0": 0.35743376391856246,
+        "Sa_at_T_0_2": 0.8043393591776179,
+        "Sa_at_T_1_0": 0.2851040449996466,
+        "units": "g, s",
+        "source": "SGC hazard values with CCP-14 interpolated site factors"
+      },
+      {
+        "return_period_years": 2500,
+        "PGA": 0.582956075668335,
+        "Sa_0_2": 1.2084081172943115,
+        "Sa_1_0": 0.265206515789032,
+        "Fpga": 1.0,
+        "Fa": 1.0166367530822753,
+        "Fv": 1.869586968421936,
+        "As": 0.582956075668335,
+        "SDS": 1.2285121047643541,
+        "SD1": 0.4958266458597606,
+        "T0": 0.08071986331056415,
+        "Ts": 0.4035993165528207,
+        "Sa_at_T_0": 0.582956075668335,
+        "Sa_at_T_0_2": 1.2285121047643541,
+        "Sa_at_T_1_0": 0.4958266458597606,
+        "units": "g, s",
+        "source": "SGC hazard values with CCP-14 interpolated site factors"
+      }
+    ],
+    "transition_parameters": [
+      {
+        "return_period_years": 31,
+        "PGA": 0.06925036758184433,
+        "Ss": 0.14294783771038055,
+        "S1": 0.027019338682293892,
+        "site_profile": "D",
+        "Fpga": 1.6,
+        "Fa": 1.6,
+        "Fv": 2.4,
+        "As": 0.11080058813095094,
+        "SDS": 0.2287165403366089,
+        "SD1": 0.06484641283750534,
+        "T0": 0.05670461151788057,
+        "Ts": 0.2835230575894028
+      },
+      {
+        "return_period_years": 475,
+        "PGA": 0.2957822382450104,
+        "Ss": 0.6149011850357056,
+        "S1": 0.12367282807826996,
+        "site_profile": "D",
+        "Fpga": 1.208435523509979,
+        "Fa": 1.3080790519714354,
+        "Fv": 2.30530868768692,
+        "As": 0.35743376391856246,
+        "SDS": 0.8043393591776179,
+        "SD1": 0.2851040449996466,
+        "T0": 0.07089148174749176,
+        "Ts": 0.3544574087374588
+      },
+      {
+        "return_period_years": 2500,
+        "PGA": 0.582956075668335,
+        "Ss": 1.2084081172943115,
+        "S1": 0.265206515789032,
+        "site_profile": "D",
+        "Fpga": 1.0,
+        "Fa": 1.0166367530822753,
+        "Fv": 1.869586968421936,
+        "As": 0.582956075668335,
+        "SDS": 1.2285121047643541,
+        "SD1": 0.4958266458597606,
+        "T0": 0.08071986331056415,
+        "Ts": 0.4035993165528207
+      }
+    ],
+    "generated_files": {
+      "case_02_spectra_csv": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_spectra.csv",
+      "case_02_spectra_xlsx": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_spectra.xlsx",
+      "case_02_parameters_csv": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_parameters.csv",
+      "case_02_parameters_xlsx": "outputs\\stage_01\\ccp14_spectra\\data\\case_02_sgc_ccp14_parameters.xlsx",
+      "case_02_spectra_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_spectra.png",
+      "case_02_service_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_service_spectrum.png",
+      "case_02_design_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_design_spectrum.png",
+      "case_02_maximum_considered_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_maximum_considered_spectrum.png",
+      "case_02_report_yaml": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14_report.yaml"
+    }
+  }
+}

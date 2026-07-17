@@ -7,100 +7,155 @@ from pathlib import Path
 
 import yaml
 
-from structurelab_pbd_rc.design.stages.stage_02_section_characterization import run
-from structurelab_pbd_rc.reports.export_excel import write_xlsx
+from structurelab_pbd_rc.design.stages.stage_02_material_characterization import run
 
 
-def _write_stage_02_config(tmp_path: Path) -> Path:
-    workbook_path = tmp_path / "m_phi.xlsx"
-    write_xlsx(
-        [
-            {"phi_pos": 0.0, "M_pos": 0.0, "phi_neg": 0.0, "M_neg": 0.0},
-            {"phi_pos": 0.001, "M_pos": 80.0, "phi_neg": -0.001, "M_neg": -75.0},
-            {"phi_pos": 0.002, "M_pos": 140.0, "phi_neg": -0.002, "M_neg": -130.0},
-            {"phi_pos": 0.004, "M_pos": 180.0, "phi_neg": -0.004, "M_neg": -170.0},
-            {"phi_pos": 0.008, "M_pos": 165.0, "phi_neg": -0.008, "M_neg": -160.0},
-            {"phi_pos": 0.010, "M_pos": 145.0, "phi_neg": -0.010, "M_neg": -150.0},
-        ],
-        workbook_path,
-        sheet_name="Curva",
+def test_stage_02_prepares_output_directories(tmp_path: Path) -> None:
+    result = run(
+        config_path=Path("configs/stage_02/material_characterization.yaml"),
+        output_root=tmp_path,
     )
-    config = {
-        "stage_id": "stage_02",
-        "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
-        "units": {"curvature": "1/m", "moment": "kN-m"},
-        "source": {"workbook": str(workbook_path), "sheets": "all"},
-        "curve_detection": {
-            "title_row": 1,
-            "header_row": 1,
-            "first_data_row": 2,
-            "curvature_header_contains": "phi",
-            "moment_header_contains": "M_",
-        },
-        "bilinearization": {
-            "method": "asce_fema_energy_equivalent_m_phi",
-            "stiffness_fraction": 0.60,
-            "tolerance": 0.05,
-            "search_points": 1000,
-            "my_lower_ratio": 0.05,
-            "my_upper_ratio": 1.00,
-            "ultimate": {"mode": "final_valid_point"},
-        },
-    }
-    config_path = tmp_path / "stage_02.yaml"
-    config_path.write_text(yaml.safe_dump(config, sort_keys=False), encoding="utf-8")
-    return config_path
 
-
-def test_stage_02_runs_and_writes_moment_curvature_outputs(tmp_path: Path) -> None:
-    config_path = _write_stage_02_config(tmp_path)
-    output_root = tmp_path / "outputs"
-    stale_file = output_root / "stage_02" / "old_sheet" / "data" / "stale.csv"
-    stale_file.parent.mkdir(parents=True, exist_ok=True)
-    stale_file.write_text("stale", encoding="utf-8")
-
-    result = run(config_path=config_path, output_root=output_root)
-    sheet = result["sheets"][0]
-    generated = sheet["generated_files"]
-
+    assert result["status"] == "prepared"
     assert result["stage_id"] == "stage_02"
-    assert result["status"] == "completed"
-    assert result["sheet_count"] == 1
-    assert result["curve_count"] == 2
-    assert sheet["sheet"] == "Curva"
-    assert Path(generated["data_moment_curvature_curves"]).exists()
-    assert Path(generated["data_bilinear_curves"]).exists()
-    assert Path(generated["data_bilinearization_parameters"]).exists()
-    assert Path(generated["figure_moment_curvature_real"]).exists()
-    assert Path(generated["figure_moment_curvature_bilinearization"]).exists()
-    assert Path(generated["figure_moment_curvature_real_vs_bilinear"]).exists()
-    assert Path(generated["report_positive_bending_yaml"]).exists()
-    assert Path(generated["report_negative_bending_yaml"]).exists()
-    assert Path(generated["data_sheet_results_json"]).exists()
-    assert result["results_path"] == output_root / "stage_02" / "data" / "stage_02_results.json"
-    assert not stale_file.exists()
-    assert not (output_root / "stage_02" / "figures").exists()
-    assert not (output_root / "stage_02" / "reports").exists()
-    assert (output_root / "stage_02" / "Curva" / "figures").exists()
-    assert (output_root / "stage_02" / "Curva" / "reports").exists()
+    for name in ("root", "figures", "reports", "data"):
+        assert result["output_dirs"][name].exists()
+    assert "tables" not in result["output_dirs"]
 
-    payload = json.loads(result["results_path"].read_text(encoding="utf-8"))
+
+def test_stage_02_writes_initial_results_json(tmp_path: Path) -> None:
+    result = run(
+        config_path=Path("configs/stage_02/material_characterization.yaml"),
+        output_root=tmp_path,
+    )
+
+    results_path = result["results_path"]
+    assert results_path.exists()
+    assert results_path == tmp_path / "stage_02" / "data" / "stage_02_results.json"
+
+    payload = json.loads(results_path.read_text(encoding="utf-8"))
     assert payload["stage_id"] == "stage_02"
-    assert payload["method"] == "asce_fema_energy_equivalent_m_phi"
-    assert payload["sheet_count"] == 1
-    assert payload["curve_count"] == 2
+    assert payload["status"] == "completed"
+    assert payload["computed_results"]["concrete_curves"]
+    assert payload["metrics"]
 
 
-def test_stage_02_report_contains_input_and_output_sections(tmp_path: Path) -> None:
-    config_path = _write_stage_02_config(tmp_path)
-    result = run(config_path=config_path, output_root=tmp_path / "outputs")
+def test_stage_02_creates_expected_artifacts(tmp_path: Path) -> None:
+    result = run(
+        config_path=Path("configs/stage_02/material_characterization.yaml"),
+        output_root=tmp_path,
+    )
 
-    report_path = Path(result["sheets"][0]["generated_files"]["report_positive_bending_yaml"])
-    report = yaml.safe_load(report_path.read_text(encoding="utf-8"))
+    expected = [
+        "data_concrete_curves",
+        "data_steel_curves",
+        "data_mesh_curves",
+        "data_model_mander_classic_unconfined_concrete_csv",
+        "data_model_mander_classic_unconfined_concrete_xlsx",
+        "data_model_steel_tension_mander_csv",
+        "data_model_steel_tension_mander_xlsx",
+        "figure_concrete",
+        "figure_steel_buckling",
+        "figure_mesh",
+        "figure_core_sketch",
+        "figure_model_mander_classic_unconfined_concrete",
+        "figure_model_mander_classic_confined_concrete",
+        "figure_model_mander_adjusted_confined_concrete",
+        "figure_model_attard_setunge_unconfined_concrete",
+        "figure_model_attard_setunge_confined_concrete",
+        "figure_model_steel_tension_mander",
+        "figure_model_steel_compression_no_buckling",
+        "figure_model_steel_compression_with_buckling",
+        "figure_model_welded_wire_mesh",
+        "report_model_mander_classic_unconfined_concrete_yaml",
+        "report_model_mander_classic_confined_concrete_yaml",
+        "report_model_mander_adjusted_confined_concrete_yaml",
+        "report_model_attard_setunge_unconfined_concrete_yaml",
+        "report_model_attard_setunge_confined_concrete_yaml",
+        "report_model_steel_tension_mander_yaml",
+        "report_model_steel_compression_no_buckling_yaml",
+        "report_model_steel_compression_with_buckling_yaml",
+        "report_model_welded_wire_mesh_yaml",
+        "report_document_mander_classic_unconfined_concrete_qmd",
+        "report_document_mander_classic_unconfined_concrete_pdf",
+    ]
+    for key in expected:
+        assert Path(result["generated_files"][key]).exists()
 
-    assert report["datos_de_entrada"]["curvature_column"] == "A"
-    assert report["datos_de_entrada"]["sheet"] == "Curva"
-    assert report["datos_de_salida"]["Ke"]["equation"] == "Ke = M_60My / phi_60My"
-    assert report["datos_de_salida"]["phi_y"]["equation"] == "phi_y = My / Ke"
-    assert report["datos_de_salida"]["alpha"]["equation"] == "alpha = Kp / Ke"
-    assert report["datos_de_salida"]["constitutive_function"]["branches"]
+    assert Path(result["generated_files"]["figure_model_mander_classic_confined_concrete"]).suffix == ".png"
+    assert Path(result["generated_files"]["figure_model_mander_classic_confined_concrete"]).parent.name == "models"
+    assert (
+        Path(result["generated_files"]["report_document_mander_classic_unconfined_concrete_qmd"])
+        == tmp_path
+        / "stage_02"
+        / "reports"
+        / "mander_classic_unconfined_concrete"
+        / "mander_classic_unconfined_concrete_memoria.qmd"
+    )
+    assert (
+        Path(result["generated_files"]["report_document_mander_classic_unconfined_concrete_pdf"])
+        == tmp_path
+        / "stage_02"
+        / "reports"
+        / "mander_classic_unconfined_concrete"
+        / "mander_classic_unconfined_concrete_memoria.pdf"
+    )
+    assert (
+        Path(result["generated_files"]["data_model_mander_classic_unconfined_concrete_csv"]).parent
+        == tmp_path / "stage_02" / "data" / "models" / "mander_classic_unconfined_concrete"
+    )
+    assert "report_pdf" not in result["generated_files"]
+    assert "report_calculated_parameters_yaml" not in result["generated_files"]
+    assert not (tmp_path / "stage_02" / "reports" / "documento").exists()
+    assert not (tmp_path / "stage_02" / "reports" / "models").exists()
+
+
+def test_stage_02_reports_model_parameters_without_global_report(tmp_path: Path) -> None:
+    result = run(
+        config_path=Path("configs/stage_02/material_characterization.yaml"),
+        output_root=tmp_path,
+    )
+
+    report_path = Path(result["generated_files"]["report_model_mander_classic_unconfined_concrete_yaml"])
+    payload = yaml.safe_load(report_path.read_text(encoding="utf-8"))
+
+    assert payload["stage_id"] == "stage_02"
+    assert payload["model"]["key"] == "mander_classic_unconfined_concrete"
+    assert payload["datos_de_entrada"]["f_co"] == 28.0
+    assert payload["datos_de_salida"]["r"]["value"] > 0
+    assert payload["datos_de_salida"]["constitutive_function"]["branches"]
+    assert "display" not in payload["datos_de_salida"]["constitutive_function"]
+    assert not (tmp_path / "stage_02" / "reports" / "stage_02_calculated_parameters.yaml").exists()
+    assert not (tmp_path / "stage_02" / "reports" / "stage_02_report.pdf").exists()
+
+
+def test_stage_02_writes_one_yaml_per_constitutive_model(tmp_path: Path) -> None:
+    result = run(
+        config_path=Path("configs/stage_02/material_characterization.yaml"),
+        output_root=tmp_path,
+    )
+
+    mander_path = Path(result["generated_files"]["report_model_mander_classic_confined_concrete_yaml"])
+    mander_payload = yaml.safe_load(mander_path.read_text(encoding="utf-8"))
+
+    assert (
+        mander_path
+        == tmp_path
+        / "stage_02"
+        / "reports"
+        / "mander_classic_confined_concrete"
+        / "mander_classic_confined_concrete.yaml"
+    )
+    assert mander_payload["model"]["key"] == "mander_classic_confined_concrete"
+    assert mander_payload["datos_de_salida"]["fcc"]["value"] > 0
+    assert mander_payload["datos_de_salida"]["parametros_de_confinamiento"]["parameters"]["ke"]["equation"]
+    assert mander_payload["datos_de_salida"]["geometria_resuelta"]["data"]["confined_core"]
+    assert "supporting_parameters" not in mander_payload
+
+    steel_path = Path(result["generated_files"]["report_model_steel_tension_mander_yaml"])
+    steel_payload = yaml.safe_load(steel_path.read_text(encoding="utf-8"))
+
+    assert steel_payload["model"]["key"] == "steel_tension_mander"
+    assert steel_payload["datos_de_salida"]["Et"]["equation"]
+    assert "supporting_parameters" not in steel_payload
+

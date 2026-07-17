@@ -1,0 +1,343 @@
+{
+  "stage_id": "stage_03",
+  "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+  "status": "completed",
+  "config": {
+    "stage_id": "stage_03",
+    "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+    "units": {
+      "curvature": "1/m",
+      "moment": "kN-m"
+    },
+    "source": {
+      "workbook": "references/stage_03/excel/M-curvatura.xlsx",
+      "sheets": "all"
+    },
+    "curve_detection": {
+      "title_row": 1,
+      "header_row": 2,
+      "first_data_row": 4,
+      "curvature_header_contains": "Curvature",
+      "moment_header_contains": "Moment"
+    },
+    "bilinearization": {
+      "method": "asce_fema_energy_equivalent_m_phi",
+      "stiffness_fraction": 0.6,
+      "tolerance": 0.01,
+      "search_points": 5000,
+      "my_lower_ratio": 0.05,
+      "my_upper_ratio": 1.0,
+      "ultimate": {
+        "mode": "first_post_peak_strength_drop",
+        "post_peak_strength_ratio": 0.8
+      }
+    }
+  },
+  "config_path": "configs\\stage_03\\section_characterization.yaml",
+  "output_dirs": {
+    "root": "outputs\\stage_03",
+    "data": "outputs\\stage_03\\data"
+  },
+  "source": {
+    "workbook": "references/stage_03/excel/M-curvatura.xlsx",
+    "sheets": "all"
+  },
+  "method": "asce_fema_energy_equivalent_m_phi",
+  "sheet_count": 3,
+  "curve_count": 6,
+  "sheets": [
+    {
+      "stage_id": "stage_03",
+      "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+      "sheet": "VIGA T- P2",
+      "sheet_output_root": "outputs\\stage_03\\VIGA T- P2",
+      "status": "completed",
+      "source": {
+        "workbook": "references\\stage_03\\excel\\M-curvatura.xlsx",
+        "sheet": "VIGA T- P2"
+      },
+      "method": "asce_fema_energy_equivalent_m_phi",
+      "curve_count": 2,
+      "curves": [
+        {
+          "id": "positive_bending",
+          "name": "VIGA T-P2",
+          "sign": "positive",
+          "curvature_column": "A",
+          "moment_column": "B",
+          "first_data_row": 4
+        },
+        {
+          "id": "negative_bending",
+          "name": "VIGA T - INV- P2",
+          "sign": "negative",
+          "curvature_column": "C",
+          "moment_column": "D",
+          "first_data_row": 4
+        }
+      ],
+      "parameters": [
+        {
+          "curve_id": "positive_bending",
+          "curve_name": "VIGA T-P2",
+          "Ke": 110722.42001986074,
+          "My": 386.54865528105626,
+          "phi_y": 0.00349115071014271,
+          "Kp": 1431.912738275249,
+          "alpha": 0.0129324552156501,
+          "Mu": 484.865,
+          "phi_u": 0.07215200000000001,
+          "signed_My": 386.54865528105626,
+          "signed_phi_y": 0.00349115071014271,
+          "signed_Mu": 484.865,
+          "signed_phi_u": 0.07215200000000001,
+          "M_60My": 231.92919316863373,
+          "phi_60My": 0.0020946904260856257,
+          "M_peak": 484.865,
+          "phi_peak": 0.07215200000000001,
+          "A_real": 30.590550183999998,
+          "A_bilinear": 30.590750633382715,
+          "relative_error": 6.55265699739133e-06,
+          "absolute_relative_error": 6.55265699739133e-06,
+          "ductility_phi": 20.667111216476417,
+          "status": "converged"
+        },
+        {
+          "curve_id": "negative_bending",
+          "curve_name": "VIGA T - INV- P2",
+          "Ke": 119309.96981172638,
+          "My": 449.87262412482494,
+          "phi_y": 0.003770620551113485,
+          "Kp": 648.7785335562697,
+          "alpha": 0.005437756246020813,
+          "Mu": 505.601,
+          "phi_u": 0.08966800000000001,
+          "signed_My": -449.87262412482494,
+          "signed_phi_y": -0.003770620551113485,
+          "signed_Mu": -505.601,
+          "signed_phi_u": -0.08966800000000001,
+          "M_60My": 269.92357447489496,
+          "phi_60My": 0.002262372330668091,
+          "M_peak": 505.601,
+          "phi_peak": 0.08966800000000001,
+          "A_real": 41.8863500035,
+          "A_bilinear": 41.88448970338064,
+          "relative_error": -4.441303955120625e-05,
+          "absolute_relative_error": 4.441303955120625e-05,
+          "ductility_phi": 23.78070102374013,
+          "status": "converged"
+        }
+      ],
+      "generated_files": {
+        "data_moment_curvature_curves": "outputs\\stage_03\\VIGA T- P2\\data\\moment_curvature_curves.csv",
+        "data_bilinear_curves": "outputs\\stage_03\\VIGA T- P2\\data\\bilinear_curves.csv",
+        "data_bilinearization_parameters": "outputs\\stage_03\\VIGA T- P2\\data\\bilinearization_parameters.csv",
+        "report_positive_bending_yaml": "outputs\\stage_03\\VIGA T- P2\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_negative_bending_yaml": "outputs\\stage_03\\VIGA T- P2\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "figure_moment_curvature_real": "outputs\\stage_03\\VIGA T- P2\\figures\\moment_curvature_real.png",
+        "figure_moment_curvature_bilinearization": "outputs\\stage_03\\VIGA T- P2\\figures\\moment_curvature_bilinearization.png",
+        "figure_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\VIGA T- P2\\figures\\moment_curvature_real_vs_bilinear.png",
+        "data_sheet_results_json": "outputs\\stage_03\\VIGA T- P2\\data\\stage_03_sheet_results.json"
+      },
+      "warnings": [],
+      "results_path": "outputs\\stage_03\\VIGA T- P2\\data\\stage_03_sheet_results.json"
+    },
+    {
+      "stage_id": "stage_03",
+      "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+      "sheet": "VIGA T- P6",
+      "sheet_output_root": "outputs\\stage_03\\VIGA T- P6",
+      "status": "completed",
+      "source": {
+        "workbook": "references\\stage_03\\excel\\M-curvatura.xlsx",
+        "sheet": "VIGA T- P6"
+      },
+      "method": "asce_fema_energy_equivalent_m_phi",
+      "curve_count": 2,
+      "curves": [
+        {
+          "id": "positive_bending",
+          "name": "VIGA T-P6",
+          "sign": "positive",
+          "curvature_column": "A",
+          "moment_column": "B",
+          "first_data_row": 4
+        },
+        {
+          "id": "negative_bending",
+          "name": "VIGA T - INV- P6",
+          "sign": "negative",
+          "curvature_column": "C",
+          "moment_column": "D",
+          "first_data_row": 4
+        }
+      ],
+      "parameters": [
+        {
+          "curve_id": "positive_bending",
+          "curve_name": "VIGA T-P6",
+          "Ke": 107370.46113637341,
+          "My": 333.4648188837768,
+          "phi_y": 0.0031057407722244602,
+          "Kp": 1312.473416854253,
+          "alpha": 0.012223784856314007,
+          "Mu": 409.208,
+          "phi_u": 0.060816,
+          "signed_My": 333.4648188837768,
+          "signed_phi_y": 0.0031057407722244602,
+          "signed_Mu": 409.208,
+          "signed_phi_u": 0.060816,
+          "M_60My": 200.07889133026606,
+          "phi_60My": 0.001863444463334676,
+          "M_peak": 409.208,
+          "phi_peak": 0.060816,
+          "A_real": 21.946941113999994,
+          "A_bilinear": 21.947748091657672,
+          "relative_error": 3.676948206524595e-05,
+          "absolute_relative_error": 3.676948206524595e-05,
+          "ductility_phi": 19.581801721474992,
+          "status": "converged"
+        },
+        {
+          "curve_id": "negative_bending",
+          "curve_name": "VIGA T - INV- P6",
+          "Ke": 118166.09734230126,
+          "My": 402.89691586317264,
+          "phi_y": 0.0034095813005998554,
+          "Kp": 540.1216137438334,
+          "alpha": 0.0045708678368146455,
+          "Mu": 446.324,
+          "phi_u": 0.083812,
+          "signed_My": -402.89691586317264,
+          "signed_phi_y": -0.0034095813005998554,
+          "signed_Mu": -446.324,
+          "signed_phi_u": -0.083812,
+          "M_60My": 241.73814951790357,
+          "phi_60My": 0.002045748780359913,
+          "M_peak": 446.324,
+          "phi_peak": 0.083812,
+          "A_real": 34.827707300499995,
+          "A_bilinear": 34.82656271795765,
+          "relative_error": -3.286413694905007e-05,
+          "absolute_relative_error": 3.286413694905007e-05,
+          "ductility_phi": 24.581317355669086,
+          "status": "converged"
+        }
+      ],
+      "generated_files": {
+        "data_moment_curvature_curves": "outputs\\stage_03\\VIGA T- P6\\data\\moment_curvature_curves.csv",
+        "data_bilinear_curves": "outputs\\stage_03\\VIGA T- P6\\data\\bilinear_curves.csv",
+        "data_bilinearization_parameters": "outputs\\stage_03\\VIGA T- P6\\data\\bilinearization_parameters.csv",
+        "report_positive_bending_yaml": "outputs\\stage_03\\VIGA T- P6\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_negative_bending_yaml": "outputs\\stage_03\\VIGA T- P6\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "figure_moment_curvature_real": "outputs\\stage_03\\VIGA T- P6\\figures\\moment_curvature_real.png",
+        "figure_moment_curvature_bilinearization": "outputs\\stage_03\\VIGA T- P6\\figures\\moment_curvature_bilinearization.png",
+        "figure_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\VIGA T- P6\\figures\\moment_curvature_real_vs_bilinear.png",
+        "data_sheet_results_json": "outputs\\stage_03\\VIGA T- P6\\data\\stage_03_sheet_results.json"
+      },
+      "warnings": [],
+      "results_path": "outputs\\stage_03\\VIGA T- P6\\data\\stage_03_sheet_results.json"
+    },
+    {
+      "stage_id": "stage_03",
+      "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+      "sheet": "VIGA T- P8",
+      "sheet_output_root": "outputs\\stage_03\\VIGA T- P8",
+      "status": "completed",
+      "source": {
+        "workbook": "references\\stage_03\\excel\\M-curvatura.xlsx",
+        "sheet": "VIGA T- P8"
+      },
+      "method": "asce_fema_energy_equivalent_m_phi",
+      "curve_count": 2,
+      "curves": [
+        {
+          "id": "positive_bending",
+          "name": "VIGA T-P8",
+          "sign": "positive",
+          "curvature_column": "A",
+          "moment_column": "B",
+          "first_data_row": 4
+        },
+        {
+          "id": "negative_bending",
+          "name": "VIGA T - INV- P8",
+          "sign": "negative",
+          "curvature_column": "C",
+          "moment_column": "D",
+          "first_data_row": 4
+        }
+      ],
+      "parameters": [
+        {
+          "curve_id": "positive_bending",
+          "curve_name": "VIGA T-P8",
+          "Ke": 107937.9849280867,
+          "My": 291.60357959591914,
+          "phi_y": 0.002701584431006369,
+          "Kp": 1111.1510793622083,
+          "alpha": 0.010294347074410447,
+          "Mu": 346.056,
+          "phi_u": 0.051707,
+          "signed_My": 291.60357959591914,
+          "signed_phi_y": 0.002701584431006369,
+          "signed_Mu": 346.056,
+          "signed_phi_u": 0.051707,
+          "M_60My": 174.9621477575515,
+          "phi_60My": 0.0016209506586038213,
+          "M_peak": 346.056,
+          "phi_peak": 0.051707,
+          "A_real": 16.0175845195,
+          "A_bilinear": 16.018282190154927,
+          "relative_error": 4.355654587473119e-05,
+          "absolute_relative_error": 4.355654587473119e-05,
+          "ductility_phi": 19.13950917341443,
+          "status": "converged"
+        },
+        {
+          "curve_id": "negative_bending",
+          "curve_name": "VIGA T - INV- P8",
+          "Ke": 122608.23509395834,
+          "My": 360.2802197439488,
+          "phi_y": 0.002938466730785704,
+          "Kp": 524.6794110318432,
+          "alpha": 0.0042793162354043,
+          "Mu": 396.858,
+          "phi_u": 0.07265300000000001,
+          "signed_My": -360.2802197439488,
+          "signed_phi_y": -0.002938466730785704,
+          "signed_Mu": -396.858,
+          "signed_phi_u": -0.07265300000000001,
+          "M_60My": 216.16813184636928,
+          "phi_60My": 0.0017630800384714224,
+          "M_peak": 396.858,
+          "phi_peak": 0.07265300000000001,
+          "A_real": 26.921831061000002,
+          "A_bilinear": 26.921104524605482,
+          "relative_error": -2.698688632559719e-05,
+          "absolute_relative_error": 2.698688632559719e-05,
+          "ductility_phi": 24.724799242689958,
+          "status": "converged"
+        }
+      ],
+      "generated_files": {
+        "data_moment_curvature_curves": "outputs\\stage_03\\VIGA T- P8\\data\\moment_curvature_curves.csv",
+        "data_bilinear_curves": "outputs\\stage_03\\VIGA T- P8\\data\\bilinear_curves.csv",
+        "data_bilinearization_parameters": "outputs\\stage_03\\VIGA T- P8\\data\\bilinearization_parameters.csv",
+        "report_positive_bending_yaml": "outputs\\stage_03\\VIGA T- P8\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_negative_bending_yaml": "outputs\\stage_03\\VIGA T- P8\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "figure_moment_curvature_real": "outputs\\stage_03\\VIGA T- P8\\figures\\moment_curvature_real.png",
+        "figure_moment_curvature_bilinearization": "outputs\\stage_03\\VIGA T- P8\\figures\\moment_curvature_bilinearization.png",
+        "figure_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\VIGA T- P8\\figures\\moment_curvature_real_vs_bilinear.png",
+        "data_sheet_results_json": "outputs\\stage_03\\VIGA T- P8\\data\\stage_03_sheet_results.json"
+      },
+      "warnings": [],
+      "results_path": "outputs\\stage_03\\VIGA T- P8\\data\\stage_03_sheet_results.json"
+    }
+  ],
+  "generated_files": {
+    "data_results_json": "outputs\\stage_03\\data\\stage_03_results.json"
+  },
+  "warnings": [],
+  "results_path": "outputs\\stage_03\\data\\stage_03_results.json"
+}

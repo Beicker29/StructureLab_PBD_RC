@@ -1,0 +1,169 @@
+{
+  "stage_id": "stage_01",
+  "case_id": "case_01_nsr10",
+  "title": "Espectros sismicos NSR-10 escalados por nivel de amenaza",
+  "status": "completed",
+  "config": {
+    "stage_id": "stage_01",
+    "case_id": "case_01_nsr10",
+    "title": "Espectros sismicos NSR-10 escalados por nivel de amenaza",
+    "units": {
+      "period": "s",
+      "spectral_acceleration": "g"
+    },
+    "hazard": {
+      "seismic": {
+        "source": {
+          "code": "NSR-10",
+          "description": "Espectro elastico de aceleraciones de diseno, Titulo A, forma A.2.6."
+        },
+        "period_range": {
+          "start": 0.0,
+          "end": 5.0,
+          "step": 0.01
+        },
+        "nsr10_parameters": {
+          "Aa": 0.35,
+          "Av": 0.3,
+          "Fa": 1.15,
+          "Fv": 1.7,
+          "importance_factor": 1.25,
+          "soil_profile": "D"
+        },
+        "hazard_levels": {
+          "service": {
+            "name": "Servicio",
+            "return_period_years": 31,
+            "scale_factor": 0.35
+          },
+          "design": {
+            "name": "Diseno",
+            "return_period_years": 475,
+            "scale_factor": 1.0
+          },
+          "maximum_considered": {
+            "name": "Maximo considerado",
+            "return_period_years": 2500,
+            "scale_factor": 1.5
+          }
+        }
+      }
+    }
+  },
+  "config_path": "configs\\stage_01\\case_01_nsr10_spectra.yaml",
+  "output_dirs": {
+    "root": "outputs\\stage_01",
+    "nsr10_spectra": "outputs\\stage_01\\nsr10_spectra",
+    "ccp14_spectra": "outputs\\stage_01\\ccp14_spectra",
+    "active_case_root": "outputs\\stage_01\\nsr10_spectra",
+    "active_case_data": "outputs\\stage_01\\nsr10_spectra\\data",
+    "active_case_figures": "outputs\\stage_01\\nsr10_spectra\\figures",
+    "active_case_reports": "outputs\\stage_01\\nsr10_spectra\\reports"
+  },
+  "generated_files": {
+    "case_01_spectra_csv": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_spectra.csv",
+    "case_01_spectra_xlsx": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_spectra.xlsx",
+    "case_01_parameters_csv": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_parameters.csv",
+    "case_01_parameters_xlsx": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_parameters.xlsx",
+    "case_01_spectra_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_spectra.png",
+    "case_01_service_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_service_spectrum.png",
+    "case_01_design_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_design_spectrum.png",
+    "case_01_maximum_considered_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_maximum_considered_spectrum.png",
+    "case_01_report_yaml": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10_report.yaml",
+    "data_results_json": "outputs\\stage_01\\nsr10_spectra\\data\\stage_01_results.json"
+  },
+  "warnings": [],
+  "case_result": {
+    "case_id": "case_01_nsr10",
+    "parameter_rows": [
+      {
+        "parameter": "Aa",
+        "value": 0.35,
+        "unit": "g",
+        "equation": "input"
+      },
+      {
+        "parameter": "Av",
+        "value": 0.3,
+        "unit": "g",
+        "equation": "input"
+      },
+      {
+        "parameter": "Fa",
+        "value": 1.15,
+        "unit": "-",
+        "equation": "input"
+      },
+      {
+        "parameter": "Fv",
+        "value": 1.7,
+        "unit": "-",
+        "equation": "input"
+      },
+      {
+        "parameter": "I",
+        "value": 1.25,
+        "unit": "-",
+        "equation": "input"
+      },
+      {
+        "parameter": "T0",
+        "value": 0.12670807453416152,
+        "unit": "s",
+        "equation": "0.1 * Av * Fv / (Aa * Fa)"
+      },
+      {
+        "parameter": "Tc",
+        "value": 0.6081987577639753,
+        "unit": "s",
+        "equation": "0.48 * Av * Fv / (Aa * Fa)"
+      },
+      {
+        "parameter": "TL",
+        "value": 4.08,
+        "unit": "s",
+        "equation": "2.4 * Fv"
+      },
+      {
+        "parameter": "Sa_plateau",
+        "value": 1.2578124999999998,
+        "unit": "g",
+        "equation": "2.5 * Aa * Fa * I"
+      },
+      {
+        "parameter": "F_31",
+        "value": 0.35,
+        "unit": "-",
+        "equation": "Sa_31(T) = F_31 * Sa_475(T)"
+      },
+      {
+        "parameter": "F_2500",
+        "value": 1.5,
+        "unit": "-",
+        "equation": "Sa_2500(T) = F_2500 * Sa_475(T)"
+      }
+    ],
+    "transition_parameters": {
+      "Aa": 0.35,
+      "Av": 0.3,
+      "Fa": 1.15,
+      "Fv": 1.7,
+      "importance_factor": 1.25,
+      "T0": 0.12670807453416152,
+      "Tc": 0.6081987577639753,
+      "TL": 4.08,
+      "Sa_plateau": 1.2578124999999998
+    },
+    "generated_files": {
+      "case_01_spectra_csv": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_spectra.csv",
+      "case_01_spectra_xlsx": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_spectra.xlsx",
+      "case_01_parameters_csv": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_parameters.csv",
+      "case_01_parameters_xlsx": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_parameters.xlsx",
+      "case_01_spectra_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_spectra.png",
+      "case_01_service_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_service_spectrum.png",
+      "case_01_design_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_design_spectrum.png",
+      "case_01_maximum_considered_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_maximum_considered_spectrum.png",
+      "case_01_report_yaml": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10_report.yaml"
+    }
+  }
+}

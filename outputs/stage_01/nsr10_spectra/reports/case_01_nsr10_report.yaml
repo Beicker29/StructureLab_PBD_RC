@@ -1,0 +1,68 @@
+stage_id: stage_01
+case_id: case_01_nsr10
+title: Espectros sismicos NSR-10 escalados por nivel de amenaza
+datos_de_entrada:
+  units:
+    period: s
+    spectral_acceleration: g
+  hazard:
+    seismic:
+      source:
+        code: NSR-10
+        description: Espectro elastico de aceleraciones de diseno, Titulo A, forma A.2.6.
+      period_range:
+        start: 0.0
+        end: 5.0
+        step: 0.01
+      nsr10_parameters:
+        Aa: 0.35
+        Av: 0.3
+        Fa: 1.15
+        Fv: 1.7
+        importance_factor: 1.25
+        soil_profile: D
+      hazard_levels:
+        service:
+          name: Servicio
+          return_period_years: 31
+          scale_factor: 0.35
+        design:
+          name: Diseno
+          return_period_years: 475
+          scale_factor: 1.0
+        maximum_considered:
+          name: Maximo considerado
+          return_period_years: 2500
+          scale_factor: 1.5
+datos_de_salida:
+  transition_parameters:
+    Aa: 0.35
+    Av: 0.3
+    Fa: 1.15
+    Fv: 1.7
+    importance_factor: 1.25
+    T0: 0.12670807453416152
+    Tc: 0.6081987577639753
+    TL: 4.08
+    Sa_plateau: 1.2578124999999998
+  equations:
+    T0: T0 = 0.1 * Av * Fv / (Aa * Fa)
+    Tc: Tc = 0.48 * Av * Fv / (Aa * Fa)
+    TL: TL = 2.4 * Fv
+    Sa_T_less_T0: Sa = 2.5 * Aa * Fa * I * (0.4 + 0.6 * T / T0)
+    Sa_T0_to_Tc: Sa = 2.5 * Aa * Fa * I
+    Sa_Tc_to_TL: Sa = 1.2 * Av * Fv * I / T
+    Sa_T_greater_TL: Sa = 1.2 * Av * Fv * TL * I / T^2
+    service_scaling: Sa_31(T) = F_31 * Sa_475(T)
+    maximum_scaling: Sa_2500(T) = F_2500 * Sa_475(T)
+  rows_count: 501
+generated_files:
+  case_01_spectra_csv: outputs\stage_01\nsr10_spectra\data\case_01_nsr10_spectra.csv
+  case_01_spectra_xlsx: outputs\stage_01\nsr10_spectra\data\case_01_nsr10_spectra.xlsx
+  case_01_parameters_csv: outputs\stage_01\nsr10_spectra\data\case_01_nsr10_parameters.csv
+  case_01_parameters_xlsx: outputs\stage_01\nsr10_spectra\data\case_01_nsr10_parameters.xlsx
+  case_01_spectra_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_spectra.png
+  case_01_service_spectrum_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_service_spectrum.png
+  case_01_design_spectrum_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_design_spectrum.png
+  case_01_maximum_considered_spectrum_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_maximum_considered_spectrum.png
+  case_01_report_yaml: outputs\stage_01\nsr10_spectra\reports\case_01_nsr10_report.yaml

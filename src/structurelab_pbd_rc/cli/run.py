@@ -11,14 +11,18 @@ SRC_ROOT = Path(__file__).resolve().parents[2]
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from structurelab_pbd_rc.design.stages.stage_01_material_characterization import (
+from structurelab_pbd_rc.design.stages.stage_01_hazard import (
     DEFAULT_CONFIG_PATH as STAGE_01_DEFAULT_CONFIG_PATH,
 )
-from structurelab_pbd_rc.design.stages.stage_01_material_characterization import run as run_stage_01
-from structurelab_pbd_rc.design.stages.stage_02_section_characterization import (
+from structurelab_pbd_rc.design.stages.stage_01_hazard import run as run_stage_01
+from structurelab_pbd_rc.design.stages.stage_02_material_characterization import (
     DEFAULT_CONFIG_PATH as STAGE_02_DEFAULT_CONFIG_PATH,
 )
-from structurelab_pbd_rc.design.stages.stage_02_section_characterization import run as run_stage_02
+from structurelab_pbd_rc.design.stages.stage_02_material_characterization import run as run_stage_02
+from structurelab_pbd_rc.design.stages.stage_03_section_characterization import (
+    DEFAULT_CONFIG_PATH as STAGE_03_DEFAULT_CONFIG_PATH,
+)
+from structurelab_pbd_rc.design.stages.stage_03_section_characterization import run as run_stage_03
 
 STAGES = {
     "stage_01": {
@@ -28,6 +32,10 @@ STAGES = {
     "stage_02": {
         "default_config": STAGE_02_DEFAULT_CONFIG_PATH,
         "runner": run_stage_02,
+    },
+    "stage_03": {
+        "default_config": STAGE_03_DEFAULT_CONFIG_PATH,
+        "runner": run_stage_03,
     },
 }
 
@@ -96,6 +104,12 @@ def main_stage_02() -> int:
     """Console entrypoint for Etapa 2."""
 
     return main(["stage_02"])
+
+
+def main_stage_03() -> int:
+    """Console entrypoint for Etapa 3."""
+
+    return main(["stage_03"])
 
 
 if __name__ == "__main__":

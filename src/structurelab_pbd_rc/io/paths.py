@@ -56,7 +56,7 @@ def ensure_stage_output_dirs(
     return paths
 
 
-def stage_results_json_path(output_dirs: dict[str, Path], filename: str = "stage_01_results.json") -> Path:
+def stage_results_json_path(output_dirs: dict[str, Path], filename: str = "stage_results.json") -> Path:
     """Return the JSON results path inside a prepared stage data directory."""
 
     data_dir = output_dirs.get("data")

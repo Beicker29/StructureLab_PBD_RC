@@ -1,0 +1,125 @@
+stage_id: stage_02
+title: Caracterizacion mecanica monotonica de materiales
+source_inputs: configs/stage_02/material_characterization.yaml
+units:
+  length: mm
+  force: kN
+  moment: kN-m
+  stress: MPa
+  strain: mm/mm
+model:
+  key: mander_classic_confined_concrete
+  title: Modelo de Mander clasico
+  description: Parametros calculados para la curva de concreto confinado con el modelo clasico de Mander.
+datos_de_entrada:
+  f_co: 28.0
+  Ec: 24870.062324007155
+  epsilon_co: 0.002
+  rho_s: 0.007850296668188043
+  fyh: 470.0
+  epsilon_su_transverse: 0.1
+datos_de_salida:
+  ke:
+    value: 0.7258272970898558
+    unit: '[-]'
+  fl_eff:
+    value: 1.3390205088257405
+    unit: '[MPa]'
+  fcc:
+    equation: f_co * (-1.254 + 2.254*sqrt(1 + 7.94*fl/f_co) - 2*fl/f_co)
+    value: 36.34192667071396
+    unit: '[MPa]'
+  epsilon_cc:
+    equation: epsilon_co * (1 + 5*(fcc/f_co - 1))
+    value: 0.004979259525254985
+    unit: '[mm/mm]'
+  epsilon_cu:
+    equation: 0.004 + 1.4*rho_s*fyh*epsilon_su_transverse/fcc
+    value: 0.01821359757414934
+    unit: '[mm/mm]'
+  Esec:
+    equation: fcc / epsilon_cc
+    value: 7298.660872442255
+    unit: '[MPa]'
+  r:
+    equation: Ec / (Ec - Esec)
+    value: 1.4153715850474886
+    unit: '[-]'
+  parametros_de_confinamiento:
+    title: Parametros de confinamiento
+    description: Parametros geometricos y mecanicos comunes para los modelos de concreto confinado.
+    inputs_used:
+      core_width: 657.3000000000001
+      core_height: 657.3000000000001
+      tie_spacing: 100.0
+      tie_diameter: 12.7
+      fyh: 470.0
+      w_i: [131.0, 286.0, 131.0, 131.0, 286.0, 131.0, 131.0, 286.0, 131.0, 131.0, 286.0, 131.0]
+    parameters:
+      rho_x:
+        equation: Ash_x / (core_height * tie_spacing)
+        value: 0.003925148334094021
+        unit: '[-]'
+      rho_y:
+        equation: Ash_y / (core_width * tie_spacing)
+        value: 0.003925148334094021
+        unit: '[-]'
+      rho_s:
+        equation: rho_x + rho_y
+        value: 0.007850296668188043
+        unit: '[-]'
+      rho_cc:
+        equation: A_longitudinal / A_core
+        value: 0.014331897157805643
+        unit: '[-]'
+      sum_wi2:
+        equation: sum(w_i^2)
+        value: 464472.0
+        unit: '[mm^2]'
+        variables:
+          w_i: [131.0, 286.0, 131.0, 131.0, 286.0, 131.0, 131.0, 286.0, 131.0, 131.0, 286.0, 131.0]
+      clear_tie_spacing:
+        equation: s - d_tie
+        value: 87.30000000000001
+        unit: '[mm]'
+      ke:
+        equation: (1 - sum(w_i^2)/(6*b_c*h_c))*(1 - s_clear/(2*b_c))*(1 - s_clear/(2*h_c))/(1 - rho_cc)
+        value: 0.7258272970898558
+        unit: '[-]'
+      fl_eff:
+        equation: 0.5 * ke * rho_s * fyh
+        value: 1.3390205088257405
+        unit: '[MPa]'
+  geometria_resuelta:
+    title: Geometria resuelta
+    description: Geometria derivada a partir de la seccion, recubrimiento, fleje y arreglo de barras.
+    data:
+      gross_section:
+        width: 750.0
+        height: 750.0
+        area: 562500.0
+      confined_core:
+        boundary: tie_centerline
+        width: 657.3000000000001
+        height: 657.3000000000001
+        area: 432043.2900000001
+      longitudinal_reinforcement:
+        bar_count: 16
+        bar_mark: '#7'
+        bar_diameter: 22.2
+        single_bar_area: 387.0
+        total_area: 6192.0
+        layout_description: symmetric perimeter layout
+        longitudinal_ratio: 0.011008
+      transverse_reinforcement:
+        type: rectangular_ties
+        bar_mark: '#4'
+        diameter: 12.7
+        bar_area: 129.0
+        spacing: 100.0
+        legs_x: 2
+        legs_y: 2
+        area_x: 258.0
+        area_y: 258.0
+      clear_cover_to_tie: 40.0
+      longitudinal_ratio: 0.011008

@@ -1,0 +1,40 @@
+stage_id: stage_01
+case_id: case_01_nsr10
+title: "Espectros sismicos NSR-10 escalados por nivel de amenaza"
+
+units:
+  period: s
+  spectral_acceleration: g
+
+hazard:
+  seismic:
+    source:
+      code: "NSR-10"
+      description: "Espectro elastico de aceleraciones de diseno, Titulo A, forma A.2.6."
+
+    period_range:
+      start: 0.0
+      end: 5.0
+      step: 0.01
+
+    nsr10_parameters:
+      Aa: 0.35
+      Av: 0.30
+      Fa: 1.15
+      Fv: 1.7
+      importance_factor: 1.25
+      soil_profile: D
+
+    hazard_levels:
+      service:
+        name: "Servicio"
+        return_period_years: 31
+        scale_factor: 0.35
+      design:
+        name: "Diseno"
+        return_period_years: 475
+        scale_factor: 1.0
+      maximum_considered:
+        name: "Maximo considerado"
+        return_period_years: 2500
+        scale_factor: 1.50

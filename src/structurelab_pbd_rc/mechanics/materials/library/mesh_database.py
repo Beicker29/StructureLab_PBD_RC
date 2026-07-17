@@ -1,4 +1,4 @@
-"""Welded wire mesh properties summarized from the Etapa 1 PDF."""
+"""Welded wire mesh properties summarized from the Etapa 2 PDF."""
 
 from __future__ import annotations
 

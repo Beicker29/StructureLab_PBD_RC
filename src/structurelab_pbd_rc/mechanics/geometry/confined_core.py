@@ -50,7 +50,7 @@ def derive_confined_core_from_cover(
 ) -> ConfinedCore:
     """Derive confined core dimensions from cover.
 
-    The Etapa 1 PDF gives clear cover to the tie but not every internal
+    The Etapa 2 PDF gives clear cover to the tie but not every internal
     dimension. The default project assumption is a core measured to the tie
     centerline: gross dimension minus twice the clear cover and half a tie
     diameter at each side.

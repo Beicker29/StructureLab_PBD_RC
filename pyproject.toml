@@ -42,6 +42,7 @@ dev = [
 [project.scripts]
 structurelab-stage-01 = "structurelab_pbd_rc.cli.run:main_stage_01"
 structurelab-stage-02 = "structurelab_pbd_rc.cli.run:main_stage_02"
+structurelab-stage-03 = "structurelab_pbd_rc.cli.run:main_stage_03"
 
 [tool.setuptools.packages.find]
 where = ["src"]

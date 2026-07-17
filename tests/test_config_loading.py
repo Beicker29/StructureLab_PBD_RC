@@ -7,10 +7,50 @@ from pathlib import Path
 from structurelab_pbd_rc.io.read_config import load_yaml_config
 
 
-def test_stage_01_config_contains_pdf_data() -> None:
-    config = load_yaml_config(Path("configs/stages/stage_01_material_characterization.yaml"))
+def test_stage_01_nsr10_config_is_nested_under_hazard_seismic() -> None:
+    config = load_yaml_config(Path("configs/stage_01/case_01_nsr10_spectra.yaml"))
+
+    seismic = config["hazard"]["seismic"]
 
     assert config["stage_id"] == "stage_01"
+    assert config["case_id"] == "case_01_nsr10"
+    assert config["units"] == {"period": "s", "spectral_acceleration": "g"}
+    assert seismic["source"]["code"] == "NSR-10"
+    assert seismic["period_range"] == {"start": 0.0, "end": 5.0, "step": 0.01}
+    assert seismic["nsr10_parameters"]["soil_profile"] in {"A", "B", "C", "D", "E"}
+    assert seismic["hazard_levels"]["service"]["return_period_years"] == 31
+    assert "nsr10_parameters" not in config
+    assert "hazard_levels" not in config
+
+
+def test_stage_01_sgc_ccp14_config_is_independent_case() -> None:
+    config = load_yaml_config(Path("configs/stage_01/case_02_sgc_ccp14_spectra.yaml"))
+
+    seismic = config["hazard"]["seismic"]
+
+    assert config["stage_id"] == "stage_01"
+    assert config["case_id"] == "case_02_sgc_ccp14"
+    assert seismic["source"]["hazard_provider"] == "Servicio Geologico Colombiano"
+    assert seismic["source"]["spectral_shape_code"] == "CCP-14"
+    assert seismic["site"]["profile"] in {"A", "B", "C", "D", "E"}
+    levels = seismic["hazard_levels"]
+    assert [levels[key]["return_period_years"] for key in ("service", "design", "maximum_considered")] == [
+        31,
+        475,
+        2500,
+    ]
+    for record in levels.values():
+        assert "Fpga" not in record
+        assert "Fa" not in record
+        assert "Fv" not in record
+    assert "hazard_records" not in seismic
+    assert "hazard_records" not in config
+
+
+def test_stage_02_config_contains_pdf_data() -> None:
+    config = load_yaml_config(Path("configs/stage_02/material_characterization.yaml"))
+
+    assert config["stage_id"] == "stage_02"
     assert config["units"] == {"length": "mm", "force": "kN", "moment": "kN-m", "stress": "MPa", "strain": "mm/mm"}
     assert config["section"]["width"] == 750.0
     assert config["section"]["confined_core"]["clear_spacing_wi"]["values"]
@@ -40,12 +80,12 @@ def test_stage_01_config_contains_pdf_data() -> None:
     assert "pending_implementation" not in config
 
 
-def test_stage_02_config_contains_excel_bilinearization_inputs() -> None:
-    config = load_yaml_config(Path("configs/stages/stage_02_section_characterization.yaml"))
+def test_stage_03_config_contains_excel_bilinearization_inputs() -> None:
+    config = load_yaml_config(Path("configs/stage_03/section_characterization.yaml"))
 
-    assert config["stage_id"] == "stage_02"
+    assert config["stage_id"] == "stage_03"
     assert config["units"] == {"curvature": "1/m", "moment": "kN-m"}
-    assert config["source"]["workbook"] == "references/stage_02/excel/M-curvatura.xlsx"
+    assert config["source"]["workbook"] == "references/stage_03/excel/M-curvatura.xlsx"
     assert config["source"]["sheets"] == "all"
     assert config["curve_detection"]["title_row"] == 1
     assert config["curve_detection"]["header_row"] == 2

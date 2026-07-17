@@ -56,6 +56,178 @@ def _style_axes(ax: Any) -> None:
         spine.set_linewidth(0.9)
 
 
+def plot_response_spectra(
+    rows: list[dict[str, Any]],
+    path: str | Path,
+    *,
+    period_key: str,
+    series: list[dict[str, str]],
+    title: str,
+    subtitle: str,
+    ylabel: str = "Aceleracion espectral, Sa [g]",
+) -> Path:
+    """Plot one or more response spectra using the project report style."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    periods = [float(row[period_key]) for row in rows]
+
+    fig, ax = plt.subplots(figsize=(11.4, 6.8), dpi=190)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+
+    for index, item in enumerate(series):
+        key = item["key"]
+        label = item["label"]
+        values = [float(row[key]) for row in rows]
+        ax.plot(
+            periods,
+            values,
+            label=label,
+            color=COLOR_CYCLE[index % len(COLOR_CYCLE)],
+            linestyle=LINE_STYLES[index % len(LINE_STYLES)],
+            linewidth=2.8,
+            solid_capstyle="round",
+        )
+
+    ax.set_xlabel("Periodo, T [s]", fontsize=11.5, fontweight="bold", color="#30343b")
+    ax.set_ylabel(ylabel, fontsize=11.5, fontweight="bold", color="#30343b")
+    ax.set_title(title, loc="left", fontsize=17, fontweight="bold", color="#24303a", pad=16)
+    ax.text(
+        0.0,
+        1.01,
+        subtitle,
+        transform=ax.transAxes,
+        ha="left",
+        va="bottom",
+        fontsize=10.5,
+        color="#5b6670",
+    )
+    legend = ax.legend(
+        loc="upper right",
+        frameon=True,
+        framealpha=0.95,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        fontsize=9.2,
+        title="Nivel de amenaza",
+    )
+    legend.get_title().set_fontweight("bold")
+    ax.margins(x=0.01, y=0.08)
+    fig.text(0.985, 0.025, "StructureLab_PBD_RC | Etapa 1", ha="right", va="bottom", fontsize=8, color="#808891")
+    fig.tight_layout(rect=(0, 0.04, 1, 0.98))
+    fig.savefig(output_path, bbox_inches="tight")
+    plt.close(fig)
+    return output_path
+
+
+def plot_response_spectrum_with_notable_points(
+    rows: list[dict[str, Any]],
+    path: str | Path,
+    *,
+    period_key: str,
+    value_key: str,
+    title: str,
+    subtitle: str,
+    notable_points: list[dict[str, Any]],
+    ylabel: str = "Aceleracion espectral, Sa [g]",
+    curve_color: str = COLOR_CYCLE[0],
+) -> Path:
+    """Plot one response spectrum with its notable points."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    periods = [float(row[period_key]) for row in rows]
+    values = [float(row[value_key]) for row in rows]
+
+    fig, ax = plt.subplots(figsize=(11.4, 6.8), dpi=190)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+
+    ax.plot(
+        periods,
+        values,
+        color=curve_color,
+        linewidth=3.0,
+        solid_capstyle="round",
+        label="Espectro elastico",
+    )
+    ax.fill_between(periods, values, color=curve_color, alpha=0.075)
+
+    marker_colors = ["#c43c2f", "#2f7d4f", "#7a4f9a", "#d79a2b", "#5b6670"]
+    for index, point in enumerate(notable_points):
+        period = float(point["period"])
+        value = float(point["value"])
+        color = marker_colors[index % len(marker_colors)]
+        label = str(point.get("legend_label", f"{point['label']}: T = {period:.4g} [s], Sa = {value:.4g} [g]"))
+        ax.axvline(period, color=color, linestyle=":", linewidth=1.0, alpha=0.55)
+        ax.scatter(
+            [period],
+            [value],
+            s=72,
+            color=color,
+            edgecolor="white",
+            linewidth=1.1,
+            zorder=6,
+            label=label,
+        )
+        if bool(point.get("annotate", False)):
+            x_offset = 26 if period <= min(periods) + 1e-12 else 14 if index % 2 == 0 else -16
+            y_offset = 18 if value >= max(values) * 0.92 else 14 if index % 3 != 2 else -20
+            ax.annotate(
+                str(point["label"]),
+                xy=(period, value),
+                xytext=(x_offset, y_offset),
+                textcoords="offset points",
+                arrowprops={"arrowstyle": "->", "color": color, "linewidth": 0.9},
+                fontsize=8.5,
+                color="#30343b",
+                ha="left" if x_offset > 0 else "right",
+                va="bottom" if y_offset > 0 else "top",
+            )
+
+    ax.set_xlabel("Periodo, T [s]", fontsize=11.5, fontweight="bold", color="#30343b")
+    ax.set_ylabel(ylabel, fontsize=11.5, fontweight="bold", color="#30343b")
+    ax.set_title(title, loc="left", fontsize=17, fontweight="bold", color="#24303a", pad=16)
+    ax.text(
+        0.0,
+        1.01,
+        subtitle,
+        transform=ax.transAxes,
+        ha="left",
+        va="bottom",
+        fontsize=10.5,
+        color="#5b6670",
+    )
+    x_min = min(periods)
+    x_max = max(periods)
+    x_span = max(x_max - x_min, 1e-9)
+    notable_values = [float(point["value"]) for point in notable_points]
+    y_min = min([0.0, *values, *notable_values])
+    y_max = max([*values, *notable_values])
+    y_span = max(y_max - y_min, 1e-9)
+    ax.set_xlim(x_min - 0.055 * x_span, x_max + 0.015 * x_span)
+    ax.set_ylim(y_min - 0.08 * y_span, y_max + 0.16 * y_span)
+    legend = ax.legend(
+        loc="upper right",
+        frameon=True,
+        framealpha=0.96,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        fontsize=8.2,
+        title="Puntos notables",
+        title_fontsize=9,
+    )
+    legend.get_title().set_fontweight("bold")
+    fig.text(0.985, 0.025, "StructureLab_PBD_RC | Etapa 1", ha="right", va="bottom", fontsize=8, color="#808891")
+    fig.tight_layout(rect=(0, 0.04, 1, 0.98))
+    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
+    return output_path
+
+
 def _annotate_peak(ax: Any, strain: list[float], stress: list[float], color: str) -> None:
     """Mark the peak point for a curve."""
 
@@ -115,8 +287,8 @@ def _notable_points(model_name: str, curve: dict[str, object]) -> list[dict[str,
             eps_co = float(parameters["epsilon_peak"])
             points.append(
                 {
-                    "label": "(f'co, εco)",
-                    "legend_label": f"Resistencia máxima (f'co: {fco:g} [MPa], εco: {eps_co:g} [mm/mm])",
+                    "label": "(f'co, epsilon_co)",
+                    "legend_label": f"Resistencia maxima (f'co: {fco:g} [MPa], epsilon_co: {eps_co:g} [mm/mm])",
                     "strain": eps_co,
                     "stress": fco,
                     "annotate": False,
@@ -128,10 +300,10 @@ def _notable_points(model_name: str, curve: dict[str, object]) -> list[dict[str,
             eps_t = float(parameters.get("epsilon_t_plot", parameters["epsilon_t"]))
             points.append(
                 {
-                    "label": "(ft, εt)",
+                    "label": "(ft, epsilont)",
                     "legend_label": (
-                        f"Tracción (ft: {ft:.3g} [MPa], Et: {tensile_modulus:.0f} [MPa], "
-                        f"εt: {eps_t:.3g} [mm/mm])"
+                        f"Traccion (ft: {ft:.3g} [MPa], Et: {tensile_modulus:.0f} [MPa], "
+                        f"epsilont: {eps_t:.3g} [mm/mm])"
                     ),
                     "strain": eps_t,
                     "stress": ft,
@@ -143,7 +315,7 @@ def _notable_points(model_name: str, curve: dict[str, object]) -> list[dict[str,
             points.append(
                 {
                     "label": "Descascaramiento",
-                    "legend_label": f"Descascaramiento (εsp: {eps_sp:g} [mm/mm])",
+                    "legend_label": f"Descascaramiento (epsilon_sp: {eps_sp:g} [mm/mm])",
                     "strain": eps_sp,
                     "stress": _stress_at_x(strain, stress, eps_sp),
                     "annotate": False,
@@ -151,11 +323,11 @@ def _notable_points(model_name: str, curve: dict[str, object]) -> list[dict[str,
             )
     elif model_key in {"mander_classic_confined_concrete", "mander_adjusted_confined_concrete"}:
         add("Pico confinado: f'cc", "eps_cc", "fcc_mpa")
-        add("Última confinada", "eps_cu")
+        add("Ultima confinada", "eps_cu")
     elif model_key == "attard_setunge_unconfined_concrete":
-        add("Resistencia máxima: f'co", "epsilon_peak", "f_peak_mpa")
+        add("Resistencia maxima: f'co", "epsilon_peak", "f_peak_mpa")
         add("Control descendente: i_c", "epsilon_ic", "f_ic_mpa")
-        add("Última", "epsilon_u")
+        add("Ultima", "epsilon_u")
     elif model_key == "attard_setunge_confined_concrete":
         add("Pico confinado: f'cc", "epsilon_peak", "f_peak_mpa")
         add("Punto i", "epsilon_i", "fi_mpa")
@@ -163,16 +335,16 @@ def _notable_points(model_name: str, curve: dict[str, object]) -> list[dict[str,
     elif model_key in {"steel_tension_mander", "steel_compression_no_buckling"}:
         add("Fluencia", "eps_y", "fy_mpa")
         add("Inicio de endurecimiento", "eps_sh")
-        add("Última", "eps_su", "fu_mpa")
+        add("Ultima", "eps_su", "fu_mpa")
     elif model_key == "steel_compression_with_buckling":
         add("Fluencia", "eps_y", "fy_mpa")
         add("Inicio de pandeo", "eps_buckling", "fbb_mpa")
-        add("Última degradada", "eps_u")
+        add("Ultima degradada", "eps_u")
     elif model_key == "welded_wire_mesh":
         if "fy_mpa" in parameters and "Es_mpa" in parameters:
             eps_y = float(parameters["fy_mpa"]) / max(float(parameters["Es_mpa"]), 1e-12)
             points.append({"label": "Fluencia estimada", "strain": eps_y, "stress": float(parameters["fy_mpa"])})
-        add("Última", "epsilon_u", "fu_mpa")
+        add("Ultima", "epsilon_u", "fu_mpa")
 
     unique_points: list[dict[str, object]] = []
     seen: set[tuple[str, float, float]] = set()
@@ -211,7 +383,7 @@ def plot_single_model_curve_with_notable_points(
     *,
     title: str | None = None,
     subtitle: str | None = None,
-    xlabel: str = "Deformación unitaria, ε [mm/mm]",
+    xlabel: str = "Deformacion unitaria, epsilon [mm/mm]",
     ylabel: str = "Esfuerzo, f [MPa]",
 ) -> Path:
     """Plot one constitutive curve with notable points marked and labeled."""
@@ -287,7 +459,7 @@ def plot_single_model_curve_with_notable_points(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 1",
+        "StructureLab_PBD_RC | Etapa 2",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -305,7 +477,7 @@ def plot_stress_strain_curves(
     *,
     title: str | None = None,
     subtitle: str | None = None,
-    xlabel: str = "Deformación unitaria, ε [mm/mm]",
+    xlabel: str = "Deformacion unitaria, epsilon [mm/mm]",
     ylabel: str = "Esfuerzo, f [MPa]",
 ) -> Path:
     """Plot named stress-strain curves to a polished PNG."""
@@ -332,7 +504,7 @@ def plot_stress_strain_curves(
         )
         _annotate_peak(ax, strain, stress, color)
 
-    inferred_title = title or "Curvas esfuerzo-deformación"
+    inferred_title = title or "Curvas esfuerzo-deformacion"
     ax.set_title(inferred_title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=16)
     if subtitle:
         ax.text(
@@ -363,7 +535,7 @@ def plot_stress_strain_curves(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 1",
+        "StructureLab_PBD_RC | Etapa 2",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -432,7 +604,7 @@ def _finish_moment_curvature_plot(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 2",
+        "StructureLab_PBD_RC | Etapa 3",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -630,7 +802,7 @@ def plot_moment_curvature_bilinear_only(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 2",
+        "StructureLab_PBD_RC | Etapa 3",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -788,7 +960,7 @@ def plot_moment_curvature_real_vs_bilinear(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 2",
+        "StructureLab_PBD_RC | Etapa 3",
         ha="right",
         va="bottom",
         fontsize=8,
@@ -819,7 +991,7 @@ def plot_confined_core_sketch(
     geometry_summary: dict[str, object],
     path: str | Path,
     *,
-    title: str = "Croquis de sección y núcleo confinado",
+    title: str = "Croquis de seccion y nucleo confinado",
 ) -> Path:
     """Draw a polished section sketch with gross section, confined core and bars."""
 
@@ -855,7 +1027,7 @@ def plot_confined_core_sketch(
             facecolor="#edf2f0",
             edgecolor="#222831",
             linewidth=2.0,
-            label="Sección 750 x 750 [mm]",
+            label="Seccion 750 x 750 [mm]",
         )
     )
     ax.add_patch(
@@ -866,7 +1038,7 @@ def plot_confined_core_sketch(
             facecolor="#f8e6df",
             edgecolor="#c43c2f",
             linewidth=2.0,
-            label="Núcleo confinado",
+            label="Nucleo confinado",
         )
     )
 
@@ -914,7 +1086,7 @@ def plot_confined_core_sketch(
     ax.text(
         0,
         core_y + core_height_mm + 45.0,
-        f"Núcleo: {core_width_mm:.0f} x {core_height_mm:.0f} [mm]",
+        f"Nucleo: {core_width_mm:.0f} x {core_height_mm:.0f} [mm]",
         ha="center",
         va="bottom",
         fontsize=10,
@@ -932,8 +1104,8 @@ def plot_confined_core_sketch(
     )
 
     ax.set_title(title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=14)
-    ax.set_xlabel("Dimensión x [mm]", fontsize=10, fontweight="bold", color="#30343b")
-    ax.set_ylabel("Dimensión y [mm]", fontsize=10, fontweight="bold", color="#30343b")
+    ax.set_xlabel("Dimension x [mm]", fontsize=10, fontweight="bold", color="#30343b")
+    ax.set_ylabel("Dimension y [mm]", fontsize=10, fontweight="bold", color="#30343b")
     ax.grid(True, color="#e3e5df", linewidth=0.7)
     ax.set_xlim(gross_x - 180.0, -gross_x + 180.0)
     ax.set_ylim(gross_y - 240.0, -gross_y + 140.0)
@@ -948,7 +1120,7 @@ def plot_confined_core_sketch(
     fig.text(
         0.99,
         0.015,
-        "StructureLab_PBD_RC | Etapa 1",
+        "StructureLab_PBD_RC | Etapa 2",
         ha="right",
         va="bottom",
         fontsize=8,

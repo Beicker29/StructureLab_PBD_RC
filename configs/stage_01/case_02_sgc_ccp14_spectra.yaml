@@ -1,0 +1,42 @@
+stage_id: stage_01
+case_id: case_02_sgc_ccp14
+title: "Espectros sismicos con datos SGC y forma espectral CCP-14"
+
+units:
+  period: s
+  spectral_acceleration: g
+
+hazard:
+  seismic:
+    source:
+      hazard_provider: "Servicio Geologico Colombiano"
+      spectral_shape_code: "CCP-14"
+      spectral_shape_section: "3.10"
+
+    period_range:
+      start: 0.0
+      end: 5.0
+      step: 0.01
+
+    site:
+      profile: D
+
+    hazard_levels:
+      service:
+        name: "Servicio"
+        return_period_years: 31
+        PGA: 0.06925036758184433
+        Sa_0_2: 0.14294783771038055
+        Sa_1_0: 0.027019338682293892
+      design:
+        name: "Diseno"
+        return_period_years: 475
+        PGA: 0.2957822382450104
+        Sa_0_2: 0.6149011850357056
+        Sa_1_0: 0.12367282807826996
+      maximum_considered:
+        name: "Maximo considerado"
+        return_period_years: 2500
+        PGA: 0.582956075668335
+        Sa_0_2: 1.2084081172943115
+        Sa_1_0: 0.265206515789032

@@ -2,7 +2,7 @@
 
 `StructureLab_PBD_RC` es un proyecto Python enfocado en etapas tecnicas para el analisis de estructuras de concreto reforzado.
 
-La Etapa 1 caracteriza materiales. La Etapa 2 caracteriza la seccion a partir de diagramas momento-curvatura mediante una bilinealizacion ASCE/FEMA adaptada a M-phi. Las etapas siguientes se agregaran cuando su alcance este claro.
+La Etapa 1 calcula amenaza, con implementacion inicial para espectros sismicos. La Etapa 2 caracteriza materiales. La Etapa 3 caracteriza la seccion a partir de diagramas momento-curvatura mediante una bilinealizacion ASCE/FEMA adaptada a M-phi.
 
 ## Filosofia del proyecto
 
@@ -13,19 +13,22 @@ La Etapa 1 caracteriza materiales. La Etapa 2 caracteriza la seccion a partir de
 - Las tablas, graficas y reportes viven en `reports/`.
 - Cada flujo de etapa solo lee configuraciones, coordina modulos y guarda resultados.
 - Los notebooks son para exploracion y visualizacion, no para logica principal.
+- Los YAML de cada etapa viven en `configs/<stage_id>/`; por ejemplo, lo sismico de Etapa 1 se organiza como `hazard.seismic`.
 
 ## Alcance Actual
 
 El repositorio contiene implementacion de:
 
-- Etapa 1: caracterizacion mecanica de materiales.
-- Etapa 2: caracterizacion de seccion por bilinealizacion de diagramas momento-curvatura.
+- Etapa 1: calculo de amenaza con espectros sismicos NSR-10 y SGC + CCP-14.
+- Etapa 2: caracterizacion mecanica de materiales.
+- Etapa 3: caracterizacion de seccion por bilinealizacion de diagramas momento-curvatura.
 
 ## Roadmap por etapas
 
-1. Etapa 1: caracterizacion mecanica de materiales.
-2. Etapa 2: caracterizacion de la seccion mediante idealizacion bilineal M-phi.
-3. Etapas posteriores: se definiran despues de consolidar la seccion.
+1. Etapa 1: calculo de amenaza, con primer modulo sismico implementado.
+2. Etapa 2: caracterizacion mecanica de materiales.
+3. Etapa 3: caracterizacion de la seccion mediante idealizacion bilineal M-phi.
+4. Etapas posteriores: se definiran despues de consolidar la seccion.
 
 ## Entorno virtual
 
@@ -68,24 +71,24 @@ Desde la raiz del proyecto:
 Tambien puede indicarse una configuracion especifica:
 
 ```powershell
-.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_01.py --config configs\stages\stage_01_material_characterization.yaml
+.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_01.py --config configs\stage_01\case_01_nsr10_spectra.yaml
+.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_01.py --config configs\stage_01\case_02_sgc_ccp14_spectra.yaml
 ```
 
-El script lee `configs/stages/stage_01_material_characterization.yaml`, valida los datos principales, calcula geometria y confinamiento, genera curvas de materiales, calcula metricas comparativas y exporta resultados en `outputs/stage_01/`.
+La configuracion de amenaza se guarda bajo `hazard.seismic`. El caso NSR-10 escala el espectro base para niveles de amenaza de 31, 475 y 2500 anos. El caso SGC + CCP-14 usa valores SGC independientes por periodo de retorno; `Fpga`, `Fa` y `Fv` se calculan con las tablas CCP-14 mediante interpolacion lineal.
 
 Archivos principales generados:
 
-- `outputs/stage_01/data/concrete_curves.csv`
-- `outputs/stage_01/data/steel_curves.csv`
-- `outputs/stage_01/data/mesh_curves.csv`
-- `outputs/stage_01/data/curve_metrics.csv`
-- `outputs/stage_01/data/stage_01_results.json`
-- `outputs/stage_01/data/models/<modelo>/<modelo>.csv`
-- `outputs/stage_01/data/models/<modelo>/<modelo>.xlsx`
-- `outputs/stage_01/figures/*.png`
-- `outputs/stage_01/figures/models/*.png`
-- `outputs/stage_01/reports/<modelo>/<modelo>.yaml`
-- `outputs/stage_01/reports/mander_classic_unconfined_concrete/mander_classic_unconfined_concrete_memoria.pdf`
+- `outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.csv`
+- `outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.csv`
+- `outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_spectra.png`
+- `outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_<nivel>_spectrum.png`
+- `outputs/stage_01/nsr10_spectra/reports/case_01_nsr10_report.yaml`
+- `outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.csv`
+- `outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.csv`
+- `outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_spectra.png`
+- `outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_<nivel>_spectrum.png`
+- `outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14_report.yaml`
 
 ## Ejecucion de la Etapa 2
 
@@ -96,10 +99,38 @@ Archivos principales generados:
 Tambien puede indicarse una configuracion especifica:
 
 ```powershell
-.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_02.py --config configs\stages\stage_02_section_characterization.yaml
+.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_02.py --config configs\stage_02\material_characterization.yaml
 ```
 
-El script lee `configs/stages/stage_02_section_characterization.yaml`, importa el Excel definido en `source.workbook`, procesa las hojas indicadas en `source.sheets` y genera una subcarpeta por hoja dentro de `outputs/stage_02/`. En cada ejecucion se borra la salida previa de la Etapa 2 y se reconstruye desde el Excel vigente.
+El script lee `configs/stage_02/material_characterization.yaml`, valida los datos principales, calcula geometria y confinamiento, genera curvas de materiales, calcula metricas comparativas y exporta resultados en `outputs/stage_02/`.
+
+Archivos principales generados:
+
+- `outputs/stage_02/data/concrete_curves.csv`
+- `outputs/stage_02/data/steel_curves.csv`
+- `outputs/stage_02/data/mesh_curves.csv`
+- `outputs/stage_02/data/curve_metrics.csv`
+- `outputs/stage_02/data/stage_02_results.json`
+- `outputs/stage_02/data/models/<modelo>/<modelo>.csv`
+- `outputs/stage_02/data/models/<modelo>/<modelo>.xlsx`
+- `outputs/stage_02/figures/*.png`
+- `outputs/stage_02/figures/models/*.png`
+- `outputs/stage_02/reports/<modelo>/<modelo>.yaml`
+- `outputs/stage_02/reports/mander_classic_unconfined_concrete/mander_classic_unconfined_concrete_memoria.pdf`
+
+## Ejecucion de la Etapa 3
+
+```powershell
+.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_03.py
+```
+
+Tambien puede indicarse una configuracion especifica:
+
+```powershell
+.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_03.py --config configs\stage_03\section_characterization.yaml
+```
+
+El script lee `configs/stage_03/section_characterization.yaml`, importa el Excel definido en `source.workbook`, procesa las hojas indicadas en `source.sheets` y genera una subcarpeta por hoja dentro de `outputs/stage_03/`. En cada ejecucion se borra la salida previa de la Etapa 3 y se reconstruye desde el Excel vigente.
 
 Para cada hoja, se detectan automaticamente los pares de columnas `Curvature` / `Moment`, se extraen las curvas M-phi y se genera una idealizacion bilineal:
 
@@ -109,19 +140,24 @@ Para cada hoja, se detectan automaticamente los pares de columnas `Curvature` / 
 
 Archivos principales generados:
 
-- `outputs/stage_02/data/stage_02_results.json`
-- `outputs/stage_02/<hoja>/data/moment_curvature_curves.csv`
-- `outputs/stage_02/<hoja>/data/bilinear_curves.csv`
-- `outputs/stage_02/<hoja>/data/bilinearization_parameters.csv`
-- `outputs/stage_02/<hoja>/data/stage_02_sheet_results.json`
-- `outputs/stage_02/<hoja>/figures/moment_curvature_real.png`
-- `outputs/stage_02/<hoja>/figures/moment_curvature_bilinearization.png`
-- `outputs/stage_02/<hoja>/figures/moment_curvature_real_vs_bilinear.png`
-- `outputs/stage_02/<hoja>/reports/<curva>/<curva>_bilinearization.yaml`
+- `outputs/stage_03/data/stage_03_results.json`
+- `outputs/stage_03/<hoja>/data/moment_curvature_curves.csv`
+- `outputs/stage_03/<hoja>/data/bilinear_curves.csv`
+- `outputs/stage_03/<hoja>/data/bilinearization_parameters.csv`
+- `outputs/stage_03/<hoja>/data/stage_03_sheet_results.json`
+- `outputs/stage_03/<hoja>/figures/moment_curvature_real.png`
+- `outputs/stage_03/<hoja>/figures/moment_curvature_bilinearization.png`
+- `outputs/stage_03/<hoja>/figures/moment_curvature_real_vs_bilinear.png`
+- `outputs/stage_03/<hoja>/reports/<curva>/<curva>_bilinearization.yaml`
 
 ## Estado actual
 
-La Etapa 1 ya implementa un flujo funcional para:
+La Etapa 1 ya implementa dos casos independientes:
+
+- `case_01_nsr10`: forma espectral NSR-10 con niveles escalados.
+- `case_02_sgc_ccp14`: valores SGC independientes y forma espectral CCP-14. Este caso requiere completar manualmente `PGA`, `Sa_0_2` y `Sa_1_0`; los factores de sitio `Fpga`, `Fa` y `Fv` se calculan con las tablas CCP-14.
+
+La Etapa 2 ya implementa un flujo funcional para:
 
 - `mander_classic_unconfined_concrete`.
 - `mander_classic_confined_concrete`.
@@ -133,6 +169,6 @@ La Etapa 1 ya implementa un flujo funcional para:
 - `steel_compression_with_buckling`.
 - `welded_wire_mesh` para diametros 4, 5 y 6 mm.
 
-Convencion de signos de la Etapa 1: se define en `configs/stages/stage_01_material_characterization.yaml`, dentro de `curve_generation.sign_convention`. Para el concreto no confinado, la compresion se grafica positiva y la rama de traccion se grafica con esfuerzo y deformacion negativos.
+Convencion de signos de la Etapa 2: se define en `configs/stage_02/material_characterization.yaml`, dentro de `curve_generation.sign_convention`. Para el concreto no confinado, la compresion se grafica positiva y la rama de traccion se grafica con esfuerzo y deformacion negativos.
 
-La Etapa 2 ya implementa la bilinealizacion ASCE/FEMA adaptada a diagramas momento-curvatura. `My` se reporta como fluencia efectiva equivalente de la seccion, no como primera fluencia fisica de una barra.
+La Etapa 3 ya implementa la bilinealizacion ASCE/FEMA adaptada a diagramas momento-curvatura. `My` se reporta como fluencia efectiva equivalente de la seccion, no como primera fluencia fisica de una barra.

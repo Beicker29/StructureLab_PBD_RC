@@ -14,6 +14,4 @@ from structurelab_pbd_rc.cli.run import main
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
-
-
+    raise SystemExit(main(["stage_01", *sys.argv[1:]]))
