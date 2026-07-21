@@ -9,6 +9,7 @@ from typing import Any
 
 from structurelab_pbd_rc.core.validation import require_keys
 from structurelab_pbd_rc.design.stages._base import prepare_stage_from_config, write_stage_table_pair
+from structurelab_pbd_rc.io.etabs import write_etabs_response_spectrum_txt
 from structurelab_pbd_rc.io.paths import stage_results_json_path
 from structurelab_pbd_rc.io.write_results import write_json_result, write_yaml_result
 from structurelab_pbd_rc.mechanics.hazard.seismic.spectra import (
@@ -43,6 +44,11 @@ HAZARD_LEVEL_COLORS = {
     "service": COLOR_CYCLE[0],
     "design": COLOR_CYCLE[1],
     "maximum_considered": COLOR_CYCLE[2],
+}
+HAZARD_LEVEL_FILENAME_PARTS = {
+    "service": "service_31",
+    "design": "design_475",
+    "maximum_considered": "maximum_considered_2500",
 }
 CASE_OUTPUT_FOLDERS = {
     "case_01_nsr10": "nsr10_spectra",
@@ -338,6 +344,28 @@ def _ccp14_notable_points(parameters: CCP14SpectrumParameters) -> list[dict[str,
     ]
 
 
+def _write_etabs_spectrum_files(
+    rows: list[dict[str, Any]],
+    data_dir: Path,
+    *,
+    case_prefix: str,
+    level_specs: list[tuple[str, str]],
+) -> dict[str, Path]:
+    """Write one ETABS-ready TXT file per spectrum level."""
+
+    etabs_dir = data_dir / "etabs"
+    generated_files: dict[str, Path] = {}
+    for level_key, value_key in level_specs:
+        filename_level = HAZARD_LEVEL_FILENAME_PARTS[level_key]
+        generated_files[f"{case_prefix}_{level_key}_etabs_txt"] = write_etabs_response_spectrum_txt(
+            rows,
+            etabs_dir / f"{case_prefix}_{filename_level}_etabs_v22.txt",
+            period_key="period_s",
+            value_key=value_key,
+        )
+    return generated_files
+
+
 def _run_case_01(config: dict[str, Any], output_dirs: dict[str, Path]) -> dict[str, Any]:
     periods = _periods_from_config(config)
     seismic = _seismic_config(config)
@@ -395,6 +423,18 @@ def _run_case_01(config: dict[str, Any], output_dirs: dict[str, Path]) -> dict[s
             filename_stem="case_01_nsr10_parameters",
             sheet_name="case_01_parameters",
             key_prefix="case_01_parameters",
+        )
+    )
+    generated_files.update(
+        _write_etabs_spectrum_files(
+            rows,
+            data_dir,
+            case_prefix="case_01_nsr10",
+            level_specs=[
+                ("service", "Sa_servicio_31"),
+                ("design", "Sa_diseno_475"),
+                ("maximum_considered", "Sa_maximo_considerado_2500"),
+            ],
         )
     )
     generated_files["case_01_spectra_figure"] = plot_response_spectra(
@@ -551,6 +591,18 @@ def _run_case_02(config: dict[str, Any], output_dirs: dict[str, Path]) -> dict[s
             filename_stem="case_02_sgc_ccp14_parameters",
             sheet_name="case_02_parameters",
             key_prefix="case_02_parameters",
+        )
+    )
+    generated_files.update(
+        _write_etabs_spectrum_files(
+            rows,
+            data_dir,
+            case_prefix="case_02_sgc_ccp14",
+            level_specs=[
+                ("service", "Sa_SGC_CCP14_31"),
+                ("design", "Sa_SGC_CCP14_475"),
+                ("maximum_considered", "Sa_SGC_CCP14_2500"),
+            ],
         )
     )
     generated_files["case_02_spectra_figure"] = plot_response_spectra(

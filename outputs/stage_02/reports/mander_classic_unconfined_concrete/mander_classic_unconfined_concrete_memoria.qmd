@@ -2,7 +2,7 @@
 title: "Memoria de calculo"
 subtitle: "Modelo de Mander clasico no confinado"
 author: "StructureLab PBD RC"
-date: "16 de julio de 2026"
+date: "19 de julio de 2026"
 lang: es
 format:
   typst:

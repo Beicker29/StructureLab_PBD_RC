@@ -96,6 +96,15 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(file))
 
 
+def _read_etabs_txt(path: Path) -> list[tuple[float, float]]:
+    rows: list[tuple[float, float]] = []
+    for line in path.read_text(encoding="ascii").splitlines():
+        parts = line.split()
+        assert len(parts) == 2
+        rows.append((float(parts[0]), float(parts[1])))
+    return rows
+
+
 def test_stage_01_case_01_scales_design_spectrum(tmp_path: Path) -> None:
     config_path = _write_case_01_config(tmp_path)
     result = run(config_path=config_path, output_root=tmp_path / "outputs")
@@ -110,6 +119,9 @@ def test_stage_01_case_01_scales_design_spectrum(tmp_path: Path) -> None:
     assert Path(result["generated_files"]["case_01_service_spectrum_figure"]).exists()
     assert Path(result["generated_files"]["case_01_design_spectrum_figure"]).exists()
     assert Path(result["generated_files"]["case_01_maximum_considered_spectrum_figure"]).exists()
+    assert Path(result["generated_files"]["case_01_nsr10_service_etabs_txt"]).exists()
+    assert Path(result["generated_files"]["case_01_nsr10_design_etabs_txt"]).exists()
+    assert Path(result["generated_files"]["case_01_nsr10_maximum_considered_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_01_report_yaml"]).exists()
     assert spectra_path.parent == tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "data"
     assert result["results_path"] == (
@@ -123,6 +135,14 @@ def test_stage_01_case_01_scales_design_spectrum(tmp_path: Path) -> None:
         design = float(row["Sa_diseno_475"])
         assert float(row["Sa_servicio_31"]) == pytest.approx(0.35 * design)
         assert float(row["Sa_maximo_considerado_2500"]) == pytest.approx(1.50 * design)
+
+    etabs_rows = _read_etabs_txt(Path(result["generated_files"]["case_01_nsr10_design_etabs_txt"]))
+    assert len(etabs_rows) == len(rows)
+    assert etabs_rows[0][0] == pytest.approx(float(rows[0]["period_s"]))
+    assert etabs_rows[0][1] == pytest.approx(float(rows[0]["Sa_diseno_475"]))
+    assert Path(result["generated_files"]["case_01_nsr10_design_etabs_txt"]).parent == (
+        tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "data" / "etabs"
+    )
 
 
 def test_stage_01_case_01_scaling_factors_are_editable(tmp_path: Path) -> None:
@@ -153,6 +173,9 @@ def test_stage_01_case_02_uses_independent_sgc_values(tmp_path: Path) -> None:
     assert Path(result["generated_files"]["case_02_service_spectrum_figure"]).exists()
     assert Path(result["generated_files"]["case_02_design_spectrum_figure"]).exists()
     assert Path(result["generated_files"]["case_02_maximum_considered_spectrum_figure"]).exists()
+    assert Path(result["generated_files"]["case_02_sgc_ccp14_service_etabs_txt"]).exists()
+    assert Path(result["generated_files"]["case_02_sgc_ccp14_design_etabs_txt"]).exists()
+    assert Path(result["generated_files"]["case_02_sgc_ccp14_maximum_considered_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_02_report_yaml"]).exists()
     assert Path(result["generated_files"]["case_02_spectra_csv"]).parent == (
         tmp_path / "outputs" / "stage_01" / "ccp14_spectra" / "data"
@@ -163,6 +186,11 @@ def test_stage_01_case_02_uses_independent_sgc_values(tmp_path: Path) -> None:
     assert float(by_period[31]["Sa_at_T_0"]) == pytest.approx(0.10)
     assert float(by_period[475]["Sa_at_T_0_2"]) == pytest.approx(0.60)
     assert float(by_period[2500]["Sa_at_T_1_0"]) == pytest.approx(0.45)
+
+    etabs_rows = _read_etabs_txt(Path(result["generated_files"]["case_02_sgc_ccp14_design_etabs_txt"]))
+    assert len(etabs_rows) == len(rows)
+    assert etabs_rows[1][0] == pytest.approx(float(rows[1]["period_s"]))
+    assert etabs_rows[1][1] == pytest.approx(float(rows[1]["Sa_SGC_CCP14_475"]))
 
     payload = json.loads(Path(result["results_path"]).read_text(encoding="utf-8"))
     assert payload["case_id"] == "case_02_sgc_ccp14"

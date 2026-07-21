@@ -569,6 +569,24 @@ def _signed_point_parameters(result: dict[str, object]) -> dict[str, float]:
     }
 
 
+def _is_visible_moment_curvature_point(result: dict[str, object], phi_value: float) -> bool:
+    """Return whether a notable point should be displayed in a possibly cut plot."""
+
+    limit = result.get("visible_phi_abs_limit")
+    if limit is None:
+        return True
+    return abs(phi_value) <= float(limit) + 1e-12
+
+
+def _cyclic_cut_point_for_plot(result: dict[str, object]) -> tuple[float, float] | None:
+    """Return the signed cyclic endpoint when a plot has been visually cut."""
+
+    cut_point = result.get("cyclic_cut_point")
+    if not isinstance(cut_point, dict):
+        return None
+    return float(cut_point["phi"]), float(cut_point["moment"])
+
+
 def _finish_moment_curvature_plot(
     fig: Any,
     ax: Any,
@@ -633,8 +651,6 @@ def plot_moment_curvature_real_curves(
     fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
     fig.patch.set_facecolor("white")
     _style_axes(ax)
-    ductility_handles: list[Any] = []
-    ductility_handles: list[Any] = []
 
     for index, result in enumerate(curve_results):
         curve_id = str(result["curve_id"])
@@ -654,6 +670,19 @@ def plot_moment_curvature_real_curves(
             linewidth=2.35,
             label=curve_name,
         )
+        cyclic_cut = _cyclic_cut_point_for_plot(result)
+        if cyclic_cut is not None:
+            phi_cut, moment_cut = cyclic_cut
+            ax.scatter(
+                [phi_cut],
+                [moment_cut],
+                s=72,
+                color="#d79a2b",
+                edgecolor="white",
+                linewidth=1.0,
+                zorder=6,
+                label=f"{curve_name} - Mu ciclico: {moment_cut:.3g} [kN-m], phi_uc: {phi_cut:.4g} [1/m]",
+            )
 
     return _finish_moment_curvature_plot(
         fig,
@@ -708,6 +737,10 @@ def plot_moment_curvature_bilinear_only(
         if not point_parameters:
             continue
 
+        cyclic_cut = _cyclic_cut_point_for_plot(result)
+        ultimate_name = "Mu ciclico" if cyclic_cut is not None else "Mu"
+        ultimate_phi_name = "phi_uc" if cyclic_cut is not None else "phi_u"
+        ultimate_color = "#d79a2b" if cyclic_cut is not None else "#c43c2f"
         point_specs = [
             (
                 "Fluencia efectiva",
@@ -723,10 +756,10 @@ def plot_moment_curvature_bilinear_only(
                 "Ultimo",
                 point_parameters["phi_u"],
                 point_parameters["Mu"],
-                "#c43c2f",
+                ultimate_color,
                 (
-                    f"{curve_name} - Mu: {point_parameters['Mu']:.3g} [kN-m], "
-                    f"phi_u: {point_parameters['phi_u']:.4g} [1/m]"
+                    f"{curve_name} - {ultimate_name}: {point_parameters['Mu']:.3g} [kN-m], "
+                    f"{ultimate_phi_name}: {point_parameters['phi_u']:.4g} [1/m]"
                 ),
             ),
             (
@@ -741,6 +774,8 @@ def plot_moment_curvature_bilinear_only(
             ),
         ]
         for _, phi_value, moment_value, marker_color, label in point_specs:
+            if not _is_visible_moment_curvature_point(result, phi_value):
+                continue
             ax.scatter(
                 [phi_value],
                 [moment_value],
@@ -867,6 +902,10 @@ def plot_moment_curvature_real_vs_bilinear(
 
         point_parameters = _signed_point_parameters(result)
         if point_parameters:
+            cyclic_cut = _cyclic_cut_point_for_plot(result)
+            ultimate_name = "Mu ciclico" if cyclic_cut is not None else "Mu"
+            ultimate_phi_name = "phi_uc" if cyclic_cut is not None else "phi_u"
+            ultimate_color = "#d79a2b" if cyclic_cut is not None else "#c43c2f"
             point_specs = [
                 (
                     point_parameters["phi_y"],
@@ -880,10 +919,10 @@ def plot_moment_curvature_real_vs_bilinear(
                 (
                     point_parameters["phi_u"],
                     point_parameters["Mu"],
-                    "#c43c2f",
+                    ultimate_color,
                     (
-                        f"{curve_name} | Mu: {point_parameters['Mu']:.3g} [kN-m], "
-                        f"phi_u: {point_parameters['phi_u']:.4g} [1/m]"
+                        f"{curve_name} | {ultimate_name}: {point_parameters['Mu']:.3g} [kN-m], "
+                        f"{ultimate_phi_name}: {point_parameters['phi_u']:.4g} [1/m]"
                     ),
                 ),
                 (
@@ -897,6 +936,8 @@ def plot_moment_curvature_real_vs_bilinear(
                 ),
             ]
             for phi_value, moment_value, marker_color, label in point_specs:
+                if not _is_visible_moment_curvature_point(result, phi_value):
+                    continue
                 ax.scatter(
                     [phi_value],
                     [moment_value],

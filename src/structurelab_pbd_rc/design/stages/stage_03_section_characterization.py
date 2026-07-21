@@ -15,6 +15,7 @@ from structurelab_pbd_rc.mechanics.sections.moment_curvature import (
     BilinearizationSettings,
     MomentCurvaturePoint,
     bilinearize_moment_curvature,
+    truncate_moment_curvature_curve_at_point,
 )
 from structurelab_pbd_rc.reports.plots import (
     plot_moment_curvature_bilinear_only,
@@ -58,6 +59,8 @@ def validate_stage_03_config(config: dict[str, Any]) -> None:
     if config["bilinearization"]["method"] != "asce_fema_energy_equivalent_m_phi":
         raise ValueError("Unsupported bilinearization method.")
     require_keys(config["bilinearization"]["ultimate"], ["mode"], context="bilinearization.ultimate")
+    if "cyclic_diagram" in config:
+        require_keys(config["cyclic_diagram"], ["enabled", "cut_points_by_sheet"], context="cyclic_diagram")
 
 
 def _as_float(value: Any) -> float | None:
@@ -145,14 +148,13 @@ def _row_by_number(rows: list[dict[str, Any]], row_number: int) -> dict[str, Any
     return {}
 
 
-def _curve_name_from_title_row(title_row: dict[str, Any], curvature_column: str, sheet_name: str, sign: str) -> str:
-    """Return curve name from title row or a readable fallback."""
+def _curve_name_from_sheet_name(sheet_name: str, sign: str, occurrence: int) -> str:
+    """Return a stable visible curve name from the workbook sheet name."""
 
-    value = title_row.get(curvature_column)
-    if value is not None and str(value).strip():
-        return str(value).strip()
-    suffix = "positivo" if sign == "positive" else "negativo"
-    return f"{sheet_name} - {suffix}"
+    base_name = sheet_name.strip()
+    branch_suffix = "" if sign == "positive" else "-INV"
+    occurrence_suffix = "" if occurrence == 1 else f" ({occurrence})"
+    return f"{base_name}{branch_suffix}{occurrence_suffix}"
 
 
 def _curve_sign_from_data(rows: list[dict[str, Any]], moment_column: str, first_data_row: int) -> str:
@@ -175,7 +177,6 @@ def _detect_sheet_curves(rows: list[dict[str, Any]], sheet_name: str, config: di
     """Detect moment-curvature column pairs from configured header text."""
 
     detection = config["curve_detection"]
-    title_row = _row_by_number(rows, int(detection["title_row"]))
     header_row = _row_by_number(rows, int(detection["header_row"]))
     first_data_row = int(detection["first_data_row"])
     curvature_pattern = str(detection["curvature_header_contains"]).lower()
@@ -199,7 +200,7 @@ def _detect_sheet_curves(rows: list[dict[str, Any]], sheet_name: str, config: di
         curves.append(
             {
                 "id": curve_id,
-                "name": _curve_name_from_title_row(title_row, column, sheet_name, sign),
+                "name": _curve_name_from_sheet_name(sheet_name, sign, sign_counts[sign]),
                 "sign": sign,
                 "curvature_column": column,
                 "moment_column": moment_column,
@@ -216,7 +217,19 @@ def _sheet_output_dirs(stage_root: Path, sheet_name: str) -> dict[str, Path]:
     """Create output directories for one Excel sheet."""
 
     root = stage_root / _safe_sheet_folder_name(sheet_name)
-    dirs = {"root": root, "data": root / "data", "figures": root / "figures", "reports": root / "reports"}
+    monotonic_root = root / "monotonica"
+    cyclic_root = root / "ciclica"
+    dirs = {
+        "root": root,
+        "monotonica": monotonic_root,
+        "monotonica_data": monotonic_root / "data",
+        "monotonica_figures": monotonic_root / "figures",
+        "monotonica_reports": monotonic_root / "reports",
+        "ciclica": cyclic_root,
+        "ciclica_data": cyclic_root / "data",
+        "ciclica_figures": cyclic_root / "figures",
+        "ciclica_reports": cyclic_root / "reports",
+    }
     for path in dirs.values():
         path.mkdir(parents=True, exist_ok=True)
     return dirs
@@ -333,6 +346,124 @@ def _signed_plot_result(curve_config: dict[str, Any], result: dict[str, Any]) ->
     return signed
 
 
+def _cyclic_cut_point(
+    config: dict[str, Any],
+    *,
+    sheet_name: str,
+    curve_config: dict[str, Any],
+) -> dict[str, float] | None:
+    """Return the configured signed cyclic cut point for a curve, when available."""
+
+    cyclic_config = config.get("cyclic_diagram")
+    if not isinstance(cyclic_config, dict) or not bool(cyclic_config.get("enabled", False)):
+        return None
+
+    cut_points_by_sheet = cyclic_config.get("cut_points_by_sheet", {})
+    if not isinstance(cut_points_by_sheet, dict):
+        return None
+
+    sheet_cut_points = cut_points_by_sheet.get(sheet_name)
+    if sheet_cut_points is None:
+        sheet_cut_points = cut_points_by_sheet.get(sheet_name.strip())
+    if sheet_cut_points is None:
+        sheet_cut_points = cut_points_by_sheet.get(_safe_sheet_folder_name(sheet_name))
+    if not isinstance(sheet_cut_points, dict):
+        return None
+
+    curve_id = str(curve_config["id"])
+    branch_key = "negative_bending" if str(curve_config["sign"]) == "negative" else "positive_bending"
+    raw_cut = sheet_cut_points.get(curve_id, sheet_cut_points.get(branch_key))
+    if not isinstance(raw_cut, dict):
+        return None
+
+    phi = _as_float(raw_cut.get("phi"))
+    moment = _as_float(raw_cut.get("moment"))
+    if phi is None or moment is None:
+        return None
+    if abs(phi) <= 1e-15:
+        return None
+
+    sign = _curve_sign(curve_config)
+    return {"phi": sign * abs(phi), "moment": sign * abs(moment)}
+
+
+def _cyclic_curve_points(
+    curve_points: list[MomentCurvaturePoint],
+    cut_point: dict[str, float],
+) -> list[MomentCurvaturePoint]:
+    """Return the positive M-phi curve used to recalculate the cyclic bilinearization."""
+
+    return truncate_moment_curvature_curve_at_point(
+        curve_points,
+        phi_u=abs(float(cut_point["phi"])),
+        moment_u=abs(float(cut_point["moment"])),
+    )
+
+
+def _cyclic_cut_point_rows(curve_results: list[dict[str, object]]) -> list[dict[str, Any]]:
+    """Build a compact table with configured cyclic endpoints."""
+
+    rows: list[dict[str, Any]] = []
+    for result in curve_results:
+        curve_id = str(result["curve_id"])
+        curve_name = str(result.get("name", curve_id))
+        cut_point = result.get("cyclic_cut_point")
+        if isinstance(cut_point, dict):
+            phi = float(cut_point["phi"])
+            moment = float(cut_point["moment"])
+            rows.append(
+                {
+                    "curve_id": curve_id,
+                    "curve_name": curve_name,
+                    "mode": "configured",
+                    "phi": phi,
+                    "moment": moment,
+                    "phi_abs": abs(phi),
+                    "moment_abs": abs(moment),
+                    "phi_u_ciclico": phi,
+                    "Mu_ciclico": moment,
+                }
+            )
+        else:
+            rows.append(
+                {
+                    "curve_id": curve_id,
+                    "curve_name": curve_name,
+                    "mode": "auto",
+                    "phi": "",
+                    "moment": "",
+                    "phi_abs": "",
+                    "moment_abs": "",
+                    "phi_u_ciclico": "",
+                    "Mu_ciclico": "",
+                }
+            )
+    return rows
+
+
+def _with_cyclic_cut_columns(row: dict[str, Any], cut_point: dict[str, float] | None) -> dict[str, Any]:
+    """Add cyclic endpoint columns to a parameter row without changing the bilinearized values."""
+
+    annotated = dict(row)
+    if isinstance(cut_point, dict):
+        phi = float(cut_point["phi"])
+        moment = float(cut_point["moment"])
+        annotated["cyclic_cut_phi"] = phi
+        annotated["cyclic_cut_moment"] = moment
+        annotated["cyclic_cut_phi_abs"] = abs(phi)
+        annotated["cyclic_cut_moment_abs"] = abs(moment)
+        annotated["phi_u_ciclico"] = phi
+        annotated["Mu_ciclico"] = moment
+    else:
+        annotated["cyclic_cut_phi"] = ""
+        annotated["cyclic_cut_moment"] = ""
+        annotated["cyclic_cut_phi_abs"] = ""
+        annotated["cyclic_cut_moment_abs"] = ""
+        annotated["phi_u_ciclico"] = ""
+        annotated["Mu_ciclico"] = ""
+    return annotated
+
+
 def _parameter_rows(curve_id: str, curve_name: str, result: dict[str, Any], sign: float) -> dict[str, Any]:
     """Build one CSV row with key bilinearization parameters."""
 
@@ -373,6 +504,8 @@ def _curve_report(
     *,
     sheet_name: str,
     source_workbook: Path,
+    diagram_type: str = "monotonica",
+    cyclic_cut_point: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     """Build a readable YAML report for one bilinearized curve."""
 
@@ -392,6 +525,7 @@ def _curve_report(
             "name": curve_config["name"],
             "sign": curve_config["sign"],
             "sheet": sheet_name,
+            "diagram_type": diagram_type,
         },
         "units": {
             "curvature": "[1/m]",
@@ -408,6 +542,8 @@ def _curve_report(
             "stiffness_fraction": config["bilinearization"]["stiffness_fraction"],
             "tolerance": config["bilinearization"]["tolerance"],
             "ultimate": config["bilinearization"]["ultimate"],
+            "cyclic_diagram": config.get("cyclic_diagram", {}),
+            "cyclic_cut_point": cyclic_cut_point,
         },
         "datos_de_salida": {
             "M_peak": {"value": peak["moment"], "unit": "[kN-m]"},
@@ -482,9 +618,14 @@ def run(
 
         all_actual_rows: list[dict[str, Any]] = []
         all_bilinear_rows: list[dict[str, Any]] = []
+        all_cyclic_actual_rows: list[dict[str, Any]] = []
+        all_cyclic_bilinear_rows: list[dict[str, Any]] = []
         parameter_rows: list[dict[str, Any]] = []
+        cyclic_parameter_rows: list[dict[str, Any]] = []
         report_payloads: dict[str, dict[str, Any]] = {}
+        cyclic_report_payloads: dict[str, dict[str, Any]] = {}
         plot_results: list[dict[str, object]] = []
+        cyclic_plot_results: list[dict[str, object]] = []
         generated_paths: dict[str, Path] = {}
         sheet_warnings: list[str] = []
 
@@ -521,42 +662,149 @@ def run(
                 result,
                 sheet_name=sheet_name,
                 source_workbook=source_workbook,
+                diagram_type="monotonica",
             )
-            plot_results.append(_signed_plot_result(curve_config, result))
+            signed_result = _signed_plot_result(curve_config, result)
+            plot_results.append(signed_result)
+
+            cyclic_cut_point = _cyclic_cut_point(config, sheet_name=sheet_name, curve_config=curve_config)
+            if cyclic_cut_point is None:
+                cyclic_mechanics_result = result
+            else:
+                cyclic_points = _cyclic_curve_points(curve_points, cyclic_cut_point)
+                cyclic_mechanics_result = bilinearize_moment_curvature(
+                    cyclic_points,
+                    phi_u=abs(float(cyclic_cut_point["phi"])),
+                    post_peak_strength_ratio=post_peak_strength_ratio,
+                    settings=settings,
+                )
+                if cyclic_mechanics_result["status"] != "converged":
+                    warning = (
+                        f"{sheet_name}/{curve_config['id']}/ciclica: bilinearization did not reach tolerance; "
+                        f"best error = {cyclic_mechanics_result['parameters']['absolute_relative_error']:.4g}."
+                    )
+                    sheet_warnings.append(warning)
+                    warnings.append(warning)
+
+            cyclic_actual_rows, cyclic_bilinear_rows = _signed_curve_rows(
+                str(curve_config["id"]),
+                str(curve_config["name"]),
+                sign,
+                cyclic_mechanics_result["actual_curve"],
+                cyclic_mechanics_result["bilinear_curve"],
+            )
+            all_cyclic_actual_rows.extend(cyclic_actual_rows)
+            all_cyclic_bilinear_rows.extend(cyclic_bilinear_rows)
+            cyclic_parameter_rows.append(
+                _with_cyclic_cut_columns(
+                    _parameter_rows(str(curve_config["id"]), str(curve_config["name"]), cyclic_mechanics_result, sign),
+                    cyclic_cut_point,
+                )
+            )
+
+            cyclic_signed_result = _signed_plot_result(curve_config, cyclic_mechanics_result)
+            if cyclic_cut_point is not None:
+                cyclic_signed_result["cyclic_cut_point"] = cyclic_cut_point
+            cyclic_plot_results.append(cyclic_signed_result)
+            cyclic_report_payloads[str(curve_config["id"])] = _curve_report(
+                config,
+                curve_config,
+                cyclic_mechanics_result,
+                sheet_name=sheet_name,
+                source_workbook=source_workbook,
+                diagram_type="ciclica",
+                cyclic_cut_point=cyclic_cut_point,
+            )
 
         generated_paths["data_moment_curvature_curves"] = write_csv_rows(
             all_actual_rows,
-            sheet_dirs["data"] / "moment_curvature_curves.csv",
+            sheet_dirs["monotonica_data"] / "moment_curvature_curves.csv",
         )
+        generated_paths["data_monotonica_moment_curvature_curves"] = generated_paths["data_moment_curvature_curves"]
         generated_paths["data_bilinear_curves"] = write_csv_rows(
             all_bilinear_rows,
-            sheet_dirs["data"] / "bilinear_curves.csv",
+            sheet_dirs["monotonica_data"] / "bilinear_curves.csv",
         )
+        generated_paths["data_monotonica_bilinear_curves"] = generated_paths["data_bilinear_curves"]
         generated_paths["data_bilinearization_parameters"] = write_csv_rows(
             parameter_rows,
-            sheet_dirs["data"] / "bilinearization_parameters.csv",
+            sheet_dirs["monotonica_data"] / "bilinearization_parameters.csv",
+        )
+        generated_paths["data_monotonica_bilinearization_parameters"] = generated_paths[
+            "data_bilinearization_parameters"
+        ]
+
+        generated_paths["data_ciclica_moment_curvature_curves"] = write_csv_rows(
+            all_cyclic_actual_rows,
+            sheet_dirs["ciclica_data"] / "moment_curvature_curves.csv",
+        )
+        generated_paths["data_ciclica_bilinear_curves"] = write_csv_rows(
+            all_cyclic_bilinear_rows,
+            sheet_dirs["ciclica_data"] / "bilinear_curves.csv",
+        )
+        generated_paths["data_ciclica_bilinearization_parameters"] = write_csv_rows(
+            cyclic_parameter_rows,
+            sheet_dirs["ciclica_data"] / "bilinearization_parameters.csv",
+        )
+        generated_paths["data_ciclica_cut_points"] = write_csv_rows(
+            _cyclic_cut_point_rows(cyclic_plot_results),
+            sheet_dirs["ciclica_data"] / "cyclic_cut_points.csv",
         )
 
         for curve_id, payload in report_payloads.items():
             generated_paths[f"report_{curve_id}_yaml"] = write_yaml_result(
                 payload,
-                sheet_dirs["reports"] / curve_id / f"{curve_id}_bilinearization.yaml",
+                sheet_dirs["monotonica_reports"] / curve_id / f"{curve_id}_bilinearization.yaml",
+            )
+            generated_paths[f"report_monotonica_{curve_id}_yaml"] = generated_paths[f"report_{curve_id}_yaml"]
+
+        for curve_id, payload in cyclic_report_payloads.items():
+            generated_paths[f"report_ciclica_{curve_id}_yaml"] = write_yaml_result(
+                payload,
+                sheet_dirs["ciclica_reports"] / curve_id / f"{curve_id}_bilinearization.yaml",
             )
 
         generated_paths["figure_moment_curvature_real"] = plot_moment_curvature_real_curves(
             plot_results,
-            sheet_dirs["figures"] / "moment_curvature_real.png",
+            sheet_dirs["monotonica_figures"] / "moment_curvature_real.png",
         )
+        generated_paths["figure_monotonica_moment_curvature_real"] = generated_paths["figure_moment_curvature_real"]
         generated_paths["figure_moment_curvature_bilinearization"] = plot_moment_curvature_bilinear_only(
             plot_results,
-            sheet_dirs["figures"] / "moment_curvature_bilinearization.png",
+            sheet_dirs["monotonica_figures"] / "moment_curvature_bilinearization.png",
         )
+        generated_paths["figure_monotonica_moment_curvature_bilinearization"] = generated_paths[
+            "figure_moment_curvature_bilinearization"
+        ]
         generated_paths["figure_moment_curvature_real_vs_bilinear"] = plot_moment_curvature_real_vs_bilinear(
             plot_results,
-            sheet_dirs["figures"] / "moment_curvature_real_vs_bilinear.png",
+            sheet_dirs["monotonica_figures"] / "moment_curvature_real_vs_bilinear.png",
+        )
+        generated_paths["figure_monotonica_moment_curvature_real_vs_bilinear"] = generated_paths[
+            "figure_moment_curvature_real_vs_bilinear"
+        ]
+
+        generated_paths["figure_ciclica_moment_curvature_real"] = plot_moment_curvature_real_curves(
+            cyclic_plot_results,
+            sheet_dirs["ciclica_figures"] / "moment_curvature_real.png",
+            title="Diagrama momento-curvatura ciclico",
+            subtitle="Curvas recortadas en la curvatura ultima ciclica configurada por viga",
+        )
+        generated_paths["figure_ciclica_moment_curvature_bilinearization"] = plot_moment_curvature_bilinear_only(
+            cyclic_plot_results,
+            sheet_dirs["ciclica_figures"] / "moment_curvature_bilinearization.png",
+            title="Idealizacion bilineal momento-curvatura ciclica",
+            subtitle="Bilinealizacion recalculada con la curva recortada al punto ciclico configurado",
+        )
+        generated_paths["figure_ciclica_moment_curvature_real_vs_bilinear"] = plot_moment_curvature_real_vs_bilinear(
+            cyclic_plot_results,
+            sheet_dirs["ciclica_figures"] / "moment_curvature_real_vs_bilinear.png",
+            title="Comparacion ciclica momento-curvatura real vs bilineal",
+            subtitle="Curva real recortada y bilinealizacion recalculada para el diagrama ciclico",
         )
 
-        sheet_results_path = sheet_dirs["data"] / "stage_03_sheet_results.json"
+        sheet_results_path = sheet_dirs["monotonica_data"] / "stage_03_sheet_results.json"
+        cyclic_sheet_results_path = sheet_dirs["ciclica_data"] / "stage_03_sheet_results.json"
         sheet_payload = {
             "stage_id": config["stage_id"],
             "title": config["title"],
@@ -572,8 +820,16 @@ def run(
             "warnings": sheet_warnings,
         }
         generated_paths["data_sheet_results_json"] = write_json_result(sheet_payload, sheet_results_path)
+        generated_paths["data_monotonica_sheet_results_json"] = generated_paths["data_sheet_results_json"]
+        generated_paths["data_ciclica_sheet_results_json"] = write_json_result(sheet_payload, cyclic_sheet_results_path)
         sheet_payload["results_path"] = sheet_results_path
         sheet_payload["generated_files"] = {key: str(path) for key, path in generated_paths.items()}
+        write_json_result(sheet_payload, sheet_results_path)
+        cyclic_sheet_payload = dict(sheet_payload)
+        cyclic_sheet_payload["diagram_type"] = "ciclica"
+        cyclic_sheet_payload["parameters"] = cyclic_parameter_rows
+        cyclic_sheet_payload["results_path"] = cyclic_sheet_results_path
+        write_json_result(cyclic_sheet_payload, cyclic_sheet_results_path)
         sheet_summaries.append(sheet_payload)
         total_curve_count += len(curve_configs)
 

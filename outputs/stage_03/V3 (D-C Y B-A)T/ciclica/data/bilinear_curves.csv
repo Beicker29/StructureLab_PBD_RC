@@ -1,0 +1,7 @@
+curve_id,curve_name,point_index,point,phi,moment,phi_abs,moment_abs
+positive_bending,V3 (D-C Y B-A)T,0,origin,0.0,0.0,0.0,0.0
+positive_bending,V3 (D-C Y B-A)T,1,yield,0.004190654366607285,188.30207745549112,0.004190654366607285,188.30207745549112
+positive_bending,V3 (D-C Y B-A)T,2,ultimate,0.067809,232.701,0.067809,232.701
+negative_bending,V3 (D-C Y B-A)T-INV,0,origin,-0.0,-0.0,0.0,0.0
+negative_bending,V3 (D-C Y B-A)T-INV,1,yield,-0.0057942668953830405,-368.871874814963,0.0057942668953830405,368.871874814963
+negative_bending,V3 (D-C Y B-A)T-INV,2,ultimate,-0.078057,-350.597,0.078057,350.597

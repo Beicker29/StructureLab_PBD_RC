@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import csv
 from pathlib import Path
 
 import yaml
@@ -46,6 +47,15 @@ def _write_stage_03_config(tmp_path: Path) -> Path:
             "my_upper_ratio": 1.00,
             "ultimate": {"mode": "final_valid_point"},
         },
+        "cyclic_diagram": {
+            "enabled": True,
+            "cut_points_by_sheet": {
+                "Curva": {
+                    "positive_bending": {"phi": 0.006, "moment": 170.0},
+                    "negative_bending": {"phi": "auto", "moment": "auto"},
+                }
+            },
+        },
     }
     config_path = tmp_path / "stage_03.yaml"
     config_path.write_text(yaml.safe_dump(config, sort_keys=False), encoding="utf-8")
@@ -71,9 +81,16 @@ def test_stage_03_runs_and_writes_moment_curvature_outputs(tmp_path: Path) -> No
     assert Path(generated["data_moment_curvature_curves"]).exists()
     assert Path(generated["data_bilinear_curves"]).exists()
     assert Path(generated["data_bilinearization_parameters"]).exists()
+    assert Path(generated["data_ciclica_moment_curvature_curves"]).exists()
+    assert Path(generated["data_ciclica_bilinear_curves"]).exists()
+    assert Path(generated["data_ciclica_bilinearization_parameters"]).exists()
+    assert Path(generated["data_ciclica_cut_points"]).exists()
     assert Path(generated["figure_moment_curvature_real"]).exists()
     assert Path(generated["figure_moment_curvature_bilinearization"]).exists()
     assert Path(generated["figure_moment_curvature_real_vs_bilinear"]).exists()
+    assert Path(generated["figure_ciclica_moment_curvature_real"]).exists()
+    assert Path(generated["figure_ciclica_moment_curvature_bilinearization"]).exists()
+    assert Path(generated["figure_ciclica_moment_curvature_real_vs_bilinear"]).exists()
     assert Path(generated["report_positive_bending_yaml"]).exists()
     assert Path(generated["report_negative_bending_yaml"]).exists()
     assert Path(generated["data_sheet_results_json"]).exists()
@@ -81,8 +98,51 @@ def test_stage_03_runs_and_writes_moment_curvature_outputs(tmp_path: Path) -> No
     assert not stale_file.exists()
     assert not (output_root / "stage_03" / "figures").exists()
     assert not (output_root / "stage_03" / "reports").exists()
-    assert (output_root / "stage_03" / "Curva" / "figures").exists()
-    assert (output_root / "stage_03" / "Curva" / "reports").exists()
+    assert not (output_root / "stage_03" / "Curva" / "data").exists()
+    assert not (output_root / "stage_03" / "Curva" / "figures").exists()
+    assert not (output_root / "stage_03" / "Curva" / "reports").exists()
+    assert (output_root / "stage_03" / "Curva" / "monotonica" / "data").exists()
+    assert (output_root / "stage_03" / "Curva" / "monotonica" / "figures").exists()
+    assert (output_root / "stage_03" / "Curva" / "monotonica" / "reports").exists()
+    assert (output_root / "stage_03" / "Curva" / "ciclica" / "data").exists()
+    assert (output_root / "stage_03" / "Curva" / "ciclica" / "figures").exists()
+    assert (output_root / "stage_03" / "Curva" / "ciclica" / "reports").exists()
+
+    with Path(generated["data_bilinearization_parameters"]).open("r", encoding="utf-8", newline="") as file:
+        monotonic_parameter_rows = list(csv.DictReader(file))
+    curve_names = {row["curve_id"]: row["curve_name"] for row in monotonic_parameter_rows}
+    assert curve_names["positive_bending"] == "Curva"
+    assert curve_names["negative_bending"] == "Curva-INV"
+
+    with Path(generated["data_ciclica_moment_curvature_curves"]).open("r", encoding="utf-8", newline="") as file:
+        cyclic_rows = list(csv.DictReader(file))
+    positive_rows = [row for row in cyclic_rows if row["curve_id"] == "positive_bending"]
+    assert float(positive_rows[-1]["phi"]) == 0.006
+    assert float(positive_rows[-1]["moment"]) == 170.0
+
+    with Path(generated["data_ciclica_bilinear_curves"]).open("r", encoding="utf-8", newline="") as file:
+        cyclic_bilinear_rows = list(csv.DictReader(file))
+    positive_bilinear_rows = [row for row in cyclic_bilinear_rows if row["curve_id"] == "positive_bending"]
+    assert positive_bilinear_rows[-1]["point"] == "ultimate"
+    assert float(positive_bilinear_rows[-1]["phi"]) == 0.006
+    assert float(positive_bilinear_rows[-1]["moment"]) == 170.0
+
+    with Path(generated["data_ciclica_bilinearization_parameters"]).open("r", encoding="utf-8", newline="") as file:
+        cyclic_parameter_rows = list(csv.DictReader(file))
+    positive_parameters = next(row for row in cyclic_parameter_rows if row["curve_id"] == "positive_bending")
+    assert float(positive_parameters["phi_u"]) == 0.006
+    assert float(positive_parameters["Mu"]) == 170.0
+    assert float(positive_parameters["phi_u_ciclico"]) == 0.006
+    assert float(positive_parameters["Mu_ciclico"]) == 170.0
+
+    with Path(generated["data_ciclica_cut_points"]).open("r", encoding="utf-8", newline="") as file:
+        cut_rows = list(csv.DictReader(file))
+    positive_cut = next(row for row in cut_rows if row["curve_id"] == "positive_bending")
+    assert positive_cut["mode"] == "configured"
+    assert float(positive_cut["phi"]) == 0.006
+    assert float(positive_cut["moment"]) == 170.0
+    assert float(positive_cut["phi_u_ciclico"]) == 0.006
+    assert float(positive_cut["Mu_ciclico"]) == 170.0
 
     payload = json.loads(result["results_path"].read_text(encoding="utf-8"))
     assert payload["stage_id"] == "stage_03"

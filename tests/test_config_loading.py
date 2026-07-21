@@ -94,5 +94,8 @@ def test_stage_03_config_contains_excel_bilinearization_inputs() -> None:
     assert config["curve_detection"]["moment_header_contains"] == "Moment"
     assert config["bilinearization"]["method"] == "asce_fema_energy_equivalent_m_phi"
     assert config["bilinearization"]["stiffness_fraction"] == 0.60
-    assert config["bilinearization"]["tolerance"] == 0.010
+    assert config["bilinearization"]["tolerance"] == 0.0010
     assert config["bilinearization"]["ultimate"]["post_peak_strength_ratio"] == 0.80
+    assert config["cyclic_diagram"]["enabled"] is True
+    assert "V2" in config["cyclic_diagram"]["cut_points_by_sheet"]
+    assert "positive_bending" in config["cyclic_diagram"]["cut_points_by_sheet"]["V2"]

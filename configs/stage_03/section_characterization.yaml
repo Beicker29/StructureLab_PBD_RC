@@ -19,10 +19,77 @@ curve_detection:
 bilinearization:
   method: "asce_fema_energy_equivalent_m_phi"
   stiffness_fraction: 0.60
-  tolerance: 0.010
+  tolerance: 0.0010
   search_points: 5000
   my_lower_ratio: 0.05
   my_upper_ratio: 1.00
   ultimate:
     mode: "first_post_peak_strength_drop"
     post_peak_strength_ratio: 0.80  # Se adopta phi_u cuando la resistencia cae al 80% del momento maximo post-pico.
+
+cyclic_diagram:
+  enabled: true
+  cut_points_by_sheet:
+    "V1 (1-2 y 3-4)T":
+      positive_bending:
+        phi: auto     # Magnitud de curvatura final del diagrama ciclico positivo, en [1/m].
+        moment: auto  # Magnitud de momento final del diagrama ciclico positivo, en [kN-m].
+      negative_bending:
+        phi: auto     # Magnitud de curvatura final del diagrama ciclico negativo, en [1/m].
+        moment: auto  # Magnitud de momento final del diagrama ciclico negativo, en [kN-m].
+    "V1 (2-3)T":
+      positive_bending:
+        phi: 0.085863
+        moment: 753.754
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2":
+      positive_bending:
+        phi: auto
+        moment: auto
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2 (1-2 y 3-4)L":
+      positive_bending:
+        phi: auto
+        moment: auto
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2 (C-B)L":
+      positive_bending:
+        phi: auto
+        moment: auto
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2 (C-B)T":
+      positive_bending:
+        phi: auto
+        moment: auto
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2 (2-3, C-D y A-B)L":
+      positive_bending:
+        phi: 0.114283
+        moment: 531.501
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V2 (D-C y B-A)T":
+      positive_bending:
+        phi: 0.114283
+        moment: 587.672
+      negative_bending:
+        phi: auto
+        moment: auto
+    "V3 (C-B)T":
+      positive_bending:
+        phi: auto
+        moment: auto
+      negative_bending:
+        phi: auto
+        moment: auto

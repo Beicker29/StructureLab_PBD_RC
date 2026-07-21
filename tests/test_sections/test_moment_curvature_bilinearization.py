@@ -6,6 +6,7 @@ from structurelab_pbd_rc.mechanics.sections.moment_curvature import (
     BilinearizationSettings,
     MomentCurvaturePoint,
     bilinearize_moment_curvature,
+    truncate_moment_curvature_curve_at_point,
 )
 
 
@@ -54,3 +55,18 @@ def test_bilinearize_moment_curvature_uses_post_peak_drop_for_phi_u() -> None:
     assert result["ultimate"]["mode"] == "first_post_peak_strength_drop"
     assert result["parameters"]["Mu"] == 160.0
     assert result["parameters"]["phi_u"] == 0.004
+
+
+def test_truncate_moment_curvature_curve_at_point_uses_user_endpoint() -> None:
+    points = [
+        MomentCurvaturePoint(0.0, 0.0),
+        MomentCurvaturePoint(0.001, 80.0),
+        MomentCurvaturePoint(0.002, 140.0),
+        MomentCurvaturePoint(0.004, 180.0),
+        MomentCurvaturePoint(0.008, 165.0),
+    ]
+
+    truncated = truncate_moment_curvature_curve_at_point(points, phi_u=0.006, moment_u=170.0)
+
+    assert truncated[-1] == MomentCurvaturePoint(phi=0.006, moment=170.0)
+    assert all(point.phi <= 0.006 for point in truncated)

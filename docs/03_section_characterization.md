@@ -14,7 +14,7 @@ La configuracion indica:
 - Criterio para definir `phi_u`.
 - Tolerancia de energia equivalente.
 
-Cada hoja se procesa como un diagrama independiente. En cada ejecucion se borra la salida previa de `outputs/stage_03/` y se reconstruyen las carpetas de las hojas del Excel vigente.
+Cada hoja se procesa como una viga independiente. En cada ejecucion se borra la salida previa de `outputs/stage_03/` y se reconstruyen las carpetas de las hojas del Excel vigente. Dentro de cada viga se separan las salidas `monotonica/` y `ciclica/`; ambas contienen `data/`, `figures/` y `reports/`. La salida `ciclica/` no reutiliza la bilinealizacion monotona: recorta la curva real en el punto ciclico configurado y vuelve a calcular `Ke`, `My`, `phi_y`, `Kp`, `alpha`, `Mu` y `phi_u`.
 
 ## Metodo
 
@@ -47,14 +47,22 @@ El procedimiento implementado es:
 La Etapa 3 genera un indice agregado y una subcarpeta por hoja:
 
 - `outputs/stage_03/data/stage_03_results.json`
-- `outputs/stage_03/<hoja>/data/moment_curvature_curves.csv`
-- `outputs/stage_03/<hoja>/data/bilinear_curves.csv`
-- `outputs/stage_03/<hoja>/data/bilinearization_parameters.csv`
-- `outputs/stage_03/<hoja>/data/stage_03_sheet_results.json`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_real.png`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_bilinearization.png`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_real_vs_bilinear.png`
-- `outputs/stage_03/<hoja>/reports/<curva>/<curva>_bilinearization.yaml`
+- `outputs/stage_03/<hoja>/monotonica/data/moment_curvature_curves.csv`
+- `outputs/stage_03/<hoja>/monotonica/data/bilinear_curves.csv`
+- `outputs/stage_03/<hoja>/monotonica/data/bilinearization_parameters.csv`
+- `outputs/stage_03/<hoja>/monotonica/data/stage_03_sheet_results.json`
+- `outputs/stage_03/<hoja>/monotonica/figures/moment_curvature_real.png`
+- `outputs/stage_03/<hoja>/monotonica/figures/moment_curvature_bilinearization.png`
+- `outputs/stage_03/<hoja>/monotonica/figures/moment_curvature_real_vs_bilinear.png`
+- `outputs/stage_03/<hoja>/monotonica/reports/<curva>/<curva>_bilinearization.yaml`
+- `outputs/stage_03/<hoja>/ciclica/data/moment_curvature_curves.csv`
+- `outputs/stage_03/<hoja>/ciclica/data/bilinear_curves.csv`
+- `outputs/stage_03/<hoja>/ciclica/data/bilinearization_parameters.csv`
+- `outputs/stage_03/<hoja>/ciclica/data/cyclic_cut_points.csv`
+- `outputs/stage_03/<hoja>/ciclica/figures/moment_curvature_real.png`
+- `outputs/stage_03/<hoja>/ciclica/figures/moment_curvature_bilinearization.png`
+- `outputs/stage_03/<hoja>/ciclica/figures/moment_curvature_real_vs_bilinear.png`
+- `outputs/stage_03/<hoja>/ciclica/reports/<curva>/<curva>_bilinearization.yaml`
 
 Los parametros reportados son:
 

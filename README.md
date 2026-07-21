@@ -81,14 +81,18 @@ Archivos principales generados:
 
 - `outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.csv`
 - `outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.csv`
+- `outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_<nivel>_etabs_v22.txt`
 - `outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_spectra.png`
 - `outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_<nivel>_spectrum.png`
 - `outputs/stage_01/nsr10_spectra/reports/case_01_nsr10_report.yaml`
 - `outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.csv`
 - `outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.csv`
+- `outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_<nivel>_etabs_v22.txt`
 - `outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_spectra.png`
 - `outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_<nivel>_spectrum.png`
 - `outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14_report.yaml`
+
+Los TXT para ETABS v22 se importan como `From File`, con `Values are = Period vs Value` y `Header Lines to Skip = 0`.
 
 ## Ejecucion de la Etapa 2
 
@@ -130,7 +134,7 @@ Tambien puede indicarse una configuracion especifica:
 .\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_03.py --config configs\stage_03\section_characterization.yaml
 ```
 
-El script lee `configs/stage_03/section_characterization.yaml`, importa el Excel definido en `source.workbook`, procesa las hojas indicadas en `source.sheets` y genera una subcarpeta por hoja dentro de `outputs/stage_03/`. En cada ejecucion se borra la salida previa de la Etapa 3 y se reconstruye desde el Excel vigente.
+El script lee `configs/stage_03/section_characterization.yaml`, importa el Excel definido en `source.workbook`, procesa las hojas indicadas en `source.sheets` y genera una subcarpeta por hoja dentro de `outputs/stage_03/`. Cada hoja separa sus salidas en `monotonica/` y `ciclica/`, y cada una contiene `data/`, `figures/` y `reports/`. La salida `ciclica/` recorta la curva real en el punto configurado por viga y recalcula su propia bilinealizacion. En cada ejecucion se borra la salida previa de la Etapa 3 y se reconstruye desde el Excel vigente.
 
 Para cada hoja, se detectan automaticamente los pares de columnas `Curvature` / `Moment`, se extraen las curvas M-phi y se genera una idealizacion bilineal:
 
@@ -141,14 +145,16 @@ Para cada hoja, se detectan automaticamente los pares de columnas `Curvature` / 
 Archivos principales generados:
 
 - `outputs/stage_03/data/stage_03_results.json`
-- `outputs/stage_03/<hoja>/data/moment_curvature_curves.csv`
-- `outputs/stage_03/<hoja>/data/bilinear_curves.csv`
-- `outputs/stage_03/<hoja>/data/bilinearization_parameters.csv`
-- `outputs/stage_03/<hoja>/data/stage_03_sheet_results.json`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_real.png`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_bilinearization.png`
-- `outputs/stage_03/<hoja>/figures/moment_curvature_real_vs_bilinear.png`
-- `outputs/stage_03/<hoja>/reports/<curva>/<curva>_bilinearization.yaml`
+- `outputs/stage_03/<hoja>/monotonica/data/moment_curvature_curves.csv`
+- `outputs/stage_03/<hoja>/monotonica/data/bilinear_curves.csv`
+- `outputs/stage_03/<hoja>/monotonica/data/bilinearization_parameters.csv`
+- `outputs/stage_03/<hoja>/monotonica/figures/moment_curvature_real.png`
+- `outputs/stage_03/<hoja>/monotonica/reports/<curva>/<curva>_bilinearization.yaml`
+- `outputs/stage_03/<hoja>/ciclica/data/moment_curvature_curves.csv`
+- `outputs/stage_03/<hoja>/ciclica/data/bilinear_curves.csv`
+- `outputs/stage_03/<hoja>/ciclica/data/cyclic_cut_points.csv`
+- `outputs/stage_03/<hoja>/ciclica/figures/moment_curvature_real_vs_bilinear.png`
+- `outputs/stage_03/<hoja>/ciclica/reports/<curva>/<curva>_bilinearization.yaml`
 
 ## Estado actual
 

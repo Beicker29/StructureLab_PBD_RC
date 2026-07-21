@@ -1,0 +1,7 @@
+curve_id,curve_name,point_index,point,phi,moment,phi_abs,moment_abs
+positive_bending,"V2 (2-3, C-D y A-B)L",0,origin,0.0,0.0,0.0,0.0
+positive_bending,"V2 (2-3, C-D y A-B)L",1,yield,0.00713607330271149,480.2912667233446,0.00713607330271149,480.2912667233446
+positive_bending,"V2 (2-3, C-D y A-B)L",2,ultimate,0.114283,531.501,0.114283,531.501
+negative_bending,"V2 (2-3, C-D y A-B)L-INV",0,origin,-0.0,-0.0,0.0,0.0
+negative_bending,"V2 (2-3, C-D y A-B)L-INV",1,yield,-0.007535971494284616,-491.1370657631527,0.007535971494284616,491.1370657631527
+negative_bending,"V2 (2-3, C-D y A-B)L-INV",2,ultimate,-0.078057,-512.465,0.078057,512.465

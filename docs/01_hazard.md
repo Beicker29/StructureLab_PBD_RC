@@ -52,3 +52,15 @@ Cada subcarpeta conserva internamente la misma organizacion:
 - `data/`: tablas y JSON resumen del caso ejecutado.
 - `figures/`: grafica comparativa y una grafica individual por nivel de amenaza con puntos notables.
 - `reports/`: YAML del caso ejecutado.
+
+Adicionalmente, cada nivel de amenaza genera un archivo TXT compatible con ETABS v22 en:
+
+- `data/etabs/*_etabs_v22.txt`
+
+Estos archivos no tienen encabezado y contienen dos columnas por linea:
+
+```text
+T Sa
+```
+
+Para importarlos en ETABS: `Define > Functions > Response Spectrum > From File`, seleccionar `Values are = Period vs Value` y usar `Header Lines to Skip = 0`.

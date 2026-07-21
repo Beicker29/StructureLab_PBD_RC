@@ -114,6 +114,40 @@ def _truncate_at_phi(points: list[MomentCurvaturePoint], phi_u: float) -> list[M
     return truncated
 
 
+def truncate_moment_curvature_curve_at_point(
+    points: Iterable[MomentCurvaturePoint],
+    *,
+    phi_u: float,
+    moment_u: float,
+) -> list[MomentCurvaturePoint]:
+    """Return a positive backbone truncated at a user-defined endpoint."""
+
+    adopted_phi_u = abs(float(phi_u))
+    adopted_moment_u = abs(float(moment_u))
+    if not (isfinite(adopted_phi_u) and isfinite(adopted_moment_u)):
+        raise ValueError("Cyclic endpoint must contain finite phi_u and moment_u values.")
+    if adopted_phi_u <= 0.0:
+        raise ValueError("Cyclic endpoint phi_u must be positive.")
+
+    curve = _clean_positive_curve(points)
+    if adopted_phi_u > curve[-1].phi + 1e-12:
+        raise ValueError("Cyclic endpoint phi_u exceeds the available curve domain.")
+
+    truncated: list[MomentCurvaturePoint] = []
+    for point in curve:
+        if point.phi < adopted_phi_u - 1e-12:
+            truncated.append(point)
+            continue
+        truncated.append(MomentCurvaturePoint(phi=adopted_phi_u, moment=adopted_moment_u))
+        break
+
+    if not truncated:
+        truncated.append(MomentCurvaturePoint(phi=0.0, moment=0.0))
+    if truncated[-1].phi < adopted_phi_u - 1e-12:
+        truncated.append(MomentCurvaturePoint(phi=adopted_phi_u, moment=adopted_moment_u))
+    return truncated
+
+
 def _trapezoidal_area(points: list[MomentCurvaturePoint]) -> float:
     """Calculate area under a moment-curvature curve."""
 
