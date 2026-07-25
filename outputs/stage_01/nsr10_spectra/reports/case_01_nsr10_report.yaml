@@ -19,7 +19,7 @@ datos_de_entrada:
         Av: 0.3
         Fa: 1.15
         Fv: 1.7
-        importance_factor: 1.25
+        importance_factor: 1.0
         soil_profile: D
       hazard_levels:
         service:
@@ -40,11 +40,11 @@ datos_de_salida:
     Av: 0.3
     Fa: 1.15
     Fv: 1.7
-    importance_factor: 1.25
+    importance_factor: 1.0
     T0: 0.12670807453416152
     Tc: 0.6081987577639753
     TL: 4.08
-    Sa_plateau: 1.2578124999999998
+    Sa_plateau: 1.0062499999999999
   equations:
     T0: T0 = 0.1 * Av * Fv / (Aa * Fa)
     Tc: Tc = 0.48 * Av * Fv / (Aa * Fa)
@@ -69,3 +69,5 @@ generated_files:
   case_01_design_spectrum_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_design_spectrum.png
   case_01_maximum_considered_spectrum_figure: outputs\stage_01\nsr10_spectra\figures\case_01_nsr10_maximum_considered_spectrum.png
   case_01_report_yaml: outputs\stage_01\nsr10_spectra\reports\case_01_nsr10_report.yaml
+  case_01_nsr10_report_qmd: outputs\stage_01\nsr10_spectra\reports\case_01_nsr10\case_01_nsr10_memoria.qmd
+  case_01_nsr10_report_pdf: outputs\stage_01\nsr10_spectra\reports\case_01_nsr10\case_01_nsr10_memoria.pdf

@@ -22,7 +22,7 @@ hazard:
       Av: 0.30
       Fa: 1.15
       Fv: 1.7
-      importance_factor: 1.25
+      importance_factor: 1.00
       soil_profile: D
 
     hazard_levels:

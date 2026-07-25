@@ -29,6 +29,7 @@ from structurelab_pbd_rc.reports.plots import (
     plot_response_spectra,
     plot_response_spectrum_with_notable_points,
 )
+from structurelab_pbd_rc.reports.stage_01_hazard_report import write_stage_01_pdf_report_from_yaml
 
 DEFAULT_CONFIG_PATH = Path("configs/stage_01/case_01_nsr10_spectra.yaml")
 
@@ -494,6 +495,9 @@ def _run_case_01(config: dict[str, Any], output_dirs: dict[str, Path]) -> dict[s
     }
     generated_files["case_01_report_yaml"] = reports_dir / "case_01_nsr10_report.yaml"
     write_yaml_result(report, generated_files["case_01_report_yaml"])
+    generated_files.update(write_stage_01_pdf_report_from_yaml(generated_files["case_01_report_yaml"]))
+    report["generated_files"] = generated_files
+    write_yaml_result(report, generated_files["case_01_report_yaml"])
     return {
         "case_id": "case_01_nsr10",
         "periods": periods,
@@ -662,6 +666,9 @@ def _run_case_02(config: dict[str, Any], output_dirs: dict[str, Path]) -> dict[s
         "generated_files": generated_files,
     }
     generated_files["case_02_report_yaml"] = reports_dir / "case_02_sgc_ccp14_report.yaml"
+    write_yaml_result(report, generated_files["case_02_report_yaml"])
+    generated_files.update(write_stage_01_pdf_report_from_yaml(generated_files["case_02_report_yaml"]))
+    report["generated_files"] = generated_files
     write_yaml_result(report, generated_files["case_02_report_yaml"])
     return {
         "case_id": "case_02_sgc_ccp14",

@@ -75,6 +75,8 @@
     "case_02_design_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_design_spectrum.png",
     "case_02_maximum_considered_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_maximum_considered_spectrum.png",
     "case_02_report_yaml": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14_report.yaml",
+    "case_02_sgc_ccp14_report_qmd": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14\\case_02_sgc_ccp14_memoria.qmd",
+    "case_02_sgc_ccp14_report_pdf": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14\\case_02_sgc_ccp14_memoria.pdf",
     "data_results_json": "outputs\\stage_01\\ccp14_spectra\\data\\stage_01_results.json"
   },
   "warnings": [],
@@ -198,7 +200,9 @@
       "case_02_service_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_service_spectrum.png",
       "case_02_design_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_design_spectrum.png",
       "case_02_maximum_considered_spectrum_figure": "outputs\\stage_01\\ccp14_spectra\\figures\\case_02_sgc_ccp14_maximum_considered_spectrum.png",
-      "case_02_report_yaml": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14_report.yaml"
+      "case_02_report_yaml": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14_report.yaml",
+      "case_02_sgc_ccp14_report_qmd": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14\\case_02_sgc_ccp14_memoria.qmd",
+      "case_02_sgc_ccp14_report_pdf": "outputs\\stage_01\\ccp14_spectra\\reports\\case_02_sgc_ccp14\\case_02_sgc_ccp14_memoria.pdf"
     }
   }
 }

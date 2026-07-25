@@ -27,7 +27,7 @@
           "Av": 0.3,
           "Fa": 1.15,
           "Fv": 1.7,
-          "importance_factor": 1.25,
+          "importance_factor": 1.0,
           "soil_profile": "D"
         },
         "hazard_levels": {
@@ -73,6 +73,8 @@
     "case_01_design_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_design_spectrum.png",
     "case_01_maximum_considered_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_maximum_considered_spectrum.png",
     "case_01_report_yaml": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10_report.yaml",
+    "case_01_nsr10_report_qmd": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10\\case_01_nsr10_memoria.qmd",
+    "case_01_nsr10_report_pdf": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10\\case_01_nsr10_memoria.pdf",
     "data_results_json": "outputs\\stage_01\\nsr10_spectra\\data\\stage_01_results.json"
   },
   "warnings": [],
@@ -105,7 +107,7 @@
       },
       {
         "parameter": "I",
-        "value": 1.25,
+        "value": 1.0,
         "unit": "-",
         "equation": "input"
       },
@@ -129,7 +131,7 @@
       },
       {
         "parameter": "Sa_plateau",
-        "value": 1.2578124999999998,
+        "value": 1.0062499999999999,
         "unit": "g",
         "equation": "2.5 * Aa * Fa * I"
       },
@@ -151,11 +153,11 @@
       "Av": 0.3,
       "Fa": 1.15,
       "Fv": 1.7,
-      "importance_factor": 1.25,
+      "importance_factor": 1.0,
       "T0": 0.12670807453416152,
       "Tc": 0.6081987577639753,
       "TL": 4.08,
-      "Sa_plateau": 1.2578124999999998
+      "Sa_plateau": 1.0062499999999999
     },
     "generated_files": {
       "case_01_spectra_csv": "outputs\\stage_01\\nsr10_spectra\\data\\case_01_nsr10_spectra.csv",
@@ -169,7 +171,9 @@
       "case_01_service_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_service_spectrum.png",
       "case_01_design_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_design_spectrum.png",
       "case_01_maximum_considered_spectrum_figure": "outputs\\stage_01\\nsr10_spectra\\figures\\case_01_nsr10_maximum_considered_spectrum.png",
-      "case_01_report_yaml": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10_report.yaml"
+      "case_01_report_yaml": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10_report.yaml",
+      "case_01_nsr10_report_qmd": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10\\case_01_nsr10_memoria.qmd",
+      "case_01_nsr10_report_pdf": "outputs\\stage_01\\nsr10_spectra\\reports\\case_01_nsr10\\case_01_nsr10_memoria.pdf"
     }
   }
 }

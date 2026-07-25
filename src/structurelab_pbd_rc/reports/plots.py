@@ -32,6 +32,8 @@ COLOR_CYCLE = [
 
 LINE_STYLES = ["-", "-", "-", "--", "-.", ":"]
 
+MOMENT_CURVATURE_EXTERNAL_LEGEND_RECT = (0.035, 0.055, 0.70, 0.94)
+
 
 def _display_name(model_name: str) -> str:
     """Return a reader-friendly model name."""
@@ -54,6 +56,39 @@ def _style_axes(ax: Any) -> None:
     for spine in ax.spines.values():
         spine.set_color("#30343b")
         spine.set_linewidth(0.9)
+
+
+def _add_external_moment_curvature_legend(
+    ax: Any,
+    *,
+    handles: list[Any] | None = None,
+    loc: str,
+    anchor_y: float,
+    title: str,
+    fontsize: float,
+    title_fontsize: float,
+) -> Any:
+    """Place a moment-curvature legend outside the plotting area."""
+
+    legend_kwargs: dict[str, Any] = {
+        "loc": loc,
+        "bbox_to_anchor": (1.015, anchor_y),
+        "borderaxespad": 0.0,
+        "frameon": True,
+        "facecolor": "white",
+        "edgecolor": "#d7d9d4",
+        "framealpha": 0.97,
+        "fontsize": fontsize,
+        "title": title,
+        "title_fontsize": title_fontsize,
+    }
+    if handles is not None:
+        legend_kwargs["handles"] = handles
+
+    legend = ax.legend(**legend_kwargs)
+    legend.get_title().set_fontweight("bold")
+    legend.set_in_layout(False)
+    return legend
 
 
 def plot_response_spectra(
@@ -710,10 +745,11 @@ def plot_moment_curvature_bilinear_only(
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
+    fig, ax = plt.subplots(figsize=(13.6, 6.8), dpi=180)
     fig.patch.set_facecolor("white")
     _style_axes(ax)
     ductility_handles: list[Any] = []
+    legend_artists: list[Any] = []
 
     for index, result in enumerate(curve_results):
         curve_id = str(result["curve_id"])
@@ -807,32 +843,28 @@ def plot_moment_curvature_bilinear_only(
     ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
     ax.margins(x=0.04, y=0.10)
 
-    main_legend = ax.legend(
+    main_legend = _add_external_moment_curvature_legend(
+        ax,
         loc="upper left",
-        frameon=True,
-        facecolor="white",
-        edgecolor="#d7d9d4",
-        framealpha=0.96,
-        fontsize=8.0,
+        anchor_y=1.0,
+        fontsize=7.8,
         title="Bilinealizacion y puntos notables",
         title_fontsize=8.8,
     )
-    main_legend.get_title().set_fontweight("bold")
     ax.add_artist(main_legend)
+    legend_artists.append(main_legend)
 
     if ductility_handles:
-        ductility_legend = ax.legend(
+        ductility_legend = _add_external_moment_curvature_legend(
+            ax,
             handles=ductility_handles,
-            loc="lower right",
-            frameon=True,
-            facecolor="white",
-            edgecolor="#d7d9d4",
-            framealpha=0.96,
+            loc="lower left",
+            anchor_y=0.0,
             fontsize=8.2,
             title="Ductilidad por curvatura",
             title_fontsize=8.8,
         )
-        ductility_legend.get_title().set_fontweight("bold")
+        legend_artists.append(ductility_legend)
 
     fig.text(
         0.99,
@@ -843,8 +875,13 @@ def plot_moment_curvature_bilinear_only(
         fontsize=8,
         color="#7b828a",
     )
-    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
-    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    fig.tight_layout(rect=MOMENT_CURVATURE_EXTERNAL_LEGEND_RECT)
+    fig.savefig(
+        output_path,
+        bbox_inches="tight",
+        bbox_extra_artists=tuple(legend_artists),
+        facecolor=fig.get_facecolor(),
+    )
     plt.close(fig)
     return output_path
 
@@ -863,11 +900,12 @@ def plot_moment_curvature_real_vs_bilinear(
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(11.2, 6.6), dpi=180)
+    fig, ax = plt.subplots(figsize=(13.6, 6.8), dpi=180)
     fig.patch.set_facecolor("white")
     _style_axes(ax)
     curve_handles: list[Any] = []
     point_handles: list[Any] = []
+    legend_artists: list[Any] = []
 
     for index, result in enumerate(curve_results):
         curve_id = str(result["curve_id"])
@@ -970,33 +1008,29 @@ def plot_moment_curvature_real_vs_bilinear(
     ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
     ax.margins(x=0.04, y=0.10)
 
-    curve_legend = ax.legend(
+    curve_legend = _add_external_moment_curvature_legend(
+        ax,
         handles=curve_handles,
         loc="upper left",
-        frameon=True,
-        facecolor="white",
-        edgecolor="#d7d9d4",
-        framealpha=0.96,
+        anchor_y=1.0,
         fontsize=8.2,
         title="Curvas",
         title_fontsize=9,
     )
-    curve_legend.get_title().set_fontweight("bold")
     ax.add_artist(curve_legend)
+    legend_artists.append(curve_legend)
 
     if point_handles:
-        point_legend = ax.legend(
+        point_legend = _add_external_moment_curvature_legend(
+            ax,
             handles=point_handles,
-            loc="lower right",
-            frameon=True,
-            facecolor="white",
-            edgecolor="#d7d9d4",
-            framealpha=0.96,
+            loc="lower left",
+            anchor_y=0.0,
             fontsize=7.2,
             title="Puntos notables",
             title_fontsize=8.4,
         )
-        point_legend.get_title().set_fontweight("bold")
+        legend_artists.append(point_legend)
 
     fig.text(
         0.99,
@@ -1007,8 +1041,13 @@ def plot_moment_curvature_real_vs_bilinear(
         fontsize=8,
         color="#7b828a",
     )
-    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
-    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    fig.tight_layout(rect=MOMENT_CURVATURE_EXTERNAL_LEGEND_RECT)
+    fig.savefig(
+        output_path,
+        bbox_inches="tight",
+        bbox_extra_artists=tuple(legend_artists),
+        facecolor=fig.get_facecolor(),
+    )
     plt.close(fig)
     return output_path
 

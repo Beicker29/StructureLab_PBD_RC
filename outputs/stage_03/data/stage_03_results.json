@@ -1181,19 +1181,19 @@
     {
       "stage_id": "stage_03",
       "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
-      "sheet": "V2",
-      "sheet_output_root": "outputs\\stage_03\\V2",
+      "sheet": "V2(0-1 Y 4-5)35X50",
+      "sheet_output_root": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50",
       "status": "completed",
       "source": {
         "workbook": "references\\stage_03\\excel\\M-curvatura.xlsx",
-        "sheet": "V2"
+        "sheet": "V2(0-1 Y 4-5)35X50"
       },
       "method": "asce_fema_energy_equivalent_m_phi",
       "curve_count": 2,
       "curves": [
         {
           "id": "positive_bending",
-          "name": "V2",
+          "name": "V2(0-1 Y 4-5)35X50",
           "sign": "positive",
           "curvature_column": "A",
           "moment_column": "B",
@@ -1201,7 +1201,7 @@
         },
         {
           "id": "negative_bending",
-          "name": "V2-INV",
+          "name": "V2(0-1 Y 4-5)35X50-INV",
           "sign": "negative",
           "curvature_column": "C",
           "moment_column": "D",
@@ -1211,7 +1211,7 @@
       "parameters": [
         {
           "curve_id": "positive_bending",
-          "curve_name": "V2",
+          "curve_name": "V2(0-1 Y 4-5)35X50",
           "Ke": 55476.4568779097,
           "My": 436.0138582516503,
           "phi_y": 0.007859439531461275,
@@ -1236,7 +1236,7 @@
         },
         {
           "curve_id": "negative_bending",
-          "curve_name": "V2-INV",
+          "curve_name": "V2(0-1 Y 4-5)35X50-INV",
           "Ke": 55476.4568779097,
           "My": 436.0138582516503,
           "phi_y": 0.007859439531461275,
@@ -1261,37 +1261,37 @@
         }
       ],
       "generated_files": {
-        "data_moment_curvature_curves": "outputs\\stage_03\\V2\\monotonica\\data\\moment_curvature_curves.csv",
-        "data_monotonica_moment_curvature_curves": "outputs\\stage_03\\V2\\monotonica\\data\\moment_curvature_curves.csv",
-        "data_bilinear_curves": "outputs\\stage_03\\V2\\monotonica\\data\\bilinear_curves.csv",
-        "data_monotonica_bilinear_curves": "outputs\\stage_03\\V2\\monotonica\\data\\bilinear_curves.csv",
-        "data_bilinearization_parameters": "outputs\\stage_03\\V2\\monotonica\\data\\bilinearization_parameters.csv",
-        "data_monotonica_bilinearization_parameters": "outputs\\stage_03\\V2\\monotonica\\data\\bilinearization_parameters.csv",
-        "data_ciclica_moment_curvature_curves": "outputs\\stage_03\\V2\\ciclica\\data\\moment_curvature_curves.csv",
-        "data_ciclica_bilinear_curves": "outputs\\stage_03\\V2\\ciclica\\data\\bilinear_curves.csv",
-        "data_ciclica_bilinearization_parameters": "outputs\\stage_03\\V2\\ciclica\\data\\bilinearization_parameters.csv",
-        "data_ciclica_cut_points": "outputs\\stage_03\\V2\\ciclica\\data\\cyclic_cut_points.csv",
-        "report_positive_bending_yaml": "outputs\\stage_03\\V2\\monotonica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
-        "report_monotonica_positive_bending_yaml": "outputs\\stage_03\\V2\\monotonica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
-        "report_negative_bending_yaml": "outputs\\stage_03\\V2\\monotonica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
-        "report_monotonica_negative_bending_yaml": "outputs\\stage_03\\V2\\monotonica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
-        "report_ciclica_positive_bending_yaml": "outputs\\stage_03\\V2\\ciclica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
-        "report_ciclica_negative_bending_yaml": "outputs\\stage_03\\V2\\ciclica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
-        "figure_moment_curvature_real": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_real.png",
-        "figure_monotonica_moment_curvature_real": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_real.png",
-        "figure_moment_curvature_bilinearization": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_bilinearization.png",
-        "figure_monotonica_moment_curvature_bilinearization": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_bilinearization.png",
-        "figure_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_real_vs_bilinear.png",
-        "figure_monotonica_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2\\monotonica\\figures\\moment_curvature_real_vs_bilinear.png",
-        "figure_ciclica_moment_curvature_real": "outputs\\stage_03\\V2\\ciclica\\figures\\moment_curvature_real.png",
-        "figure_ciclica_moment_curvature_bilinearization": "outputs\\stage_03\\V2\\ciclica\\figures\\moment_curvature_bilinearization.png",
-        "figure_ciclica_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2\\ciclica\\figures\\moment_curvature_real_vs_bilinear.png",
-        "data_sheet_results_json": "outputs\\stage_03\\V2\\monotonica\\data\\stage_03_sheet_results.json",
-        "data_monotonica_sheet_results_json": "outputs\\stage_03\\V2\\monotonica\\data\\stage_03_sheet_results.json",
-        "data_ciclica_sheet_results_json": "outputs\\stage_03\\V2\\ciclica\\data\\stage_03_sheet_results.json"
+        "data_moment_curvature_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\moment_curvature_curves.csv",
+        "data_monotonica_moment_curvature_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\moment_curvature_curves.csv",
+        "data_bilinear_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\bilinear_curves.csv",
+        "data_monotonica_bilinear_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\bilinear_curves.csv",
+        "data_bilinearization_parameters": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\bilinearization_parameters.csv",
+        "data_monotonica_bilinearization_parameters": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\bilinearization_parameters.csv",
+        "data_ciclica_moment_curvature_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\data\\moment_curvature_curves.csv",
+        "data_ciclica_bilinear_curves": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\data\\bilinear_curves.csv",
+        "data_ciclica_bilinearization_parameters": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\data\\bilinearization_parameters.csv",
+        "data_ciclica_cut_points": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\data\\cyclic_cut_points.csv",
+        "report_positive_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_monotonica_positive_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_negative_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "report_monotonica_negative_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "report_ciclica_positive_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\reports\\positive_bending\\positive_bending_bilinearization.yaml",
+        "report_ciclica_negative_bending_yaml": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\reports\\negative_bending\\negative_bending_bilinearization.yaml",
+        "figure_moment_curvature_real": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_real.png",
+        "figure_monotonica_moment_curvature_real": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_real.png",
+        "figure_moment_curvature_bilinearization": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_bilinearization.png",
+        "figure_monotonica_moment_curvature_bilinearization": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_bilinearization.png",
+        "figure_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_real_vs_bilinear.png",
+        "figure_monotonica_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\figures\\moment_curvature_real_vs_bilinear.png",
+        "figure_ciclica_moment_curvature_real": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\figures\\moment_curvature_real.png",
+        "figure_ciclica_moment_curvature_bilinearization": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\figures\\moment_curvature_bilinearization.png",
+        "figure_ciclica_moment_curvature_real_vs_bilinear": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\figures\\moment_curvature_real_vs_bilinear.png",
+        "data_sheet_results_json": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\stage_03_sheet_results.json",
+        "data_monotonica_sheet_results_json": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\stage_03_sheet_results.json",
+        "data_ciclica_sheet_results_json": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\ciclica\\data\\stage_03_sheet_results.json"
       },
       "warnings": [],
-      "results_path": "outputs\\stage_03\\V2\\monotonica\\data\\stage_03_sheet_results.json"
+      "results_path": "outputs\\stage_03\\V2(0-1 Y 4-5)35X50\\monotonica\\data\\stage_03_sheet_results.json"
     }
   ],
   "generated_files": {

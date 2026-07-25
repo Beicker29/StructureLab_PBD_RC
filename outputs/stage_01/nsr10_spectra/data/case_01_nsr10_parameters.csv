@@ -3,10 +3,10 @@ Aa,0.35,g,input
 Av,0.3,g,input
 Fa,1.15,-,input
 Fv,1.7,-,input
-I,1.25,-,input
+I,1.0,-,input
 T0,0.12670807453416152,s,0.1 * Av * Fv / (Aa * Fa)
 Tc,0.6081987577639753,s,0.48 * Av * Fv / (Aa * Fa)
 TL,4.08,s,2.4 * Fv
-Sa_plateau,1.2578124999999998,g,2.5 * Aa * Fa * I
+Sa_plateau,1.0062499999999999,g,2.5 * Aa * Fa * I
 F_31,0.35,-,Sa_31(T) = F_31 * Sa_475(T)
 F_2500,1.5,-,Sa_2500(T) = F_2500 * Sa_475(T)
