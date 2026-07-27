@@ -1,4 +1,4 @@
-"""Run Etapa 2 flow."""
+"""Run Etapa 2 material-characterization flow."""
 
 from __future__ import annotations
 
@@ -15,5 +15,3 @@ from structurelab_pbd_rc.cli.run import main
 
 if __name__ == "__main__":
     raise SystemExit(main(["stage_02", *sys.argv[1:]]))
-
-

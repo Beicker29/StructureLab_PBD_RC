@@ -1,0 +1,48 @@
+calculated_parameters:
+  fy_mpa: 420.0
+  fu_mpa: 630.0
+  elastic_modulus_mpa: 200000.0
+  eps_y: 0.0021
+  epsilon_sh: 0.01
+  epsilon_su: 0.1
+  parameter_p: 4.0
+  longitudinal_bar_diameter_mm: 20.0
+  buckling_intervals: 1
+  tie_spacing_mm: 100.0
+  unsupported_length_mm: 100.0
+  s_over_db: 5.0
+  L_over_D: 5.0
+  L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
+  rb: 10.2469507659596
+  rb_min: 10.2469507659596
+  eps_i_0: 0.06600722780041512
+  eps_i_max: 0.06600722780041512
+  eps_i: 0.06600722780041512
+  f_it_mpa: 625.7263830567169
+  alpha_1: 1.34
+  alpha_2: 0.9360487877446465
+  alpha: 1.2543053755778264
+  f_i_mpa: 526.808257742687
+  eps_ii: 0.09893274390933307
+  residual_stress_mpa: 84.0
+  buckling_active: true
+  special_alpha_case: false
+  loading_type: monotonic
+  sign_convention: compression_positive
+  reference: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling
+    behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143
+  applicability:
+    fy_mpa: 200 < fy < 900
+    diameter_mm: 10 < D < 36
+    fu_over_fy: < 2
+    parameter_p: <= 4
+    epsilon_su_over_epsilon_y: '> 14'
+    rb: 8 < rb < 56
+    l_over_d: '>= 5 for buckling activation'
+  warnings: []
+  provenance:
+    source: Akkaya, Guner and Vecchio (2019)
+    citation: ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143
+    source_location: Table 2, equations 1-8; numerical validation L/D=5
+    specimen_or_profile: Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm
+    calibration_status: source_equation_validation_case

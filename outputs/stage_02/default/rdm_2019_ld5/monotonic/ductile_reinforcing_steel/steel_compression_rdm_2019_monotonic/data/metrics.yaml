@@ -1,0 +1,45 @@
+metrics:
+  case_id: rdm_2019_ld5
+  diameter_mm: 20.0
+  point_count: 801
+  strain_min: -0.1
+  strain_max: 0.1
+  stress_min_mpa: -537.7690778920974
+  stress_max_mpa: 630.0
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_equation_validation_case
+  response_branches:
+    - compression
+    - tension
+  rdm_inputs:
+    fy_mpa: 420.0
+    fu_mpa: 630.0
+    elastic_modulus_mpa: 200000.0
+    eps_y: 0.0021
+    epsilon_sh: 0.01
+    epsilon_su: 0.1
+    parameter_p: 4.0
+    longitudinal_bar_diameter_mm: 20.0
+    buckling_intervals: 1
+    tie_spacing_mm: 100.0
+    unsupported_length_mm: 100.0
+  rdm_controls:
+    L_over_D: 5.0
+    L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
+    rb: 10.2469507659596
+    rb_min: 10.2469507659596
+    eps_i_0: 0.06600722780041512
+    eps_i_max: 0.06600722780041512
+    eps_i: 0.06600722780041512
+    f_it_mpa: 625.7263830567169
+    alpha_1: 1.34
+    alpha_2: 0.9360487877446465
+    alpha: 1.2543053755778264
+    f_i_mpa: 526.808257742687
+    eps_ii: 0.09893274390933307
+    residual_stress_mpa: 84.0
+    buckling_active: true
+    loading_type: monotonic
+    sign_convention: compression_positive

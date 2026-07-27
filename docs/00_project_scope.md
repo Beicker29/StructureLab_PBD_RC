@@ -1,40 +1,40 @@
 # Alcance del proyecto
 
-`StructureLab_PBD_RC` organiza el proyecto por etapas tecnicas. La Etapa 1 implementa el calculo de amenaza, comenzando por espectros sismicos. La Etapa 2 implementa una herramienta reproducible de caracterizacion mecanica de materiales y la Etapa 3 caracteriza secciones a partir de diagramas momento-curvatura.
+`StructureLab_PBD_RC` organiza calculos de analisis basado en desempeno para estructuras de concreto reforzado.
+
+## Flujos vigentes
+
+- Etapa 1: calculo de amenaza sismica.
+- Etapa 2: caracterizacion constitutiva de materiales.
+- Etapa 3: caracterizacion de secciones mediante diagramas momento-curvatura.
+
+La Etapa 2 esta preparada para cuatro familias de material y dos protocolos de carga. Los modelos constitutivos se incorporaran posteriormente.
 
 ## Principios
 
-- Cada etapa no es un script aislado.
-- El flujo de cada etapa solo orquesta lectura de datos, llamadas a modulos y escritura de resultados.
-- La teoria central se implementa una sola vez en los paquetes generales.
-- Los datos del problema se leen desde YAML.
-- Los resultados se guardan bajo `outputs/stage_01/`, `outputs/stage_02/`, `outputs/stage_03/`, etc.
-- Los supuestos editables viven en los YAML de entrada; los valores calculados y ecuaciones usadas se reportan en los YAML de salida.
+- Los flujos coordinan lectura, validacion, calculo y escritura; no contienen la teoria central.
+- Los modelos y ecuaciones reutilizables viven en `mechanics/`.
+- Cada modelo constitutivo de Stage 2 se define en un unico JSON bajo su material y comportamiento.
+- Cada JSON declara sus unidades; la convencion es `mm`, `kN` y `MPa`.
+- Las salidas de materiales se separan por `project_id/case_id`; solo se reemplazan los casos incluidos en la ejecucion.
+- Los notebooks son para exploracion y visualizacion, no para logica principal.
 
 ## Capas principales
 
-- `cli/`: entrada por consola para ejecutar las etapas disponibles.
-- `core/`: unidades, constantes, validacion, excepciones y registro de modelos.
-- `design/`: orquestacion de los flujos de calculo por etapa.
-- `io/`: lectura de configuraciones y escritura de resultados.
-- `mechanics/`: ecuaciones mecanicas, modelos constitutivos, geometria basica, metricas de curvas y herramientas de seccion.
-- `reports/`: tablas, graficas, YAML, PDF y artefactos de salida.
-
-## Documentacion
-
-Los archivos de `docs/` documentan alcance, arquitectura y responsabilidades de cada capa. Los supuestos editables deben estar cerca de los datos que controlan, en los YAML de `configs/<stage_id>/`, o en los reportes generados bajo `outputs/<stage_id>/reports/`.
+- `cli/`: entrada por consola para las etapas vigentes.
+- `core/`: validacion, excepciones, unidades y registro.
+- `design/`: orquestacion de flujos.
+- `io/`: lectura y escritura.
+- `mechanics/`: amenaza, secciones y futuros modelos constitutivos.
+- `reports/`: figuras, tablas y documentos.
 
 ## Referencias
 
-Las referencias externas se organizan por etapa:
-
-- `references/stage_02/`: documentos, imagenes y ecuaciones fuente para caracterizacion de materiales.
-- `references/stage_03/`: documentos, hojas de calculo e imagenes fuente para caracterizacion de seccion.
-- `references/unassigned/`: referencias historicas conservadas que todavia no pertenecen a una etapa vigente.
+- `references/stage_03/`: documentos y hojas de calculo para caracterizacion de secciones.
+- `references/unassigned/`: referencias conservadas que todavia no pertenecen a un dominio vigente.
 
 ## Roadmap
 
-- Etapa 1: calculo de amenaza, con primer modulo sismico implementado.
-- Etapa 2: caracterizacion mecanica de materiales.
-- Etapa 3: caracterizacion de la seccion mediante bilinealizacion del diagrama momento-curvatura.
-- Etapas posteriores: se definiran cuando la Etapa 3 este consolidada.
+- Consolidar los flujos de amenaza y seccion existentes.
+- Incorporar modelos constitutivos por material y protocolo de carga.
+- Definir etapas posteriores cuando sus contratos de entrada y salida esten establecidos.

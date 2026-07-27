@@ -55,7 +55,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--config",
         default=None,
-        help="Path to the stage YAML config.",
+        help="Path to the stage JSON or YAML config.",
     )
     parser.add_argument(
         "--output-root",
@@ -79,7 +79,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  config: {config_path}")
     for name, path in result["output_dirs"].items():
         print(f"  {name}: {path}")
-    print(f"  results_json: {result['results_path']}")
+    print(f"  results: {result['results_path']}")
     print("Generated files:")
     for name, path in result["generated_files"].items():
         print(f"  {name}: {path}")
@@ -100,16 +100,16 @@ def main_stage_01() -> int:
     return main(["stage_01"])
 
 
-def main_stage_02() -> int:
-    """Console entrypoint for Etapa 2."""
-
-    return main(["stage_02"])
-
-
 def main_stage_03() -> int:
     """Console entrypoint for Etapa 3."""
 
     return main(["stage_03"])
+
+
+def main_stage_02() -> int:
+    """Console entrypoint for Etapa 2."""
+
+    return main(["stage_02"])
 
 
 if __name__ == "__main__":

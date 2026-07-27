@@ -56,6 +56,28 @@ def ensure_stage_output_dirs(
     return paths
 
 
+def ensure_material_model_output_dirs(
+    *,
+    stage_id: str,
+    material: str,
+    analysis_type: str,
+    model: str,
+    output_root: str | Path = "outputs",
+) -> dict[str, Path]:
+    """Create model-owned data, figures and reports directories."""
+
+    root = Path(output_root) / stage_id / material / analysis_type / model
+    paths = {
+        "root": root,
+        "data": root / "data",
+        "figures": root / "figures",
+        "reports": root / "reports",
+    }
+    for path in paths.values():
+        path.mkdir(parents=True, exist_ok=True)
+    return paths
+
+
 def stage_results_json_path(output_dirs: dict[str, Path], filename: str = "stage_results.json") -> Path:
     """Return the JSON results path inside a prepared stage data directory."""
 

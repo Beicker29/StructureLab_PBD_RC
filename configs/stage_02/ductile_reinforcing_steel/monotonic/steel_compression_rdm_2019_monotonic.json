@@ -1,0 +1,37 @@
+{
+  "stage_id": "stage_02",
+  "enabled": true,
+  "title": "Acero ductil RDM 2019 - L/D calculado igual a 5",
+  "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
+  "inputs": {
+    "project_id": "default",
+    "case_id": "rdm_2019_ld5",
+    "model_id": "steel_compression_rdm_2019_monotonic",
+    "label": "RDM 2019 | L/D = 5",
+    "parameters": {
+      "fy_MPa": 420.0,
+      "fu_MPa": 630.0,
+      "Es_MPa": 200000.0,
+      "epsilon_y": 0.0021,
+      "epsilon_sh": 0.01,
+      "epsilon_su": 0.10,
+      "parameter_p": 4.0,
+      "longitudinal_bar_diameter_mm": 20.0,
+      "buckling_intervals": 1,
+      "tie_spacing_mm": 100.0
+    },
+    "curve_generation": {
+      "points": 401,
+      "max_strain": null,
+      "include_tension": true,
+      "include_compression": true
+    },
+    "provenance": {
+      "source": "Akkaya, Guner and Vecchio (2019)",
+      "citation": "ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143",
+      "source_location": "Table 2, equations 1-8; numerical validation L/D=5",
+      "specimen_or_profile": "Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm",
+      "calibration_status": "source_equation_validation_case"
+    }
+  }
+}

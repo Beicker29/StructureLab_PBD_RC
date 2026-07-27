@@ -16,3 +16,7 @@ class ModelNotImplementedError(StructureLabError, NotImplementedError):
 class RegistryError(StructureLabError):
     """Raised when the model registry receives invalid operations."""
 
+
+class MaterialDomainError(StructureLabError, ValueError):
+    """Raised when a material is evaluated outside its supported domain."""
+

@@ -1,0 +1,4 @@
+calculated_parameters:
+  elastic_ultimate_strain: 0.002865
+  nonlinear_strain_scale: 0.006635
+  yield_strain: null

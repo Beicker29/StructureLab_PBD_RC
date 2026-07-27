@@ -1,0 +1,180 @@
+# Caracterizacion de materiales
+
+La Etapa 2 organiza los modelos constitutivos por material y protocolo de carga. Actualmente implementa RDM 2019 para acero ductil y modelos monotonico y ciclico para acero no ductil.
+
+## Familias
+
+| Directorio | Material |
+|---|---|
+| `confined_concrete` | Concreto confinado |
+| `unconfined_concrete` | Concreto no confinado |
+| `ductile_reinforcing_steel` | Acero de refuerzo ductil |
+| `nonductile_reinforcing_steel` | Acero de refuerzo no ductil |
+
+Cada familia contiene:
+
+- `monotonic/`: modelos para historias de carga monotonica.
+- `cyclic/`: modelos para historias de carga ciclica.
+
+## Contrato de ubicacion
+
+El codigo de cada modelo debe ubicarse en:
+
+```text
+src/structurelab_pbd_rc/mechanics/materials/<material>/<behavior>/<model>/
+```
+
+Cada modelo tiene un unico JSON directamente bajo su familia y comportamiento:
+
+```text
+configs/stage_02/<material>/<monotonic|cyclic>/<model>.json
+```
+
+`configs/stage_02/` no admite archivos sueltos ni directorios diferentes de las cuatro familias. Cada familia debe contener exactamente `monotonic/` y `cyclic/`. Un JSON incluye:
+
+- `stage_id`, `enabled`, `title` y `units`;
+- `inputs.project_id`, `inputs.case_id` e `inputs.model_id`;
+- `inputs.parameters` y los controles particulares del modelo;
+- procedencia y estado de calibracion cuando corresponda.
+
+Los resultados se escriben en:
+
+```text
+outputs/stage_02/<project_id>/<case_id>/<behavior>/<material>/<model_id>/
+|-- data/
+|   |-- resolved_inputs.json
+|   |-- calculated_parameters.yaml
+|   |-- metrics.yaml
+|   |-- curve.csv
+|   `-- curve.xlsx
+|-- figures/
+|   `-- response.png
+`-- reports/
+    |-- model_report.yaml
+    `-- model_report.pdf
+```
+
+El ejecutor carga todos los JSON habilitados y agrupa sus modelos por `project_id/case_id`. Primero calcula y escribe cada caso en una carpeta temporal. Solo cuando todos sus modelos terminan correctamente reemplaza la carpeta del caso. Otros proyectos y casos existentes no se modifican.
+
+## Convenciones
+
+- Traccion: deformacion y esfuerzo positivos.
+- Los modelos con historia firmada representan compresion con deformacion y esfuerzo negativos.
+- RDM 2019 calcula internamente la compresion con magnitudes positivas. El CSV y la figura usan signos fisicos: traccion positiva y compresion negativa.
+- Longitud: `mm`.
+- Esfuerzo y modulo: `MPa`.
+- Deformacion: `mm/mm`.
+- Cada JSON concentra los parametros, unidades, procedencia y controles de un modelo.
+- Un modelo constitutivo no puede estar definido en mas de un JSON.
+
+## RDM 2019
+
+El modelo `steel_compression_rdm_2019_monotonic` implementa la Tabla 2 de Akkaya, Guner y Vecchio (2019). Representa:
+
+- la envolvente monotona de referencia del acero;
+- el inicio del pandeo inelastico para `L/D >= 5`;
+- la degradacion pospandeo bilineal;
+- el piso residual `0.2fy`.
+
+La envolvente de referencia usa:
+
+```text
+fs = Es*epsilon                         para epsilon <= epsilon_y
+fs = fy                                para epsilon_y < epsilon <= epsilon_sh
+fs = fu + (fy-fu)*((epsilon_u-epsilon)/(epsilon_u-epsilon_sh))^P
+```
+
+El parametro de pandeo es:
+
+```text
+rb = (L/D)*sqrt(fy/100)
+```
+
+`L/D` no es un dato de entrada. El JSON suministra `longitudinal_bar_diameter_mm`, el numero entero `buckling_intervals = n` y `tie_spacing_mm = s`. El modelo calcula `s/db`, `L = n*s` y `L/D = n*s/D`. Los campos derivados `l_over_d` y `unsupported_length_mm` se rechazan si aparecen en la configuracion.
+
+No se deduce `buckling_intervals` de la geometria de una seccion. La configuracion incluida es un caso de verificacion `L/D=5`; no activa RDM como perfil de produccion para una seccion no documentada.
+
+`curve_generation.include_tension` y `curve_generation.include_compression` controlan las ramas exportadas. Una rama de compresion solo se dibuja cuando el modelo la soporta y el input no la deshabilita.
+
+Los autores informan aplicabilidad amplia para `200 < fy < 900 MPa`, `10 < D < 36 mm`, `fu/fy < 2`, `P <= 4`, `epsilon_u > 14epsilon_y`, `8 < rb < 56` y `L/D >= 5`. El modelo emite advertencias cuando un caso de pandeo queda fuera de esos limites, sin alterar silenciosamente la respuesta.
+
+Para `L/D < 5`, no se activa pandeo RDM y la compresion coincide en magnitud con la envolvente de referencia. Para deformaciones mayores que `epsilon_su`, `stress_at_strain` devuelve `0.0`; la curva exportada termina exactamente en su propio `epsilon_su`.
+
+La implementacion RDM 2019 corresponde a una envolvente constitutiva uniaxial monotonica. No incluye reglas historicas ciclicas.
+
+Referencia: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). *Constitutive model for inelastic buckling behavior of reinforcing bars*. ACI Structural Journal, 116(3), 195-204. DOI `10.14359/51711143`.
+
+## Ramberg-Osgood modificado
+
+El modelo `modified_ramberg_osgood` implementa la envolvente monotonica:
+
+```text
+epsilon = sigma / Es + (eps_u - fu / Es) * (sigma / fu)^n
+```
+
+El dominio publicado que se usa es `0 <= sigma <= fu`, con `n = 20` y `Es = 200000 MPa`. La inversion `sigma(epsilon)` se realiza por biseccion acotada y la tangente se obtiene de la derivada analitica.
+
+La fuente publica los siguientes valores P2 en la Tabla 4 de Carrillo et al.:
+
+| Diametro [mm] | fu [MPa] | eps_u [mm/mm] |
+|---:|---:|---:|
+| 4 | 538 | 0.0124 |
+| 5 | 650 | 0.0113 |
+| 6 | 573 | 0.0095 |
+
+No se agrega una meseta de fluencia ni una rama descendente. El JSON incluido usa el perfil de 6 mm y deja `fy_MPa` nulo porque la curva publicada selecciona `fu` P2 y la deformacion ultima media; mezclar un `fy` de otro estadistico produciria un perfil no documentado.
+
+El modelo Ramberg-Osgood modificado implementado para malla electrosoldada representa la respuesta monotonica en traccion. La respuesta monotonica en compresion no cuenta con una calibracion especifica para malla NTC 5806; por defecto se considera no soportada. La opcion simetrica, si se activa, constituye una hipotesis prepandeo y no una validacion experimental.
+
+La politica opcional `symmetric_prebuckling_assumption` exige `compression_strain_limit`, justificacion y aceptacion explicita. No representa pandeo ni degradacion pospandeo.
+
+Fuente primaria: Carrillo et al., *Construction and Building Materials* 211 (2019), ecuacion 6 y tabla 4, DOI `10.1016/j.conbuildmat.2018.11.096`.
+
+## Menegotto-Pinto
+
+El modelo `menegotto_pinto` implementa las reglas de historia de Steel02:
+
+```text
+R = R0 * (1 - cR1 * xi / (cR2 + xi))
+```
+
+Mantiene estado trial y confirmado, detecta inversiones, actualiza las asintotas y permite `commit`, `revert` y `reset`. La historia se procesa en el orden suministrado, sin ordenar ni eliminar puntos repetidos.
+
+Los parametros `fy`, `Es`, `b`, `R0`, `cR1`, `cR2` y `a1` a `a4` son obligatorios. El repositorio no registra un perfil ciclico calibrado para NTC 5806 porque no se dispuso de la tabla completa de parametros finales de la publicacion primaria. La configuracion heredada incluida usa parametros sinteticos y su estado es `synthetic_algorithm_verification_only`.
+
+El modelo Menegotto-Pinto representa la respuesta axial ciclica dentro del rango y protocolo respaldados por la calibracion seleccionada. No representa por si solo pandeo, degradacion pospandeo, fractura por fatiga de bajo ciclo ni falla de soldaduras.
+
+El criterio opcional `strain_limit` es solamente un criterio de falla por deformacion. No debe interpretarse como fatiga de bajo ciclo. Fuera del rango de validez configurado la respuesta se marca como extrapolada y genera una advertencia.
+
+Fuentes de formulacion: documentacion y codigo fuente de OpenSees Steel02. Contexto experimental NTC 5806: Miranda-Giraldo et al., *Journal of Building Engineering* 117 (2026), articulo 114698; datos experimentales asociados en Zenodo 15330675.
+
+## Entradas y salidas
+
+Los JSON canonicos actuales son:
+
+```text
+configs/stage_02/ductile_reinforcing_steel/monotonic/steel_compression_rdm_2019_monotonic.json
+configs/stage_02/nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json
+configs/stage_02/nonductile_reinforcing_steel/cyclic/menegotto_pinto.json
+```
+
+Los dos modelos de acero no ductil comparten `project_id/case_id`, por lo que se procesan como un caso con ramas monotonica y ciclica. El archivo `model_report.yaml` de cada modelo incluye:
+
+- input completamente resuelto;
+- parametros calculados, incluidos `s_over_db`, `L/D` y `rb` cuando aplican;
+- metadatos, procedencia y estado de calibracion;
+- metricas de respuesta y advertencias;
+- rutas de todos los archivos generados.
+
+El CSV/XLSX conserva deformacion, esfuerzo, tangente, rama, sentido incremental, estado de traccion o compresion, inversiones, dominio, falla, fuente y calibracion. El PDF resume el modelo y anexa su figura de respuesta.
+
+## Reglas para nuevos modelos
+
+- No asumir valores por defecto de propiedades mecanicas o unidades.
+- Crear exactamente un JSON por modelo bajo su material y comportamiento.
+- Exigir `project_id`, `case_id`, `model_id` y `parameters` dentro de `inputs`.
+- Usar `mm`, `kN` y `MPa` como convencion base.
+- Mantener separadas las formulaciones monotonicas y ciclicas.
+- Usar identificadores seguros y evitar combinaciones o rutas duplicadas.
+- Agregar pruebas unitarias de ecuaciones y pruebas de integracion de artefactos.
+- Documentar la fuente tecnica y los limites de aplicacion de cada modelo.
