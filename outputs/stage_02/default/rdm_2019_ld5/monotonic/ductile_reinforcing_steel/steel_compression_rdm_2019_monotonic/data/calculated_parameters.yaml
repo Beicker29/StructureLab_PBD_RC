@@ -3,17 +3,34 @@ calculated_parameters:
   fu_mpa: 630.0
   elastic_modulus_mpa: 200000.0
   eps_y: 0.0021
+  epsilon_y: 0.0021
   epsilon_sh: 0.01
   epsilon_su: 0.1
   parameter_p: 4.0
   longitudinal_bar_diameter_mm: 20.0
-  buckling_intervals: 1
+  tie_bar_diameter_mm: 10.0
   tie_spacing_mm: 100.0
-  unsupported_length_mm: 100.0
+  effective_tie_leg_length_mm: 200.0
+  effective_tie_legs: 2
+  restrained_longitudinal_bars: 2
+  tie_steel_modulus_MPa: 200000.0
+  buckling_restraint_case: bending
   s_over_db: 5.0
+  L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+  tie_area_mm2: 78.53981633974483
+  longitudinal_bar_inertia_mm4: 7853.981633974483
+  reduced_flexural_rigidity_N_mm2: 804793631.2008746
+  effective_restrained_bars: 2
+  bar_normalized_stiffness_N_per_mm: 78394.21608523135
+  tie_stiffness_N_per_mm: 78539.81633974484
+  equivalent_stiffness_ratio: 1.0018572831234793
+  buckling_intervals: 1
+  unsupported_length_mm: 100.0
   L_over_D: 5.0
-  L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
   rb: 10.2469507659596
+  buckling_active: true
+  buckling_calculation_mode: rectangular_transverse_restraint
+  applicability_warnings: []
   rb_min: 10.2469507659596
   eps_i_0: 0.06600722780041512
   eps_i_max: 0.06600722780041512
@@ -25,7 +42,6 @@ calculated_parameters:
   f_i_mpa: 526.808257742687
   eps_ii: 0.09893274390933307
   residual_stress_mpa: 84.0
-  buckling_active: true
   special_alpha_case: false
   loading_type: monotonic
   sign_convention: compression_positive
@@ -41,8 +57,9 @@ calculated_parameters:
     l_over_d: '>= 5 for buckling activation'
   warnings: []
   provenance:
-    source: Akkaya, Guner and Vecchio (2019)
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
     citation: ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143
-    source_location: Table 2, equations 1-8; numerical validation L/D=5
-    specimen_or_profile: Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm
+    source_location: RDM equations and Table 2; unsupported-length calculation from User Bulletin 3
+    specimen_or_profile: 'Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm'
     calibration_status: source_equation_validation_case

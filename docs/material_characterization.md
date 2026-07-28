@@ -90,9 +90,61 @@ El parametro de pandeo es:
 rb = (L/D)*sqrt(fy/100)
 ```
 
-`L/D` no es un dato de entrada. El JSON suministra `longitudinal_bar_diameter_mm`, el numero entero `buckling_intervals = n` y `tie_spacing_mm = s`. El modelo calcula `s/db`, `L = n*s` y `L/D = n*s/D`. Los campos derivados `l_over_d` y `unsupported_length_mm` se rechazan si aparecen en la configuracion.
+`epsilon_y`, `buckling_intervals`, `unsupported_length_mm`, `L/D` y `rb` son resultados calculados. El JSON canonico suministra:
 
-No se deduce `buckling_intervals` de la geometria de una seccion. La configuracion incluida es un caso de verificacion `L/D=5`; no activa RDM como perfil de produccion para una seccion no documentada.
+- `longitudinal_bar_diameter_mm = D`;
+- `tie_bar_diameter_mm = dt`;
+- `tie_spacing_mm = s`;
+- `effective_tie_leg_length_mm = le`;
+- `effective_tie_legs = nl`;
+- `restrained_longitudinal_bars = nb`;
+- `tie_steel_modulus_MPa = Et`;
+- `buckling_restraint_case`, inicialmente `bending` o `pure_compression`.
+
+El usuario debe determinar la longitud efectiva de rama, las ramas efectivas, las barras restringidas y la direccion de pandeo a partir del detalle estructural. El programa no las deduce desde una imagen.
+
+El calculo se ejecuta una sola vez al construir el modelo:
+
+```text
+epsilon_y = fy/Es
+At = pi*dt^2/4
+I = pi*D^4/64
+ErI = 0.5*Es*I*sqrt(fy/400)
+k = pi^4*ErI/s^3
+nb_eff = nb                         para bending
+nb_eff = 2*nb                       para pure_compression
+kt = (Et*At/le)*(nl/nb_eff)
+keq = kt/k
+```
+
+La seleccion de `n` usa:
+
+| n | Intervalo de keq |
+|---:|---:|
+| 1 | `keq > 0.7500` |
+| 2 | `0.1649 < keq <= 0.7500` |
+| 3 | `0.0976 < keq <= 0.1649` |
+| 4 | `0.0448 < keq <= 0.0976` |
+| 5 | `0.0084 < keq <= 0.0448` |
+| 6 | `0.0063 < keq <= 0.0084` |
+| 7 | `0.0037 < keq <= 0.0063` |
+| 8 | `0.0031 < keq <= 0.0037` |
+| 9 | `0.0013 < keq <= 0.0031` |
+| 10 | `0.0009 <= keq <= 0.0013` |
+
+Un limite compartido se asigna al `n` mayor, que es la opcion conservadora. Para `keq < 0.0009` se genera un error; no se extrapola a modos mayores que 10. Una restriccion con mayor `kt` aumenta `keq` y solo puede reducir o mantener `n`.
+
+Finalmente:
+
+```text
+L = n*s
+L/D = n*s/D
+rb = (L/D)*sqrt(fy/100)
+```
+
+La configuracion incluida produce `keq=1.0018573`, `n=1`, `L=100 mm`, `L/D=5` y `rb=10.24695`. El procedimiento de rigidez implementado aplica inicialmente a secciones rectangulares con refuerzo transversal. Secciones circulares, losas, secciones sin refuerzo transversal y otras restricciones requieren estrategias independientes.
+
+Los casos antiguos que suministran `buckling_intervals` siguen funcionando en modo `legacy_explicit_buckling_intervals`, generan una advertencia de obsolescencia y no pueden mezclar ese valor con las nuevas variables fisicas.
 
 `curve_generation.include_tension` y `curve_generation.include_compression` controlan las ramas exportadas. Una rama de compresion solo se dibuja cuando el modelo la soporta y el input no la deshabilita.
 

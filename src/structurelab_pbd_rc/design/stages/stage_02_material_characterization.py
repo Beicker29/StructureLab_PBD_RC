@@ -241,25 +241,38 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
     }
     if isinstance(model, RDM2019MonotonicCompressionModel):
         controls = model.summary_parameters()
-        summary["rdm_inputs"] = {
+        summary["rdm_base_inputs"] = {
             key: controls[key]
             for key in (
                 "fy_mpa",
                 "fu_mpa",
                 "elastic_modulus_mpa",
-                "eps_y",
                 "epsilon_sh",
                 "epsilon_su",
                 "parameter_p",
                 "longitudinal_bar_diameter_mm",
-                "buckling_intervals",
+                "tie_bar_diameter_mm",
                 "tie_spacing_mm",
-                "unsupported_length_mm",
+                "effective_tie_leg_length_mm",
+                "effective_tie_legs",
+                "restrained_longitudinal_bars",
+                "tie_steel_modulus_MPa",
+                "buckling_restraint_case",
             )
         }
         summary["rdm_controls"] = {
             key: controls[key]
             for key in (
+                "epsilon_y",
+                "tie_area_mm2",
+                "longitudinal_bar_inertia_mm4",
+                "reduced_flexural_rigidity_N_mm2",
+                "effective_restrained_bars",
+                "bar_normalized_stiffness_N_per_mm",
+                "tie_stiffness_N_per_mm",
+                "equivalent_stiffness_ratio",
+                "buckling_intervals",
+                "unsupported_length_mm",
                 "L_over_D",
                 "L_over_D_source",
                 "rb",
@@ -322,8 +335,9 @@ def _report_payload(
         ]
     elif model == RDM2019MonotonicCompressionModel.model_id:
         equation = (
-            "RDM 2019 Table 2, Eqs. (1)-(8): reference tension envelope, "
-            "intermediate point and bilinear postbuckling degradation."
+            "Rectangular-restraint procedure: keq=kt/k, tabulated n, L=n*s and "
+            "L/D=(n*s)/D; RDM 2019 Table 2, Eqs. (1)-(8): reference tension "
+            "envelope, intermediate point and bilinear postbuckling degradation."
         )
         limitations = [
             (
@@ -334,6 +348,11 @@ def _report_payload(
                 "El calculo interno RDM usa magnitudes positivas de compresion. El CSV y la "
                 "figura exportan traccion con signo positivo y compresion con signo negativo; "
                 "no constituyen una historia ciclica."
+            ),
+            (
+                "El calculo de n implementado corresponde inicialmente a secciones "
+                "rectangulares con refuerzo transversal. Secciones circulares, losas y "
+                "otras configuraciones de restriccion requieren estrategias distintas."
             ),
         ]
         model_metadata = {
@@ -351,6 +370,9 @@ def _report_payload(
                 "rb": "8 < rb < 56",
                 "l_over_d": ">= 5 for buckling activation",
             },
+            "buckling_interval_boundary_convention": (
+                "A shared keq boundary is assigned to the larger n mode."
+            ),
         }
     else:
         raise ConfigError(f"Missing Stage 2 report definition for model {model!r}.")

@@ -14,10 +14,11 @@ metadata:
     strain: mm/mm
   source_json: D:\Users\byomayusa\Documents\GitHub\StructureLab_PBD_RC\configs\stage_02\ductile_reinforcing_steel\monotonic\steel_compression_rdm_2019_monotonic.json
   provenance:
-    source: Akkaya, Guner and Vecchio (2019)
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
     citation: ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143
-    source_location: Table 2, equations 1-8; numerical validation L/D=5
-    specimen_or_profile: Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm
+    source_location: RDM equations and Table 2; unsupported-length calculation from User Bulletin 3
+    specimen_or_profile: 'Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm'
     calibration_status: source_equation_validation_case
 resolved_inputs:
   label: RDM 2019 | L/D = 5
@@ -25,23 +26,28 @@ resolved_inputs:
     fy_MPa: 420.0
     fu_MPa: 630.0
     Es_MPa: 200000.0
-    epsilon_y: 0.0021
     epsilon_sh: 0.01
     epsilon_su: 0.1
     parameter_p: 4.0
     longitudinal_bar_diameter_mm: 20.0
-    buckling_intervals: 1
+    tie_bar_diameter_mm: 10.0
     tie_spacing_mm: 100.0
+    effective_tie_leg_length_mm: 200.0
+    effective_tie_legs: 2
+    restrained_longitudinal_bars: 2
+    tie_steel_modulus_MPa: 200000.0
+    buckling_restraint_case: bending
   curve_generation:
     points: 401
     max_strain: null
     include_tension: true
     include_compression: true
   provenance:
-    source: Akkaya, Guner and Vecchio (2019)
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
     citation: ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143
-    source_location: Table 2, equations 1-8; numerical validation L/D=5
-    specimen_or_profile: Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm
+    source_location: RDM equations and Table 2; unsupported-length calculation from User Bulletin 3
+    specimen_or_profile: 'Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm'
     calibration_status: source_equation_validation_case
   case_id: rdm_2019_ld5
   material: ductile_reinforcing_steel
@@ -56,17 +62,34 @@ calculated_parameters:
   fu_mpa: 630.0
   elastic_modulus_mpa: 200000.0
   eps_y: 0.0021
+  epsilon_y: 0.0021
   epsilon_sh: 0.01
   epsilon_su: 0.1
   parameter_p: 4.0
   longitudinal_bar_diameter_mm: 20.0
-  buckling_intervals: 1
+  tie_bar_diameter_mm: 10.0
   tie_spacing_mm: 100.0
-  unsupported_length_mm: 100.0
+  effective_tie_leg_length_mm: 200.0
+  effective_tie_legs: 2
+  restrained_longitudinal_bars: 2
+  tie_steel_modulus_MPa: 200000.0
+  buckling_restraint_case: bending
   s_over_db: 5.0
+  L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+  tie_area_mm2: 78.53981633974483
+  longitudinal_bar_inertia_mm4: 7853.981633974483
+  reduced_flexural_rigidity_N_mm2: 804793631.2008746
+  effective_restrained_bars: 2
+  bar_normalized_stiffness_N_per_mm: 78394.21608523135
+  tie_stiffness_N_per_mm: 78539.81633974484
+  equivalent_stiffness_ratio: 1.0018572831234793
+  buckling_intervals: 1
+  unsupported_length_mm: 100.0
   L_over_D: 5.0
-  L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
   rb: 10.2469507659596
+  buckling_active: true
+  buckling_calculation_mode: rectangular_transverse_restraint
+  applicability_warnings: []
   rb_min: 10.2469507659596
   eps_i_0: 0.06600722780041512
   eps_i_max: 0.06600722780041512
@@ -78,7 +101,6 @@ calculated_parameters:
   f_i_mpa: 526.808257742687
   eps_ii: 0.09893274390933307
   residual_stress_mpa: 84.0
-  buckling_active: true
   special_alpha_case: false
   loading_type: monotonic
   sign_convention: compression_positive
@@ -94,10 +116,11 @@ calculated_parameters:
     l_over_d: '>= 5 for buckling activation'
   warnings: []
   provenance:
-    source: Akkaya, Guner and Vecchio (2019)
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
     citation: ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143
-    source_location: Table 2, equations 1-8; numerical validation L/D=5
-    specimen_or_profile: Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm
+    source_location: RDM equations and Table 2; unsupported-length calculation from User Bulletin 3
+    specimen_or_profile: 'Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm'
     calibration_status: source_equation_validation_case
 metrics:
   case_id: rdm_2019_ld5
@@ -114,21 +137,34 @@ metrics:
   response_branches:
     - compression
     - tension
-  rdm_inputs:
+  rdm_base_inputs:
     fy_mpa: 420.0
     fu_mpa: 630.0
     elastic_modulus_mpa: 200000.0
-    eps_y: 0.0021
     epsilon_sh: 0.01
     epsilon_su: 0.1
     parameter_p: 4.0
     longitudinal_bar_diameter_mm: 20.0
-    buckling_intervals: 1
+    tie_bar_diameter_mm: 10.0
     tie_spacing_mm: 100.0
-    unsupported_length_mm: 100.0
+    effective_tie_leg_length_mm: 200.0
+    effective_tie_legs: 2
+    restrained_longitudinal_bars: 2
+    tie_steel_modulus_MPa: 200000.0
+    buckling_restraint_case: bending
   rdm_controls:
+    epsilon_y: 0.0021
+    tie_area_mm2: 78.53981633974483
+    longitudinal_bar_inertia_mm4: 7853.981633974483
+    reduced_flexural_rigidity_N_mm2: 804793631.2008746
+    effective_restrained_bars: 2
+    bar_normalized_stiffness_N_per_mm: 78394.21608523135
+    tie_stiffness_N_per_mm: 78539.81633974484
+    equivalent_stiffness_ratio: 1.0018572831234793
+    buckling_intervals: 1
+    unsupported_length_mm: 100.0
     L_over_D: 5.0
-    L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
+    L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
     rb: 10.2469507659596
     rb_min: 10.2469507659596
     eps_i_0: 0.06600722780041512
@@ -153,8 +189,8 @@ technical_basis:
     length: mm
     stress: MPa
     strain: mm/mm
-  equation: 'RDM 2019 Table 2, Eqs. (1)-(8): reference tension envelope, intermediate point and bilinear
-    postbuckling degradation.'
+  equation: 'Rectangular-restraint procedure: keq=kt/k, tabulated n, L=n*s and L/D=(n*s)/D; RDM 2019 Table
+    2, Eqs. (1)-(8): reference tension envelope, intermediate point and bilinear postbuckling degradation.'
   case_summaries:
     - case_id: rdm_2019_ld5
       diameter_mm: 20.0
@@ -170,21 +206,34 @@ technical_basis:
       response_branches:
         - compression
         - tension
-      rdm_inputs:
+      rdm_base_inputs:
         fy_mpa: 420.0
         fu_mpa: 630.0
         elastic_modulus_mpa: 200000.0
-        eps_y: 0.0021
         epsilon_sh: 0.01
         epsilon_su: 0.1
         parameter_p: 4.0
         longitudinal_bar_diameter_mm: 20.0
-        buckling_intervals: 1
+        tie_bar_diameter_mm: 10.0
         tie_spacing_mm: 100.0
-        unsupported_length_mm: 100.0
+        effective_tie_leg_length_mm: 200.0
+        effective_tie_legs: 2
+        restrained_longitudinal_bars: 2
+        tie_steel_modulus_MPa: 200000.0
+        buckling_restraint_case: bending
       rdm_controls:
+        epsilon_y: 0.0021
+        tie_area_mm2: 78.53981633974483
+        longitudinal_bar_inertia_mm4: 7853.981633974483
+        reduced_flexural_rigidity_N_mm2: 804793631.2008746
+        effective_restrained_bars: 2
+        bar_normalized_stiffness_N_per_mm: 78394.21608523135
+        tie_stiffness_N_per_mm: 78539.81633974484
+        equivalent_stiffness_ratio: 1.0018572831234793
+        buckling_intervals: 1
+        unsupported_length_mm: 100.0
         L_over_D: 5.0
-        L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
+        L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
         rb: 10.2469507659596
         rb_min: 10.2469507659596
         eps_i_0: 0.06600722780041512
@@ -205,6 +254,8 @@ technical_basis:
       reglas historicas ciclicas.
     - El calculo interno RDM usa magnitudes positivas de compresion. El CSV y la figura exportan traccion
       con signo positivo y compresion con signo negativo; no constituyen una historia ciclica.
+    - El calculo de n implementado corresponde inicialmente a secciones rectangulares con refuerzo transversal.
+      Secciones circulares, losas y otras configuraciones de restriccion requieren estrategias distintas.
   model_metadata:
     reference: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling
       behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. DOI 10.14359/51711143.
@@ -216,6 +267,7 @@ technical_basis:
       epsilon_su_over_epsilon_y: '> 14'
       rb: 8 < rb < 56
       l_over_d: '>= 5 for buckling activation'
+    buckling_interval_boundary_convention: A shared keq boundary is assigned to the larger n mode.
   warnings: []
 warnings: []
 generated_files:

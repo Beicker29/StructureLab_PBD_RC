@@ -81,6 +81,20 @@ def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
     assert config["inputs"]["project_id"] == "default"
     assert config["inputs"]["case_id"] == "rdm_2019_ld5"
     assert config["inputs"]["model_id"] == "steel_compression_rdm_2019_monotonic"
-    assert config["inputs"]["parameters"]["buckling_intervals"] == 1
-    assert config["inputs"]["parameters"]["tie_spacing_mm"] == 100.0
-    assert "l_over_d" not in config["inputs"]["parameters"]
+    parameters = config["inputs"]["parameters"]
+    assert parameters["tie_spacing_mm"] == 100.0
+    assert parameters["tie_bar_diameter_mm"] == 10.0
+    assert parameters["effective_tie_leg_length_mm"] == 200.0
+    assert parameters["effective_tie_legs"] == 2
+    assert parameters["restrained_longitudinal_bars"] == 2
+    assert parameters["tie_steel_modulus_MPa"] == 200000.0
+    assert parameters["buckling_restraint_case"] == "bending"
+    for derived in (
+        "epsilon_y",
+        "buckling_intervals",
+        "unsupported_length_mm",
+        "l_over_d",
+        "L_over_D",
+        "rb",
+    ):
+        assert derived not in parameters

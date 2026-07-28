@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import warnings
+
 import pytest
 
 from structurelab_pbd_rc.core.exceptions import ConfigError, MaterialDomainError
@@ -36,7 +38,9 @@ def _parameters(**overrides: object) -> RDM2019Parameters:
         "provenance": PROVENANCE,
     }
     values.update(overrides)
-    return RDM2019Parameters(**values)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        return RDM2019Parameters(**values)
 
 
 def _model(l_over_d: float) -> RDM2019MonotonicCompressionModel:
@@ -56,14 +60,13 @@ def test_input_validation_rejects_inconsistent_mechanical_properties() -> None:
         _parameters(epsilon_y=0.0022)
 
 
-def test_l_over_d_is_derived_only_from_n_s_and_d() -> None:
+def test_legacy_l_over_d_is_derived_only_from_n_s_and_d() -> None:
     parameters = _parameters(buckling_intervals=2, tie_spacing_mm=50.0)
 
     assert parameters.resolved_unsupported_length_mm == 100.0
     assert parameters.resolved_l_over_d == 5.0
     assert (
-        parameters.l_over_d_source
-        == "buckling_intervals*tie_spacing_mm/diameter"
+        parameters.l_over_d_source == "legacy input n; L=n*s; L/D=(n*s)/D"
     )
 
     with pytest.raises(ConfigError, match="positive integer"):

@@ -128,12 +128,40 @@ def test_joint_artifacts(tmp_path: Path) -> None:
     resolved = json.loads(
         (rdm_root / "data/resolved_inputs.json").read_text(encoding="utf-8")
     )
-    assert report["calculated_parameters"]["s_over_db"] == 5.0
-    assert report["calculated_parameters"]["L_over_D"] == 5.0
+    calculated = report["calculated_parameters"]
+    assert calculated["epsilon_y"] == pytest.approx(0.0021)
+    assert calculated["tie_area_mm2"] == pytest.approx(78.5398163397)
+    assert calculated["longitudinal_bar_inertia_mm4"] == pytest.approx(
+        7853.9816339745
+    )
+    assert calculated["reduced_flexural_rigidity_N_mm2"] == pytest.approx(
+        804793631.2009
+    )
+    assert calculated["bar_normalized_stiffness_N_per_mm"] == pytest.approx(
+        78394.2160852
+    )
+    assert calculated["tie_stiffness_N_per_mm"] == pytest.approx(78539.8163397)
+    assert calculated["equivalent_stiffness_ratio"] == pytest.approx(
+        1.0018572831
+    )
+    assert calculated["buckling_intervals"] == 1
+    assert calculated["unsupported_length_mm"] == 100.0
+    assert calculated["s_over_db"] == 5.0
+    assert calculated["L_over_D"] == 5.0
+    assert calculated["rb"] == pytest.approx(10.2469507660)
+    assert calculated["buckling_active"] is True
     assert report["metrics"]["response_branches"] == ["compression", "tension"]
     assert resolved["project_id"] == "default"
     assert resolved["case_id"] == "rdm_2019_ld5"
     assert resolved["model_id"] == "steel_compression_rdm_2019_monotonic"
+    raw_parameters = resolved["raw"]["inputs"]["parameters"]
+    assert "epsilon_y" not in raw_parameters
+    assert "buckling_intervals" not in raw_parameters
+
+    with (rdm_root / "data/curve.csv").open(encoding="utf-8", newline="") as stream:
+        curve_rows = list(csv.DictReader(stream))
+    assert max(float(row["strain"]) for row in curve_rows) == pytest.approx(0.10)
+    assert min(float(row["strain"]) for row in curve_rows) == pytest.approx(-0.10)
 
 
 def test_case_replace_preserves_other_cases(tmp_path: Path) -> None:
@@ -202,12 +230,18 @@ def test_more_than_one_json_per_model_is_rejected(tmp_path: Path) -> None:
     duplicate = original.with_name("duplicate.json")
     shutil.copy2(original, duplicate)
     duplicate_config = json.loads(duplicate.read_text(encoding="utf-8"))
+    duplicate_config["enabled"] = False
     duplicate_config["inputs"]["project_id"] = "another_project"
     duplicate_config["inputs"]["case_id"] = "another_case"
     duplicate.write_text(json.dumps(duplicate_config), encoding="utf-8")
 
     with pytest.raises(ConfigError, match="Only one JSON file"):
         load_enabled_stage_02_inputs(config_root)
+
+
+def test_single_json_path_is_rejected() -> None:
+    with pytest.raises(ConfigError, match="directory containing all model JSON"):
+        load_enabled_stage_02_inputs(MRO_DB6)
 
 
 def test_case_insensitive_identifier_collision_is_rejected(tmp_path: Path) -> None:

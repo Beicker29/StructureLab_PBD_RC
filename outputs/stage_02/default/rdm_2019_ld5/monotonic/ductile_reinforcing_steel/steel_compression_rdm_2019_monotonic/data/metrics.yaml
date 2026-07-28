@@ -13,21 +13,34 @@ metrics:
   response_branches:
     - compression
     - tension
-  rdm_inputs:
+  rdm_base_inputs:
     fy_mpa: 420.0
     fu_mpa: 630.0
     elastic_modulus_mpa: 200000.0
-    eps_y: 0.0021
     epsilon_sh: 0.01
     epsilon_su: 0.1
     parameter_p: 4.0
     longitudinal_bar_diameter_mm: 20.0
-    buckling_intervals: 1
+    tie_bar_diameter_mm: 10.0
     tie_spacing_mm: 100.0
-    unsupported_length_mm: 100.0
+    effective_tie_leg_length_mm: 200.0
+    effective_tie_legs: 2
+    restrained_longitudinal_bars: 2
+    tie_steel_modulus_MPa: 200000.0
+    buckling_restraint_case: bending
   rdm_controls:
+    epsilon_y: 0.0021
+    tie_area_mm2: 78.53981633974483
+    longitudinal_bar_inertia_mm4: 7853.981633974483
+    reduced_flexural_rigidity_N_mm2: 804793631.2008746
+    effective_restrained_bars: 2
+    bar_normalized_stiffness_N_per_mm: 78394.21608523135
+    tie_stiffness_N_per_mm: 78539.81633974484
+    equivalent_stiffness_ratio: 1.0018572831234793
+    buckling_intervals: 1
+    unsupported_length_mm: 100.0
     L_over_D: 5.0
-    L_over_D_source: buckling_intervals*tie_spacing_mm/diameter
+    L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
     rb: 10.2469507659596
     rb_min: 10.2469507659596
     eps_i_0: 0.06600722780041512

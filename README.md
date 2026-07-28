@@ -77,7 +77,7 @@ Modelos implementados para `nonductile_reinforcing_steel`:
 
 Modelo implementado para `ductile_reinforcing_steel`:
 
-- `monotonic/steel_compression_rdm_2019_monotonic`: envolvente de traccion de referencia y envolvente RDM 2019 de compresion con pandeo inelastico y degradacion pospandeo. El modelo calcula `L/D = n*s/D` a partir del numero de intervalos, espaciamiento transversal y diametro; `L/D` no se acepta como input.
+- `monotonic/steel_compression_rdm_2019_monotonic`: envolvente de traccion de referencia y envolvente RDM 2019 de compresion con pandeo inelastico y degradacion pospandeo. Para restriccion transversal rectangular calcula `epsilon_y`, las rigideces `k` y `kt`, `keq=kt/k`, el modo `n`, `L=n*s`, `L/D` y `rb` a partir de variables fisicas. `epsilon_y`, `buckling_intervals`, `L/D` y `rb` no son inputs canonicos.
 
 ## Entorno virtual
 

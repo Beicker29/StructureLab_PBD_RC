@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from math import isclose, isfinite, sqrt
 from typing import Any, Mapping
+from warnings import warn
 
 from structurelab_pbd_rc.core.exceptions import ConfigError, MaterialDomainError
 from structurelab_pbd_rc.core.validation import require_keys
@@ -15,6 +16,11 @@ from structurelab_pbd_rc.mechanics.materials.common import (
     required_float,
 )
 from structurelab_pbd_rc.mechanics.materials.protocols import linear_strain_vector
+from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic.rdm_2019.buckling_length import (
+    LEGACY_BUCKLING_WARNING,
+    UnsupportedBucklingLengthCalculator,
+    UnsupportedBucklingLengthResult,
+)
 
 
 RDM_REFERENCE = (
@@ -34,13 +40,21 @@ class RDM2019Parameters:
     epsilon_sh: float
     epsilon_su: float
     longitudinal_bar_diameter_mm: float
-    buckling_intervals: int
     tie_spacing_mm: float
     provenance: MaterialProvenance
-    epsilon_y: float | None = None
     parameter_p: float = 4.0
-    _resolved_l_over_d: float = field(init=False, repr=False)
-    _resolved_unsupported_length_mm: float = field(init=False, repr=False)
+    tie_bar_diameter_mm: float | None = None
+    effective_tie_leg_length_mm: float | None = None
+    effective_tie_legs: int | None = None
+    restrained_longitudinal_bars: int | None = None
+    tie_steel_modulus_mpa: float | None = None
+    buckling_restraint_case: str | None = None
+    buckling_intervals: int | None = None
+    epsilon_y: float | None = None
+    _buckling_result: UnsupportedBucklingLengthResult = field(
+        init=False,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         values = (
@@ -63,54 +77,124 @@ class RDM2019Parameters:
             raise ConfigError("parameters.longitudinal_bar_diameter_mm must be positive.")
         if self.parameter_p not in {0.0, 1.0, 4.0}:
             raise ConfigError("parameters.parameter_p must be one of 0, 1 or 4 per RDM Table 2.")
-        if (
-            isinstance(self.buckling_intervals, bool)
-            or not float(self.buckling_intervals).is_integer()
-            or self.buckling_intervals <= 0
-        ):
-            raise ConfigError("parameters.buckling_intervals must be a positive integer.")
-        object.__setattr__(self, "buckling_intervals", int(self.buckling_intervals))
         if self.tie_spacing_mm <= 0.0:
             raise ConfigError("parameters.tie_spacing_mm must be positive.")
 
-        expected_epsilon_y = self.fy_mpa / self.elastic_modulus_mpa
-        epsilon_y = expected_epsilon_y if self.epsilon_y is None else self.epsilon_y
-        if not isfinite(epsilon_y) or epsilon_y <= 0.0:
-            raise ConfigError("parameters.epsilon_y must be positive and finite.")
-        if not isclose(
-            epsilon_y,
-            expected_epsilon_y,
-            rel_tol=1.0e-9,
-            abs_tol=1.0e-12,
-        ):
-            raise ConfigError("parameters.epsilon_y must be consistent with fy_MPa / Es_MPa.")
+        physical_geometry = (
+            self.tie_bar_diameter_mm,
+            self.effective_tie_leg_length_mm,
+            self.effective_tie_legs,
+            self.restrained_longitudinal_bars,
+            self.tie_steel_modulus_mpa,
+            self.buckling_restraint_case,
+        )
+        has_physical_geometry = any(value is not None for value in physical_geometry)
+        has_complete_physical_geometry = all(
+            value is not None for value in physical_geometry
+        )
+        if has_physical_geometry and self.buckling_intervals is not None:
+            raise ConfigError(
+                "parameters cannot combine buckling_intervals with physical "
+                "transverse-restraint variables."
+            )
+        if has_physical_geometry and self.epsilon_y is not None:
+            raise ConfigError(
+                "parameters.epsilon_y is derived from fy_MPa / Es_MPa for physical "
+                "transverse-restraint inputs."
+            )
+        if has_physical_geometry and not has_complete_physical_geometry:
+            raise ConfigError(
+                "Physical RDM restraint geometry requires tie_bar_diameter_mm, "
+                "effective_tie_leg_length_mm, effective_tie_legs, "
+                "restrained_longitudinal_bars, tie_steel_modulus_MPa and "
+                "buckling_restraint_case."
+            )
+
+        if has_complete_physical_geometry:
+            assert self.tie_bar_diameter_mm is not None
+            assert self.effective_tie_leg_length_mm is not None
+            assert self.effective_tie_legs is not None
+            assert self.restrained_longitudinal_bars is not None
+            assert self.tie_steel_modulus_mpa is not None
+            assert self.buckling_restraint_case is not None
+            buckling_result = UnsupportedBucklingLengthCalculator.calculate(
+                fy_mpa=self.fy_mpa,
+                elastic_modulus_mpa=self.elastic_modulus_mpa,
+                longitudinal_bar_diameter_mm=self.longitudinal_bar_diameter_mm,
+                tie_bar_diameter_mm=self.tie_bar_diameter_mm,
+                tie_spacing_mm=self.tie_spacing_mm,
+                effective_tie_leg_length_mm=self.effective_tie_leg_length_mm,
+                effective_tie_legs=self.effective_tie_legs,
+                restrained_longitudinal_bars=self.restrained_longitudinal_bars,
+                tie_steel_modulus_mpa=self.tie_steel_modulus_mpa,
+                buckling_restraint_case=self.buckling_restraint_case,
+            )
+            object.__setattr__(
+                self,
+                "effective_tie_legs",
+                int(self.effective_tie_legs),
+            )
+            object.__setattr__(
+                self,
+                "restrained_longitudinal_bars",
+                int(self.restrained_longitudinal_bars),
+            )
+        else:
+            if self.buckling_intervals is None:
+                raise ConfigError(
+                    "RDM geometry requires complete physical restraint variables. "
+                    "Legacy inputs may provide buckling_intervals explicitly."
+                )
+            warn(LEGACY_BUCKLING_WARNING, DeprecationWarning, stacklevel=2)
+            buckling_result = (
+                UnsupportedBucklingLengthCalculator.calculate_legacy(
+                    fy_mpa=self.fy_mpa,
+                    elastic_modulus_mpa=self.elastic_modulus_mpa,
+                    longitudinal_bar_diameter_mm=(
+                        self.longitudinal_bar_diameter_mm
+                    ),
+                    tie_spacing_mm=self.tie_spacing_mm,
+                    buckling_intervals=self.buckling_intervals,
+                )
+            )
+            if self.epsilon_y is not None and not isclose(
+                self.epsilon_y,
+                buckling_result.epsilon_y,
+                rel_tol=1.0e-9,
+                abs_tol=1.0e-12,
+            ):
+                raise ConfigError(
+                    "parameters.epsilon_y must be consistent with fy_MPa / Es_MPa."
+                )
+
+        epsilon_y = buckling_result.epsilon_y
         if not 0.0 < epsilon_y < self.epsilon_sh < self.epsilon_su:
             raise ConfigError("parameters must satisfy 0 < epsilon_y < epsilon_sh < epsilon_su.")
         object.__setattr__(self, "epsilon_y", epsilon_y)
+        object.__setattr__(
+            self,
+            "buckling_intervals",
+            buckling_result.buckling_intervals,
+        )
+        object.__setattr__(self, "_buckling_result", buckling_result)
 
-        unsupported_length = self.buckling_intervals * self.tie_spacing_mm
-        object.__setattr__(
-            self,
-            "_resolved_l_over_d",
-            unsupported_length / self.longitudinal_bar_diameter_mm,
-        )
-        object.__setattr__(
-            self,
-            "_resolved_unsupported_length_mm",
-            unsupported_length,
-        )
+    @property
+    def buckling_result(self) -> UnsupportedBucklingLengthResult:
+        return self._buckling_result
 
     @property
     def resolved_l_over_d(self) -> float:
-        return self._resolved_l_over_d
+        return self._buckling_result.l_over_d
 
     @property
     def resolved_unsupported_length_mm(self) -> float:
-        return self._resolved_unsupported_length_mm
+        return self._buckling_result.unsupported_length_mm
 
     @property
     def l_over_d_source(self) -> str:
-        return "buckling_intervals*tie_spacing_mm/diameter"
+        if self._buckling_result.calculation_mode == "legacy_explicit_buckling_intervals":
+            return "legacy input n; L=n*s; L/D=(n*s)/D"
+        return "keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D"
 
     @property
     def diameter_mm(self) -> float:
@@ -138,13 +222,70 @@ class RDM2019Parameters:
         if not all(isinstance(item, Mapping) for item in (parameters, provenance)):
             raise ConfigError("parameters and provenance must be objects.")
         forbidden_geometry = {
-            key for key in ("l_over_d", "unsupported_length_mm") if key in parameters
+            key
+            for key in (
+                "l_over_d",
+                "L_over_D",
+                "unsupported_length_mm",
+                "rb",
+                "tie_area_mm2",
+                "longitudinal_bar_inertia_mm4",
+                "reduced_flexural_rigidity_N_mm2",
+                "effective_restrained_bars",
+                "bar_normalized_stiffness_N_per_mm",
+                "tie_stiffness_N_per_mm",
+                "equivalent_stiffness_ratio",
+                "buckling_active",
+            )
+            if key in parameters
         }
         if forbidden_geometry:
             names = ", ".join(sorted(forbidden_geometry))
             raise ConfigError(
                 f"RDM geometry cannot receive derived values ({names}); provide "
-                "buckling_intervals, tie_spacing_mm and longitudinal_bar_diameter_mm."
+                "physical transverse-restraint variables."
+            )
+        for integer_key in (
+            "effective_tie_legs",
+            "restrained_longitudinal_bars",
+            "buckling_intervals",
+        ):
+            if isinstance(parameters.get(integer_key), bool):
+                raise ConfigError(
+                    f"parameters.{integer_key} must be a positive integer."
+                )
+        physical_geometry_keys = (
+            "tie_bar_diameter_mm",
+            "effective_tie_leg_length_mm",
+            "effective_tie_legs",
+            "restrained_longitudinal_bars",
+            "tie_steel_modulus_MPa",
+            "buckling_restraint_case",
+        )
+        has_physical_geometry = any(
+            key in parameters for key in physical_geometry_keys
+        )
+        if has_physical_geometry:
+            require_keys(
+                parameters,
+                physical_geometry_keys,
+                context="parameters",
+            )
+            conflicting = {
+                key
+                for key in ("epsilon_y", "buckling_intervals")
+                if key in parameters
+            }
+            if conflicting:
+                names = ", ".join(sorted(conflicting))
+                raise ConfigError(
+                    "Physical RDM restraint inputs cannot be combined with "
+                    f"derived or legacy values: {names}."
+                )
+        elif "buckling_intervals" not in parameters:
+            raise ConfigError(
+                "parameters requires complete physical transverse-restraint "
+                "variables; legacy cases may provide buckling_intervals."
             )
         return cls(
             fy_mpa=required_float(parameters, "fy_MPa", context="parameters"),
@@ -159,14 +300,44 @@ class RDM2019Parameters:
                 "longitudinal_bar_diameter_mm",
                 context="parameters",
             ),
-            buckling_intervals=required_float(
-                parameters,
-                "buckling_intervals",
-                context="parameters",
-            ),
             tie_spacing_mm=required_float(
                 parameters,
                 "tie_spacing_mm",
+                context="parameters",
+            ),
+            tie_bar_diameter_mm=optional_float(
+                parameters,
+                "tie_bar_diameter_mm",
+                context="parameters",
+            ),
+            effective_tie_leg_length_mm=optional_float(
+                parameters,
+                "effective_tie_leg_length_mm",
+                context="parameters",
+            ),
+            effective_tie_legs=optional_float(
+                parameters,
+                "effective_tie_legs",
+                context="parameters",
+            ),
+            restrained_longitudinal_bars=optional_float(
+                parameters,
+                "restrained_longitudinal_bars",
+                context="parameters",
+            ),
+            tie_steel_modulus_mpa=optional_float(
+                parameters,
+                "tie_steel_modulus_MPa",
+                context="parameters",
+            ),
+            buckling_restraint_case=(
+                None
+                if "buckling_restraint_case" not in parameters
+                else str(parameters["buckling_restraint_case"])
+            ),
+            buckling_intervals=optional_float(
+                parameters,
+                "buckling_intervals",
                 context="parameters",
             ),
             provenance=MaterialProvenance.from_mapping(provenance),
@@ -189,12 +360,11 @@ class RDM2019MonotonicCompressionModel:
     def buckling_active(self) -> bool:
         """RDM activates at the inclusive L/D threshold from Table 2."""
 
-        return self.parameters.resolved_l_over_d >= 5.0
+        return self.parameters.buckling_result.buckling_active
 
     @property
     def rb(self) -> float:
-        p = self.parameters
-        return p.resolved_l_over_d * sqrt(p.fy_mpa / 100.0)
+        return self.parameters.buckling_result.rb
 
     @property
     def rb_min(self) -> float:
@@ -352,25 +522,21 @@ class RDM2019MonotonicCompressionModel:
     def applicability_warnings(self) -> tuple[str, ...]:
         """Report deviations from the broad ranges stated by the authors."""
 
-        if not self.buckling_active:
-            return ()
         p = self.parameters
         assert p.epsilon_y is not None
         checks = (
-            (200.0 < p.fy_mpa < 900.0, "fy is outside the reported 200 < fy < 900 MPa range."),
-            (
-                10.0 < p.longitudinal_bar_diameter_mm < 36.0,
-                "Bar diameter is outside the reported 10 < D < 36 mm range.",
-            ),
             (p.fu_mpa / p.fy_mpa < 2.0, "fu/fy is outside the reported fu/fy < 2 range."),
             (p.parameter_p <= 4.0, "P is outside the reported P <= 4 range."),
             (
                 p.epsilon_su > 14.0 * p.epsilon_y,
                 "epsilon_su is outside the reported epsilon_su > 14 epsilon_y range.",
             ),
-            (8.0 < self.rb < 56.0, "rb is outside the reported 8 < rb < 56 range."),
         )
-        return tuple(message for valid, message in checks if not valid)
+        warnings = [
+            *p.buckling_result.applicability_warnings,
+            *(message for valid, message in checks if not valid),
+        ]
+        return tuple(dict.fromkeys(warnings))
 
     def stress_at_strain(self, strain: float) -> float:
         """Return positive compressive stress magnitude for positive strain magnitude."""
@@ -552,22 +718,27 @@ class RDM2019MonotonicCompressionModel:
         """Expose inputs, derived controls, applicability and provenance."""
 
         p = self.parameters
+        buckling = p.buckling_result.as_dict()
         return {
             "fy_mpa": p.fy_mpa,
             "fu_mpa": p.fu_mpa,
             "elastic_modulus_mpa": p.elastic_modulus_mpa,
             "eps_y": p.epsilon_y,
+            "epsilon_y": p.epsilon_y,
             "epsilon_sh": p.epsilon_sh,
             "epsilon_su": p.epsilon_su,
             "parameter_p": p.parameter_p,
             "longitudinal_bar_diameter_mm": p.longitudinal_bar_diameter_mm,
-            "buckling_intervals": p.buckling_intervals,
+            "tie_bar_diameter_mm": p.tie_bar_diameter_mm,
             "tie_spacing_mm": p.tie_spacing_mm,
-            "unsupported_length_mm": p.resolved_unsupported_length_mm,
+            "effective_tie_leg_length_mm": p.effective_tie_leg_length_mm,
+            "effective_tie_legs": p.effective_tie_legs,
+            "restrained_longitudinal_bars": p.restrained_longitudinal_bars,
+            "tie_steel_modulus_MPa": p.tie_steel_modulus_mpa,
+            "buckling_restraint_case": buckling["buckling_restraint_case"],
             "s_over_db": p.tie_spacing_mm / p.longitudinal_bar_diameter_mm,
-            "L_over_D": p.resolved_l_over_d,
             "L_over_D_source": p.l_over_d_source,
-            "rb": self.rb,
+            **buckling,
             "rb_min": self.rb_min,
             "eps_i_0": self.epsilon_i_0,
             "eps_i_max": self.epsilon_i_max,

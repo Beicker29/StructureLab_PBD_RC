@@ -12,13 +12,17 @@
       "fy_MPa": 420.0,
       "fu_MPa": 630.0,
       "Es_MPa": 200000.0,
-      "epsilon_y": 0.0021,
       "epsilon_sh": 0.01,
       "epsilon_su": 0.10,
       "parameter_p": 4.0,
       "longitudinal_bar_diameter_mm": 20.0,
-      "buckling_intervals": 1,
-      "tie_spacing_mm": 100.0
+      "tie_bar_diameter_mm": 10.0,
+      "tie_spacing_mm": 100.0,
+      "effective_tie_leg_length_mm": 200.0,
+      "effective_tie_legs": 2,
+      "restrained_longitudinal_bars": 2,
+      "tie_steel_modulus_MPa": 200000.0,
+      "buckling_restraint_case": "bending"
     },
     "curve_generation": {
       "points": 401,
@@ -27,10 +31,10 @@
       "include_compression": true
     },
     "provenance": {
-      "source": "Akkaya, Guner and Vecchio (2019)",
+      "source": "Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure documented by Salgado and Guner",
       "citation": "ACI Structural Journal 116(3), 195-204; DOI 10.14359/51711143",
-      "source_location": "Table 2, equations 1-8; numerical validation L/D=5",
-      "specimen_or_profile": "Synthetic equation-verification bar, D=20 mm, n=1, s=100 mm",
+      "source_location": "RDM equations and Table 2; unsupported-length calculation from User Bulletin 3",
+      "specimen_or_profile": "Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm",
       "calibration_status": "source_equation_validation_case"
     }
   }
