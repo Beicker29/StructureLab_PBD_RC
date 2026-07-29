@@ -143,6 +143,30 @@ def test_l_over_d_twelve_matches_table_2_controls_and_degrades_more() -> None:
     assert model_12.stress_at_strain(0.03) < model_5.stress_at_strain(0.03)
 
 
+def test_table_2_alpha_equations_and_intermediate_stress_bounds() -> None:
+    model = _model(12.0)
+    summary = model.summary_parameters()
+
+    expected_alpha_1 = 0.8 + 1.8 * (630.0 / 420.0) * (1.0 / 12.0)
+    expected_alpha_2 = 1.1 - 0.016 * summary["rb"]
+    assert summary["alpha_1"] == pytest.approx(expected_alpha_1)
+    assert summary["alpha_2"] == pytest.approx(expected_alpha_2)
+    assert summary["alpha"] == pytest.approx(expected_alpha_1 * expected_alpha_2)
+    assert 0.2 * 420.0 <= summary["f_i_mpa"] <= summary["f_it_mpa"]
+
+
+@pytest.mark.parametrize("parameter_p", [0.0, 1.0, 4.0])
+def test_table_2_accepts_only_published_rdm_hardening_parameters(
+    parameter_p: float,
+) -> None:
+    assert _parameters(parameter_p=parameter_p).parameter_p == parameter_p
+
+
+def test_table_2_rejects_unpublished_rdm_hardening_parameter() -> None:
+    with pytest.raises(ConfigError, match="one of 0, 1 or 4"):
+        _parameters(parameter_p=2.0)
+
+
 def test_epsilon_i_correction_is_applied_in_its_strict_interval() -> None:
     model = RDM2019MonotonicCompressionModel(
         _parameters(tie_spacing_mm=120.0, epsilon_su=0.06)

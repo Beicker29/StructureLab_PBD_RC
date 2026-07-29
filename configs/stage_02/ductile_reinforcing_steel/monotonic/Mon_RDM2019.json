@@ -1,0 +1,41 @@
+{
+  "stage_id": "stage_02",
+  "enabled": true,
+  "title": "Acero ductil RDM 2019 - L/D calculado igual a 5",
+  "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
+  "inputs": {
+    "project_id": "default",
+    "case_id": "rdm_2019_ld5",
+    "model_id": "Mon_RDM2019",
+    "label": "RDM 2019 | L/D = 5",
+    "parameters": {
+      "fy_MPa": 420.0,
+      "fu_MPa": 630.0,
+      "Es_MPa": 200000.0,
+      "epsilon_sh": 0.01,
+      "epsilon_su": 0.10,
+      "parameter_p": 4.0,
+      "longitudinal_bar_diameter_mm": 20.0,
+      "tie_bar_diameter_mm": 10.0,
+      "tie_spacing_mm": 100.0,
+      "effective_tie_leg_length_mm": 200.0,
+      "effective_tie_legs": 2,
+      "restrained_longitudinal_bars": 2,
+      "tie_steel_modulus_MPa": 200000.0,
+      "buckling_restraint_case": "bending"
+    },
+    "curve_generation": {
+      "points": 401,
+      "max_strain": null,
+      "include_tension": true,
+      "include_compression": true
+    },
+    "provenance": {
+      "source": "Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure documented by Salgado and Guner",
+      "citation": "jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables 1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables 1-2 and worked examples",
+      "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/",
+      "specimen_or_profile": "Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm",
+      "calibration_status": "source_equation_validation_case"
+    }
+  }
+}

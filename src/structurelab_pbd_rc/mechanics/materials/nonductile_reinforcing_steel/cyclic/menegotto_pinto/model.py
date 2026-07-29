@@ -153,7 +153,7 @@ class MenegottoPintoState:
 class MenegottoPinto:
     """Steel02-compatible Menegotto-Pinto model with reproducible trial state."""
 
-    model_id = "menegotto_pinto"
+    model_id = "Cyc_MP"
 
     def __init__(self, parameters: MenegottoPintoParameters) -> None:
         self.parameters = parameters

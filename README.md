@@ -72,12 +72,19 @@ Una ejecucion procesa conjuntamente todos los JSON habilitados y los agrupa por 
 
 Modelos implementados para `nonductile_reinforcing_steel`:
 
-- `monotonic/modified_ramberg_osgood`: envolvente a traccion de Carrillo et al. (2019).
-- `cyclic/menegotto_pinto`: algoritmo con historia compatible con Steel02. La configuracion incluida es sintetica y sirve solamente para verificar el software; no es una calibracion NTC 5806.
+- `monotonic/Mon_MRO.json`: envolvente Ramberg-Osgood modificada de Carrillo et al. (2019).
+- `cyclic/Cyc_MP.json`: algoritmo Menegotto-Pinto con historia compatible con Steel02. La configuracion incluida es sintetica y sirve solamente para verificar el software; no es una calibracion NTC 5806.
+
+Instructivos estaticos:
+
+- [Mon_MRO](docs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/guia_aplicacion_mon_mro.pdf)
+- [Cyc_MP](docs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/guia_aplicacion_cyc_mp.pdf)
 
 Modelo implementado para `ductile_reinforcing_steel`:
 
-- `monotonic/steel_compression_rdm_2019_monotonic`: envolvente de traccion de referencia y envolvente RDM 2019 de compresion con pandeo inelastico y degradacion pospandeo. Para restriccion transversal rectangular calcula `epsilon_y`, las rigideces `k` y `kt`, `keq=kt/k`, el modo `n`, `L=n*s`, `L/D` y `rb` a partir de variables fisicas. `epsilon_y`, `buckling_intervals`, `L/D` y `rb` no son inputs canonicos.
+- `monotonic/Mon_RDM2019.json`: envolvente de traccion de referencia y envolvente RDM 2019 de compresion con pandeo inelastico y degradacion pospandeo. Para restriccion transversal rectangular calcula `epsilon_y`, las rigideces `k` y `kt`, `keq=kt/k`, el modo `n`, `L=n*s`, `L/D` y `rb` a partir de variables fisicas. `epsilon_y`, `buckling_intervals`, `L/D` y `rb` no son inputs canonicos.
+
+El nombre base de cada JSON debe coincidir exactamente con `inputs.model_id`.
 
 ## Entorno virtual
 

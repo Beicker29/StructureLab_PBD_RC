@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de aplicación del modelo Cyc_MP</title>
+  <style>
+    :root {
+      --navy: #173b64;
+      --blue: #2e74b5;
+      --blue-dark: #1f4d78;
+      --gold: #9a6a00;
+      --ink: #202832;
+      --muted: #5f6b77;
+      --line: #cbd5df;
+      --panel: #f3f6f9;
+      --panel-blue: #e8eef5;
+      --warning: #fff6dc;
+      --danger: #9b1c1c;
+      --success: #23633f;
+    }
+
+    @page { size: Letter portrait; margin: 17mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: white;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9.4pt;
+      line-height: 1.34;
+      letter-spacing: 0;
+    }
+    .sheet {
+      position: relative;
+      height: 245mm;
+      padding: 11mm 0 12mm;
+      overflow: hidden;
+      break-after: page;
+      page-break-after: always;
+    }
+    .sheet:last-child { break-after: auto; page-break-after: auto; }
+    .sheet:not(.cover)::before {
+      content: "STRUCTURELAB_PBD_RC  |  STAGE 2  |  CYC_MP";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6mm;
+      color: var(--muted);
+      border-bottom: 0.4pt solid var(--line);
+      font-size: 7.4pt;
+      font-weight: 700;
+    }
+    .page-tag {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: var(--muted);
+      font-size: 7.4pt;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 5mm;
+      color: var(--navy);
+      font-size: 20pt;
+      line-height: 1.08;
+    }
+    h2 {
+      margin: 4.5mm 0 2.5mm;
+      color: var(--blue);
+      font-size: 14.5pt;
+      line-height: 1.15;
+    }
+    h3 {
+      margin: 3.5mm 0 1.8mm;
+      color: var(--blue-dark);
+      font-size: 11.5pt;
+      line-height: 1.15;
+    }
+    p { margin-bottom: 2.4mm; }
+    ul, ol { margin: 1.5mm 0 3mm 5.5mm; padding-left: 4.5mm; }
+    li { margin-bottom: 1.2mm; }
+    strong { color: #111820; }
+    code, pre { font-family: Consolas, "Courier New", monospace; }
+    code {
+      color: #153f68;
+      background: #eef3f7;
+      padding: 0.2mm 0.8mm;
+      border-radius: 1mm;
+    }
+    pre {
+      margin: 2.5mm 0;
+      padding: 3mm;
+      color: #e9eef3;
+      background: #202a35;
+      border-radius: 1.5mm;
+      font-size: 7.1pt;
+      line-height: 1.28;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    table {
+      width: 100%;
+      margin: 2.5mm 0 3.5mm;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      padding: 1.6mm 1.8mm;
+      border: 0.45pt solid #aebbc8;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+    th {
+      color: var(--navy);
+      background: var(--panel-blue);
+      text-align: left;
+      font-weight: 700;
+    }
+    .dense th, .dense td {
+      padding: 1.1mm 1.4mm;
+      font-size: 7.15pt;
+      line-height: 1.22;
+    }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .formula {
+      margin: 2.2mm 0;
+      padding: 2.5mm 3mm;
+      color: var(--navy);
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 10.4pt;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+    .formula.compact { margin: 1.4mm 0; padding: 1.8mm 2.5mm; font-size: 9.1pt; }
+    .callout {
+      margin: 3mm 0;
+      padding: 3mm 3.5mm;
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      page-break-inside: avoid;
+    }
+    .callout.warning { background: var(--warning); border-left-color: var(--gold); }
+    .callout.danger { background: #fbecec; border-left-color: var(--danger); }
+    .callout.success { background: #edf7f1; border-left-color: var(--success); }
+    .callout-title {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--navy);
+      font-size: 8.2pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      align-items: start;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      align-items: stretch;
+    }
+    .step {
+      position: relative;
+      min-height: 23mm;
+      padding: 3mm 3mm 3mm 12mm;
+      background: var(--panel);
+      border: 0.45pt solid var(--line);
+      page-break-inside: avoid;
+    }
+    .step-number {
+      position: absolute;
+      top: 3mm;
+      left: 3mm;
+      display: flex;
+      width: 6.5mm;
+      height: 6.5mm;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: var(--blue);
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    .step h3 { margin-top: 0; font-size: 10pt; }
+    .metric {
+      padding: 3mm;
+      background: white;
+      border-top: 1.2mm solid var(--blue);
+      box-shadow: 0 0 0 0.45pt var(--line);
+      text-align: center;
+    }
+    .metric .value {
+      display: block;
+      color: var(--navy);
+      font-size: 15pt;
+      font-weight: 700;
+    }
+    .metric .label { display: block; color: var(--muted); font-size: 7.4pt; }
+    .caption {
+      margin-top: 1.5mm;
+      color: var(--muted);
+      font-size: 7.7pt;
+      font-style: italic;
+      text-align: center;
+    }
+    .figure {
+      width: 100%;
+      margin: 3mm auto;
+      padding: 2mm;
+      border: 0.45pt solid var(--line);
+      background: white;
+      page-break-inside: avoid;
+    }
+    .figure img { display: block; width: 100%; height: auto; }
+    .small { font-size: 7.7pt; line-height: 1.3; }
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--gold);
+      font-size: 9.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .cover { padding-top: 0; }
+    .cover-top {
+      padding-top: 7mm;
+      color: var(--muted);
+      border-bottom: 0.45pt solid var(--line);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    .cover-main { margin-top: 47mm; text-align: center; }
+    .cover-main h1 {
+      margin: 5mm auto 4mm;
+      max-width: 160mm;
+      font-size: 28pt;
+      line-height: 1.08;
+    }
+    .cover-subtitle {
+      margin: 0 auto;
+      max-width: 155mm;
+      color: var(--blue-dark);
+      border-top: 0.6pt solid var(--blue);
+      padding-top: 4mm;
+      font-size: 13pt;
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .cover-meta { margin-top: 24mm; color: var(--muted); font-size: 9pt; }
+    .toc td:first-child { width: 84%; }
+    .toc td:last-child { width: 16%; text-align: right; }
+    .checklist { list-style: none; margin-left: 0; padding-left: 0; }
+    .checklist li { position: relative; padding-left: 7mm; }
+    .checklist li::before {
+      content: "□";
+      position: absolute;
+      left: 0;
+      top: -0.3mm;
+      color: var(--blue-dark);
+      font-size: 12pt;
+    }
+    .path {
+      color: #153f68;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 7.2pt;
+      overflow-wrap: anywhere;
+    }
+    @media screen {
+      body { width: 216mm; margin: 0 auto; padding: 17mm; background: #dde3e9; }
+      .sheet {
+        margin-bottom: 10mm;
+        padding-left: 17mm;
+        padding-right: 17mm;
+        background: white;
+        box-shadow: 0 1mm 4mm rgb(23 59 100 / 18%);
+      }
+      .sheet:not(.cover)::before { left: 17mm; right: 17mm; }
+      .page-tag { right: 17mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="sheet cover">
+    <div class="cover-top">GUÍA TÉCNICA | MODELOS CONSTITUTIVOS | STRUCTURELAB_PBD_RC</div>
+    <div class="cover-main">
+      <div class="kicker">Stage 2 | Acero de refuerzo no dúctil | Cíclico</div>
+      <h1>Aplicación paso a paso del modelo Menegotto-Pinto</h1>
+      <div class="cover-subtitle">
+        Transición histerética Steel02, memoria de inversiones, actualización de
+        asíntotas y evaluación secuencial de historias de deformación
+      </div>
+      <div class="cover-meta">
+        Modelo: <strong>Cyc_MP</strong><br>
+        Ejemplo pedagógico con parámetros sintéticos de verificación algorítmica<br><br>
+        Versión 1.0 | 28 de julio de 2026
+      </div>
+    </div>
+    <div class="page-tag">Página 1 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>Contenido y propósito</h1>
+    <div class="callout success">
+      <span class="callout-title">Resultado esperado</span>
+      Comprender la ecuación normalizada, el significado del estado histórico, las reglas de
+      inversión, el protocolo de deformación y las limitaciones del caso `Cyc_MP` actual.
+    </div>
+    <table class="toc dense">
+      <tr><th>Sección</th><th>Página</th></tr>
+      <tr><td>1. Alcance y estado de calibración</td><td>3</td></tr>
+      <tr><td>2. Signos, unidades e inputs</td><td>4-5</td></tr>
+      <tr><td>3. Envolvente y transición normalizada</td><td>6</td></tr>
+      <tr><td>4. Evolución de R y rigidez tangente</td><td>7</td></tr>
+      <tr><td>5. Endurecimiento isotrópico y asíntotas</td><td>8</td></tr>
+      <tr><td>6. Estado trial, commit, revert y reset</td><td>9</td></tr>
+      <tr><td>7. Reglas de inversión</td><td>10</td></tr>
+      <tr><td>8. Historia e interpolación</td><td>11</td></tr>
+      <tr><td>9. Ejemplo reproducible</td><td>12-14</td></tr>
+      <tr><td>10. Dominio, falla y advertencias</td><td>15</td></tr>
+      <tr><td>11. JSON, outputs y código</td><td>16</td></tr>
+      <tr><td>12. Verificación y referencias</td><td>17</td></tr>
+    </table>
+    <h2>Cómo usar esta guía</h2>
+    <ol>
+      <li>Confirme si los parámetros son calibrados o sintéticos.</li>
+      <li>Verifique el orden del historial y los límites configurados.</li>
+      <li>Actualice el estado únicamente después de confirmar el paso.</li>
+      <li>Interprete inversiones, R, ξ y advertencias en los outputs.</li>
+    </ol>
+    <div class="callout warning">
+      <span class="callout-title">Documento estático</span>
+      Este instructivo explica el algoritmo y no se regenera con Stage 2. Cada corrida escribe
+      sus datos, figuras y reportes solamente en <code>outputs/stage_02/</code>.
+    </div>
+    <div class="page-tag">Página 2 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>1. Alcance y estado de calibración</h1>
+    <h2>1.1 Qué representa `Cyc_MP`</h2>
+    <p>
+      Es un modelo uniaxial con memoria compatible con las reglas históricas de OpenSees
+      Steel02. Representa ramas iniciales, descarga, inversión, transición redondeada,
+      efecto Bauschinger y endurecimiento isotrópico mediante parámetros explícitos.
+    </p>
+    <div class="grid-3">
+      <div class="step"><span class="step-number">1</span><h3>Trial</h3><p>Evalúa una deformación desde el último estado confirmado.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>Historia</h3><p>Detecta dirección, inversión y extremos históricos.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>Commit</h3><p>Confirma el estado para el siguiente incremento.</p></div>
+    </div>
+    <h2>1.2 Estado del perfil canónico</h2>
+    <div class="callout danger">
+      <span class="callout-title">Verificación algorítmica sintética</span>
+      Los valores actuales de f<sub>y</sub>, b, R<sub>0</sub>, cR1, cR2 y a1-a4 no
+      constituyen una calibración experimental NTC 5806. Su estado registrado es
+      <code>synthetic_algorithm_verification_only</code>.
+    </div>
+    <p>
+      El artículo de Miranda-Giraldo et al. estudia y calibra modelos para mallas de 6, 7 y
+      8 mm. Sin embargo, el repositorio actual no ha importado un conjunto exacto de sus tablas
+      como perfil canónico. Por ello esta guía no atribuye los parámetros sintéticos a esa fuente.
+    </p>
+    <h2>1.3 Qué no representa</h2>
+    <ul>
+      <li>Pandeo o degradación pospandeo.</li>
+      <li>Fractura por fatiga de bajo ciclo o acumulación de daño.</li>
+      <li>Pérdida de área, falla de soldadura o adherencia-deslizamiento.</li>
+      <li>Una validación automática para cualquier amplitud de compresión.</li>
+    </ul>
+    <div class="callout warning">
+      <span class="callout-title">Capacidad matemática frente a evidencia</span>
+      Que el algoritmo calcule esfuerzos positivos y negativos no demuestra que el material
+      esté validado experimentalmente fuera del protocolo y rango del perfil seleccionado.
+    </div>
+    <div class="page-tag">Página 3 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>2. Signos, unidades e inputs físicos</h1>
+    <h2>2.1 Convención</h2>
+    <table>
+      <tr><th>Magnitud</th><th>Tracción</th><th>Compresión</th></tr>
+      <tr><td>Deformación ε</td><td>Positiva</td><td>Negativa</td></tr>
+      <tr><td>Esfuerzo σ</td><td>Positivo</td><td>Negativo</td></tr>
+      <tr><td>Dirección incremental</td><td>positive</td><td>negative</td></tr>
+    </table>
+    <h2>2.2 Unidades</h2>
+    <table>
+      <tr><th>Magnitud</th><th>Unidad</th></tr>
+      <tr><td>Diámetro</td><td>mm</td></tr>
+      <tr><td>Esfuerzo, módulo y tangente</td><td>MPa</td></tr>
+      <tr><td>Deformación</td><td>mm/mm</td></tr>
+    </table>
+    <h2>2.3 Parámetros mecánicos requeridos</h2>
+    <table class="dense">
+      <tr><th>JSON</th><th>Símbolo</th><th>Validación</th><th>Función</th></tr>
+      <tr><td>fy_MPa</td><td>f<sub>y</sub></td><td>&gt; 0</td><td>Resistencia de fluencia inicial.</td></tr>
+      <tr><td>Es_MPa</td><td>E<sub>s</sub></td><td>&gt; 0</td><td>Tangente elástica inicial.</td></tr>
+      <tr><td>b</td><td>b</td><td>0 ≤ b &lt; 1</td><td>Relación E<sub>h</sub>/E<sub>s</sub>.</td></tr>
+      <tr><td>R0</td><td>R<sub>0</sub></td><td>&gt; 0</td><td>Curvatura inicial de transición.</td></tr>
+      <tr><td>cR1</td><td>cR1</td><td>0 ≤ cR1 ≤ 1</td><td>Evolución de R con la excursión.</td></tr>
+      <tr><td>cR2</td><td>cR2</td><td>&gt; 0</td><td>Regulariza la evolución de R.</td></tr>
+      <tr><td>a1, a3</td><td>a<sub>1</sub>, a<sub>3</sub></td><td>≥ 0</td><td>Magnitud de traslación isotrópica.</td></tr>
+      <tr><td>a2, a4</td><td>a<sub>2</sub>, a<sub>4</sub></td><td>&gt; 0</td><td>Escala plástica de la traslación.</td></tr>
+      <tr><td>diameter_mm</td><td>d<sub>b</sub></td><td>&gt; 0</td><td>Identifica el perfil.</td></tr>
+    </table>
+    <div class="callout danger">
+      <span class="callout-title">Sin valores mecánicos implícitos</span>
+      Todos los parámetros anteriores son obligatorios en la implementación. No se completan
+      con defaults de Steel02 ni se deducen del diámetro.
+    </div>
+    <div class="page-tag">Página 4 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>2. Inputs de historia, dominio y falla</h1>
+    <table class="dense">
+      <tr><th>Bloque</th><th>Input</th><th>Regla</th></tr>
+      <tr><td>Identificación</td><td>project_id, case_id, model_id</td><td>Obligatorios; model_id = <code>Cyc_MP</code>.</td></tr>
+      <tr><td>Validez</td><td>eps_compression_min</td><td>Debe ser negativo.</td></tr>
+      <tr><td>Validez</td><td>eps_tension_max</td><td>Debe ser positivo.</td></tr>
+      <tr><td>Falla</td><td>policy</td><td><code>none</code> o <code>strain_limit</code>.</td></tr>
+      <tr><td>Falla</td><td>eps_tension_max</td><td>Obligatorio y positivo si policy = strain_limit.</td></tr>
+      <tr><td>Falla</td><td>eps_compression_min</td><td>Obligatorio y negativo si policy = strain_limit.</td></tr>
+      <tr><td>Historia</td><td>strain_history</td><td>Lista ordenada con al menos dos puntos.</td></tr>
+      <tr><td>Interpolación</td><td>points_per_segment</td><td>Entero mayor o igual que 2.</td></tr>
+      <tr><td>Procedencia</td><td>provenance</td><td>Fuente, ubicación, perfil y calibración.</td></tr>
+    </table>
+    <h2>2.4 Parámetros calculados inicialmente</h2>
+    <div class="formula compact">ε<sub>y</sub> = f<sub>y</sub>/E<sub>s</sub></div>
+    <div class="formula compact">E<sub>h</sub> = b E<sub>s</sub></div>
+    <p>Para el perfil canónico:</p>
+    <div class="grid-3">
+      <div class="metric"><span class="value">0.0025</span><span class="label">ε<sub>y</sub></span></div>
+      <div class="metric"><span class="value">2 000 MPa</span><span class="label">E<sub>h</sub></span></div>
+      <div class="metric"><span class="value">200 000 MPa</span><span class="label">E<sub>s</sub></span></div>
+    </div>
+    <h2>2.5 Orden de la historia</h2>
+    <div class="callout warning">
+      <span class="callout-title">Regla esencial</span>
+      El historial nunca se ordena ni se evalúa como puntos independientes. Cambiar la secuencia
+      cambia el estado, los puntos de inversión y la respuesta.
+    </div>
+    <div class="page-tag">Página 5 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>3. Envolvente y transición normalizada</h1>
+    <h2>3.1 Variables normalizadas</h2>
+    <div class="formula">
+      ε* = (ε - ε<sub>r</sub>)/(ε<sub>0</sub> - ε<sub>r</sub>)
+    </div>
+    <div class="formula">
+      σ* = (σ - σ<sub>r</sub>)/(σ<sub>0</sub> - σ<sub>r</sub>)
+    </div>
+    <p>
+      (ε<sub>r</sub>, σ<sub>r</sub>) es el último punto de inversión y
+      (ε<sub>0</sub>, σ<sub>0</sub>) es la intersección actual de las asíntotas.
+    </p>
+    <h2>3.2 Ecuación Menegotto-Pinto</h2>
+    <div class="formula">
+      σ* = b ε* +
+      (1 - b) ε* / (1 + |ε*|<sup>R</sup>)<sup>1/R</sup>
+    </div>
+    <h2>3.3 Recuperación del esfuerzo</h2>
+    <div class="formula compact">
+      σ = σ* (σ<sub>0</sub> - σ<sub>r</sub>) + σ<sub>r</sub>
+    </div>
+    <h2>3.4 Interpretación</h2>
+    <table>
+      <tr><th>Componente</th><th>Efecto</th></tr>
+      <tr><td>b ε*</td><td>Asíntota de endurecimiento con pendiente E<sub>h</sub>.</td></tr>
+      <tr><td>(1-b) ε*/(...)</td><td>Transición suave desde la pendiente elástica.</td></tr>
+      <tr><td>R alto</td><td>Transición más abrupta.</td></tr>
+      <tr><td>R menor</td><td>Transición más redondeada después de excursiones plásticas.</td></tr>
+    </table>
+    <div class="callout danger">
+      <span class="callout-title">La ecuación aislada no basta</span>
+      La respuesta cíclica exige actualizar inversión, asíntotas, extremos, excursión plástica
+      y R. Evaluar únicamente esta fórmula desde el origen eliminaría la memoria del modelo.
+    </div>
+    <div class="page-tag">Página 6 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>4. Evolución de R y rigidez tangente</h1>
+    <h2>4.1 Excursión plástica normalizada</h2>
+    <div class="formula">
+      ξ = |(ε<sub>pl</sub> - ε<sub>0</sub>)/ε<sub>y</sub>|
+    </div>
+    <h2>4.2 Parámetro de transición vigente</h2>
+    <div class="formula">
+      R = R<sub>0</sub>[1 - cR1 ξ/(cR2 + ξ)]
+    </div>
+    <p>
+      El código verifica que R permanezca positivo. R se calcula después de actualizar
+      ε<sub>pl</sub> y la intersección de asíntotas correspondiente a la dirección actual.
+    </p>
+    <h2>4.3 Tangente normalizada</h2>
+    <div class="formula compact">
+      T* = b + (1-b) /
+      [(1+|ε*|<sup>R</sup>)(1+|ε*|<sup>R</sup>)<sup>1/R</sup>]
+    </div>
+    <h2>4.4 Tangente física</h2>
+    <div class="formula compact">
+      E<sub>t</sub> = T* (σ<sub>0</sub> - σ<sub>r</sub>) /
+      (ε<sub>0</sub> - ε<sub>r</sub>)
+    </div>
+    <h2>4.5 Protección numérica</h2>
+    <ul>
+      <li>Se rechaza una intersección singular si |ε<sub>0</sub>-ε<sub>r</sub>| es despreciable.</li>
+      <li>Se rechaza R ≤ 0.</li>
+      <li>La tangente se calcula analíticamente para el mismo estado trial.</li>
+    </ul>
+    <div class="grid-3">
+      <div class="metric"><span class="value">12.0</span><span class="label">R inicial</span></div>
+      <div class="metric"><span class="value">4.9703</span><span class="label">R tras 1.ª inversión</span></div>
+      <div class="metric"><span class="value">3.3203</span><span class="label">R tras 4.ª inversión</span></div>
+    </div>
+    <div class="callout warning">
+      <span class="callout-title">Valores del ejemplo, no universales</span>
+      La evolución mostrada depende del historial y de los parámetros sintéticos actuales.
+    </div>
+    <div class="page-tag">Página 7 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>5. Endurecimiento isotrópico y asíntotas</h1>
+    <h2>5.1 Interpretación de a1-a4</h2>
+    <table>
+      <tr><th>Parámetros</th><th>Dirección afectada</th><th>Función</th></tr>
+      <tr><td>a1, a2</td><td>Tras inversión hacia compresión</td><td>Desplazamiento de la envolvente de fluencia negativa.</td></tr>
+      <tr><td>a3, a4</td><td>Tras inversión hacia tracción</td><td>Desplazamiento de la envolvente de fluencia positiva.</td></tr>
+    </table>
+    <h2>5.2 Factor de traslación hacia tracción</h2>
+    <div class="formula compact">
+      d<sub>1</sub> = (ε<sub>max</sub>-ε<sub>min</sub>)/(2 a4 ε<sub>y</sub>)
+      &nbsp;;&nbsp; shift = 1 + a3 d<sub>1</sub><sup>0.8</sup>
+    </div>
+    <h2>5.3 Factor de traslación hacia compresión</h2>
+    <div class="formula compact">
+      d<sub>1</sub> = (ε<sub>max</sub>-ε<sub>min</sub>)/(2 a2 ε<sub>y</sub>)
+      &nbsp;;&nbsp; shift = 1 + a1 d<sub>1</sub><sup>0.8</sup>
+    </div>
+    <h2>5.4 Intersección de asíntotas</h2>
+    <p>
+      Con E<sub>h</sub> = bE<sub>s</sub>, el código resuelve la intersección entre
+      la recta elástica que parte del último punto de inversión y la asíntota de
+      endurecimiento desplazada. La expresión cambia de signo según la nueva dirección.
+    </p>
+    <div class="formula compact">
+      ε<sub>0</sub> =
+      [±f<sub>y</sub>shift ∓ E<sub>h</sub>ε<sub>y</sub>shift
+      - σ<sub>r</sub> + E<sub>s</sub>ε<sub>r</sub>] /
+      (E<sub>s</sub>-E<sub>h</sub>)
+    </div>
+    <p>
+      Después se obtiene σ<sub>0</sub> sobre la asíntota de endurecimiento y se asigna
+      ε<sub>pl</sub> al extremo histórico requerido por la dirección.
+    </p>
+    <div class="callout warning">
+      <span class="callout-title">No son valores opcionales en este repositorio</span>
+      Aunque OpenSees ofrece defaults para a1-a4, `Cyc_MP` exige los cuatro valores para evitar
+      una selección implícita que pueda confundirse con calibración.
+    </div>
+    <div class="page-tag">Página 8 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>6. Estado trial, commit, revert y reset</h1>
+    <h2>6.1 Estado mínimo almacenado</h2>
+    <table class="dense">
+      <tr><th>Variable</th><th>Significado</th></tr>
+      <tr><td>epsmin, epsmax</td><td>Extremos históricos de deformación.</td></tr>
+      <tr><td>epspl</td><td>Extremo plástico usado para calcular ξ.</td></tr>
+      <tr><td>epss0, sigs0</td><td>Intersección actual de asíntotas.</td></tr>
+      <tr><td>epsr, sigr</td><td>Último punto de inversión.</td></tr>
+      <tr><td>direction</td><td>0 inicial, 1 positiva, 2 negativa.</td></tr>
+      <tr><td>strain, stress, tangent</td><td>Respuesta del estado.</td></tr>
+      <tr><td>failed</td><td>Persistencia del criterio opcional por deformación.</td></tr>
+    </table>
+    <h2>6.2 Semántica de actualización</h2>
+    <div class="grid-2">
+      <div class="step"><span class="step-number">1</span><h3>set_trial_strain</h3><p>Copia el último estado confirmado y evalúa una alternativa.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>commit_state</h3><p>Convierte el trial vigente en punto de partida del siguiente paso.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>revert</h3><p>Descarta el trial y restaura el último commit.</p></div>
+      <div class="step"><span class="step-number">4</span><h3>reset</h3><p>Regresa estado trial y confirmado al material virgen.</p></div>
+    </div>
+    <h2>6.3 Estado virgen</h2>
+    <div class="formula compact">
+      ε<sub>min</sub> = -ε<sub>y</sub>,
+      ε<sub>max</sub> = ε<sub>y</sub>,
+      σ = 0,
+      E<sub>t</sub> = E<sub>s</sub>,
+      direction = 0
+    </div>
+    <div class="callout danger">
+      <span class="callout-title">Independencia entre fibras o casos</span>
+      Cada historia necesita su propia instancia de material. Compartir un objeto mutable entre
+      fibras mezclaría estados e invalidaría la respuesta.
+    </div>
+    <div class="page-tag">Página 9 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>7. Reglas de inversión</h1>
+    <h2>7.1 Detección</h2>
+    <p>
+      Se calcula Δε respecto al último estado confirmado. Hay inversión cuando la dirección
+      almacenada y el signo del nuevo incremento son opuestos.
+    </p>
+    <table>
+      <tr><th>Dirección previa</th><th>Condición</th><th>Nueva dirección</th></tr>
+      <tr><td>Negativa (2)</td><td>Δε &gt; 0</td><td>Positiva (1)</td></tr>
+      <tr><td>Positiva (1)</td><td>Δε &lt; 0</td><td>Negativa (2)</td></tr>
+    </table>
+    <h2>7.2 Secuencia de actualización</h2>
+    <div class="grid-2">
+      <div class="step"><span class="step-number">1</span><h3>Guardar inversión</h3><p>ε<sub>r</sub>, σ<sub>r</sub> toman el estado confirmado.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>Actualizar extremos</h3><p>Modificar ε<sub>min</sub> o ε<sub>max</sub>.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>Trasladar asíntota</h3><p>Calcular d1 y shift con a1-a4.</p></div>
+      <div class="step"><span class="step-number">4</span><h3>Intersección</h3><p>Obtener ε<sub>0</sub> y σ<sub>0</sub>.</p></div>
+      <div class="step"><span class="step-number">5</span><h3>Curvatura</h3><p>Calcular ε<sub>pl</sub>, ξ y R.</p></div>
+      <div class="step"><span class="step-number">6</span><h3>Respuesta</h3><p>Evaluar σ*, σ y E<sub>t</sub>.</p></div>
+    </div>
+    <h2>7.3 Paso repetido</h2>
+    <p>
+      Si |Δε| es prácticamente cero en el estado inicial, el modelo conserva σ = 0 y
+      E<sub>t</sub> = E<sub>s</sub>. En una historia avanzada, un trial repetido se evalúa
+      determinísticamente desde el mismo commit sin introducir una inversión falsa.
+    </p>
+    <div class="callout warning">
+      <span class="callout-title">Ubicación del indicador reversal</span>
+      La inversión se marca en el primer punto posterior al cambio de dirección, no
+      necesariamente en el extremo de control del protocolo.
+    </div>
+    <div class="page-tag">Página 10 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>8. Historia e interpolación</h1>
+    <h2>8.1 Puntos de control canónicos</h2>
+    <pre>[0.0, 0.001, 0.004, 0.001, -0.002, 0.0, 0.006, -0.004, 0.008]</pre>
+    <p>La secuencia contiene:</p>
+    <ul>
+      <li>carga inicial en tracción;</li>
+      <li>descarga e inversión a compresión;</li>
+      <li>retorno e inversión a tracción con mayor amplitud;</li>
+      <li>nueva incursión negativa y cierre en la máxima tracción.</li>
+    </ul>
+    <h2>8.2 Interpolación lineal</h2>
+    <p>
+      Cada par consecutivo se expande con 31 puntos incluyendo extremos. Para evitar duplicar
+      el extremo común, los segmentos posteriores omiten su primer punto.
+    </p>
+    <div class="formula">
+      N = 1 + (N<sub>control</sub>-1)(N<sub>segmento</sub>-1)
+    </div>
+    <div class="formula compact">
+      N = 1 + (9-1)(31-1) = 241 puntos
+    </div>
+    <h2>8.3 Reglas de procesamiento</h2>
+    <ul class="checklist">
+      <li>Conservar el orden de los puntos.</li>
+      <li>No eliminar extremos ni inversiones.</li>
+      <li>Evaluar y confirmar cada punto interpolado.</li>
+      <li>No reutilizar la evaluación vectorizada monotónica.</li>
+    </ul>
+    <div class="callout danger">
+      <span class="callout-title">Protocolo de software</span>
+      Esta historia verifica el algoritmo. No se presenta como protocolo experimental NTC 5806
+      ni como validación sísmica del conjunto sintético.
+    </div>
+    <div class="page-tag">Página 11 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>9. Ejemplo reproducible: parámetros</h1>
+    <table class="dense">
+      <tr><th>Variable</th><th>Valor</th><th>Función</th></tr>
+      <tr><td>d<sub>b</sub></td><td>6 mm</td><td>Identificación sintética del perfil.</td></tr>
+      <tr><td>f<sub>y</sub></td><td>500 MPa</td><td>Fluencia inicial.</td></tr>
+      <tr><td>E<sub>s</sub></td><td>200 000 MPa</td><td>Tangente inicial.</td></tr>
+      <tr><td>b</td><td>0.01</td><td>E<sub>h</sub>/E<sub>s</sub>.</td></tr>
+      <tr><td>R<sub>0</sub></td><td>12.0</td><td>Curvatura inicial.</td></tr>
+      <tr><td>cR1, cR2</td><td>0.8, 0.2</td><td>Evolución de R.</td></tr>
+      <tr><td>a1, a2</td><td>0.05, 1.2</td><td>Traslación en compresión.</td></tr>
+      <tr><td>a3, a4</td><td>0.07, 1.3</td><td>Traslación en tracción.</td></tr>
+      <tr><td>Rango configurado</td><td>[-0.006, 0.008]</td><td>Validez declarada del caso.</td></tr>
+      <tr><td>Falla</td><td>none</td><td>No activa corte por deformación.</td></tr>
+    </table>
+    <h2>9.1 Cálculos iniciales</h2>
+    <div class="formula compact">ε<sub>y</sub> = 500/200000 = 0.0025</div>
+    <div class="formula compact">E<sub>h</sub> = 0.01(200000) = 2000 MPa</div>
+    <h2>9.2 Primera carga positiva</h2>
+    <p>
+      Al primer incremento positivo, direction pasa de 0 a 1. Las asíntotas iniciales usan
+      (ε<sub>0</sub>, σ<sub>0</sub>) = (ε<sub>y</sub>, f<sub>y</sub>) y R = R<sub>0</sub>.
+    </p>
+    <table>
+      <tr><th>ε</th><th>σ [MPa]</th><th>E<sub>t</sub> [MPa]</th><th>R</th></tr>
+      <tr><td class="num">0.001</td><td class="num">199.9997</td><td class="num">199 996.4</td><td class="num">12.0</td></tr>
+      <tr><td class="num">0.004</td><td class="num">502.8537</td><td class="num">2 437.96</td><td class="num">12.0</td></tr>
+    </table>
+    <div class="callout warning">
+      <span class="callout-title">No confundir f<sub>y</sub> con tope de esfuerzo</span>
+      Con b &gt; 0 y transición suave, el esfuerzo puede superar f<sub>y</sub> después de la
+      fluencia.
+    </div>
+    <div class="page-tag">Página 12 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>9. Ejemplo reproducible: inversiones</h1>
+    <h2>9.3 Respuesta en los puntos de control</h2>
+    <table class="dense">
+      <tr><th>Paso</th><th>ε</th><th>σ [MPa]</th><th>E<sub>t</sub> [MPa]</th><th>R vigente</th></tr>
+      <tr><td>0</td><td class="num">0.000</td><td class="num">0.000</td><td class="num">200 000.0</td><td class="num">12.0000</td></tr>
+      <tr><td>30</td><td class="num">0.001</td><td class="num">199.9997</td><td class="num">199 996.4</td><td class="num">12.0000</td></tr>
+      <tr><td>60</td><td class="num">0.004</td><td class="num">502.8537</td><td class="num">2 437.96</td><td class="num">12.0000</td></tr>
+      <tr><td>90</td><td class="num">0.001</td><td class="num">-89.1899</td><td class="num">184 683.9</td><td class="num">4.9703</td></tr>
+      <tr><td>120</td><td class="num">-0.002</td><td class="num">-450.8619</td><td class="num">51 462.9</td><td class="num">4.9703</td></tr>
+      <tr><td>150</td><td class="num">0.000</td><td class="num">-51.3842</td><td class="num">198 318.6</td><td class="num">5.4610</td></tr>
+      <tr><td>180</td><td class="num">0.006</td><td class="num">529.4204</td><td class="num">10 016.7</td><td class="num">5.4610</td></tr>
+      <tr><td>210</td><td class="num">-0.004</td><td class="num">-510.4002</td><td class="num">10 817.6</td><td class="num">3.6898</td></tr>
+      <tr><td>240</td><td class="num">0.008</td><td class="num">540.0558</td><td class="num">7 270.9</td><td class="num">3.3203</td></tr>
+    </table>
+    <h2>9.4 Puntos donde se marca la inversión</h2>
+    <table class="dense">
+      <tr><th>Paso</th><th>ε</th><th>Nueva dirección</th><th>R</th><th>ξ</th></tr>
+      <tr><td>61</td><td>0.0039</td><td>Negativa</td><td>4.9703</td><td>0.5470</td></tr>
+      <tr><td>121</td><td>-0.001933</td><td>Positiva</td><td>5.4610</td><td>0.4272</td></tr>
+      <tr><td>181</td><td>0.005667</td><td>Negativa</td><td>3.6898</td><td>1.2886</td></tr>
+      <tr><td>211</td><td>-0.0036</td><td>Positiva</td><td>3.3203</td><td>1.8862</td></tr>
+    </table>
+    <div class="callout success">
+      <span class="callout-title">Métricas de la corrida</span>
+      241 puntos, 4 inversiones, 0 puntos fuera del rango configurado y 0 puntos fallados.
+    </div>
+    <div class="page-tag">Página 13 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>9. Ejemplo reproducible: respuesta</h1>
+    <div class="figure">
+      <img src="assets/cyc_mp_canonical_example.png" alt="Historia cíclica pedagógica Cyc_MP">
+    </div>
+    <div class="caption">
+      Figura pedagógica fija del caso sintético. No se actualiza al ejecutar Stage 2.
+    </div>
+    <div class="grid-3">
+      <div class="metric"><span class="value">4</span><span class="label">Inversiones</span></div>
+      <div class="metric"><span class="value">241</span><span class="label">Puntos interpolados</span></div>
+      <div class="metric"><span class="value">Sintético</span><span class="label">Estado de calibración</span></div>
+    </div>
+    <h2>9.5 Lectura correcta</h2>
+    <ul>
+      <li>Las ramas dependen de la secuencia previa, no solo de ε actual.</li>
+      <li>La descarga puede cruzar σ = 0 antes de alcanzar ε = 0.</li>
+      <li>El redondeo después de invertir refleja la evolución de R.</li>
+      <li>Los máximos y mínimos son resultados del protocolo sintético actual.</li>
+    </ul>
+    <div class="callout danger">
+      <span class="callout-title">No usar como validación experimental</span>
+      La forma de los lazos permite verificar continuidad y memoria del algoritmo, pero no
+      demuestra ajuste a una malla NTC 5806 específica.
+    </div>
+    <div class="page-tag">Página 14 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>10. Dominio, falla y advertencias</h1>
+    <h2>10.1 Rango de validez configurado</h2>
+    <div class="formula">-0.006 ≤ ε ≤ 0.008</div>
+    <p>
+      Fuera de ese intervalo, el modelo conserva capacidad matemática y evalúa la respuesta,
+      pero marca <code>in_domain: false</code> y agrega una advertencia de extrapolación.
+    </p>
+    <h2>10.2 Política de falla</h2>
+    <table>
+      <tr><th>Policy</th><th>Comportamiento</th></tr>
+      <tr><td>none</td><td>No se activa corte por deformación.</td></tr>
+      <tr><td>strain_limit</td><td>Exige límites positivo y negativo explícitos. Al excederlos, σ = 0, E<sub>t</sub> = 0 y el estado failed persiste.</td></tr>
+    </table>
+    <div class="callout warning">
+      <span class="callout-title">Nombre correcto</span>
+      `strain_limit` es un criterio de falla por límite de deformación. No es un modelo de
+      fatiga de bajo ciclo.
+    </div>
+    <h2>10.3 Advertencias interpretables</h2>
+    <table class="dense">
+      <tr><th>Condición</th><th>Indicador</th><th>Interpretación</th></tr>
+      <tr><td>ε fuera de validity</td><td>in_domain = false</td><td>Extrapolación visible; el punto se conserva.</td></tr>
+      <tr><td>Límite de falla excedido</td><td>failed = true</td><td>Respuesta anulada por criterio configurado.</td></tr>
+      <tr><td>R no positivo</td><td>Error de dominio</td><td>Parámetros/historia producen transición inválida.</td></tr>
+      <tr><td>Asíntotas singulares</td><td>Error de dominio</td><td>No puede normalizarse la transición.</td></tr>
+    </table>
+    <div class="callout danger">
+      <span class="callout-title">Redacción obligatoria</span>
+      El modelo Menegotto-Pinto representa la respuesta axial cíclica dentro del rango y
+      protocolo respaldados por la calibración seleccionada. No representa por sí solo pandeo,
+      degradación pospandeo, fractura por fatiga de bajo ciclo ni falla de soldaduras.
+    </div>
+    <div class="page-tag">Página 15 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>11. JSON, outputs y código</h1>
+    <h2>11.1 Fragmento del input canónico</h2>
+    <pre>"model_id": "Cyc_MP",
+"parameters": {
+  "diameter_mm": 6.0, "fy_MPa": 500.0, "Es_MPa": 200000.0,
+  "b": 0.01, "R0": 12.0, "cR1": 0.8, "cR2": 0.2,
+  "a1": 0.05, "a2": 1.2, "a3": 0.07, "a4": 1.3
+},
+"validity": {"eps_compression_min": -0.006, "eps_tension_max": 0.008},
+"failure": {"policy": "none"},
+"strain_history": [0.0, 0.001, 0.004, 0.001, -0.002, 0.0, 0.006, -0.004, 0.008],
+"history_interpolation": {"points_per_segment": 31}</pre>
+    <h2>11.2 Ruta dinámica de resultados</h2>
+    <pre>outputs/stage_02/ntc5806_validation/db6_algorithm_verification/
+└── cyclic/nonductile_reinforcing_steel/Cyc_MP/
+    ├── data/      resolved_inputs, parámetros, métricas, CSV y XLSX
+    ├── figures/   response.png
+    └── reports/   model_report.yaml y model_report.pdf</pre>
+    <h2>11.3 Correspondencia con el código</h2>
+    <table class="dense">
+      <tr><th>Responsabilidad</th><th>Ubicación</th></tr>
+      <tr><td>Estado y reglas históricas</td><td class="path">src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/cyclic/menegotto_pinto/model.py</td></tr>
+      <tr><td>Interpolación y exportación</td><td class="path">src/structurelab_pbd_rc/design/stages/stage_02_material_characterization.py</td></tr>
+      <tr><td>Input canónico</td><td class="path">configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json</td></tr>
+      <tr><td>Pruebas</td><td class="path">tests/test_material_models/test_menegotto_pinto.py</td></tr>
+    </table>
+    <div class="callout success">
+      <span class="callout-title">Separación documental</span>
+      Este instructivo en `docs/` es estable. Los valores de cada corrida deben consultarse en
+      su CSV, YAML, figura y PDF bajo `outputs/`.
+    </div>
+    <div class="page-tag">Página 16 de 17</div>
+  </section>
+
+  <section class="sheet">
+    <h1>12. Verificación y referencias</h1>
+    <h2>12.1 Lista de aceptación</h2>
+    <ul class="checklist small">
+      <li>El origen y la pendiente elástica inicial son correctos.</li>
+      <li>Trial, commit, revert y reset son deterministas.</li>
+      <li>Las inversiones actualizan punto de reversión y asíntotas.</li>
+      <li>La tangente analítica coincide con diferencia finita desde el mismo commit.</li>
+      <li>El orden de la historia se conserva estrictamente.</li>
+      <li>Fuera del rango se informa extrapolación.</li>
+      <li>El límite de deformación no se denomina fatiga.</li>
+      <li>No se atribuye calibración experimental a parámetros sintéticos.</li>
+    </ul>
+    <h2>12.2 Fuentes</h2>
+    <ol class="small">
+      <li>
+        OpenSees Documentation. <em>Steel02 Material</em>. Define la interfaz
+        Giuffré-Menegotto-Pinto con endurecimiento isotrópico y los parámetros
+        f<sub>y</sub>, E<sub>s</sub>, b, R0, cR1, cR2 y a1-a4.
+        <span class="path">https://opensees.github.io/OpenSeesDocumentation/user/manual/material/uniaxialMaterials/Steel02.html</span>
+      </li>
+      <li>
+        OpenSees, archivo fuente Steel02.cpp. Base de las reglas históricas reproducidas por
+        la implementación.
+        <span class="path">https://github.com/OpenSees/OpenSees</span>
+      </li>
+      <li>
+        Miranda-Giraldo, M. et al. <em>Optimal modeling parameters of electro-welded
+        wire mesh subjected to seismic-like cyclic tests</em>. Journal of Building
+        Engineering 117 (2026), 114698. DOI: 10.1016/j.jobe.2025.114698.
+      </li>
+      <li>
+        Base de datos asociada: <span class="path">https://doi.org/10.5281/zenodo.15330675</span>
+      </li>
+    </ol>
+    <div class="callout warning">
+      <span class="callout-title">Pendiente de calibración</span>
+      Para convertir el caso sintético en un perfil experimental deben incorporarse el conjunto
+      exacto de parámetros, diámetro, protocolo, límites, métrica de ajuste y procedencia de la
+      publicación o base de datos. Debe crearse un caso trazable; no sobrescribir el perfil de
+      verificación.
+    </div>
+    <div class="callout success">
+      <span class="callout-title">Cierre técnico</span>
+      `Cyc_MP` implementa memoria, transición y tangente de manera reproducible. Su validez
+      física depende enteramente del perfil y protocolo que el usuario documente.
+    </div>
+    <div class="page-tag">Página 17 de 17</div>
+  </section>
+</body>
+</html>

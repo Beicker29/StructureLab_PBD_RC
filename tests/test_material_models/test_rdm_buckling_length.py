@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from math import inf, nan
+from math import inf, nan, pi, sqrt
 
 import pytest
 
@@ -84,6 +84,95 @@ def test_reference_physical_calculation_matches_independent_values() -> None:
     assert result.l_over_d == 5.0
     assert result.rb == pytest.approx(10.2469507660)
     assert result.buckling_active is True
+
+
+def test_b3_beam_column_bending_example_is_reproduced() -> None:
+    """Reproduce User Bulletin 3, pages 6-7, before published rounding."""
+
+    result = _calculate(
+        fy_mpa=447.0,
+        longitudinal_bar_diameter_mm=19.54,
+        tie_bar_diameter_mm=sqrt(4.0 * 100.0 / pi),
+        tie_spacing_mm=200.0,
+        effective_tie_leg_length_mm=244.72,
+        effective_tie_legs=2,
+        restrained_longitudinal_bars=4,
+        buckling_restraint_case="bending",
+    )
+
+    assert result.longitudinal_bar_inertia_mm4 == pytest.approx(7155.96, abs=0.01)
+    assert result.reduced_flexural_rigidity_n_mm2 == pytest.approx(
+        756_469_993.6,
+        rel=2.0e-6,
+    )
+    assert result.bar_normalized_stiffness_n_per_mm == pytest.approx(
+        9210.88,
+        abs=0.02,
+    )
+    assert result.tie_stiffness_n_per_mm == pytest.approx(40863.03, abs=0.02)
+    assert result.equivalent_stiffness_ratio == pytest.approx(4.44, abs=0.01)
+    assert result.buckling_intervals == 1
+    assert result.l_over_d == pytest.approx(10.23, abs=0.01)
+    assert result.rb == pytest.approx(21.63, abs=0.02)
+
+
+def test_b3_beam_column_pure_compression_example_is_reproduced() -> None:
+    """Reproduce User Bulletin 3, pages 6-7, including the two-face factor."""
+
+    result = _calculate(
+        fy_mpa=447.0,
+        longitudinal_bar_diameter_mm=19.54,
+        tie_bar_diameter_mm=sqrt(4.0 * 100.0 / pi),
+        tie_spacing_mm=200.0,
+        effective_tie_leg_length_mm=444.72,
+        effective_tie_legs=2,
+        restrained_longitudinal_bars=8,
+        buckling_restraint_case="pure_compression",
+    )
+
+    assert result.effective_restrained_bars == 16
+    assert result.tie_stiffness_n_per_mm == pytest.approx(5621.52, abs=0.02)
+    assert result.equivalent_stiffness_ratio == pytest.approx(0.61, abs=0.01)
+    assert result.buckling_intervals == 2
+    assert result.l_over_d == pytest.approx(20.47, abs=0.01)
+    assert result.rb == pytest.approx(43.26, abs=0.03)
+
+
+def test_asce_2002_prism_example_is_reproduced() -> None:
+    """Reproduce Dhakal-Maekawa Table 2/Table 3 specimen 45."""
+
+    result = _calculate(
+        fy_mpa=355.0,
+        longitudinal_bar_diameter_mm=12.7,
+        tie_bar_diameter_mm=sqrt(4.0 * 31.7 / pi),
+        tie_spacing_mm=100.0,
+        effective_tie_leg_length_mm=160.0,
+        effective_tie_legs=2,
+        restrained_longitudinal_bars=3,
+        buckling_restraint_case="pure_compression",
+    )
+
+    assert result.effective_restrained_bars == 6
+    assert result.equivalent_stiffness_ratio == pytest.approx(1.126, abs=0.002)
+    assert result.buckling_intervals == 1
+
+
+def test_asce_2002_flexural_column_example_is_reproduced() -> None:
+    """Reproduce Dhakal-Maekawa Table 2/Table 3 specimen 42."""
+
+    result = _calculate(
+        fy_mpa=424.0,
+        longitudinal_bar_diameter_mm=34.9,
+        tie_bar_diameter_mm=sqrt(4.0 * 286.5 / pi),
+        tie_spacing_mm=300.0,
+        effective_tie_leg_length_mm=2196.0,
+        effective_tie_legs=2,
+        restrained_longitudinal_bars=19,
+        buckling_restraint_case="bending",
+    )
+
+    assert result.equivalent_stiffness_ratio == pytest.approx(0.1015, abs=0.0001)
+    assert result.buckling_intervals == 3
 
 
 def test_pure_compression_doubles_effective_bars_and_reduces_kt() -> None:

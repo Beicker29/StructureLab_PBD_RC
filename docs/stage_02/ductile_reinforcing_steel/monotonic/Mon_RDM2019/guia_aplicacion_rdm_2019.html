@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de aplicación del modelo constitutivo RDM 2019</title>
+  <style>
+    :root {
+      --navy: #173b64;
+      --blue: #2e74b5;
+      --blue-dark: #1f4d78;
+      --gold: #9a6a00;
+      --ink: #202832;
+      --muted: #5f6b77;
+      --line: #cbd5df;
+      --panel: #f3f6f9;
+      --panel-blue: #e8eef5;
+      --warning: #fff6dc;
+      --danger: #9b1c1c;
+      --success: #23633f;
+    }
+
+    @page {
+      size: Letter portrait;
+      margin: 17mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: white;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9.4pt;
+      line-height: 1.34;
+      letter-spacing: 0;
+    }
+
+    .sheet {
+      position: relative;
+      height: 245mm;
+      padding: 11mm 0 12mm;
+      overflow: hidden;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .sheet:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .sheet:not(.cover)::before {
+      content: "STRUCTURELAB_PBD_RC  |  STAGE 2  |  RDM 2019";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6mm;
+      color: var(--muted);
+      border-bottom: 0.4pt solid var(--line);
+      font-size: 7.4pt;
+      font-weight: 700;
+    }
+
+    .page-tag {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: var(--muted);
+      font-size: 7.4pt;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 5mm;
+      color: var(--navy);
+      font-size: 20pt;
+      line-height: 1.08;
+    }
+
+    h2 {
+      margin: 4.5mm 0 2.5mm;
+      color: var(--blue);
+      font-size: 14.5pt;
+      line-height: 1.15;
+    }
+
+    h3 {
+      margin: 3.5mm 0 1.8mm;
+      color: var(--blue-dark);
+      font-size: 11.5pt;
+      line-height: 1.15;
+    }
+
+    p {
+      margin-bottom: 2.4mm;
+    }
+
+    ul, ol {
+      margin: 1.5mm 0 3mm 5.5mm;
+      padding-left: 4.5mm;
+    }
+
+    li {
+      margin-bottom: 1.2mm;
+    }
+
+    strong {
+      color: #111820;
+    }
+
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    code {
+      color: #153f68;
+      background: #eef3f7;
+      padding: 0.2mm 0.8mm;
+      border-radius: 1mm;
+    }
+
+    pre {
+      margin: 2.5mm 0;
+      padding: 3mm;
+      color: #e9eef3;
+      background: #202a35;
+      border-radius: 1.5mm;
+      font-size: 7.2pt;
+      line-height: 1.3;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    table {
+      width: 100%;
+      margin: 2.5mm 0 3.5mm;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      padding: 1.6mm 1.8mm;
+      border: 0.45pt solid #aebbc8;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: var(--navy);
+      background: var(--panel-blue);
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .dense th, .dense td {
+      padding: 1.15mm 1.5mm;
+      font-size: 7.3pt;
+      line-height: 1.25;
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .formula {
+      margin: 2.2mm 0;
+      padding: 2.5mm 3mm;
+      color: var(--navy);
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 10.4pt;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .formula.compact {
+      margin: 1.4mm 0;
+      padding: 1.8mm 2.5mm;
+      font-size: 9.2pt;
+    }
+
+    .callout {
+      margin: 3mm 0;
+      padding: 3mm 3.5mm;
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      page-break-inside: avoid;
+    }
+
+    .callout.warning {
+      background: var(--warning);
+      border-left-color: var(--gold);
+    }
+
+    .callout.danger {
+      background: #fbecec;
+      border-left-color: var(--danger);
+    }
+
+    .callout.success {
+      background: #edf7f1;
+      border-left-color: var(--success);
+    }
+
+    .callout-title {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--navy);
+      font-size: 8.2pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      align-items: start;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 23mm;
+      padding: 3mm 3mm 3mm 12mm;
+      background: var(--panel);
+      border: 0.45pt solid var(--line);
+      page-break-inside: avoid;
+    }
+
+    .step-number {
+      position: absolute;
+      top: 3mm;
+      left: 3mm;
+      display: flex;
+      width: 6.5mm;
+      height: 6.5mm;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: var(--blue);
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    .step h3 {
+      margin-top: 0;
+      font-size: 10pt;
+    }
+
+    .metric {
+      padding: 3mm;
+      background: white;
+      border-top: 1.2mm solid var(--blue);
+      box-shadow: 0 0 0 0.45pt var(--line);
+      text-align: center;
+    }
+
+    .metric .value {
+      display: block;
+      color: var(--navy);
+      font-size: 15pt;
+      font-weight: 700;
+    }
+
+    .metric .label {
+      display: block;
+      color: var(--muted);
+      font-size: 7.4pt;
+    }
+
+    .caption {
+      margin-top: 1.5mm;
+      color: var(--muted);
+      font-size: 7.7pt;
+      font-style: italic;
+      text-align: center;
+    }
+
+    .figure {
+      width: 100%;
+      margin: 3mm auto;
+      padding: 2mm;
+      border: 0.45pt solid var(--line);
+      background: white;
+      page-break-inside: avoid;
+    }
+
+    .figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .small {
+      font-size: 7.7pt;
+      line-height: 1.3;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .kicker {
+      color: var(--gold);
+      font-size: 9.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .cover {
+      padding-top: 0;
+    }
+
+    .cover-top {
+      padding-top: 7mm;
+      color: var(--muted);
+      border-bottom: 0.45pt solid var(--line);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    .cover-main {
+      margin-top: 47mm;
+      text-align: center;
+    }
+
+    .cover-main h1 {
+      margin: 5mm auto 4mm;
+      max-width: 160mm;
+      font-size: 28pt;
+      line-height: 1.08;
+    }
+
+    .cover-subtitle {
+      margin: 0 auto;
+      max-width: 155mm;
+      color: var(--blue-dark);
+      border-top: 0.6pt solid var(--blue);
+      padding-top: 4mm;
+      font-size: 13pt;
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    .cover-meta {
+      margin-top: 24mm;
+      color: var(--muted);
+      font-size: 9pt;
+    }
+
+    .toc td:first-child {
+      width: 84%;
+    }
+
+    .toc td:last-child {
+      width: 16%;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .checklist {
+      list-style: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 7mm;
+    }
+
+    .checklist li::before {
+      content: "□";
+      position: absolute;
+      left: 0;
+      top: -0.3mm;
+      color: var(--blue-dark);
+      font-size: 12pt;
+    }
+
+    .path {
+      color: #153f68;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 7.3pt;
+      overflow-wrap: anywhere;
+    }
+
+    svg text {
+      font-family: Arial, Helvetica, sans-serif;
+      fill: var(--ink);
+    }
+
+    @media screen {
+      body {
+        width: 216mm;
+        margin: 0 auto;
+        padding: 17mm;
+        background: #dde3e9;
+      }
+
+      .sheet {
+        margin-bottom: 10mm;
+        padding-left: 17mm;
+        padding-right: 17mm;
+        background: white;
+        box-shadow: 0 1mm 4mm rgb(23 59 100 / 18%);
+      }
+
+      .sheet:not(.cover)::before {
+        left: 17mm;
+        right: 17mm;
+      }
+
+      .page-tag {
+        right: 17mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="sheet cover">
+    <div class="cover-top">GUÍA TÉCNICA | MODELOS CONSTITUTIVOS | STRUCTURELAB_PBD_RC</div>
+    <div class="cover-main">
+      <div class="kicker">Stage 2 | Acero de refuerzo dúctil</div>
+      <h1>Aplicación paso a paso del modelo constitutivo RDM 2019</h1>
+      <div class="cover-subtitle">
+        Construcción de la envolvente monotónica en tracción y compresión,
+        incluyendo el cálculo mecánico de la longitud no soportada L/D
+      </div>
+      <div class="cover-meta">
+        Modelo: <strong>Mon_RDM2019</strong><br>
+        Ejemplo reproducible con la configuración canónica del repositorio<br><br>
+        Versión 1.0 | 28 de julio de 2026
+      </div>
+    </div>
+    <div class="page-tag">Página 1 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>Contenido y propósito</h1>
+    <div class="callout success">
+      <span class="callout-title">Resultado esperado</span>
+      Al terminar esta guía, el analista podrá pasar de propiedades físicas del
+      acero y del refuerzo transversal a una curva esfuerzo-deformación firmada,
+      reproducible y lista para un análisis monotónico de fibras.
+    </div>
+
+    <table class="toc">
+      <tbody>
+        <tr><td>1. Alcance, decisiones y fuentes</td><td>3</td></tr>
+        <tr><td>2. Convenciones de signos, unidades y ramas</td><td>4</td></tr>
+        <tr><td>3. Diccionario de inputs del caso</td><td>5-6</td></tr>
+        <tr><td>4. Diccionario de parámetros calculados</td><td>7-8</td></tr>
+        <tr><td>5. Geometría y cálculo mecánico de L/D</td><td>9-10</td></tr>
+        <tr><td>6. Ejemplo: datos y cálculo completo de L/D</td><td>11-12</td></tr>
+        <tr><td>7. Construcción de la envolvente de tracción</td><td>13</td></tr>
+        <tr><td>8. Parámetros intermedios RDM</td><td>14</td></tr>
+        <tr><td>9. Construcción de la envolvente de compresión</td><td>15</td></tr>
+        <tr><td>10. Evaluación numérica y curva obtenida</td><td>16</td></tr>
+        <tr><td>11. Configuración JSON, ejecución y outputs</td><td>17-18</td></tr>
+        <tr><td>12. Verificación, limitaciones y diagnóstico</td><td>19</td></tr>
+        <tr><td>13. Correspondencia con el código y referencias</td><td>20</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Cómo usar esta guía</h2>
+    <ol>
+      <li>Reúna los inputs definidos en las páginas 5 y 6.</li>
+      <li>Calcule primero la restricción transversal y obtenga <strong>n, L y L/D</strong>.</li>
+      <li>Construya la envolvente de tracción y después los parámetros RDM.</li>
+      <li>Evalúe la rama de compresión por tramos y aplique el piso residual.</li>
+      <li>Ejecute Stage 2 y confronte los resultados con el ejemplo desarrollado.</li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="callout-title">Advertencia de ingeniería</span>
+      Los valores numéricos incluidos son un caso sintético de verificación de
+      ecuaciones. No constituyen una calibración universal ni reemplazan los
+      ensayos del acero y la revisión del detalle estructural real.
+    </div>
+    <div class="page-tag">Página 2 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>1. Alcance, decisiones y fuentes</h1>
+    <h2>1.1 Qué representa el modelo</h2>
+    <p>
+      RDM 2019 es una <strong>envolvente constitutiva uniaxial monotónica</strong>
+      para barras longitudinales de refuerzo. Parte de una curva de tracción y
+      modifica la compresión para representar inicio de pandeo inelástico,
+      degradación pospandeo y una resistencia residual mínima.
+    </p>
+
+    <div class="grid-3">
+      <div class="step">
+        <span class="step-number">1</span>
+        <h3>Tracción de referencia</h3>
+        <p class="small">Elasticidad, meseta de fluencia y endurecimiento curvo.</p>
+      </div>
+      <div class="step">
+        <span class="step-number">2</span>
+        <h3>Longitud no soportada</h3>
+        <p class="small">La rigidez de estribos determina n, L=n·s y L/D.</p>
+      </div>
+      <div class="step">
+        <span class="step-number">3</span>
+        <h3>Compresión RDM</h3>
+        <p class="small">Transición, dos pendientes negativas y piso 0.2fy.</p>
+      </div>
+    </div>
+
+    <h2>1.2 Uso previsto</h2>
+    <table>
+      <thead>
+        <tr><th>Aplicación</th><th>Uso de este modelo</th><th>Observación</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Momento-curvatura</td>
+          <td>Apropiado como envolvente monotónica de fibras de acero.</td>
+          <td>Coordinar el pandeo con el estado del recubrimiento.</td>
+        </tr>
+        <tr>
+          <td>Pushover monotónico</td>
+          <td>Apropiado si la trayectoria avanza sin inversiones relevantes.</td>
+          <td>La deformación de falla requiere una política adicional.</td>
+        </tr>
+        <tr>
+          <td>Historia cíclica</td>
+          <td><strong>No usar como modelo completo.</strong></td>
+          <td>No incluye Bauschinger, descarga, recarga ni fatiga.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>1.3 Jerarquía documental auditada</h2>
+    <ol>
+      <li><strong>Akkaya, Guner y Vecchio (2019):</strong> ecuaciones RDM, Tabla 2.</li>
+      <li><strong>Dhakal y Maekawa (2002):</strong> estabilidad y determinación de n.</li>
+      <li><strong>Salgado y Guner (2014):</strong> implementación práctica y ejemplos de L/D.</li>
+      <li><strong>Código del repositorio:</strong> política de dominio, validaciones y outputs.</li>
+    </ol>
+
+    <div class="callout danger">
+      <span class="callout-title">Errata identificada en el boletín B3</span>
+      Su primera página imprime <strong>keq=k/kt</strong>. El artículo ASCE,
+      la página 2 del mismo boletín y todos sus ejemplos usan
+      <strong>keq=kt/k</strong>. El repositorio implementa la segunda definición.
+    </div>
+    <div class="page-tag">Página 3 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>2. Signos, unidades y ramas</h1>
+    <h2>2.1 Convención física exportada</h2>
+    <div class="grid-2">
+      <div class="callout success">
+        <span class="callout-title">Tracción</span>
+        Deformación ε<sub>s</sub> ≥ 0 y esfuerzo σ<sub>s</sub> ≥ 0.
+      </div>
+      <div class="callout">
+        <span class="callout-title">Compresión</span>
+        Deformación ε<sub>s</sub> &lt; 0 y esfuerzo σ<sub>s</sub> &lt; 0.
+      </div>
+    </div>
+
+    <p>
+      Las ecuaciones RDM se evalúan internamente con una magnitud positiva
+      <strong>e=|ε<sub>s</sub>|</strong>. Al exportar la rama física se asigna
+      σ<sub>s</sub>=-f<sub>sc</sub>(e) para compresión.
+    </p>
+    <div class="formula">
+      σ<sub>s</sub>(ε<sub>s</sub>) =
+      f<sub>t</sub>(ε<sub>s</sub>) si ε<sub>s</sub> ≥ 0;&nbsp;&nbsp;
+      σ<sub>s</sub>(ε<sub>s</sub>) =
+      -f<sub>sc</sub>(|ε<sub>s</sub>|) si ε<sub>s</sub> &lt; 0
+    </div>
+
+    <h2>2.2 Unidades obligatorias del caso canónico</h2>
+    <table>
+      <thead><tr><th>Magnitud</th><th>Unidad</th><th>Identidad útil</th></tr></thead>
+      <tbody>
+        <tr><td>Longitud</td><td>mm</td><td>D, d<sub>t</sub>, s, l<sub>e</sub>, L</td></tr>
+        <tr><td>Esfuerzo y módulo</td><td>MPa</td><td>1 MPa = 1 N/mm²</td></tr>
+        <tr><td>Deformación</td><td>mm/mm</td><td>Adimensional; 1 % = 0.01</td></tr>
+        <tr><td>Área</td><td>mm²</td><td>A<sub>t</sub></td></tr>
+        <tr><td>Inercia</td><td>mm⁴</td><td>I de la barra longitudinal</td></tr>
+        <tr><td>Rigidez axial equivalente</td><td>N/mm</td><td>k y k<sub>t</sub></td></tr>
+      </tbody>
+    </table>
+
+    <h2>2.3 Política de dominio en el repositorio</h2>
+    <ul>
+      <li>La curva exportada termina en <strong>epsilon_su</strong>.</li>
+      <li>Para |ε<sub>s</sub>| &gt; epsilon_su, la API devuelve esfuerzo 0.0 y marca el punto fuera del dominio.</li>
+      <li>No se prolonga numéricamente f<sub>t</sub>=f<sub>u</sub> después de epsilon_su.</li>
+      <li>La fractura y la fatiga no forman parte de esta envolvente.</li>
+    </ul>
+    <div class="callout warning">
+      <span class="callout-title">No mezclar representaciones</span>
+      Use propiedades ingenieriles o verdaderas de forma consistente. No combine
+      esfuerzos verdaderos con deformaciones ingenieriles dentro del mismo caso.
+    </div>
+    <div class="page-tag">Página 4 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>3. Inputs del caso: identificación y acero</h1>
+    <p>
+      Cada modelo de Stage 2 se define mediante un JSON. El bloque
+      <code>inputs</code> identifica de forma inequívoca el proyecto, el caso y
+      el modelo constitutivo.
+    </p>
+
+    <table class="dense">
+      <thead>
+        <tr><th style="width:24%">Variable</th><th style="width:12%">Unidad</th><th>Definición y criterio de obtención</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>project_id</code></td><td>-</td>
+          <td>Identificador estable del proyecto. Agrupa casos y evita mezclar resultados de proyectos distintos.</td>
+        </tr>
+        <tr>
+          <td><code>case_id</code></td><td>-</td>
+          <td>Identificador del caso de análisis. Una nueva ejecución reemplaza solamente este caso dentro del proyecto.</td>
+        </tr>
+        <tr>
+          <td><code>model_id</code></td><td>-</td>
+          <td>Debe ser exactamente <code>Mon_RDM2019</code>.</td>
+        </tr>
+        <tr>
+          <td><code>label</code></td><td>-</td>
+          <td>Nombre legible que aparecerá en leyendas, reportes y comparación de casos.</td>
+        </tr>
+        <tr>
+          <td><code>fy_MPa</code></td><td>MPa</td>
+          <td>Esfuerzo de fluencia de la barra longitudinal. Preferir valor medio de ensayo compatible con el análisis.</td>
+        </tr>
+        <tr>
+          <td><code>fu_MPa</code></td><td>MPa</td>
+          <td>Resistencia máxima de la envolvente de tracción. Debe satisfacer fu ≥ fy.</td>
+        </tr>
+        <tr>
+          <td><code>Es_MPa</code></td><td>MPa</td>
+          <td>Módulo elástico de la barra longitudinal. Controla epsilon_y y las pendientes RDM.</td>
+        </tr>
+        <tr>
+          <td><code>epsilon_sh</code></td><td>mm/mm</td>
+          <td>Deformación donde termina la meseta de fluencia y comienza el endurecimiento.</td>
+        </tr>
+        <tr>
+          <td><code>epsilon_su</code></td><td>mm/mm</td>
+          <td>Deformación última de la envolvente implementada; corresponde al punto fu del modelo.</td>
+        </tr>
+        <tr>
+          <td><code>parameter_p</code></td><td>-</td>
+          <td>Exponente de endurecimiento. La Tabla 2 de RDM admite 0, 1 o 4; el ejemplo usa P=4.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <span class="callout-title">Propiedades para análisis no lineal</span>
+      No reduzca fy o fu con factores de resistencia de diseño. Documente si los
+      valores son nominales, esperados o medidos y mantenga ese criterio en todos
+      los materiales del análisis.
+    </div>
+    <div class="page-tag">Página 5 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>3. Inputs del caso: restricción y curva</h1>
+    <table class="dense">
+      <thead>
+        <tr><th style="width:29%">Variable</th><th style="width:12%">Unidad</th><th>Definición y criterio de obtención</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>longitudinal_bar_diameter_mm</code></td><td>mm</td>
+          <td>Diámetro D de la barra longitudinal cuya estabilidad se evalúa.</td>
+        </tr>
+        <tr>
+          <td><code>tie_bar_diameter_mm</code></td><td>mm</td>
+          <td>Diámetro d<sub>t</sub> de la barra transversal circular. Se usa para calcular A<sub>t</sub>.</td>
+        </tr>
+        <tr>
+          <td><code>tie_spacing_mm</code></td><td>mm</td>
+          <td>Separación s entre niveles consecutivos de estribos en la zona evaluada.</td>
+        </tr>
+        <tr>
+          <td><code>effective_tie_leg_length_mm</code></td><td>mm</td>
+          <td>Longitud efectiva l<sub>e</sub> de la rama que se alarga en la dirección de pandeo.</td>
+        </tr>
+        <tr>
+          <td><code>effective_tie_legs</code></td><td>-</td>
+          <td>Número entero n<sub>l</sub> de ramas efectivas paralelas a la dirección de restricción.</td>
+        </tr>
+        <tr>
+          <td><code>restrained_longitudinal_bars</code></td><td>-</td>
+          <td>Número entero n<sub>b</sub> de barras atendidas en una cara y en la dirección evaluada.</td>
+        </tr>
+        <tr>
+          <td><code>tie_steel_modulus_MPa</code></td><td>MPa</td>
+          <td>Módulo E<sub>t</sub> del acero transversal empleado en la rigidez axial de las ramas.</td>
+        </tr>
+        <tr>
+          <td><code>buckling_restraint_case</code></td><td>-</td>
+          <td><code>bending</code> para una cara comprimida; <code>pure_compression</code> para ambas caras.</td>
+        </tr>
+        <tr>
+          <td><code>curve_generation.points</code></td><td>-</td>
+          <td>Número total de puntos por vector base. Debe ser al menos 2; el ejemplo usa 401.</td>
+        </tr>
+        <tr>
+          <td><code>curve_generation.max_strain</code></td><td>mm/mm</td>
+          <td>Máxima deformación; null usa epsilon_su. No puede exceder epsilon_su.</td>
+        </tr>
+        <tr>
+          <td><code>include_tension</code></td><td>booleano</td>
+          <td>Activa la rama positiva de tracción en CSV, XLSX y figura.</td>
+        </tr>
+        <tr>
+          <td><code>include_compression</code></td><td>booleano</td>
+          <td>Activa la rama negativa de compresión RDM.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <span class="callout-title">Interpretación de nb en compresión pura</span>
+      Ingrese las barras de <strong>una cara</strong>. El programa adopta
+      nb<sub>eff</sub>=2nb para considerar simultáneamente las dos caras, tal
+      como el ejemplo de viga/columna del boletín B3. No duplique el input.
+    </div>
+    <div class="page-tag">Página 6 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>4. Parámetros calculados: estabilidad</h1>
+    <table class="dense">
+      <thead>
+        <tr><th style="width:23%">Símbolo / output</th><th style="width:13%">Unidad</th><th>Significado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ε<sub>y</sub> / <code>epsilon_y</code></td><td>mm/mm</td><td>Deformación de fluencia fy/Es.</td></tr>
+        <tr><td>A<sub>t</sub> / <code>tie_area_mm2</code></td><td>mm²</td><td>Área de una barra transversal circular.</td></tr>
+        <tr><td>I / <code>longitudinal_bar_inertia_mm4</code></td><td>mm⁴</td><td>Segundo momento de área de la barra longitudinal.</td></tr>
+        <tr><td>E<sub>r</sub>I</td><td>N·mm²</td><td>Rigidez flexional reducida media de la barra en rango inelástico.</td></tr>
+        <tr><td>k</td><td>N/mm</td><td>Rigidez normalizadora de la barra: π⁴E<sub>r</sub>I/s³.</td></tr>
+        <tr><td>nb<sub>eff</sub></td><td>-</td><td>Barras efectivas que comparten la rigidez transversal.</td></tr>
+        <tr><td>k<sub>t</sub></td><td>N/mm</td><td>Rigidez de restricción transversal disponible por barra longitudinal.</td></tr>
+        <tr><td>k<sub>eq</sub></td><td>-</td><td>Relación real de rigideces k<sub>t</sub>/k.</td></tr>
+        <tr><td>n / <code>buckling_intervals</code></td><td>-</td><td>Modo estable: número de espacios de estribo incluidos en L.</td></tr>
+        <tr><td>L</td><td>mm</td><td>Longitud no soportada: n·s.</td></tr>
+        <tr><td>L/D</td><td>-</td><td>Relación de longitud no soportada a diámetro longitudinal.</td></tr>
+        <tr><td>s/db</td><td>-</td><td>Separación de estribos dividida por D; no reemplaza L/D.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="formula compact">
+      ε<sub>y</sub>=fy/Es;&nbsp;
+      A<sub>t</sub>=πd<sub>t</sub>²/4;&nbsp;
+      I=πD⁴/64
+    </div>
+    <div class="formula compact">
+      E<sub>r</sub>I=0.5EsI√(fy/400);&nbsp;
+      k=π⁴E<sub>r</sub>I/s³
+    </div>
+    <div class="formula compact">
+      k<sub>t</sub>=(E<sub>t</sub>A<sub>t</sub>/l<sub>e</sub>)
+      (n<sub>l</sub>/nb<sub>eff</sub>);&nbsp;
+      k<sub>eq</sub>=k<sub>t</sub>/k
+    </div>
+
+    <div class="callout">
+      <span class="callout-title">Comprobación dimensional</span>
+      Es·I produce N·mm²; al dividir por s³ se obtiene N/mm.
+      E<sub>t</sub>A<sub>t</sub>/l<sub>e</sub> también produce N/mm.
+      Por ello k<sub>eq</sub> es adimensional.
+    </div>
+    <div class="page-tag">Página 7 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>4. Parámetros calculados: RDM</h1>
+    <table class="dense">
+      <thead>
+        <tr><th style="width:25%">Símbolo / output</th><th style="width:13%">Unidad</th><th>Significado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>r<sub>b</sub> / <code>rb</code></td><td>-</td><td>Parámetro adimensional de pandeo que combina L/D y fy.</td></tr>
+        <tr><td>r<sub>b,min</sub></td><td>-</td><td>Valor de rb asociado al umbral RDM L/D=5.</td></tr>
+        <tr><td>ε<sub>i</sub><sup>0</sup></td><td>mm/mm</td><td>Deformación intermedia preliminar calculada con rb.</td></tr>
+        <tr><td>ε<sub>i,max</sub></td><td>mm/mm</td><td>Máxima deformación intermedia asociada a rb,min.</td></tr>
+        <tr><td>ε<sub>i</sub></td><td>mm/mm</td><td>Deformación intermedia corregida y limitada a 7εy.</td></tr>
+        <tr><td>f<sub>it</sub></td><td>MPa</td><td>Esfuerzo de la envolvente de tracción evaluado en εi.</td></tr>
+        <tr><td>f<sub>st</sub></td><td>MPa</td><td>Esfuerzo de tracción de referencia evaluado en la deformación actual e.</td></tr>
+        <tr><td>α<sub>1</sub></td><td>-</td><td>Coeficiente que combina fu/fy con D/L.</td></tr>
+        <tr><td>α<sub>2</sub></td><td>-</td><td>Coeficiente de degradación que depende de rb.</td></tr>
+        <tr><td>α</td><td>-</td><td>Factor final para calcular el esfuerzo intermedio.</td></tr>
+        <tr><td>f<sub>i</sub></td><td>MPa</td><td>Esfuerzo intermedio, acotado entre 0.2fy y fit.</td></tr>
+        <tr><td>ε<sub>ii</sub></td><td>mm/mm</td><td>Segundo cambio de pendiente pospandeo.</td></tr>
+        <tr><td>0.2fy</td><td>MPa</td><td>Piso residual que nunca debe ser vulnerado dentro del dominio.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Variables de respuesta</h2>
+    <table>
+      <thead><tr><th>Símbolo</th><th>Definición</th></tr></thead>
+      <tbody>
+        <tr><td>ε<sub>s</sub></td><td>Deformación firmada solicitada al material.</td></tr>
+        <tr><td>e</td><td>Magnitud positiva |ε<sub>s</sub>| usada en las ecuaciones de compresión.</td></tr>
+        <tr><td>f<sub>t</sub>(e)</td><td>Envolvente de tracción de referencia.</td></tr>
+        <tr><td>f<sub>sc</sub>(e)</td><td>Magnitud positiva de la envolvente RDM en compresión.</td></tr>
+        <tr><td>σ<sub>s</sub></td><td>Esfuerzo firmado final exportado por Stage 2.</td></tr>
+      </tbody>
+    </table>
+    <div class="page-tag">Página 8 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>5. Geometría para calcular L/D</h1>
+    <p>
+      La dirección de pandeo debe definirse antes de contar ramas y barras. El
+      mismo detalle puede producir valores distintos de l<sub>e</sub>,
+      n<sub>l</sub> y n<sub>b</sub> en sus dos ejes principales.
+    </p>
+
+    <div class="figure">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Esquema de sección y longitud no soportada">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="#2e74b5"/>
+          </marker>
+        </defs>
+        <text x="160" y="32" font-size="22" font-weight="700" fill="#173b64">Sección transversal</text>
+        <rect x="70" y="62" width="330" height="300" fill="#f3f6f9" stroke="#173b64" stroke-width="4"/>
+        <rect x="100" y="92" width="270" height="240" fill="none" stroke="#2e74b5" stroke-width="8"/>
+        <g fill="#202832" stroke="#fff" stroke-width="2">
+          <circle cx="115" cy="107" r="13"/><circle cx="235" cy="107" r="13"/><circle cx="355" cy="107" r="13"/>
+          <circle cx="115" cy="317" r="13"/><circle cx="235" cy="317" r="13"/><circle cx="355" cy="317" r="13"/>
+          <circle cx="115" cy="212" r="13"/><circle cx="355" cy="212" r="13"/>
+        </g>
+        <line x1="100" y1="395" x2="370" y2="395" stroke="#2e74b5" stroke-width="3" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+        <text x="201" y="426" font-size="20">lₑ: longitud efectiva de rama</text>
+        <line x1="420" y1="210" x2="470" y2="210" stroke="#9a6a00" stroke-width="5" marker-end="url(#arrow)"/>
+        <text x="405" y="185" font-size="18" fill="#9a6a00">dirección evaluada</text>
+
+        <text x="600" y="32" font-size="22" font-weight="700" fill="#173b64">Elevación</text>
+        <line x1="590" y1="70" x2="590" y2="392" stroke="#202832" stroke-width="12"/>
+        <line x1="760" y1="70" x2="760" y2="392" stroke="#202832" stroke-width="12"/>
+        <g stroke="#2e74b5" stroke-width="7">
+          <line x1="560" y1="90" x2="790" y2="90"/>
+          <line x1="560" y1="180" x2="790" y2="180"/>
+          <line x1="560" y1="270" x2="790" y2="270"/>
+          <line x1="560" y1="360" x2="790" y2="360"/>
+        </g>
+        <path d="M590 90 C690 130, 690 140, 590 180" fill="none" stroke="#9b1c1c" stroke-width="5"/>
+        <line x1="820" y1="90" x2="820" y2="180" stroke="#2e74b5" stroke-width="3" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+        <text x="834" y="142" font-size="20">s</text>
+        <line x1="860" y1="90" x2="860" y2="180" stroke="#9a6a00" stroke-width="3" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+        <text x="845" y="212" font-size="18" fill="#9a6a00">L=n·s</text>
+        <text x="560" y="430" font-size="18">D: barra longitudinal | dₜ: estribo</text>
+      </svg>
+      <div class="caption">Figura 1. Variables geométricas que intervienen en el cálculo.</div>
+    </div>
+
+    <h2>5.1 Reglas de conteo</h2>
+    <ul>
+      <li><strong>n<sub>l</sub>:</strong> ramas paralelas a la dirección que restringe el desplazamiento lateral.</li>
+      <li><strong>n<sub>b</sub>:</strong> barras de una cara que comparten esas ramas.</li>
+      <li><strong>l<sub>e</sub>:</strong> longitud deformable de la rama, no la dimensión exterior bruta.</li>
+      <li><strong>Gobierno:</strong> evalúe ambas direcciones y use la condición que corresponda a la fibra analizada.</li>
+    </ul>
+    <div class="page-tag">Página 9 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>5. Algoritmo completo de L/D</h1>
+    <div class="grid-2">
+      <div>
+        <div class="step"><span class="step-number">1</span><h3>Propiedades básicas</h3><p class="small">Calcular εy, At e I.</p></div>
+        <div class="step"><span class="step-number">2</span><h3>Rigidez de la barra</h3><p class="small">Calcular ErI y k=π⁴ErI/s³.</p></div>
+        <div class="step"><span class="step-number">3</span><h3>Rigidez transversal</h3><p class="small">Resolver nb_eff y calcular kt.</p></div>
+      </div>
+      <div>
+        <div class="step"><span class="step-number">4</span><h3>Relación equivalente</h3><p class="small">Calcular keq=kt/k.</p></div>
+        <div class="step"><span class="step-number">5</span><h3>Modo estable</h3><p class="small">Seleccionar n con la tabla.</p></div>
+        <div class="step"><span class="step-number">6</span><h3>Longitud final</h3><p class="small">L=n·s, L/D=n·s/D y rb.</p></div>
+      </div>
+    </div>
+
+    <h2>5.2 Selección conservadora del modo n</h2>
+    <table class="dense">
+      <thead><tr><th>n</th><th>Intervalo implementado para keq</th><th>Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>keq &gt; 0.7500</td><td>Un espacio de estribo.</td></tr>
+        <tr><td>2</td><td>0.1649 &lt; keq ≤ 0.7500</td><td>Dos espacios.</td></tr>
+        <tr><td>3</td><td>0.0976 &lt; keq ≤ 0.1649</td><td>Tres espacios.</td></tr>
+        <tr><td>4</td><td>0.0448 &lt; keq ≤ 0.0976</td><td>Cuatro espacios.</td></tr>
+        <tr><td>5</td><td>0.0084 &lt; keq ≤ 0.0448</td><td>Cinco espacios.</td></tr>
+        <tr><td>6</td><td>0.0063 &lt; keq ≤ 0.0084</td><td>Seis espacios.</td></tr>
+        <tr><td>7</td><td>0.0037 &lt; keq ≤ 0.0063</td><td>Siete espacios.</td></tr>
+        <tr><td>8</td><td>0.0031 &lt; keq ≤ 0.0037</td><td>Ocho espacios.</td></tr>
+        <tr><td>9</td><td>0.0013 &lt; keq ≤ 0.0031</td><td>Nueve espacios.</td></tr>
+        <tr><td>10</td><td>0.0009 ≤ keq ≤ 0.0013</td><td>Máximo modo tabulado.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <span class="callout-title">Fronteras y extrapolación</span>
+      Un límite compartido se asigna al n mayor, opción conservadora. Para
+      keq&lt;0.0009 se genera error porque las fuentes no tabulan n&gt;10.
+    </div>
+    <div class="page-tag">Página 10 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>6. Ejemplo reproducible: datos</h1>
+    <p>
+      Se usa el caso canónico incluido en el repositorio. La procedencia está
+      marcada como <code>source_equation_validation_case</code>: verifica las
+      ecuaciones, pero debe sustituirse por propiedades reales del proyecto.
+    </p>
+
+    <table>
+      <thead><tr><th>Grupo</th><th>Variable</th><th class="num">Valor</th><th>Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="6">Acero longitudinal</td><td>fy</td><td class="num">420 MPa</td><td>Fluencia.</td></tr>
+        <tr><td>fu</td><td class="num">630 MPa</td><td>Resistencia máxima.</td></tr>
+        <tr><td>Es</td><td class="num">200 000 MPa</td><td>Módulo elástico.</td></tr>
+        <tr><td>epsilon_sh</td><td class="num">0.010</td><td>Inicio de endurecimiento.</td></tr>
+        <tr><td>epsilon_su</td><td class="num">0.100</td><td>Fin del dominio.</td></tr>
+        <tr><td>P</td><td class="num">4</td><td>Exponente de endurecimiento.</td></tr>
+        <tr><td rowspan="8">Restricción</td><td>D</td><td class="num">20 mm</td><td>Barra longitudinal.</td></tr>
+        <tr><td>dt</td><td class="num">10 mm</td><td>Barra transversal.</td></tr>
+        <tr><td>s</td><td class="num">100 mm</td><td>Separación de estribos.</td></tr>
+        <tr><td>le</td><td class="num">200 mm</td><td>Longitud efectiva de rama.</td></tr>
+        <tr><td>nl</td><td class="num">2</td><td>Ramas efectivas.</td></tr>
+        <tr><td>nb</td><td class="num">2</td><td>Barras restringidas de una cara.</td></tr>
+        <tr><td>Et</td><td class="num">200 000 MPa</td><td>Módulo del estribo.</td></tr>
+        <tr><td>Caso</td><td class="num">bending</td><td>Una cara comprimida.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid-3">
+      <div class="metric"><span class="value">401</span><span class="label">puntos de generación</span></div>
+      <div class="metric"><span class="value">Sí</span><span class="label">rama de tracción</span></div>
+      <div class="metric"><span class="value">Sí</span><span class="label">rama de compresión</span></div>
+    </div>
+
+    <h2>6.1 Validaciones previas</h2>
+    <ul class="checklist">
+      <li>0 &lt; fy ≤ fu y Es &gt; 0.</li>
+      <li>0 &lt; fy/Es &lt; epsilon_sh &lt; epsilon_su.</li>
+      <li>P pertenece a {0, 1, 4}.</li>
+      <li>D, dt, s, le y Et son positivos; nl y nb son enteros positivos.</li>
+      <li>No se suministran L/D, rb, n ni epsilon_y como inputs derivados.</li>
+    </ul>
+    <div class="page-tag">Página 11 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>6. Ejemplo: cálculo numérico de L/D</h1>
+    <div class="formula compact">ε<sub>y</sub>=420/200000=<strong>0.002100</strong></div>
+    <div class="formula compact">A<sub>t</sub>=π(10)²/4=<strong>78.5398 mm²</strong></div>
+    <div class="formula compact">I=π(20)⁴/64=<strong>7853.9816 mm⁴</strong></div>
+    <div class="formula compact">
+      E<sub>r</sub>I=0.5(200000)(7853.9816)√(420/400)
+      =<strong>804 793 631.20 N·mm²</strong>
+    </div>
+    <div class="formula compact">
+      k=π⁴(804793631.20)/(100)³=<strong>78 394.2161 N/mm</strong>
+    </div>
+
+    <p>
+      Como el caso es <code>bending</code>, nb<sub>eff</sub>=nb=2. Para
+      <code>pure_compression</code> habría sido nb<sub>eff</sub>=2nb=4.
+    </p>
+    <div class="formula compact">
+      k<sub>t</sub>=[(200000)(78.5398)/200](2/2)
+      =<strong>78 539.8163 N/mm</strong>
+    </div>
+    <div class="formula compact">
+      k<sub>eq</sub>=78539.8163/78394.2161=<strong>1.001857</strong>
+    </div>
+
+    <p>
+      La tabla entrega n=1 porque keq&gt;0.7500. En consecuencia:
+    </p>
+    <div class="formula">
+      L=n·s=1(100)=<strong>100 mm</strong>;&nbsp;&nbsp;
+      L/D=100/20=<strong>5.000</strong>
+    </div>
+    <div class="formula">
+      r<sub>b</sub>=5√(420/100)=<strong>10.246951</strong>
+    </div>
+
+    <div class="grid-3">
+      <div class="metric"><span class="value">1.001857</span><span class="label">keq = kt/k</span></div>
+      <div class="metric"><span class="value">n = 1</span><span class="label">modo estable</span></div>
+      <div class="metric"><span class="value">L/D = 5</span><span class="label">umbral RDM activo</span></div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-title">Control con ejemplos publicados</span>
+      Las pruebas automatizadas reproducen además el boletín B3
+      (keq=4.44, n=1 y keq=0.61, n=2) y los especímenes ASCE
+      (keq=1.126, n=1 y keq=0.1015, n=3).
+    </div>
+    <div class="page-tag">Página 12 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>7. Envolvente de tracción</h1>
+    <p>
+      Defina e como una deformación positiva. La curva de referencia tiene tres
+      tramos dentro del dominio 0≤e≤epsilon_su.
+    </p>
+    <div class="formula">
+      f<sub>t</sub>(e)=Es·e
+      &nbsp;&nbsp;para 0≤e≤ε<sub>y</sub>
+    </div>
+    <div class="formula">
+      f<sub>t</sub>(e)=fy
+      &nbsp;&nbsp;para ε<sub>y</sub>&lt;e≤ε<sub>sh</sub>
+    </div>
+    <div class="formula">
+      f<sub>t</sub>(e)=fu+(fy-fu)
+      [(ε<sub>u</sub>-e)/(ε<sub>u</sub>-ε<sub>sh</sub>)]<sup>P</sup>
+      &nbsp;&nbsp;para ε<sub>sh</sub>&lt;e&lt;ε<sub>u</sub>
+    </div>
+    <div class="formula">f<sub>t</sub>(ε<sub>u</sub>)=fu</div>
+
+    <h2>7.1 Aplicación al ejemplo</h2>
+    <ul>
+      <li>εy=0.0021 y f<sub>t</sub>(εy)=200000(0.0021)=420 MPa.</li>
+      <li>Entre 0.0021 y 0.010, f<sub>t</sub>=420 MPa.</li>
+      <li>Entre 0.010 y 0.100, P=4 curva el endurecimiento hacia fu=630 MPa.</li>
+    </ul>
+    <div class="formula compact">
+      f<sub>t</sub>(0.020)=630+(420-630)
+      [(0.100-0.020)/(0.100-0.010)]⁴
+      =<strong>498.898 MPa</strong>
+    </div>
+
+    <h2>7.2 Tangente útil para un solucionador</h2>
+    <div class="formula compact">
+      E<sub>tan</sub>=Es en el tramo elástico;&nbsp;&nbsp;
+      E<sub>tan</sub>=0 en la meseta
+    </div>
+    <div class="formula compact">
+      E<sub>tan</sub>=[(fu-fy)P/(ε<sub>u</sub>-ε<sub>sh</sub>)]
+      [(ε<sub>u</sub>-e)/(ε<sub>u</sub>-ε<sub>sh</sub>)]<sup>P-1</sup>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-title">Diferencia entre epsilon_su y fractura</span>
+      epsilon_su cierra la envolvente implementada, pero no representa por sí
+      sola fatiga o rotura acumulativa. El modelo devuelve 0.0 fuera del dominio.
+    </div>
+    <div class="page-tag">Página 13 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>8. Parámetros intermedios RDM</h1>
+    <div class="formula compact">
+      r<sub>b,min</sub>=5√(fy/100)=<strong>10.246951</strong>
+    </div>
+    <div class="formula compact">
+      ε<sub>i</sub><sup>0</sup>=ε<sub>y</sub>(55-2.3r<sub>b</sub>)
+      =<strong>0.06600723</strong>
+    </div>
+    <div class="formula compact">
+      ε<sub>i,max</sub>=ε<sub>y</sub>(55-2.3r<sub>b,min</sub>)
+      =<strong>0.06600723</strong>
+    </div>
+
+    <p>
+      La corrección ε<sub>i</sub><sup>0</sup>ε<sub>u</sub>/ε<sub>i,max</sub>
+      solo aplica si ε<sub>i</sub><sup>0</sup>&lt;ε<sub>u</sub>&lt;ε<sub>i,max</sub>.
+      Aquí εu=0.100 no es menor que εi,max; por tanto no se aplica.
+    </p>
+    <div class="formula compact">
+      ε<sub>i</sub>=max(ε<sub>i</sub><sup>0</sup>,7ε<sub>y</sub>)
+      =max(0.06600723,0.0147)=<strong>0.06600723</strong>
+    </div>
+
+    <div class="formula compact">
+      f<sub>it</sub>=f<sub>t</sub>(ε<sub>i</sub>)
+      =<strong>625.7264 MPa</strong>
+    </div>
+    <div class="formula compact">
+      α<sub>1</sub>=0.8+1.8(fu/fy)(D/L)
+      =0.8+1.8(630/420)(20/100)=<strong>1.3400</strong>
+    </div>
+    <div class="formula compact">
+      α<sub>2</sub>=1.1-0.016r<sub>b</sub>
+      =<strong>0.9360488</strong>
+    </div>
+
+    <p>
+      Como εi&gt;εsh y no aplica el caso especial,
+      α=α1α2=<strong>1.2543054</strong>.
+    </p>
+    <div class="formula compact">
+      f<sub>i</sub>=min[f<sub>it</sub>, max(0.2fy, αfy)]
+      =<strong>526.8083 MPa</strong>
+    </div>
+    <div class="formula compact">
+      ε<sub>ii</sub>=ε<sub>i</sub>+0.25f<sub>i</sub>/(0.02Es)
+      =<strong>0.09893274</strong>
+    </div>
+
+    <div class="callout">
+      <span class="callout-title">Caso especial de la Tabla 2</span>
+      Si εu≤εi,max y εi=7εy, se evalúa fit con P=1 y se usa
+      α=0.75α2(fit/fy). El código le da prioridad antes de las otras ramas.
+    </div>
+    <div class="page-tag">Página 14 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>9. Envolvente RDM en compresión</h1>
+    <p>
+      Para e=|εs|, calcule primero una magnitud positiva fsc(e). Luego asigne
+      signo negativo al exportarla.
+    </p>
+    <div class="formula compact">
+      f<sub>sc</sub>=Es·e
+      &nbsp;para 0≤e≤ε<sub>y</sub>
+    </div>
+    <div class="formula compact">
+      f<sub>sc</sub>=f<sub>st</sub>{1-(1-f<sub>i</sub>/f<sub>it</sub>)
+      [(e-ε<sub>y</sub>)/(ε<sub>i</sub>-ε<sub>y</sub>)]}
+      &nbsp;para ε<sub>y</sub>&lt;e≤ε<sub>i</sub>
+    </div>
+    <div class="formula compact">
+      f<sub>sc</sub>=f<sub>i</sub>-0.02Es(e-ε<sub>i</sub>)
+      &nbsp;para ε<sub>i</sub>&lt;e≤ε<sub>ii</sub>
+    </div>
+    <div class="formula compact">
+      f<sub>sc</sub>=0.75f<sub>i</sub>-0.01Es(e-ε<sub>ii</sub>)
+      &nbsp;para ε<sub>ii</sub>&lt;e≤ε<sub>u</sub>
+    </div>
+    <div class="formula">f<sub>sc</sub>(e)≥0.2fy=<strong>84 MPa</strong></div>
+
+    <h2>9.1 Continuidad obligatoria</h2>
+    <ul>
+      <li>En e=εy, las ramas elástica y de transición entregan fy.</li>
+      <li>En e=εi, la transición entrega fi.</li>
+      <li>En e=εii, el primer tramo pospandeo entrega 0.75fi.</li>
+      <li>Cuando actúa el piso 0.2fy, la tangente se hace cero.</li>
+    </ul>
+
+    <h2>9.2 Evaluación de un punto del ejemplo</h2>
+    <p>
+      Para e=0.020, f<sub>st</sub>=f<sub>t</sub>(0.020)=498.898 MPa,
+      q=1-fi/fit=0.1580853 y
+      x=(e-εy)/(εi-εy)=0.2800935.
+    </p>
+    <div class="formula">
+      f<sub>sc</sub>(0.020)=498.898[1-(0.1580853)(0.2800935)]
+      =<strong>476.8075 MPa</strong>
+    </div>
+    <p>
+      El punto físico exportado es
+      (ε<sub>s</sub>,σ<sub>s</sub>)=(-0.020,-476.8075 MPa).
+    </p>
+    <div class="page-tag">Página 15 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>10. Respuesta numérica del ejemplo</h1>
+    <table class="dense">
+      <thead>
+        <tr>
+          <th>e=|εs|</th><th class="num">Tracción +ft [MPa]</th>
+          <th class="num">Compresión -fsc [MPa]</th><th>Rama de compresión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0.0010</td><td class="num">200.000</td><td class="num">-200.000</td><td>Elástica</td></tr>
+        <tr><td>0.0021</td><td class="num">420.000</td><td class="num">-420.000</td><td>Fluencia</td></tr>
+        <tr><td>0.0050</td><td class="num">420.000</td><td class="num">-416.987</td><td>Transición</td></tr>
+        <tr><td>0.0100</td><td class="num">420.000</td><td class="num">-411.792</td><td>Transición</td></tr>
+        <tr><td>0.0200</td><td class="num">498.898</td><td class="num">-476.807</td><td>Transición</td></tr>
+        <tr><td>0.0400</td><td class="num">588.519</td><td class="num">-533.344</td><td>Transición</td></tr>
+        <tr><td>0.0600</td><td class="num">621.806</td><td class="num">-532.748</td><td>Transición</td></tr>
+        <tr><td>0.066007</td><td class="num">625.726</td><td class="num">-526.808</td><td>Punto (εi,fi)</td></tr>
+        <tr><td>0.0800</td><td class="num">629.488</td><td class="num">-470.837</td><td>Pendiente -0.02Es</td></tr>
+        <tr><td>0.098933</td><td class="num">630.000</td><td class="num">-395.106</td><td>Punto (εii,0.75fi)</td></tr>
+        <tr><td>0.1000</td><td class="num">630.000</td><td class="num">-392.972</td><td>Pendiente -0.01Es</td></tr>
+      </tbody>
+    </table>
+
+    <div class="figure">
+      <img src="assets/rdm_2019_example_response.png" alt="Curva constitutiva RDM 2019 del ejemplo">
+      <div class="caption">
+        Figura 2. Envolventes firmadas producidas por Stage 2 para el caso canónico.
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-title">Lectura física</span>
+      La tracción alcanza fu=630 MPa. En compresión, la barra pierde capacidad
+      después de su punto intermedio y llega a -392.97 MPa en |εs|=0.10.
+      Una curva simétrica habría asignado -630 MPa y sobreestimado la capacidad.
+    </div>
+    <div class="page-tag">Página 16 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>11. JSON canónico y ejecución</h1>
+    <h2>11.1 Estructura mínima del input</h2>
+    <pre>{
+  "stage_id": "stage_02",
+  "enabled": true,
+  "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
+  "inputs": {
+    "project_id": "default",
+    "case_id": "rdm_2019_ld5",
+    "model_id": "Mon_RDM2019",
+    "label": "RDM 2019 | L/D = 5",
+    "parameters": {
+      "fy_MPa": 420.0, "fu_MPa": 630.0, "Es_MPa": 200000.0,
+      "epsilon_sh": 0.01, "epsilon_su": 0.10, "parameter_p": 4.0,
+      "longitudinal_bar_diameter_mm": 20.0,
+      "tie_bar_diameter_mm": 10.0, "tie_spacing_mm": 100.0,
+      "effective_tie_leg_length_mm": 200.0,
+      "effective_tie_legs": 2, "restrained_longitudinal_bars": 2,
+      "tie_steel_modulus_MPa": 200000.0,
+      "buckling_restraint_case": "bending"
+    },
+    "curve_generation": {
+      "points": 401, "max_strain": null,
+      "include_tension": true, "include_compression": true
+    },
+    "provenance": {
+      "source": "...", "citation": "...",
+      "source_location": "...", "specimen_or_profile": "...",
+      "calibration_status": "source_equation_validation_case"
+    }
+  }
+}</pre>
+
+    <div class="callout danger">
+      <span class="callout-title">Valores que no son inputs canónicos</span>
+      No ingrese epsilon_y, buckling_intervals, unsupported_length_mm, L/D,
+      rb, k, kt o keq. El ejecutor los calcula y rechaza su duplicación.
+    </div>
+
+    <h2>11.2 Ejecución en PowerShell</h2>
+    <pre>.\.venv_structurelab_pbd_rc\Scripts\Activate.ps1
+python scripts\run_stage_02.py</pre>
+    <p class="small">
+      También puede ejecutar directamente el intérprete del entorno:
+      <span class="path">.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_02.py</span>
+    </p>
+    <div class="page-tag">Página 17 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>11. Outputs y trazabilidad</h1>
+    <p>
+      El caso queda bajo una ruta determinada exclusivamente por project_id,
+      case_id, protocolo, material y model_id.
+    </p>
+    <pre>outputs/stage_02/default/rdm_2019_ld5/
+└── monotonic/ductile_reinforcing_steel/
+    └── Mon_RDM2019/
+        ├── data/
+        │   ├── resolved_inputs.json
+        │   ├── calculated_parameters.yaml
+        │   ├── metrics.yaml
+        │   ├── curve.csv
+        │   └── curve.xlsx
+        ├── figures/
+        │   └── response.png
+        └── reports/
+            ├── model_report.yaml
+            └── model_report.pdf</pre>
+
+    <table>
+      <thead><tr><th>Archivo</th><th>Uso recomendado</th></tr></thead>
+      <tbody>
+        <tr><td><code>resolved_inputs.json</code></td><td>Auditar exactamente qué leyó el ejecutor.</td></tr>
+        <tr><td><code>calculated_parameters.yaml</code></td><td>Verificar epsilon_y, k, kt, keq, n, L/D y controles RDM.</td></tr>
+        <tr><td><code>metrics.yaml</code></td><td>Revisar rangos, puntos, ramas y estados fuera del dominio.</td></tr>
+        <tr><td><code>curve.csv/.xlsx</code></td><td>Importar la curva a otras herramientas o revisarla numéricamente.</td></tr>
+        <tr><td><code>response.png</code></td><td>Inspección visual de signos, ramas y deformación máxima.</td></tr>
+        <tr><td><code>model_report.yaml</code></td><td>Registro integral de inputs, cálculos, advertencias y archivos.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>11.3 Comportamiento al reejecutar</h2>
+    <ul>
+      <li>Si el proyecto no existe, se crea.</li>
+      <li>Si el caso procesado existe, su carpeta se reemplaza completamente.</li>
+      <li>No se eliminan otros casos ni proyectos ajenos a la ejecución.</li>
+      <li>El registro y la comparación consolidada se actualizan.</li>
+    </ul>
+    <div class="page-tag">Página 18 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>12. Verificación, límites y diagnóstico</h1>
+    <div class="grid-2">
+      <div>
+        <h2>12.1 Lista de aceptación</h2>
+        <ul class="checklist small">
+          <li>epsilon_y=fy/Es.</li>
+          <li>k y kt están en N/mm.</li>
+          <li>keq se calculó como kt/k.</li>
+          <li>n pertenece a 1...10.</li>
+          <li>L=n·s y L/D=L/D longitudinal.</li>
+          <li>La rama RDM es continua en epsilon_i y epsilon_ii.</li>
+          <li>fsc nunca baja de 0.2fy dentro del dominio.</li>
+          <li>La rama exportada de compresión es negativa.</li>
+          <li>La curva termina exactamente en epsilon_su.</li>
+          <li>La procedencia de cada input quedó registrada.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>12.2 Rango reportado</h2>
+        <ul class="small">
+          <li>200 &lt; fy &lt; 900 MPa.</li>
+          <li>10 &lt; D &lt; 36 mm.</li>
+          <li>fu/fy &lt; 2.</li>
+          <li>P≤4 y P seleccionado entre 0, 1 y 4.</li>
+          <li>epsilon_u &gt; 14epsilon_y.</li>
+          <li>8 &lt; rb &lt; 56.</li>
+          <li>L/D≥5 para activar pandeo RDM.</li>
+        </ul>
+        <div class="callout warning small">
+          Salir de estos rangos genera advertencias, no una recalibración
+          automática. El analista debe justificar la extrapolación.
+        </div>
+      </div>
+    </div>
+
+    <h2>12.3 Problemas frecuentes</h2>
+    <table class="dense">
+      <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Acción</th></tr></thead>
+      <tbody>
+        <tr><td>L/D inesperadamente grande</td><td>nb, nl o le se contaron en otra dirección.</td><td>Redibujar el mecanismo y revisar la cara evaluada.</td></tr>
+        <tr><td>keq disminuye al reforzar estribos</td><td>Se invirtió la razón.</td><td>Usar keq=kt/k.</td></tr>
+        <tr><td>Error por keq&lt;0.0009</td><td>Restricción fuera de la tabla n≤10.</td><td>No extrapolar; revisar detalle o método.</td></tr>
+        <tr><td>Salto en epsilon_i</td><td>fit o la condición especial están mal evaluados.</td><td>Revisar P=1 solo en el caso especial.</td></tr>
+        <tr><td>Compresión positiva en CSV</td><td>Se usó la API de magnitudes, no la respuesta firmada.</td><td>Usar el ejecutor Stage 2 o signed_compression_response.</td></tr>
+        <tr><td>Curva después de epsilon_su</td><td>Se prolongó el modelo fuera de dominio.</td><td>Terminar la exportación en epsilon_su.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <span class="callout-title">Limitaciones actuales</span>
+      El cálculo físico de L/D implementado cubre restricción transversal
+      rectangular. Secciones circulares, losas, ausencia de estribos y detalles
+      no convencionales requieren una estrategia específica. Tampoco se modela
+      automáticamente el desprendimiento del recubrimiento.
+    </div>
+    <div class="page-tag">Página 19 de 20</div>
+  </section>
+
+  <section class="sheet">
+    <h1>13. Código, pruebas y referencias</h1>
+    <h2>13.1 Correspondencia fórmula-código</h2>
+    <table class="dense">
+      <thead><tr><th>Responsabilidad</th><th>Ubicación</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Inputs, validación y ecuaciones RDM</td>
+          <td class="path">src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/model.py</td>
+        </tr>
+        <tr>
+          <td>k, kt, keq, tabla n y L/D</td>
+          <td class="path">src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/buckling_length.py</td>
+        </tr>
+        <tr>
+          <td>JSON canónico</td>
+          <td class="path">configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json</td>
+        </tr>
+        <tr>
+          <td>Pruebas de ecuaciones RDM</td>
+          <td class="path">tests/test_material_models/test_rdm_2019.py</td>
+        </tr>
+        <tr>
+          <td>Ejemplos B3 y ASCE de L/D</td>
+          <td class="path">tests/test_material_models/test_rdm_buckling_length.py</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>13.2 Referencias primarias locales</h2>
+    <ol class="small">
+      <li>
+        Akkaya, Y., Guner, S. y Vecchio, F. J. (2019).
+        <em>Constitutive Model for Inelastic Buckling Behavior of Reinforcing Bars</em>.
+        ACI Structural Journal, 116(3), 195-204. DOI 10.14359/51711143.
+        Archivo: <span class="path">references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/jp116.pdf</span>.
+      </li>
+      <li>
+        Dhakal, R. P. y Maekawa, K. (2002).
+        <em>Reinforcement Stability and Fracture of Cover Concrete in Reinforced Concrete Members</em>.
+        Journal of Structural Engineering, 128(10), 1253-1262.
+        DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253).
+        Archivo: <span class="path">references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/12587353_2002_ASCESTR_2__Stability.pdf</span>.
+      </li>
+      <li>
+        Salgado, R. y Guner, S. (2014).
+        <em>User Bulletin 3: Determination of Unsupported Length Ratio L/Db</em>, versión 1.1.
+        Archivo: <span class="path">references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/B3_VT5UnsupportedLengthRatio_V1.1.pdf</span>.
+      </li>
+    </ol>
+
+    <h2>13.3 Pruebas recomendadas después de cambiar el modelo</h2>
+    <pre>.\.venv_structurelab_pbd_rc\Scripts\python.exe -m pytest `
+  tests\test_material_models\test_rdm_2019.py `
+  tests\test_material_models\test_rdm_buckling_length.py `
+  tests\test_stages\test_stage_02.py -q</pre>
+
+    <div class="callout success">
+      <span class="callout-title">Criterio de cierre</span>
+      Un caso está listo para uso cuando los inputs tienen procedencia, las
+      unidades son homogéneas, L/D fue calculado desde la restricción física,
+      la curva pasa los controles de continuidad y los outputs reproducen los
+      parámetros documentados.
+    </div>
+    <div class="page-tag">Página 20 de 20</div>
+  </section>
+
+</body>
+</html>

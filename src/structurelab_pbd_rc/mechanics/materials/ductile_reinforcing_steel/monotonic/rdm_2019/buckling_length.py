@@ -39,7 +39,12 @@ def _positive_integer(value: Any, *, name: str) -> int:
 
 
 def select_buckling_intervals(equivalent_stiffness_ratio: float) -> int:
-    """Select the conservative tabulated buckling mode from ``keq = kt / k``."""
+    """Select the conservative tabulated buckling mode from ``keq = kt / k``.
+
+    The definition follows Dhakal and Maekawa (2002), Table 1 and Table 3.
+    User Bulletin 3 prints the inverse ratio on its first page, but uses
+    ``kt / k`` in its later definition and in every worked example.
+    """
 
     keq = _positive_float(
         equivalent_stiffness_ratio,

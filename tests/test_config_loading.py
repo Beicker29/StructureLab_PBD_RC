@@ -72,7 +72,7 @@ def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
     config = load_json_config(
         Path(
             "configs/stage_02/ductile_reinforcing_steel/monotonic/"
-            "steel_compression_rdm_2019_monotonic.json"
+            "Mon_RDM2019.json"
         )
     )
 
@@ -80,7 +80,7 @@ def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
     assert config["units"] == {"length": "mm", "stress": "MPa", "strain": "mm/mm"}
     assert config["inputs"]["project_id"] == "default"
     assert config["inputs"]["case_id"] == "rdm_2019_ld5"
-    assert config["inputs"]["model_id"] == "steel_compression_rdm_2019_monotonic"
+    assert config["inputs"]["model_id"] == "Mon_RDM2019"
     parameters = config["inputs"]["parameters"]
     assert parameters["tie_spacing_mm"] == 100.0
     assert parameters["tie_bar_diameter_mm"] == 10.0

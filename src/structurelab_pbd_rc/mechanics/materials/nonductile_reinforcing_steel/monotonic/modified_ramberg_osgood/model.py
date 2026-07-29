@@ -118,7 +118,7 @@ class ModifiedRambergOsgoodParameters:
 class ModifiedRambergOsgood:
     """Memoryless monotonic tension envelope with explicit compression policy."""
 
-    model_id = "modified_ramberg_osgood"
+    model_id = "Mon_MRO"
 
     def __init__(self, parameters: ModifiedRambergOsgoodParameters) -> None:
         self.parameters = parameters

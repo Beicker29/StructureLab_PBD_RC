@@ -1,0 +1,67 @@
+calculated_parameters:
+  fy_mpa: 420.0
+  fu_mpa: 630.0
+  elastic_modulus_mpa: 200000.0
+  eps_y: 0.0021
+  epsilon_y: 0.0021
+  epsilon_sh: 0.01
+  epsilon_su: 0.1
+  parameter_p: 4.0
+  longitudinal_bar_diameter_mm: 20.0
+  tie_bar_diameter_mm: 10.0
+  tie_spacing_mm: 100.0
+  effective_tie_leg_length_mm: 200.0
+  effective_tie_legs: 2
+  restrained_longitudinal_bars: 2
+  tie_steel_modulus_MPa: 200000.0
+  buckling_restraint_case: bending
+  s_over_db: 5.0
+  L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+  tie_area_mm2: 78.53981633974483
+  longitudinal_bar_inertia_mm4: 7853.981633974483
+  reduced_flexural_rigidity_N_mm2: 804793631.2008746
+  effective_restrained_bars: 2
+  bar_normalized_stiffness_N_per_mm: 78394.21608523135
+  tie_stiffness_N_per_mm: 78539.81633974484
+  equivalent_stiffness_ratio: 1.0018572831234793
+  buckling_intervals: 1
+  unsupported_length_mm: 100.0
+  L_over_D: 5.0
+  rb: 10.2469507659596
+  buckling_active: true
+  buckling_calculation_mode: rectangular_transverse_restraint
+  applicability_warnings: []
+  rb_min: 10.2469507659596
+  eps_i_0: 0.06600722780041512
+  eps_i_max: 0.06600722780041512
+  eps_i: 0.06600722780041512
+  f_it_mpa: 625.7263830567169
+  alpha_1: 1.34
+  alpha_2: 0.9360487877446465
+  alpha: 1.2543053755778264
+  f_i_mpa: 526.808257742687
+  eps_ii: 0.09893274390933307
+  residual_stress_mpa: 84.0
+  special_alpha_case: false
+  loading_type: monotonic
+  sign_convention: compression_positive
+  reference: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling
+    behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143
+  applicability:
+    fy_mpa: 200 < fy < 900
+    diameter_mm: 10 < D < 36
+    fu_over_fy: < 2
+    parameter_p: <= 4
+    epsilon_su_over_epsilon_y: '> 14'
+    rb: 8 < rb < 56
+    l_over_d: '>= 5 for buckling activation'
+  warnings: []
+  provenance:
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
+    citation: jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables
+      1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables
+      1-2 and worked examples
+    source_location: references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/
+    specimen_or_profile: 'Synthetic verification case: rectangular restraint, D=20 mm and s=100 mm'
+    calibration_status: source_equation_validation_case

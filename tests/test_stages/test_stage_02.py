@@ -23,15 +23,15 @@ from structurelab_pbd_rc.design.stages.stage_02_material_characterization import
 CONFIG_ROOT = Path("configs/stage_02")
 RDM_LD5 = (
     CONFIG_ROOT
-    / "ductile_reinforcing_steel/monotonic/steel_compression_rdm_2019_monotonic.json"
+    / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"
 )
 MRO_DB6 = (
     CONFIG_ROOT
-    / "nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json"
+    / "nonductile_reinforcing_steel/monotonic/Mon_MRO.json"
 )
 MENEGOTTO = (
     CONFIG_ROOT
-    / "nonductile_reinforcing_steel/cyclic/menegotto_pinto.json"
+    / "nonductile_reinforcing_steel/cyclic/Cyc_MP.json"
 )
 
 
@@ -120,7 +120,7 @@ def test_joint_artifacts(tmp_path: Path) -> None:
         case_id="rdm_2019_ld5",
         analysis_type="monotonic",
         material="ductile_reinforcing_steel",
-        model_id="steel_compression_rdm_2019_monotonic",
+        model_id="Mon_RDM2019",
     )
     report = yaml.safe_load(
         (rdm_root / "reports/model_report.yaml").read_text(encoding="utf-8")
@@ -153,7 +153,7 @@ def test_joint_artifacts(tmp_path: Path) -> None:
     assert report["metrics"]["response_branches"] == ["compression", "tension"]
     assert resolved["project_id"] == "default"
     assert resolved["case_id"] == "rdm_2019_ld5"
-    assert resolved["model_id"] == "steel_compression_rdm_2019_monotonic"
+    assert resolved["model_id"] == "Mon_RDM2019"
     raw_parameters = resolved["raw"]["inputs"]["parameters"]
     assert "epsilon_y" not in raw_parameters
     assert "buckling_intervals" not in raw_parameters
@@ -181,7 +181,7 @@ def test_case_replace_preserves_other_cases(tmp_path: Path) -> None:
 
     mro_copy = (
         config_root
-        / "nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json"
+        / "nonductile_reinforcing_steel/monotonic/Mon_MRO.json"
     )
     mro_config = json.loads(mro_copy.read_text(encoding="utf-8"))
     mro_config["inputs"]["curve_generation"]["points"] = 21
@@ -194,7 +194,7 @@ def test_case_replace_preserves_other_cases(tmp_path: Path) -> None:
     assert (case_root / "cyclic").is_dir()
     curve_path = (
         case_root
-        / "monotonic/nonductile_reinforcing_steel/modified_ramberg_osgood/data/curve.csv"
+        / "monotonic/nonductile_reinforcing_steel/Mon_MRO/data/curve.csv"
     )
     with curve_path.open(encoding="utf-8", newline="") as stream:
         assert len(list(csv.DictReader(stream))) == 21
@@ -204,7 +204,7 @@ def test_disabled_json_is_validated_but_not_processed(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [MRO_DB6, MENEGOTTO])
     disabled_path = (
         config_root
-        / "nonductile_reinforcing_steel/cyclic/menegotto_pinto.json"
+        / "nonductile_reinforcing_steel/cyclic/Cyc_MP.json"
     )
     disabled = json.loads(disabled_path.read_text(encoding="utf-8"))
     disabled["enabled"] = False
@@ -213,7 +213,7 @@ def test_disabled_json_is_validated_but_not_processed(tmp_path: Path) -> None:
     inputs = load_enabled_stage_02_inputs(config_root)
     result = run(config_root, output_root=tmp_path / "outputs")
 
-    assert [item.model_id for item in inputs] == ["modified_ramberg_osgood"]
+    assert [item.model_id for item in inputs] == ["Mon_MRO"]
     assert len(result["model_reports"]) == 1
     assert not (
         tmp_path
@@ -225,7 +225,7 @@ def test_more_than_one_json_per_model_is_rejected(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [MRO_DB6])
     original = (
         config_root
-        / "nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json"
+        / "nonductile_reinforcing_steel/monotonic/Mon_MRO.json"
     )
     duplicate = original.with_name("duplicate.json")
     shutil.copy2(original, duplicate)
@@ -235,7 +235,7 @@ def test_more_than_one_json_per_model_is_rejected(tmp_path: Path) -> None:
     duplicate_config["inputs"]["case_id"] = "another_case"
     duplicate.write_text(json.dumps(duplicate_config), encoding="utf-8")
 
-    with pytest.raises(ConfigError, match="Only one JSON file"):
+    with pytest.raises(ConfigError, match="JSON filename stem"):
         load_enabled_stage_02_inputs(config_root)
 
 
@@ -248,7 +248,7 @@ def test_case_insensitive_identifier_collision_is_rejected(tmp_path: Path) -> No
     config_root = _copy_input_root(tmp_path, [MRO_DB6, MENEGOTTO])
     second = (
         config_root
-        / "nonductile_reinforcing_steel/cyclic/menegotto_pinto.json"
+        / "nonductile_reinforcing_steel/cyclic/Cyc_MP.json"
     )
     config = json.loads(second.read_text(encoding="utf-8"))
     config["inputs"]["project_id"] = "NTC5806_VALIDATION"
@@ -262,7 +262,7 @@ def test_required_input_identifiers_are_enforced(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [MRO_DB6])
     path = (
         config_root
-        / "nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json"
+        / "nonductile_reinforcing_steel/monotonic/Mon_MRO.json"
     )
     config = json.loads(path.read_text(encoding="utf-8"))
     config["inputs"].pop("model_id")
@@ -276,7 +276,7 @@ def test_rdm_rejects_derived_l_over_d_input(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [RDM_LD5])
     path = (
         config_root
-        / "ductile_reinforcing_steel/monotonic/steel_compression_rdm_2019_monotonic.json"
+        / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"
     )
     config = json.loads(path.read_text(encoding="utf-8"))
     config["inputs"]["parameters"]["l_over_d"] = 5.0
@@ -290,7 +290,7 @@ def test_rdm_can_disable_compression_curve(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [RDM_LD5])
     path = (
         config_root
-        / "ductile_reinforcing_steel/monotonic/steel_compression_rdm_2019_monotonic.json"
+        / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"
     )
     config = json.loads(path.read_text(encoding="utf-8"))
     config["inputs"]["curve_generation"]["include_compression"] = False
@@ -305,7 +305,7 @@ def test_rdm_can_disable_compression_curve(tmp_path: Path) -> None:
         case_id="rdm_2019_ld5",
         analysis_type="monotonic",
         material="ductile_reinforcing_steel",
-        model_id="steel_compression_rdm_2019_monotonic",
+        model_id="Mon_RDM2019",
     ) / "data/curve.csv"
     with curve.open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream))

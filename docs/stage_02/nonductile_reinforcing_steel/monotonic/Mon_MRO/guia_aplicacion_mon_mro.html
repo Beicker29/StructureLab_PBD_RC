@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de aplicación del modelo Mon_MRO</title>
+  <style>
+    :root {
+      --navy: #173b64;
+      --blue: #2e74b5;
+      --blue-dark: #1f4d78;
+      --gold: #9a6a00;
+      --ink: #202832;
+      --muted: #5f6b77;
+      --line: #cbd5df;
+      --panel: #f3f6f9;
+      --panel-blue: #e8eef5;
+      --warning: #fff6dc;
+      --danger: #9b1c1c;
+      --success: #23633f;
+    }
+
+    @page { size: Letter portrait; margin: 17mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: white;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9.4pt;
+      line-height: 1.34;
+      letter-spacing: 0;
+    }
+    .sheet {
+      position: relative;
+      height: 245mm;
+      padding: 11mm 0 12mm;
+      overflow: hidden;
+      break-after: page;
+      page-break-after: always;
+    }
+    .sheet:last-child { break-after: auto; page-break-after: auto; }
+    .sheet:not(.cover)::before {
+      content: "STRUCTURELAB_PBD_RC  |  STAGE 2  |  MON_MRO";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6mm;
+      color: var(--muted);
+      border-bottom: 0.4pt solid var(--line);
+      font-size: 7.4pt;
+      font-weight: 700;
+    }
+    .page-tag {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: var(--muted);
+      font-size: 7.4pt;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 5mm;
+      color: var(--navy);
+      font-size: 20pt;
+      line-height: 1.08;
+    }
+    h2 {
+      margin: 4.5mm 0 2.5mm;
+      color: var(--blue);
+      font-size: 14.5pt;
+      line-height: 1.15;
+    }
+    h3 {
+      margin: 3.5mm 0 1.8mm;
+      color: var(--blue-dark);
+      font-size: 11.5pt;
+      line-height: 1.15;
+    }
+    p { margin-bottom: 2.4mm; }
+    ul, ol { margin: 1.5mm 0 3mm 5.5mm; padding-left: 4.5mm; }
+    li { margin-bottom: 1.2mm; }
+    strong { color: #111820; }
+    code, pre { font-family: Consolas, "Courier New", monospace; }
+    code {
+      color: #153f68;
+      background: #eef3f7;
+      padding: 0.2mm 0.8mm;
+      border-radius: 1mm;
+    }
+    pre {
+      margin: 2.5mm 0;
+      padding: 3mm;
+      color: #e9eef3;
+      background: #202a35;
+      border-radius: 1.5mm;
+      font-size: 7.2pt;
+      line-height: 1.3;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    table {
+      width: 100%;
+      margin: 2.5mm 0 3.5mm;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      padding: 1.6mm 1.8mm;
+      border: 0.45pt solid #aebbc8;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+    th {
+      color: var(--navy);
+      background: var(--panel-blue);
+      text-align: left;
+      font-weight: 700;
+    }
+    .dense th, .dense td {
+      padding: 1.15mm 1.5mm;
+      font-size: 7.3pt;
+      line-height: 1.25;
+    }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .formula {
+      margin: 2.2mm 0;
+      padding: 2.5mm 3mm;
+      color: var(--navy);
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 10.4pt;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+    .formula.compact { margin: 1.4mm 0; padding: 1.8mm 2.5mm; font-size: 9.2pt; }
+    .callout {
+      margin: 3mm 0;
+      padding: 3mm 3.5mm;
+      background: var(--panel);
+      border-left: 1.2mm solid var(--blue);
+      page-break-inside: avoid;
+    }
+    .callout.warning { background: var(--warning); border-left-color: var(--gold); }
+    .callout.danger { background: #fbecec; border-left-color: var(--danger); }
+    .callout.success { background: #edf7f1; border-left-color: var(--success); }
+    .callout-title {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--navy);
+      font-size: 8.2pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      align-items: start;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      align-items: stretch;
+    }
+    .step {
+      position: relative;
+      min-height: 23mm;
+      padding: 3mm 3mm 3mm 12mm;
+      background: var(--panel);
+      border: 0.45pt solid var(--line);
+      page-break-inside: avoid;
+    }
+    .step-number {
+      position: absolute;
+      top: 3mm;
+      left: 3mm;
+      display: flex;
+      width: 6.5mm;
+      height: 6.5mm;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: var(--blue);
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    .step h3 { margin-top: 0; font-size: 10pt; }
+    .metric {
+      padding: 3mm;
+      background: white;
+      border-top: 1.2mm solid var(--blue);
+      box-shadow: 0 0 0 0.45pt var(--line);
+      text-align: center;
+    }
+    .metric .value {
+      display: block;
+      color: var(--navy);
+      font-size: 15pt;
+      font-weight: 700;
+    }
+    .metric .label { display: block; color: var(--muted); font-size: 7.4pt; }
+    .caption {
+      margin-top: 1.5mm;
+      color: var(--muted);
+      font-size: 7.7pt;
+      font-style: italic;
+      text-align: center;
+    }
+    .figure {
+      width: 100%;
+      margin: 3mm auto;
+      padding: 2mm;
+      border: 0.45pt solid var(--line);
+      background: white;
+      page-break-inside: avoid;
+    }
+    .figure img { display: block; width: 100%; height: auto; }
+    .small { font-size: 7.7pt; line-height: 1.3; }
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--gold);
+      font-size: 9.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .cover { padding-top: 0; }
+    .cover-top {
+      padding-top: 7mm;
+      color: var(--muted);
+      border-bottom: 0.45pt solid var(--line);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    .cover-main { margin-top: 47mm; text-align: center; }
+    .cover-main h1 {
+      margin: 5mm auto 4mm;
+      max-width: 160mm;
+      font-size: 28pt;
+      line-height: 1.08;
+    }
+    .cover-subtitle {
+      margin: 0 auto;
+      max-width: 155mm;
+      color: var(--blue-dark);
+      border-top: 0.6pt solid var(--blue);
+      padding-top: 4mm;
+      font-size: 13pt;
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .cover-meta { margin-top: 24mm; color: var(--muted); font-size: 9pt; }
+    .toc td:first-child { width: 84%; }
+    .toc td:last-child { width: 16%; text-align: right; }
+    .checklist { list-style: none; margin-left: 0; padding-left: 0; }
+    .checklist li { position: relative; padding-left: 7mm; }
+    .checklist li::before {
+      content: "□";
+      position: absolute;
+      left: 0;
+      top: -0.3mm;
+      color: var(--blue-dark);
+      font-size: 12pt;
+    }
+    .path {
+      color: #153f68;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 7.3pt;
+      overflow-wrap: anywhere;
+    }
+    @media screen {
+      body { width: 216mm; margin: 0 auto; padding: 17mm; background: #dde3e9; }
+      .sheet {
+        margin-bottom: 10mm;
+        padding-left: 17mm;
+        padding-right: 17mm;
+        background: white;
+        box-shadow: 0 1mm 4mm rgb(23 59 100 / 18%);
+      }
+      .sheet:not(.cover)::before { left: 17mm; right: 17mm; }
+      .page-tag { right: 17mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="sheet cover">
+    <div class="cover-top">GUÍA TÉCNICA | MODELOS CONSTITUTIVOS | STRUCTURELAB_PBD_RC</div>
+    <div class="cover-main">
+      <div class="kicker">Stage 2 | Acero de refuerzo no dúctil | Monotónico</div>
+      <h1>Aplicación paso a paso del modelo Ramberg-Osgood modificado</h1>
+      <div class="cover-subtitle">
+        Construcción de la envolvente monotónica en tracción, inversión numérica
+        esfuerzo-deformación y rigidez tangente consistente
+      </div>
+      <div class="cover-meta">
+        Modelo: <strong>Mon_MRO</strong><br>
+        Ejemplo pedagógico con la configuración canónica de alambre de 6 mm<br><br>
+        Versión 1.0 | 28 de julio de 2026
+      </div>
+    </div>
+    <div class="page-tag">Página 1 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>Contenido y propósito</h1>
+    <div class="callout success">
+      <span class="callout-title">Resultado esperado</span>
+      Comprender qué representa `Mon_MRO`, de dónde provienen sus parámetros, cómo se
+      obtiene el esfuerzo para una deformación dada y cómo interpretar cada archivo producido
+      por Stage 2.
+    </div>
+    <table class="toc dense">
+      <tr><th>Sección</th><th>Página</th></tr>
+      <tr><td>1. Alcance, decisiones y fuentes</td><td>3</td></tr>
+      <tr><td>2. Signos, unidades y dominio</td><td>4</td></tr>
+      <tr><td>3. Ecuación constitutiva</td><td>5</td></tr>
+      <tr><td>4. Inputs y validaciones</td><td>6</td></tr>
+      <tr><td>5. Parámetros calculados</td><td>7</td></tr>
+      <tr><td>6. Inversión numérica por bisección</td><td>8</td></tr>
+      <tr><td>7. Rigidez tangente</td><td>9</td></tr>
+      <tr><td>8. Ejemplo reproducible</td><td>10-11</td></tr>
+      <tr><td>9. Política de compresión</td><td>12</td></tr>
+      <tr><td>10. JSON, ejecución y outputs</td><td>13-14</td></tr>
+      <tr><td>11. Verificación, código y referencias</td><td>15</td></tr>
+    </table>
+    <h2>Cómo usar esta guía</h2>
+    <ol>
+      <li>Identifique el origen y el estado de calibración del perfil.</li>
+      <li>Verifique los inputs y las desigualdades de dominio.</li>
+      <li>Calcule los parámetros derivados.</li>
+      <li>Invierta la ecuación para obtener el esfuerzo.</li>
+      <li>Revise la tangente, la política de compresión y los outputs.</li>
+    </ol>
+    <div class="callout warning">
+      <span class="callout-title">Documento estático</span>
+      Este instructivo no se regenera al ejecutar el repositorio. Los resultados variables de
+      cada corrida se escriben exclusivamente bajo <code>outputs/stage_02/</code>.
+    </div>
+    <div class="page-tag">Página 2 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>1. Alcance, decisiones y fuentes</h1>
+    <h2>1.1 Qué representa el modelo</h2>
+    <p>
+      `Mon_MRO` es una envolvente uniaxial, monotónica y sin memoria para alambre o malla
+      electrosoldada de baja ductilidad. La implementación calcula la respuesta en tracción
+      entre el origen y el punto último informado por el perfil.
+    </p>
+    <div class="grid-3">
+      <div class="step"><span class="step-number">1</span><h3>Entrada</h3><p>Propiedades del perfil y controles numéricos.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>Inversión</h3><p>Se resuelve σ para una deformación ε prescrita.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>Salida</h3><p>Esfuerzo, tangente, metadatos y curva trazable.</p></div>
+    </div>
+    <h2>1.2 Fuente experimental empleada</h2>
+    <p>
+      La forma funcional corresponde a la ecuación 6 del estudio de Carrillo, Díaz y Arteta
+      sobre mallas electrosoldadas disponibles en Bogotá. El perfil canónico de 6 mm usa el
+      percentil 2 de resistencia última y la deformación última media de la tabla 4.
+    </p>
+    <table>
+      <tr><th>Dato</th><th>Valor del perfil de 6 mm</th><th>Uso</th></tr>
+      <tr><td>Módulo teórico, E<sub>s</sub></td><td>200 000 MPa</td><td>Pendiente elástica inicial</td></tr>
+      <tr><td>Resistencia última P2, f<sub>u</sub></td><td>573 MPa</td><td>Extremo de esfuerzo</td></tr>
+      <tr><td>Deformación última media, ε<sub>u</sub></td><td>0.0095</td><td>Extremo de deformación</td></tr>
+      <tr><td>Exponente</td><td>20</td><td>Forma de la transición</td></tr>
+    </table>
+    <div class="callout danger">
+      <span class="callout-title">Alcance de la evidencia</span>
+      El artículo respalda curvas monotónicas de tracción. No calibra pandeo, pospandeo,
+      respuesta cíclica ni una rama monotónica de compresión para este material.
+    </div>
+    <h2>1.3 Qué no representa</h2>
+    <ul>
+      <li>No contiene meseta de fluencia ni una rama descendente agregada.</li>
+      <li>No contiene memoria, inversiones, daño, fatiga ni falla de soldaduras.</li>
+      <li>No usa L/D, separación de estribos ni ecuaciones RDM 2019.</li>
+    </ul>
+    <div class="page-tag">Página 3 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>2. Signos, unidades y dominio</h1>
+    <h2>2.1 Convención del repositorio</h2>
+    <table>
+      <tr><th>Magnitud</th><th>Tracción</th><th>Compresión</th></tr>
+      <tr><td>Deformación ε</td><td>Positiva</td><td>Negativa</td></tr>
+      <tr><td>Esfuerzo σ</td><td>Positivo</td><td>Negativo</td></tr>
+    </table>
+    <h2>2.2 Unidades obligatorias</h2>
+    <table>
+      <tr><th>Magnitud</th><th>Unidad</th><th>Observación</th></tr>
+      <tr><td>Longitud y diámetro</td><td>mm</td><td>El diámetro es metadato del perfil.</td></tr>
+      <tr><td>Esfuerzo y módulo</td><td>MPa</td><td>1 MPa = 1 N/mm².</td></tr>
+      <tr><td>Deformación</td><td>mm/mm</td><td>Magnitud adimensional.</td></tr>
+      <tr><td>Tangente</td><td>MPa</td><td>dσ/dε.</td></tr>
+    </table>
+    <h2>2.3 Dominio constitutivo en tracción</h2>
+    <div class="formula">
+      0 ≤ σ ≤ f<sub>u</sub> &nbsp;&nbsp; y &nbsp;&nbsp; 0 ≤ ε ≤ ε<sub>u</sub>
+    </div>
+    <p>
+      No existe extrapolación silenciosa. `strain_from_stress` rechaza esfuerzos fuera de
+      [0, f<sub>u</sub>] y `stress_from_tensile_strain` rechaza deformaciones fuera de
+      [0, ε<sub>u</sub>].
+    </p>
+    <h2>2.4 Diferencia entre f<sub>y</sub> y f<sub>u</sub></h2>
+    <p>
+      El perfil canónico deja <code>fy_MPa: null</code>. La curva implementada se define con
+      E<sub>s</sub>, f<sub>u</sub>, ε<sub>u</sub> y el exponente. No se mezcla un valor de
+      fluencia obtenido por EUL u offset con el conjunto estadístico usado para construir la
+      curva de la fuente.
+    </p>
+    <div class="callout warning">
+      <span class="callout-title">No confundir dato normativo con dato constitutivo</span>
+      Una resistencia mínima de una norma sirve para aceptación de producto; no sustituye la
+      curva experimental ni autoriza a inventar ε<sub>u</sub>, una meseta o una rama de
+      compresión.
+    </div>
+    <div class="page-tag">Página 4 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>3. Ecuación constitutiva</h1>
+    <h2>3.1 Forma implementada</h2>
+    <div class="formula">
+      ε(σ) = σ/E<sub>s</sub> +
+      (ε<sub>u</sub> - f<sub>u</sub>/E<sub>s</sub>)
+      (σ/f<sub>u</sub>)<sup>n</sup>
+    </div>
+    <p>
+      La ecuación entrega deformación como función del esfuerzo. En el código,
+      <code>shape_exponent</code> representa n; el perfil publicado usa n = 20.
+    </p>
+    <h2>3.2 Significado de variables</h2>
+    <table>
+      <tr><th>Símbolo</th><th>JSON</th><th>Unidad</th><th>Significado</th></tr>
+      <tr><td>ε</td><td>strain</td><td>mm/mm</td><td>Deformación unitaria solicitada o calculada.</td></tr>
+      <tr><td>σ</td><td>stress_mpa</td><td>MPa</td><td>Esfuerzo uniaxial de tracción.</td></tr>
+      <tr><td>E<sub>s</sub></td><td>Es_MPa</td><td>MPa</td><td>Módulo elástico inicial.</td></tr>
+      <tr><td>f<sub>u</sub></td><td>fu_MPa</td><td>MPa</td><td>Resistencia máxima de tracción usada por el perfil.</td></tr>
+      <tr><td>ε<sub>u</sub></td><td>eps_u</td><td>mm/mm</td><td>Deformación correspondiente a f<sub>u</sub>.</td></tr>
+      <tr><td>n</td><td>shape_exponent</td><td>-</td><td>Exponente que controla la transición no lineal.</td></tr>
+    </table>
+    <h2>3.3 Comprobaciones de extremos</h2>
+    <div class="grid-2">
+      <div class="callout">
+        <span class="callout-title">Origen</span>
+        Para σ = 0, ambos términos son cero; por tanto, ε(0) = 0.
+      </div>
+      <div class="callout">
+        <span class="callout-title">Punto último</span>
+        Para σ = f<sub>u</sub>, ε = f<sub>u</sub>/E<sub>s</sub> +
+        ε<sub>u</sub> - f<sub>u</sub>/E<sub>s</sub> = ε<sub>u</sub>.
+      </div>
+    </div>
+    <h2>3.4 Interpretación física</h2>
+    <p>
+      El primer término es la contribución elástica. El segundo agrega deformación no lineal
+      de manera progresiva hasta alcanzar exactamente el punto último. La formulación es
+      monotónica y no almacena estado entre evaluaciones.
+    </p>
+    <div class="page-tag">Página 5 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>4. Inputs y validaciones</h1>
+    <table class="dense">
+      <tr><th>Input</th><th>Obligatorio</th><th>Validación y función</th></tr>
+      <tr><td><code>project_id</code></td><td>Sí</td><td>Identifica el proyecto de salida.</td></tr>
+      <tr><td><code>case_id</code></td><td>Sí</td><td>Identifica el caso dentro del proyecto.</td></tr>
+      <tr><td><code>model_id</code></td><td>Sí</td><td>Debe coincidir con el archivo: <code>Mon_MRO</code>.</td></tr>
+      <tr><td><code>diameter_mm</code></td><td>No en la clase</td><td>Si se suministra, debe ser positivo. Trazabilidad del perfil.</td></tr>
+      <tr><td><code>Es_MPa</code></td><td>Sí</td><td>Debe ser mayor que cero.</td></tr>
+      <tr><td><code>fu_MPa</code></td><td>Sí</td><td>Debe ser mayor que cero.</td></tr>
+      <tr><td><code>eps_u</code></td><td>Sí</td><td>Debe satisfacer ε<sub>u</sub> &gt; f<sub>u</sub>/E<sub>s</sub>.</td></tr>
+      <tr><td><code>shape_exponent</code></td><td>Sí</td><td>Debe ser mayor que 1.</td></tr>
+      <tr><td><code>fy_MPa</code></td><td>No</td><td>Si existe: 0 &lt; f<sub>y</sub> ≤ f<sub>u</sub>. No modifica la ecuación.</td></tr>
+      <tr><td><code>yield_definition</code></td><td>No</td><td>Etiqueta de procedencia de f<sub>y</sub>.</td></tr>
+      <tr><td><code>compression.policy</code></td><td>Sí</td><td><code>unsupported</code> o hipótesis simétrica explícita.</td></tr>
+      <tr><td><code>root_tolerance</code></td><td>No</td><td>Positiva; controla la bisección.</td></tr>
+      <tr><td><code>max_iterations</code></td><td>No</td><td>Entero mayor o igual que 1.</td></tr>
+      <tr><td><code>provenance</code></td><td>Sí</td><td>Fuente, ubicación, perfil y estado de calibración.</td></tr>
+    </table>
+    <h2>4.1 Validación cruzada decisiva</h2>
+    <div class="formula">
+      ε<sub>u</sub> &gt; f<sub>u</sub>/E<sub>s</sub>
+    </div>
+    <p>
+      Esta desigualdad garantiza que la escala de deformación no lineal sea positiva.
+      Si no se cumple, la curva no representa una transición físicamente coherente entre el
+      origen y el punto último.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">Sin defaults mecánicos ocultos</span>
+      E<sub>s</sub>, f<sub>u</sub>, ε<sub>u</sub> y n deben aparecer en el JSON. Los
+      valores no se deducen del diámetro, de NTC 5806 ni del nombre del material.
+    </div>
+    <div class="page-tag">Página 6 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>5. Parámetros calculados</h1>
+    <h2>5.1 Deformación elástica asociada a f<sub>u</sub></h2>
+    <div class="formula">
+      ε<sub>e,u</sub> = f<sub>u</sub>/E<sub>s</sub>
+    </div>
+    <h2>5.2 Escala de deformación no lineal</h2>
+    <div class="formula">
+      A = ε<sub>u</sub> - f<sub>u</sub>/E<sub>s</sub>
+    </div>
+    <p>Con A, la ecuación se escribe de forma compacta:</p>
+    <div class="formula compact">
+      ε(σ) = σ/E<sub>s</sub> + A(σ/f<sub>u</sub>)<sup>n</sup>
+    </div>
+    <h2>5.3 Valores del ejemplo de 6 mm</h2>
+    <div class="formula compact">
+      ε<sub>e,u</sub> = 573/200000 = 0.002865
+    </div>
+    <div class="formula compact">
+      A = 0.0095 - 0.002865 = 0.006635
+    </div>
+    <div class="grid-3">
+      <div class="metric"><span class="value">0.002865</span><span class="label">elastic_ultimate_strain</span></div>
+      <div class="metric"><span class="value">0.006635</span><span class="label">nonlinear_strain_scale</span></div>
+      <div class="metric"><span class="value">n = 20</span><span class="label">shape_exponent</span></div>
+    </div>
+    <h2>5.4 Parámetros que no se calculan</h2>
+    <ul>
+      <li>No se calcula f<sub>y</sub> a partir de la curva.</li>
+      <li>No se determina una deformación de fluencia convencional.</li>
+      <li>No se calcula una rama pospico ni una deformación de fractura diferente de ε<sub>u</sub>.</li>
+      <li>No se deduce una capacidad de compresión desde los datos de tracción.</li>
+    </ul>
+    <div class="callout warning">
+      <span class="callout-title">Lectura del punto último</span>
+      ε<sub>u</sub> es la deformación asociada a f<sub>u</sub> en el perfil. El modelo
+      termina allí; no afirma cómo ocurre la rotura después de ese punto.
+    </div>
+    <div class="page-tag">Página 7 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>6. Inversión numérica por bisección</h1>
+    <h2>6.1 Por qué se necesita una inversión</h2>
+    <p>
+      La fuente entrega ε como función de σ, pero el flujo de caracterización solicita
+      σ para una ε prescrita. La implementación resuelve la raíz:
+    </p>
+    <div class="formula">
+      g(σ) = σ/E<sub>s</sub> + A(σ/f<sub>u</sub>)<sup>n</sup> - ε<sub>objetivo</sub> = 0
+    </div>
+    <h2>6.2 Intervalo garantizado</h2>
+    <div class="formula compact">
+      σ<sub>inferior</sub> = 0 &nbsp;&nbsp; y &nbsp;&nbsp; σ<sub>superior</sub> = f<sub>u</sub>
+    </div>
+    <p>
+      Para 0 ≤ ε<sub>objetivo</sub> ≤ ε<sub>u</sub>, la raíz queda encerrada en
+      [0, f<sub>u</sub>]. El programa comprueba este encerramiento antes de iterar.
+    </p>
+    <h2>6.3 Algoritmo implementado</h2>
+    <div class="grid-2">
+      <div class="step"><span class="step-number">1</span><h3>Inicializar</h3><p>Definir límites 0 y f<sub>u</sub>.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>Partir</h3><p>σ<sub>m</sub> = (σ<sub>i</sub> + σ<sub>s</sub>)/2.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>Evaluar</h3><p>Calcular g(σ<sub>m</sub>).</p></div>
+      <div class="step"><span class="step-number">4</span><h3>Acotar</h3><p>Conservar la mitad que contiene la raíz.</p></div>
+      <div class="step"><span class="step-number">5</span><h3>Converger</h3><p>Salir cuando |g| ≤ tolerancia.</p></div>
+      <div class="step"><span class="step-number">6</span><h3>Proteger</h3><p>Error si se agotan las iteraciones.</p></div>
+    </div>
+    <h2>6.4 Controles canónicos</h2>
+    <table>
+      <tr><th>Control</th><th>Valor</th><th>Interpretación</th></tr>
+      <tr><td>root_tolerance</td><td>1×10<sup>-12</sup></td><td>Tolerancia sobre deformación residual.</td></tr>
+      <tr><td>max_iterations</td><td>200</td><td>Límite determinista de iteraciones.</td></tr>
+    </table>
+    <div class="page-tag">Página 8 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>7. Rigidez tangente</h1>
+    <h2>7.1 Derivada de la relación ε(σ)</h2>
+    <div class="formula">
+      dε/dσ = 1/E<sub>s</sub> +
+      (A n/f<sub>u</sub>)(σ/f<sub>u</sub>)<sup>n-1</sup>
+    </div>
+    <h2>7.2 Tangente requerida por el material</h2>
+    <div class="formula">
+      E<sub>t</sub> = dσ/dε =
+      1 / [dε/dσ]
+    </div>
+    <p>
+      El código evalúa la derivada analítica en el esfuerzo obtenido por bisección. No usa
+      diferencias finitas durante la ejecución.
+    </p>
+    <h2>7.3 Comprobaciones</h2>
+    <div class="grid-2">
+      <div class="callout success">
+        <span class="callout-title">En el origen</span>
+        Para n &gt; 1, el término potencial se anula y E<sub>t</sub>(0) = E<sub>s</sub>.
+      </div>
+      <div class="callout">
+        <span class="callout-title">En el punto último</span>
+        La tangente sigue siendo positiva, pero es menor que E<sub>s</sub> por la
+        deformación no lineal acumulada.
+      </div>
+    </div>
+    <h2>7.4 Ejemplo numérico</h2>
+    <table>
+      <tr><th>ε [mm/mm]</th><th>σ [MPa]</th><th>E<sub>t</sub> [MPa]</th></tr>
+      <tr><td class="num">0.0010</td><td class="num">199.999999</td><td class="num">199 999.981</td></tr>
+      <tr><td class="num">0.0030</td><td class="num">502.799191</td><td class="num">41 098.253</td></tr>
+      <tr><td class="num">0.0050</td><td class="num">543.244414</td><td class="num">11 225.965</td></tr>
+      <tr><td class="num">0.0070</td><td class="num">560.046189</td><td class="num">6 452.471</td></tr>
+      <tr><td class="num">0.0095</td><td class="num">573.000000</td><td class="num">4 226.755</td></tr>
+    </table>
+    <div class="callout warning">
+      <span class="callout-title">Interpretación</span>
+      La reducción continua de E<sub>t</sub> es la transición suave del modelo; no constituye
+      una meseta de fluencia definida.
+    </div>
+    <div class="page-tag">Página 9 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>8. Ejemplo reproducible: datos</h1>
+    <h2>8.1 Configuración canónica</h2>
+    <table>
+      <tr><th>Variable</th><th>Valor</th><th>Procedencia o función</th></tr>
+      <tr><td>Diámetro</td><td>6 mm</td><td>Perfil de alambre ensayado.</td></tr>
+      <tr><td>E<sub>s</sub></td><td>200 000 MPa</td><td>Valor teórico adoptado por la fuente.</td></tr>
+      <tr><td>f<sub>u</sub></td><td>573 MPa</td><td>P2 de tabla 4 para 6 mm.</td></tr>
+      <tr><td>ε<sub>u</sub></td><td>0.0095</td><td>Media de tabla 4 para 6 mm.</td></tr>
+      <tr><td>n</td><td>20</td><td>Exponente de la ecuación 6.</td></tr>
+      <tr><td>f<sub>y</sub></td><td>null</td><td>No interviene en la curva seleccionada.</td></tr>
+      <tr><td>Compresión</td><td>unsupported</td><td>No se genera rama negativa.</td></tr>
+      <tr><td>Puntos</td><td>201</td><td>Vector lineal de ε = 0 a ε<sub>u</sub>.</td></tr>
+    </table>
+    <h2>8.2 Cálculo para ε = 0.005</h2>
+    <p>Primero:</p>
+    <div class="formula compact">A = 0.006635</div>
+    <p>Después se resuelve:</p>
+    <div class="formula compact">
+      σ/200000 + 0.006635(σ/573)<sup>20</sup> - 0.005 = 0
+    </div>
+    <p>La bisección en [0, 573] MPa produce:</p>
+    <div class="grid-3">
+      <div class="metric"><span class="value">543.244</span><span class="label">σ [MPa]</span></div>
+      <div class="metric"><span class="value">11 225.97</span><span class="label">E<sub>t</sub> [MPa]</span></div>
+      <div class="metric"><span class="value">Dentro</span><span class="label">Dominio</span></div>
+    </div>
+    <h2>8.3 Generación de la curva</h2>
+    <p>
+      Stage 2 construye 201 deformaciones equiespaciadas desde 0 hasta 0.0095.
+      Cada punto se evalúa de manera independiente; no existe estado acumulado ni se reordena
+      un historial.
+    </p>
+    <div class="callout success">
+      <span class="callout-title">Comprobaciones publicadas por el caso</span>
+      201 puntos, σ<sub>máx</sub> = 573 MPa, ε<sub>máx</sub> = 0.0095,
+      sin extrapolaciones, fallas ni inversiones.
+    </div>
+    <div class="page-tag">Página 10 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>8. Ejemplo reproducible: respuesta</h1>
+    <div class="figure">
+      <img src="assets/mon_mro_canonical_example.png" alt="Curva monotónica pedagógica Mon_MRO">
+    </div>
+    <div class="caption">
+      Figura pedagógica fija del perfil canónico de 6 mm. No se actualiza al ejecutar Stage 2.
+    </div>
+    <div class="grid-3">
+      <div class="metric"><span class="value">573 MPa</span><span class="label">Esfuerzo máximo</span></div>
+      <div class="metric"><span class="value">0.0095</span><span class="label">Deformación máxima</span></div>
+      <div class="metric"><span class="value">Tracción</span><span class="label">Única rama canónica</span></div>
+    </div>
+    <h2>8.4 Lectura correcta de la figura</h2>
+    <ul>
+      <li>La respuesta parte del origen con pendiente E<sub>s</sub>.</li>
+      <li>La transición se redondea al aumentar el término potencial.</li>
+      <li>La curva termina exactamente en (ε<sub>u</sub>, f<sub>u</sub>).</li>
+      <li>La ausencia de rama negativa es intencional y corresponde a la política configurada.</li>
+    </ul>
+    <div class="callout danger">
+      <span class="callout-title">No inferir comportamiento adicional</span>
+      La figura no demuestra respuesta cíclica, resistencia en compresión, pandeo ni capacidad
+      después de ε<sub>u</sub>.
+    </div>
+    <div class="page-tag">Página 11 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>9. Política de compresión</h1>
+    <h2>9.1 Política canónica: unsupported</h2>
+    <p>
+      Con <code>compression.policy: unsupported</code>, cualquier ε negativa produce un error
+      de dominio. Aunque <code>include_compression</code> fuese verdadero, Stage 2 no dibuja
+      una rama que el modelo no soporta.
+    </p>
+    <div class="callout danger">
+      <span class="callout-title">Redacción obligatoria</span>
+      El modelo Ramberg-Osgood modificado implementado para malla electrosoldada representa la
+      respuesta monotónica en tracción. La respuesta monotónica en compresión no cuenta con una
+      calibración específica para malla NTC 5806; por defecto se considera no soportada.
+    </div>
+    <h2>9.2 Hipótesis simétrica opcional</h2>
+    <div class="formula">
+      σ<sub>c</sub>(ε) = -σ<sub>t</sub>(|ε|)
+    </div>
+    <p>Solo se habilita con los tres controles siguientes:</p>
+    <table>
+      <tr><th>Control</th><th>Requisito</th></tr>
+      <tr><td>compression_strain_limit</td><td>Positivo, explícito y no mayor que ε<sub>u</sub>.</td></tr>
+      <tr><td>justification</td><td>Texto no vacío que explique el uso.</td></tr>
+      <tr><td>explicit_acceptance</td><td>Debe ser <code>true</code>.</td></tr>
+    </table>
+    <pre>"compression": {
+  "policy": "symmetric_prebuckling_assumption",
+  "compression_strain_limit": 0.002,
+  "justification": "Verificación numérica prepandeo.",
+  "explicit_acceptance": true
+}</pre>
+    <div class="callout warning">
+      <span class="callout-title">Naturaleza de la opción</span>
+      Es una hipótesis prepandeo, no una calibración experimental. No representa pandeo ni
+      degradación pospandeo y siempre genera advertencias visibles.
+    </div>
+    <div class="page-tag">Página 12 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>10. JSON y ejecución</h1>
+    <h2>10.1 Input canónico mínimo</h2>
+    <pre>{
+  "stage_id": "stage_02",
+  "enabled": true,
+  "title": "Malla NTC 5806 db6 - Ramberg-Osgood modificado",
+  "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
+  "inputs": {
+    "project_id": "ntc5806_validation",
+    "case_id": "db6_algorithm_verification",
+    "model_id": "Mon_MRO",
+    "parameters": {
+      "diameter_mm": 6.0,
+      "Es_MPa": 200000.0,
+      "fy_MPa": null,
+      "yield_definition": "not_used_in_source_model_curve",
+      "fu_MPa": 573.0,
+      "eps_u": 0.0095,
+      "shape_exponent": 20.0
+    },
+    "compression": {"policy": "unsupported"},
+    "numerical": {"root_tolerance": 1e-12, "max_iterations": 200},
+    "curve_generation": {
+      "points": 201,
+      "include_tension": true,
+      "include_compression": false
+    }
+  }
+}</pre>
+    <div class="callout warning">
+      <span class="callout-title">El JSON real también exige provenance</span>
+      La sección se abrevia aquí para legibilidad. No elimine fuente, cita, ubicación,
+      espécimen y estado de calibración del archivo canónico.
+    </div>
+    <h2>10.2 Ejecución desde PowerShell</h2>
+    <pre>.\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_02.py</pre>
+    <p>
+      La ejecución procesa conjuntamente todos los JSON habilitados. Este instructivo permanece
+      sin cambios; los resultados se publican bajo el proyecto y caso declarados.
+    </p>
+    <div class="page-tag">Página 13 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>10. Outputs y trazabilidad</h1>
+    <h2>10.3 Ruta del modelo</h2>
+    <pre>outputs/stage_02/
+└── ntc5806_validation/
+    └── db6_algorithm_verification/
+        └── monotonic/
+            └── nonductile_reinforcing_steel/
+                └── Mon_MRO/
+                    ├── data/
+                    ├── figures/
+                    └── reports/</pre>
+    <table class="dense">
+      <tr><th>Archivo</th><th>Contenido</th></tr>
+      <tr><td>data/resolved_inputs.json</td><td>JSON original y valores resueltos para la ejecución.</td></tr>
+      <tr><td>data/calculated_parameters.yaml</td><td>ε<sub>e,u</sub>, A y deformación de fluencia si aplica.</td></tr>
+      <tr><td>data/metrics.yaml</td><td>Rangos, conteos y estado de calibración.</td></tr>
+      <tr><td>data/curve.csv y curve.xlsx</td><td>ε, σ, tangente, dominio, fuente y advertencias por punto.</td></tr>
+      <tr><td>figures/response.png</td><td>Figura generada para esa corrida.</td></tr>
+      <tr><td>reports/model_report.yaml</td><td>Reporte técnico estructurado y archivos generados.</td></tr>
+      <tr><td>reports/model_report.pdf</td><td>Resumen legible específico de la ejecución.</td></tr>
+    </table>
+    <h2>10.4 Diferencia entre instructivo y reporte</h2>
+    <div class="grid-2">
+      <div class="callout">
+        <span class="callout-title">docs/</span>
+        Explica la formulación, las variables y el procedimiento. Es estático.
+      </div>
+      <div class="callout success">
+        <span class="callout-title">outputs/</span>
+        Registra los inputs y resultados de cada corrida. Se reemplaza por caso procesado.
+      </div>
+    </div>
+    <h2>10.5 Campos clave del CSV</h2>
+    <p class="small">
+      <code>strain</code>, <code>stress_mpa</code>, <code>tangent_mpa</code>,
+      <code>branch</code>, <code>stress_state</code>, <code>compression_policy</code>,
+      <code>in_domain</code>, <code>source</code> y <code>calibration_status</code>.
+    </p>
+    <div class="page-tag">Página 14 de 15</div>
+  </section>
+
+  <section class="sheet">
+    <h1>11. Verificación, código y referencias</h1>
+    <h2>11.1 Lista de aceptación</h2>
+    <ul class="checklist small">
+      <li>El origen produce σ = 0 y E<sub>t</sub> = E<sub>s</sub>.</li>
+      <li>El punto último produce σ(ε<sub>u</sub>) = f<sub>u</sub>.</li>
+      <li>La ecuación directa recupera la ε usada en la inversión.</li>
+      <li>La tangente analítica coincide con una diferencia finita.</li>
+      <li>La curva termina en ε<sub>u</sub> y no se extrapola.</li>
+      <li>La compresión es rechazada salvo activación explícita de la hipótesis.</li>
+      <li>No se agrega meseta, pospandeo, fatiga ni daño.</li>
+    </ul>
+    <h2>11.2 Correspondencia con el código</h2>
+    <table class="dense">
+      <tr><th>Responsabilidad</th><th>Ubicación</th></tr>
+      <tr><td>Validación y ecuación</td><td class="path">src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood/model.py</td></tr>
+      <tr><td>Selección del modelo</td><td class="path">src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/factory.py</td></tr>
+      <tr><td>Curva y outputs</td><td class="path">src/structurelab_pbd_rc/design/stages/stage_02_material_characterization.py</td></tr>
+      <tr><td>Input canónico</td><td class="path">configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json</td></tr>
+      <tr><td>Pruebas unitarias</td><td class="path">tests/test_material_models/test_modified_ramberg_osgood.py</td></tr>
+    </table>
+    <h2>11.3 Referencias primarias</h2>
+    <ol class="small">
+      <li>
+        Carrillo, J.; Díaz, C.; Arteta, C. A. (2019). <em>Tensile mechanical
+        properties of the electro-welded wire meshes available in Bogotá, Colombia</em>.
+        Construction and Building Materials 211, 53-64.
+        DOI: 10.1016/j.conbuildmat.2018.11.096. Ecuación 6, tabla 4 y figura 5.
+      </li>
+      <li>
+        Archivo consultable: <span class="path">https://ceer.co/wp-content/uploads/2020/07/Carillo-et-al-2019-2.pdf</span>
+      </li>
+    </ol>
+    <div class="callout success">
+      <span class="callout-title">Cierre técnico</span>
+      El perfil de 6 mm está respaldado para tracción monotónica por la ecuación y los
+      estadísticos citados. Cualquier cambio de diámetro o conjunto estadístico debe conservar
+      procedencia explícita y generar un caso diferente.
+    </div>
+    <div class="page-tag">Página 15 de 15</div>
+  </section>
+</body>
+</html>

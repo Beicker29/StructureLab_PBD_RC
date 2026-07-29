@@ -302,7 +302,7 @@ def _report_payload(
 ) -> dict[str, Any]:
     model = str(config["model"])
     model_metadata: dict[str, Any] = {}
-    if model == "modified_ramberg_osgood":
+    if model == ModifiedRambergOsgood.model_id:
         equation = (
             "epsilon = sigma/Es + (eps_u - fu/Es) * (sigma/fu)^n, "
             "0 <= sigma <= fu"
@@ -316,7 +316,7 @@ def _report_payload(
                 "una hipotesis prepandeo y no una validacion experimental."
             ),
         ]
-    elif model == "menegotto_pinto":
+    elif model == MenegottoPinto.model_id:
         equation = (
             "Steel02/Menegotto-Pinto con R = R0 * "
             "(1 - cR1 * xi / (cR2 + xi)) y reglas explicitas de reversion."
@@ -512,15 +512,17 @@ def _model_output_dirs(case_root: Path, item: Stage02ModelInput) -> dict[str, Pa
 
 
 def _replace_case_directory(staged_root: Path, case_root: Path) -> None:
-    """Atomically replace one case while preserving unrelated projects and cases."""
+    """Replace one case transactionally while preserving unrelated cases."""
 
     backup_root: Path | None = None
     if case_root.exists():
         backup_root = case_root.parents[1] / f".bak-{uuid4().hex[:8]}"
         case_root.replace(backup_root)
     try:
-        staged_root.replace(case_root)
+        shutil.move(str(staged_root), str(case_root))
     except Exception:
+        if case_root.exists():
+            shutil.rmtree(case_root)
         if backup_root is not None and backup_root.exists() and not case_root.exists():
             backup_root.replace(case_root)
         raise

@@ -347,7 +347,7 @@ class RDM2019Parameters:
 class RDM2019MonotonicCompressionModel:
     """Stateless RDM 2019 tension reference and compression envelope."""
 
-    model_id = "steel_compression_rdm_2019_monotonic"
+    model_id = "Mon_RDM2019"
 
     def __init__(self, parameters: RDM2019Parameters) -> None:
         self.parameters = parameters

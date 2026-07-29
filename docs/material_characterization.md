@@ -30,6 +30,15 @@ Cada modelo tiene un unico JSON directamente bajo su familia y comportamiento:
 configs/stage_02/<material>/<monotonic|cyclic>/<model>.json
 ```
 
+El nombre base del archivo y `inputs.model_id` deben coincidir exactamente. Los
+identificadores implementados son:
+
+| Identificador | Formulacion | Material | Comportamiento |
+|---|---|---|---|
+| `Mon_RDM2019` | RDM 2019 | Acero ductil | Monotonico |
+| `Mon_MRO` | Ramberg-Osgood modificado | Acero no ductil | Monotonico |
+| `Cyc_MP` | Menegotto-Pinto | Acero no ductil | Ciclico |
+
 `configs/stage_02/` no admite archivos sueltos ni directorios diferentes de las cuatro familias. Cada familia debe contener exactamente `monotonic/` y `cyclic/`. Un JSON incluye:
 
 - `stage_id`, `enabled`, `title` y `units`;
@@ -69,7 +78,11 @@ El ejecutor carga todos los JSON habilitados y agrupa sus modelos por `project_i
 
 ## RDM 2019
 
-El modelo `steel_compression_rdm_2019_monotonic` implementa la Tabla 2 de Akkaya, Guner y Vecchio (2019). Representa:
+El modelo `Mon_RDM2019` implementa la Tabla 2 de Akkaya, Guner y Vecchio (2019). Representa:
+
+Guia detallada de aplicacion:
+[PDF](stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019/guia_aplicacion_rdm_2019.pdf) |
+[fuente HTML](stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019/guia_aplicacion_rdm_2019.html).
 
 - la envolvente monotona de referencia del acero;
 - el inicio del pandeo inelastico para `L/D >= 5`;
@@ -97,7 +110,8 @@ rb = (L/D)*sqrt(fy/100)
 - `tie_spacing_mm = s`;
 - `effective_tie_leg_length_mm = le`;
 - `effective_tie_legs = nl`;
-- `restrained_longitudinal_bars = nb`;
+- `restrained_longitudinal_bars = nb`, numero de barras de una cara en la
+  direccion evaluada;
 - `tie_steel_modulus_MPa = Et`;
 - `buckling_restraint_case`, inicialmente `bending` o `pure_compression`.
 
@@ -116,6 +130,16 @@ nb_eff = 2*nb                       para pure_compression
 kt = (Et*At/le)*(nl/nb_eff)
 keq = kt/k
 ```
+
+El factor `2` de `pure_compression` considera las barras de las dos caras,
+tal como se muestra en el ejemplo de viga/columna del boletin B3. Por tanto,
+el input `restrained_longitudinal_bars` no debe incluir previamente esa
+duplicacion.
+
+La definicion implementada es `keq=kt/k`. La primera pagina de
+`B3_VT5UnsupportedLengthRatio_V1.1.pdf` imprime `k/kt`, pero se trata de una
+errata interna: el articulo original de Dhakal y Maekawa (2002), la pagina 2
+del mismo boletin y todos sus ejemplos numericos emplean `kt/k`.
 
 La seleccion de `n` usa:
 
@@ -142,7 +166,19 @@ L/D = n*s/D
 rb = (L/D)*sqrt(fy/100)
 ```
 
-La configuracion incluida produce `keq=1.0018573`, `n=1`, `L=100 mm`, `L/D=5` y `rb=10.24695`. El procedimiento de rigidez implementado aplica inicialmente a secciones rectangulares con refuerzo transversal. Secciones circulares, losas, secciones sin refuerzo transversal y otras restricciones requieren estrategias independientes.
+La configuracion incluida produce `keq=1.0018573`, `n=1`, `L=100 mm`, `L/D=5` y `rb=10.24695`. Las pruebas de referencia reproducen tambien:
+
+- boletin B3, viga/columna en flexion: `k=9210.88 N/mm`,
+  `kt=40863.03 N/mm`, `keq=4.44`, `n=1` y `L/D=10.23`;
+- boletin B3, compresion pura: `kt=5621.52 N/mm`, `keq=0.61`,
+  `n=2` y `L/D=20.47`;
+- Dhakal y Maekawa (2002), prisma: `keq=1.126` y `n=1`;
+- Dhakal y Maekawa (2002), columna a flexion: `keq=0.1015` y `n=3`.
+
+El procedimiento de rigidez implementado aplica inicialmente a secciones
+rectangulares con refuerzo transversal. Secciones circulares, losas,
+secciones sin refuerzo transversal y otras restricciones requieren
+estrategias independientes.
 
 Los casos antiguos que suministran `buckling_intervals` siguen funcionando en modo `legacy_explicit_buckling_intervals`, generan una advertencia de obsolescencia y no pueden mezclar ese valor con las nuevas variables fisicas.
 
@@ -154,11 +190,23 @@ Para `L/D < 5`, no se activa pandeo RDM y la compresion coincide en magnitud con
 
 La implementacion RDM 2019 corresponde a una envolvente constitutiva uniaxial monotonica. No incluye reglas historicas ciclicas.
 
-Referencia: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). *Constitutive model for inelastic buckling behavior of reinforcing bars*. ACI Structural Journal, 116(3), 195-204. DOI `10.14359/51711143`.
+Referencias locales auditadas:
+
+- `references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/jp116.pdf`: Akkaya,
+  Guner y Vecchio (2019), Tabla 2, DOI `10.14359/51711143`;
+- `references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/12587353_2002_ASCESTR_2__Stability.pdf`:
+  Dhakal y Maekawa (2002), Tablas 1 a 3, DOI
+  `10.1061/(ASCE)0733-9445(2002)128:10(1253)`;
+- `references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/B3_VT5UnsupportedLengthRatio_V1.1.pdf`:
+  Salgado y Guner (2014), Tablas 1 y 2 y ejemplos resueltos.
 
 ## Ramberg-Osgood modificado
 
-El modelo `modified_ramberg_osgood` implementa la envolvente monotonica:
+El modelo `Mon_MRO` implementa la envolvente monotonica Ramberg-Osgood modificada:
+
+Guia detallada de aplicacion:
+[PDF](stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/guia_aplicacion_mon_mro.pdf) |
+[fuente HTML](stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/guia_aplicacion_mon_mro.html).
 
 ```text
 epsilon = sigma / Es + (eps_u - fu / Es) * (sigma / fu)^n
@@ -184,7 +232,11 @@ Fuente primaria: Carrillo et al., *Construction and Building Materials* 211 (201
 
 ## Menegotto-Pinto
 
-El modelo `menegotto_pinto` implementa las reglas de historia de Steel02:
+El modelo `Cyc_MP` implementa las reglas de historia Menegotto-Pinto de Steel02:
+
+Guia detallada de aplicacion:
+[PDF](stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/guia_aplicacion_cyc_mp.pdf) |
+[fuente HTML](stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/guia_aplicacion_cyc_mp.html).
 
 ```text
 R = R0 * (1 - cR1 * xi / (cR2 + xi))
@@ -205,9 +257,9 @@ Fuentes de formulacion: documentacion y codigo fuente de OpenSees Steel02. Conte
 Los JSON canonicos actuales son:
 
 ```text
-configs/stage_02/ductile_reinforcing_steel/monotonic/steel_compression_rdm_2019_monotonic.json
-configs/stage_02/nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood.json
-configs/stage_02/nonductile_reinforcing_steel/cyclic/menegotto_pinto.json
+configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json
+configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json
+configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json
 ```
 
 Los dos modelos de acero no ductil comparten `project_id/case_id`, por lo que se procesan como un caso con ramas monotonica y ciclica. El archivo `model_report.yaml` de cada modelo incluye:

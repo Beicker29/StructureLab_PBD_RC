@@ -173,6 +173,11 @@ def _load_model_input(path: Path) -> tuple[Stage02ModelInput, bool]:
     )
     case_id = _validate_identifier(inputs["case_id"], name=f"{path}.inputs.case_id")
     model_id = _validate_identifier(inputs["model_id"], name=f"{path}.inputs.model_id")
+    if path.stem != model_id:
+        raise ConfigError(
+            f"{path}.inputs.model_id must match the JSON filename stem "
+            f"{path.stem!r}."
+        )
     resolved = {
         key: deepcopy(value)
         for key, value in inputs.items()
