@@ -1,0 +1,321 @@
+stage_id: stage_02
+project_id: Modelos_constitutivos
+case_id: COL75X75FC28MPa
+model_id: Mon_RDM2019
+title: "Acero d\xFActil RDM 2019 - secci\xF3n COL75X75FC28MPa"
+status: completed
+metadata:
+  material: ductile_reinforcing_steel
+  analysis_type: monotonic
+  model_id: Mon_RDM2019
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  source_json: C:\Users\LENOVO\Documents\Proyectos python\StructureLab_PBD_RC\configs\stage_02\ductile_reinforcing_steel\monotonic\Mon_RDM2019.json
+  provenance:
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
+    citation: jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables
+      1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables
+      1-2 and worked examples
+    source_location: references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+resolved_inputs:
+  label: 'RDM 2019 | Acero longitudinal #7'
+  parameters:
+    fy_MPa: 420.0
+    fu_MPa: 630.0
+    Es_MPa: 200000.0
+    epsilon_sh: 0.01
+    epsilon_su: 0.1
+    parameter_p: 4.0
+    longitudinal_bar_diameter_mm: 22.225
+    tie_bar_diameter_mm: 12.7
+    tie_spacing_mm: 100.0
+    effective_tie_leg_length_mm: 200.0
+    effective_tie_legs: 2
+    restrained_longitudinal_bars: 2
+    tie_steel_modulus_MPa: 200000.0
+    buckling_restraint_case: bending
+  curve_generation:
+    points: 401
+    max_strain: null
+    include_tension: true
+    include_compression: true
+  provenance:
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
+    citation: jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables
+      1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables
+      1-2 and worked examples
+    source_location: references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+  case_id: COL75X75FC28MPa
+  material: ductile_reinforcing_steel
+  analysis_type: monotonic
+  model: Mon_RDM2019
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+calculated_parameters:
+  fy_mpa: 420.0
+  fu_mpa: 630.0
+  elastic_modulus_mpa: 200000.0
+  eps_y: 0.0021
+  epsilon_y: 0.0021
+  epsilon_sh: 0.01
+  epsilon_su: 0.1
+  parameter_p: 4.0
+  longitudinal_bar_diameter_mm: 22.225
+  tie_bar_diameter_mm: 12.7
+  tie_spacing_mm: 100.0
+  effective_tie_leg_length_mm: 200.0
+  effective_tie_legs: 2
+  restrained_longitudinal_bars: 2
+  tie_steel_modulus_MPa: 200000.0
+  buckling_restraint_case: bending
+  s_over_db: 4.499437570303712
+  L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+  tie_area_mm2: 126.67686977437442
+  longitudinal_bar_inertia_mm4: 11976.69465197929
+  reduced_flexural_rigidity_N_mm2: 1227246004.377634
+  effective_restrained_bars: 2
+  bar_normalized_stiffness_N_per_mm: 119544.91776153668
+  tie_stiffness_N_per_mm: 126676.86977437443
+  equivalent_stiffness_ratio: 1.0596591820579464
+  buckling_intervals: 1
+  unsupported_length_mm: 100.0
+  L_over_D: 4.499437570303712
+  rb: 9.221103051482205
+  buckling_active: false
+  buckling_calculation_mode: rectangular_transverse_restraint
+  applicability_warnings: []
+  rb_min: 10.2469507659596
+  eps_i_0: null
+  eps_i_max: null
+  eps_i: null
+  f_it_mpa: null
+  alpha_1: null
+  alpha_2: null
+  alpha: null
+  f_i_mpa: null
+  eps_ii: null
+  residual_stress_mpa: 84.0
+  special_alpha_case: false
+  loading_type: monotonic
+  sign_convention: compression_positive
+  reference: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling
+    behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143
+  applicability:
+    fy_mpa: 200 < fy < 900
+    diameter_mm: 10 < D < 36
+    fu_over_fy: < 2
+    parameter_p: <= 4
+    epsilon_su_over_epsilon_y: '> 14'
+    rb: 8 < rb < 56
+    l_over_d: '>= 5 for buckling activation'
+  warnings: []
+  provenance:
+    source: Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure
+      documented by Salgado and Guner
+    citation: jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables
+      1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables
+      1-2 and worked examples
+    source_location: references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+notable_points:
+  - id: tension_yield
+    strain: 0.0021
+    stress_mpa: 420.0
+    legend_group: "Tracci\xF3n"
+    label: "Fluencia en tracci\xF3n (fy = 420.000 [MPa], \u03B5y = 0.002100 [mm/mm])"
+  - id: tension_hardening_start
+    strain: 0.01
+    stress_mpa: 420.0
+    legend_group: "Tracci\xF3n"
+    label: "Inicio del endurecimiento en tracci\xF3n (fsh = 420.000 [MPa], \u03B5sh = 0.010000 [mm/mm])"
+  - id: tension_ultimate
+    strain: 0.1
+    stress_mpa: 630.0
+    legend_group: "Tracci\xF3n"
+    label: "Resistencia \xFAltima en tracci\xF3n (fsu = 630.000 [MPa], \u03B5su = 0.100000 [mm/mm])"
+  - id: compression_yield
+    strain: -0.0021
+    stress_mpa: -420.0
+    legend_group: "Compresi\xF3n"
+    label: "Fluencia en compresi\xF3n (-fy = -420.000 [MPa], -\u03B5y = -0.002100 [mm/mm])"
+  - id: compression_hardening_start
+    strain: -0.01
+    stress_mpa: -420.0
+    legend_group: "Compresi\xF3n"
+    label: "Inicio del endurecimiento de referencia en compresi\xF3n (-fsh = -420.000 [MPa], -\u03B5sh\
+      \ = -0.010000 [mm/mm])"
+  - id: compression_ultimate
+    strain: -0.1
+    stress_mpa: -630.0
+    legend_group: "Compresi\xF3n"
+    label: "Respuesta \xFAltima en compresi\xF3n (fsc(\u03B5su) = -630.000 [MPa], -\u03B5su = -0.100000\
+      \ [mm/mm])"
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 22.225
+  point_count: 801
+  strain_min: -0.1
+  strain_max: 0.1
+  stress_min_mpa: -630.0
+  stress_max_mpa: 630.0
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_equation_validation_case
+  response_branches:
+    - compression
+    - tension
+  rdm_base_inputs:
+    fy_mpa: 420.0
+    fu_mpa: 630.0
+    elastic_modulus_mpa: 200000.0
+    epsilon_sh: 0.01
+    epsilon_su: 0.1
+    parameter_p: 4.0
+    longitudinal_bar_diameter_mm: 22.225
+    tie_bar_diameter_mm: 12.7
+    tie_spacing_mm: 100.0
+    effective_tie_leg_length_mm: 200.0
+    effective_tie_legs: 2
+    restrained_longitudinal_bars: 2
+    tie_steel_modulus_MPa: 200000.0
+    buckling_restraint_case: bending
+  rdm_controls:
+    epsilon_y: 0.0021
+    tie_area_mm2: 126.67686977437442
+    longitudinal_bar_inertia_mm4: 11976.69465197929
+    reduced_flexural_rigidity_N_mm2: 1227246004.377634
+    effective_restrained_bars: 2
+    bar_normalized_stiffness_N_per_mm: 119544.91776153668
+    tie_stiffness_N_per_mm: 126676.86977437443
+    equivalent_stiffness_ratio: 1.0596591820579464
+    buckling_intervals: 1
+    unsupported_length_mm: 100.0
+    L_over_D: 4.499437570303712
+    L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+    rb: 9.221103051482205
+    rb_min: 10.2469507659596
+    eps_i_0: null
+    eps_i_max: null
+    eps_i: null
+    f_it_mpa: null
+    alpha_1: null
+    alpha_2: null
+    alpha: null
+    f_i_mpa: null
+    eps_ii: null
+    residual_stress_mpa: 84.0
+    buckling_active: false
+    loading_type: monotonic
+    sign_convention: compression_positive
+technical_basis:
+  stage_id: stage_02
+  material: ductile_reinforcing_steel
+  analysis_type: monotonic
+  model: Mon_RDM2019
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  equation: 'Rectangular-restraint procedure: keq=kt/k, tabulated n, L=n*s and L/D=(n*s)/D; RDM 2019 Table
+    2, Eqs. (1)-(8): reference tension envelope, intermediate point and bilinear postbuckling degradation.'
+  case_summaries:
+    - case_id: COL75X75FC28MPa
+      diameter_mm: 22.225
+      point_count: 801
+      strain_min: -0.1
+      strain_max: 0.1
+      stress_min_mpa: -630.0
+      stress_max_mpa: 630.0
+      reversal_count: 0
+      out_of_domain_count: 0
+      failed_count: 0
+      calibration_status: source_equation_validation_case
+      response_branches:
+        - compression
+        - tension
+      rdm_base_inputs:
+        fy_mpa: 420.0
+        fu_mpa: 630.0
+        elastic_modulus_mpa: 200000.0
+        epsilon_sh: 0.01
+        epsilon_su: 0.1
+        parameter_p: 4.0
+        longitudinal_bar_diameter_mm: 22.225
+        tie_bar_diameter_mm: 12.7
+        tie_spacing_mm: 100.0
+        effective_tie_leg_length_mm: 200.0
+        effective_tie_legs: 2
+        restrained_longitudinal_bars: 2
+        tie_steel_modulus_MPa: 200000.0
+        buckling_restraint_case: bending
+      rdm_controls:
+        epsilon_y: 0.0021
+        tie_area_mm2: 126.67686977437442
+        longitudinal_bar_inertia_mm4: 11976.69465197929
+        reduced_flexural_rigidity_N_mm2: 1227246004.377634
+        effective_restrained_bars: 2
+        bar_normalized_stiffness_N_per_mm: 119544.91776153668
+        tie_stiffness_N_per_mm: 126676.86977437443
+        equivalent_stiffness_ratio: 1.0596591820579464
+        buckling_intervals: 1
+        unsupported_length_mm: 100.0
+        L_over_D: 4.499437570303712
+        L_over_D_source: keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D
+        rb: 9.221103051482205
+        rb_min: 10.2469507659596
+        eps_i_0: null
+        eps_i_max: null
+        eps_i: null
+        f_it_mpa: null
+        alpha_1: null
+        alpha_2: null
+        alpha: null
+        f_i_mpa: null
+        eps_ii: null
+        residual_stress_mpa: 84.0
+        buckling_active: false
+        loading_type: monotonic
+        sign_convention: compression_positive
+  limitations:
+    - La implementacion RDM 2019 corresponde a una envolvente constitutiva uniaxial monotonica. No incluye
+      reglas historicas ciclicas.
+    - El calculo interno RDM usa magnitudes positivas de compresion. El CSV y la figura exportan traccion
+      con signo positivo y compresion con signo negativo; no constituyen una historia ciclica.
+    - El calculo de n implementado corresponde inicialmente a secciones rectangulares con refuerzo transversal.
+      Secciones circulares, losas y otras configuraciones de restriccion requieren estrategias distintas.
+  model_metadata:
+    reference: Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling
+      behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. DOI 10.14359/51711143.
+    applicability:
+      fy_mpa: 200 < fy < 900
+      diameter_mm: 10 < D < 36
+      fu_over_fy: < 2
+      parameter_p: <= 4
+      epsilon_su_over_epsilon_y: '> 14'
+      rb: 8 < rb < 56
+      l_over_d: '>= 5 for buckling activation'
+    buckling_interval_boundary_convention: A shared keq boundary is assigned to the larger n mode.
+  warnings: []
+warnings: []
+generated_files:
+  resolved_inputs_json: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\data\resolved_inputs.json
+  calculated_parameters_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\data\calculated_parameters.yaml
+  metrics_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\data\metrics.yaml
+  curve_csv: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\data\curve.csv
+  curve_xlsx: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\data\curve.xlsx
+  figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\figures\response.png
+  notable_points_figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\figures\response_notable_points.png
+  report_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\reports\model_report.yaml
+  report_pdf: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\ductile_reinforcing_steel\monotonic\Mon_RDM2019\reports\model_report.pdf

@@ -1,0 +1,115 @@
+{
+  "stage_id": "stage_02",
+  "project_id": "Modelos_constitutivos",
+  "case_id": "COL75X75FC28MPa",
+  "model_id": "Cyc_MP",
+  "source_json": "C:\\Users\\LENOVO\\Documents\\Proyectos python\\StructureLab_PBD_RC\\configs\\stage_02\\nonductile_reinforcing_steel\\cyclic\\Cyc_MP.json",
+  "raw": {
+    "stage_id": "stage_02",
+    "enabled": true,
+    "title": "Acero no d\u00factil - verificaci\u00f3n algor\u00edtmica Menegotto-Pinto",
+    "units": {
+      "length": "mm",
+      "stress": "MPa",
+      "strain": "mm/mm"
+    },
+    "inputs": {
+      "project_id": "Modelos_constitutivos",
+      "case_id": "COL75X75FC28MPa",
+      "model_id": "Cyc_MP",
+      "parameters": {
+        "diameter_mm": 6.0,
+        "fy_MPa": 500.0,
+        "Es_MPa": 200000.0,
+        "b": 0.01,
+        "R0": 12.0,
+        "cR1": 0.8,
+        "cR2": 0.2,
+        "a1": 0.05,
+        "a2": 1.2,
+        "a3": 0.07,
+        "a4": 1.3
+      },
+      "validity": {
+        "eps_compression_min": -0.006,
+        "eps_tension_max": 0.008
+      },
+      "failure": {
+        "policy": "none"
+      },
+      "strain_history": [
+        0.0,
+        0.001,
+        0.004,
+        0.001,
+        -0.002,
+        0.0,
+        0.006,
+        -0.004,
+        0.008
+      ],
+      "history_interpolation": {
+        "points_per_segment": 31
+      },
+      "provenance": {
+        "source": "OpenSees Steel02 formulation",
+        "citation": "OpenSees Steel02 documentation and Steel02.cpp history rules",
+        "source_location": "Synthetic algorithm-verification parameters; not an NTC 5806 calibration",
+        "specimen_or_profile": "Synthetic nonductile-steel verification profile, D=6 mm",
+        "calibration_status": "synthetic_algorithm_verification_only"
+      }
+    }
+  },
+  "resolved": {
+    "parameters": {
+      "diameter_mm": 6.0,
+      "fy_MPa": 500.0,
+      "Es_MPa": 200000.0,
+      "b": 0.01,
+      "R0": 12.0,
+      "cR1": 0.8,
+      "cR2": 0.2,
+      "a1": 0.05,
+      "a2": 1.2,
+      "a3": 0.07,
+      "a4": 1.3
+    },
+    "validity": {
+      "eps_compression_min": -0.006,
+      "eps_tension_max": 0.008
+    },
+    "failure": {
+      "policy": "none"
+    },
+    "strain_history": [
+      0.0,
+      0.001,
+      0.004,
+      0.001,
+      -0.002,
+      0.0,
+      0.006,
+      -0.004,
+      0.008
+    ],
+    "history_interpolation": {
+      "points_per_segment": 31
+    },
+    "provenance": {
+      "source": "OpenSees Steel02 formulation",
+      "citation": "OpenSees Steel02 documentation and Steel02.cpp history rules",
+      "source_location": "Synthetic algorithm-verification parameters; not an NTC 5806 calibration",
+      "specimen_or_profile": "Synthetic nonductile-steel verification profile, D=6 mm",
+      "calibration_status": "synthetic_algorithm_verification_only"
+    },
+    "case_id": "COL75X75FC28MPa",
+    "material": "nonductile_reinforcing_steel",
+    "analysis_type": "cyclic",
+    "model": "Cyc_MP",
+    "units": {
+      "length": "mm",
+      "stress": "MPa",
+      "strain": "mm/mm"
+    }
+  }
+}

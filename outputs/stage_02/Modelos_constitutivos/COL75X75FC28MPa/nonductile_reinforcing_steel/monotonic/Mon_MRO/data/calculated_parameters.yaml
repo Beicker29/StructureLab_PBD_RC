@@ -1,0 +1,38 @@
+calculated_parameters:
+  elastic_ultimate_strain: 0.002865
+  nonlinear_strain_scale: 0.006635
+  fema_bilinear_idealization:
+    method: asce_fema_energy_equivalent_stress_strain
+    status: converged
+    settings:
+      stiffness_fraction: 0.6
+      tolerance: 0.005
+      search_points: 5000
+      yield_lower_ratio: 0.05
+      yield_upper_ratio: 1.0
+    parameters:
+      E_effective: 199995.6521329494
+      f_y_effective: 518.4452190438088
+      epsilon_y_effective: 0.002592282449716289
+      E_post_yield: 7897.656578901451
+      alpha: 0.03948914136219018
+      f_u: 573.0
+      epsilon_u: 0.0095
+      f_60y: 311.0671314262853
+      epsilon_60y: 0.0015553694698297732
+      relative_error: 1.7086705963806695e-05
+      absolute_relative_error: 1.7086705963806695e-05
+      ductility: 3.6647241125440333
+    area:
+      actual: 4.441599976301571
+      bilinear: 4.441675868614375
+    bilinear_curve:
+      - point: origin
+        strain: 0.0
+        stress_mpa: 0.0
+      - point: yield
+        strain: 0.002592282449716289
+        stress_mpa: 518.4452190438088
+      - point: ultimate
+        strain: 0.0095
+        stress_mpa: 573.0

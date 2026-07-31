@@ -8,7 +8,7 @@
 - Etapa 2: caracterizacion constitutiva de materiales.
 - Etapa 3: caracterizacion de secciones mediante diagramas momento-curvatura.
 
-La Etapa 2 esta preparada para cuatro familias de material y dos protocolos de carga. Los modelos constitutivos se incorporaran posteriormente.
+La Etapa 2 contiene modelos constitutivos independientes por familia y protocolo de carga. Incluye Mander 1988 para concreto confinado, RDM 2019 para acero ductil y modelos monotonico y ciclico para acero no ductil.
 
 ## Principios
 
@@ -16,7 +16,7 @@ La Etapa 2 esta preparada para cuatro familias de material y dos protocolos de c
 - Los modelos y ecuaciones reutilizables viven en `mechanics/`.
 - Cada modelo constitutivo de Stage 2 se define en un unico JSON bajo su material y comportamiento.
 - Cada JSON declara sus unidades; la convencion es `mm`, `kN` y `MPa`.
-- Las salidas de materiales se separan por `project_id/case_id`; solo se reemplazan los casos incluidos en la ejecucion.
+- Las salidas de materiales se separan por proyecto, caso, material, comportamiento y modelo. Stage 02 se reconstruye transaccionalmente desde su caso compartido.
 - Los notebooks son para exploracion y visualizacion, no para logica principal.
 
 ## Capas principales

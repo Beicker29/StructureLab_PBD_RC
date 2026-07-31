@@ -53,6 +53,16 @@
       page-break-after: auto;
     }
 
+    @media screen {
+      body:has(.sheet:target) .sheet:not(:target) {
+        display: none;
+      }
+
+      body:has(.sheet:target) .sheet:target {
+        margin: 0 auto;
+      }
+    }
+
     .sheet:not(.cover)::before {
       content: "STRUCTURELAB_PBD_RC  |  STAGE 2  |  RDM 2019";
       position: absolute;
@@ -189,6 +199,58 @@
       margin: 1.4mm 0;
       padding: 1.8mm 2.5mm;
       font-size: 9.2pt;
+    }
+
+    .formula math {
+      width: 100%;
+      margin: 0 auto;
+      color: var(--navy);
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.08em;
+    }
+
+    .formula math[display="block"] {
+      display: block;
+    }
+
+    .formula.piecewise {
+      padding: 2mm 2.2mm;
+      font-size: 9.2pt;
+      overflow: visible;
+    }
+
+    .equation-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2mm;
+      align-items: stretch;
+      margin: 2mm 0;
+    }
+
+    .equation-card {
+      padding: 2.2mm 2.5mm;
+      background: var(--panel);
+      border-top: 0.8mm solid var(--blue);
+      page-break-inside: avoid;
+    }
+
+    .equation-card h3 {
+      margin: 0 0 1.5mm;
+      text-align: center;
+    }
+
+    .equation-card .formula {
+      margin: 0;
+      padding: 0;
+      border-left: 0;
+      background: transparent;
+    }
+
+    .equation-note {
+      margin: 1.4mm 0 0;
+      color: var(--muted);
+      font-size: 7.5pt;
+      line-height: 1.25;
     }
 
     .callout {
@@ -451,7 +513,7 @@
       <div class="cover-meta">
         Modelo: <strong>Mon_RDM2019</strong><br>
         Ejemplo reproducible con la configuración canónica del repositorio<br><br>
-        Versión 1.0 | 28 de julio de 2026
+        Versión 1.1 | 30 de julio de 2026
       </div>
     </div>
     <div class="page-tag">Página 1 de 20</div>
@@ -469,7 +531,7 @@
     <table class="toc">
       <tbody>
         <tr><td>1. Alcance, decisiones y fuentes</td><td>3</td></tr>
-        <tr><td>2. Convenciones de signos, unidades y ramas</td><td>4</td></tr>
+        <tr><td>2. Convenciones y función constitutiva completa</td><td>4</td></tr>
         <tr><td>3. Diccionario de inputs del caso</td><td>5-6</td></tr>
         <tr><td>4. Diccionario de parámetros calculados</td><td>7-8</td></tr>
         <tr><td>5. Geometría y cálculo mecánico de L/D</td><td>9-10</td></tr>
@@ -571,7 +633,7 @@
     <div class="page-tag">Página 3 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="constitutive-function">
     <h1>2. Signos, unidades y ramas</h1>
     <h2>2.1 Convención física exportada</h2>
     <div class="grid-2">
@@ -590,37 +652,151 @@
       <strong>e=|ε<sub>s</sub>|</strong>. Al exportar la rama física se asigna
       σ<sub>s</sub>=-f<sub>sc</sub>(e) para compresión.
     </p>
-    <div class="formula">
-      σ<sub>s</sub>(ε<sub>s</sub>) =
-      f<sub>t</sub>(ε<sub>s</sub>) si ε<sub>s</sub> ≥ 0;&nbsp;&nbsp;
-      σ<sub>s</sub>(ε<sub>s</sub>) =
-      -f<sub>sc</sub>(|ε<sub>s</sub>|) si ε<sub>s</sub> &lt; 0
+    <div class="formula compact">
+      <math display="block" aria-label="Función constitutiva firmada">
+        <mrow>
+          <msub><mi>σ</mi><mi>s</mi></msub>
+          <mo stretchy="false">(</mo><msub><mi>ε</mi><mi>s</mi></msub><mo stretchy="false">)</mo>
+          <mo>=</mo>
+          <mo fence="true">{</mo>
+          <mtable columnalign="left left" columnspacing="1.2em" rowspacing="0.35em">
+            <mtr>
+              <mtd>
+                <msub><mi>f</mi><mi>t</mi></msub>
+                <mo>(</mo><msub><mi>ε</mi><mi>s</mi></msub><mo>)</mo>
+              </mtd>
+              <mtd>
+                <mtext>si </mtext><mn>0</mn><mo>≤</mo><msub><mi>ε</mi><mi>s</mi></msub>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mo>−</mo><msub><mi>f</mi><mi>sc</mi></msub>
+                <mo>(</mo><mo>|</mo><msub><mi>ε</mi><mi>s</mi></msub><mo>|</mo><mo>)</mo>
+              </mtd>
+              <mtd>
+                <mtext>si </mtext><msub><mi>ε</mi><mi>s</mi></msub><mo>&lt;</mo><mn>0</mn>
+              </mtd>
+            </mtr>
+          </mtable>
+        </mrow>
+      </math>
     </div>
 
-    <h2>2.2 Unidades obligatorias del caso canónico</h2>
-    <table>
-      <thead><tr><th>Magnitud</th><th>Unidad</th><th>Identidad útil</th></tr></thead>
-      <tbody>
-        <tr><td>Longitud</td><td>mm</td><td>D, d<sub>t</sub>, s, l<sub>e</sub>, L</td></tr>
-        <tr><td>Esfuerzo y módulo</td><td>MPa</td><td>1 MPa = 1 N/mm²</td></tr>
-        <tr><td>Deformación</td><td>mm/mm</td><td>Adimensional; 1 % = 0.01</td></tr>
-        <tr><td>Área</td><td>mm²</td><td>A<sub>t</sub></td></tr>
-        <tr><td>Inercia</td><td>mm⁴</td><td>I de la barra longitudinal</td></tr>
-        <tr><td>Rigidez axial equivalente</td><td>N/mm</td><td>k y k<sub>t</sub></td></tr>
-      </tbody>
-    </table>
+    <h2>2.2 Función constitutiva completa</h2>
+    <div class="equation-grid">
+      <div class="equation-card">
+        <h3>Tracción de referencia</h3>
+        <div class="formula piecewise">
+          <math display="block" aria-label="Envolvente de tracción por tramos">
+            <mrow>
+              <msub><mi>f</mi><mi>t</mi></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>=</mo>
+              <mo fence="true">{</mo>
+              <mtable columnalign="left left" columnspacing="0.7em" rowspacing="0.28em">
+                <mtr>
+                  <mtd><msub><mi>E</mi><mi>s</mi></msub><mi>e</mi></mtd>
+                  <mtd><mn>0</mn><mo>≤</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>y</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd><msub><mi>f</mi><mi>y</mi></msub></mtd>
+                  <mtd><msub><mi>ε</mi><mi>y</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>sh</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <msub><mi>f</mi><mi>u</mi></msub><mo>−</mo>
+                    <mo>(</mo><msub><mi>f</mi><mi>u</mi></msub><mo>−</mo><msub><mi>f</mi><mi>y</mi></msub><mo>)</mo>
+                    <msup>
+                      <mrow>
+                        <mo>(</mo>
+                        <mfrac>
+                          <mrow><msub><mi>ε</mi><mi>su</mi></msub><mo>−</mo><mi>e</mi></mrow>
+                          <mrow><msub><mi>ε</mi><mi>su</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>sh</mi></msub></mrow>
+                        </mfrac>
+                        <mo>)</mo>
+                      </mrow>
+                      <mi>P</mi>
+                    </msup>
+                  </mtd>
+                  <mtd><msub><mi>ε</mi><mi>sh</mi></msub><mo>&lt;</mo><mi>e</mi><mo>&lt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd><msub><mi>f</mi><mi>u</mi></msub></mtd>
+                  <mtd><mi>e</mi><mo>=</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd><mn>0</mn></mtd>
+                  <mtd><mi>e</mi><mo>&gt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+          </math>
+        </div>
+      </div>
 
-    <h2>2.3 Política de dominio en el repositorio</h2>
-    <ul>
-      <li>La curva exportada termina en <strong>epsilon_su</strong>.</li>
-      <li>Para |ε<sub>s</sub>| &gt; epsilon_su, la API devuelve esfuerzo 0.0 y marca el punto fuera del dominio.</li>
-      <li>No se prolonga numéricamente f<sub>t</sub>=f<sub>u</sub> después de epsilon_su.</li>
-      <li>La fractura y la fatiga no forman parte de esta envolvente.</li>
-    </ul>
+      <div class="equation-card">
+        <h3>Compresión RDM con pandeo</h3>
+        <div class="formula piecewise">
+          <math display="block" aria-label="Envolvente RDM de compresión por tramos">
+            <mrow>
+              <msub><mi>f</mi><mi>sc</mi></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>=</mo>
+              <mo fence="true">{</mo>
+              <mtable columnalign="left left" columnspacing="0.55em" rowspacing="0.24em">
+                <mtr>
+                  <mtd><msub><mi>E</mi><mi>s</mi></msub><mi>e</mi></mtd>
+                  <mtd><mn>0</mn><mo>≤</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>y</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                    <msub><mi>f</mi><mi>st</mi></msub>
+                    <mrow>
+                      <mo>[</mo><mn>1</mn><mo>−</mo>
+                      <mo>(</mo><mn>1</mn><mo>−</mo><mfrac><msub><mi>f</mi><mi>i</mi></msub><msub><mi>f</mi><mi>it</mi></msub></mfrac><mo>)</mo>
+                      <mfrac>
+                        <mrow><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>y</mi></msub></mrow>
+                        <mrow><msub><mi>ε</mi><mi>i</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>y</mi></msub></mrow>
+                      </mfrac><mo>]</mo>
+                    </mrow><mo>}</mo>
+                  </mtd>
+                  <mtd><msub><mi>ε</mi><mi>y</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>i</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                    <msub><mi>f</mi><mi>i</mi></msub><mo>−</mo><mn>0.02</mn><msub><mi>E</mi><mi>s</mi></msub>
+                    <mo>(</mo><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>i</mi></msub><mo>)</mo><mo>}</mo>
+                  </mtd>
+                  <mtd><msub><mi>ε</mi><mi>i</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>ii</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                    <mn>0.75</mn><msub><mi>f</mi><mi>i</mi></msub><mo>−</mo><mn>0.01</mn><msub><mi>E</mi><mi>s</mi></msub>
+                    <mo>(</mo><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>ii</mi></msub><mo>)</mo><mo>}</mo>
+                  </mtd>
+                  <mtd><msub><mi>ε</mi><mi>ii</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+                </mtr>
+                <mtr>
+                  <mtd><mn>0</mn></mtd>
+                  <mtd><mi>e</mi><mo>&gt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+          </math>
+        </div>
+        <p class="equation-note">
+          Aplica para L/D≥5, con f<sub>st</sub>(e)=f<sub>t</sub>(e),
+          f<sub>r</sub>=0.2f<sub>y</sub> y e=|ε<sub>s</sub>|.
+          Para L/D&lt;5: f<sub>sc</sub>(e)=f<sub>t</sub>(e).
+        </p>
+      </div>
+    </div>
+
     <div class="callout warning">
-      <span class="callout-title">No mezclar representaciones</span>
-      Use propiedades ingenieriles o verdaderas de forma consistente. No combine
-      esfuerzos verdaderos con deformaciones ingenieriles dentro del mismo caso.
+      <span class="callout-title">Unidades y dominio</span>
+      Longitudes en [mm], esfuerzos y módulos en [MPa], y deformaciones en
+      [mm/mm]. La envolvente termina en ε<sub>su</sub>; fuera del dominio la API
+      devuelve 0.0. Este cierre no representa fatiga.
     </div>
     <div class="page-tag">Página 4 de 20</div>
   </section>
@@ -1033,26 +1209,56 @@
     <div class="page-tag">Página 12 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="tension-equation">
     <h1>7. Envolvente de tracción</h1>
     <p>
       Defina e como una deformación positiva. La curva de referencia tiene tres
       tramos dentro del dominio 0≤e≤epsilon_su.
     </p>
-    <div class="formula">
-      f<sub>t</sub>(e)=Es·e
-      &nbsp;&nbsp;para 0≤e≤ε<sub>y</sub>
+    <div class="formula piecewise">
+      <math display="block" aria-label="Envolvente de tracción por tramos">
+        <mrow>
+          <msub><mi>f</mi><mi>t</mi></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>=</mo>
+          <mo fence="true">{</mo>
+          <mtable columnalign="left left" columnspacing="1.3em" rowspacing="0.38em">
+            <mtr>
+              <mtd><msub><mi>E</mi><mi>s</mi></msub><mi>e</mi></mtd>
+              <mtd><mn>0</mn><mo>≤</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>y</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd><msub><mi>f</mi><mi>y</mi></msub></mtd>
+              <mtd><msub><mi>ε</mi><mi>y</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>sh</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <msub><mi>f</mi><mi>u</mi></msub><mo>−</mo>
+                <mo>(</mo><msub><mi>f</mi><mi>u</mi></msub><mo>−</mo><msub><mi>f</mi><mi>y</mi></msub><mo>)</mo>
+                <msup>
+                  <mrow>
+                    <mo>(</mo>
+                    <mfrac>
+                      <mrow><msub><mi>ε</mi><mi>su</mi></msub><mo>−</mo><mi>e</mi></mrow>
+                      <mrow><msub><mi>ε</mi><mi>su</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>sh</mi></msub></mrow>
+                    </mfrac>
+                    <mo>)</mo>
+                  </mrow>
+                  <mi>P</mi>
+                </msup>
+              </mtd>
+              <mtd><msub><mi>ε</mi><mi>sh</mi></msub><mo>&lt;</mo><mi>e</mi><mo>&lt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd><msub><mi>f</mi><mi>u</mi></msub></mtd>
+              <mtd><mi>e</mi><mo>=</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd><mn>0</mn></mtd>
+              <mtd><mi>e</mi><mo>&gt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+            </mtr>
+          </mtable>
+        </mrow>
+      </math>
     </div>
-    <div class="formula">
-      f<sub>t</sub>(e)=fy
-      &nbsp;&nbsp;para ε<sub>y</sub>&lt;e≤ε<sub>sh</sub>
-    </div>
-    <div class="formula">
-      f<sub>t</sub>(e)=fu+(fy-fu)
-      [(ε<sub>u</sub>-e)/(ε<sub>u</sub>-ε<sub>sh</sub>)]<sup>P</sup>
-      &nbsp;&nbsp;para ε<sub>sh</sub>&lt;e&lt;ε<sub>u</sub>
-    </div>
-    <div class="formula">f<sub>t</sub>(ε<sub>u</sub>)=fu</div>
 
     <h2>7.1 Aplicación al ejemplo</h2>
     <ul>
@@ -1142,30 +1348,74 @@
     <div class="page-tag">Página 14 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="compression-equation">
     <h1>9. Envolvente RDM en compresión</h1>
     <p>
       Para e=|εs|, calcule primero una magnitud positiva fsc(e). Luego asigne
       signo negativo al exportarla.
     </p>
-    <div class="formula compact">
-      f<sub>sc</sub>=Es·e
-      &nbsp;para 0≤e≤ε<sub>y</sub>
+    <div class="formula piecewise">
+      <math display="block" aria-label="Envolvente RDM de compresión por tramos">
+        <mrow>
+          <msub><mi>f</mi><mi>sc</mi></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>=</mo>
+          <mo fence="true">{</mo>
+          <mtable columnalign="left left" columnspacing="1em" rowspacing="0.34em">
+            <mtr>
+              <mtd><msub><mi>E</mi><mi>s</mi></msub><mi>e</mi></mtd>
+              <mtd><mn>0</mn><mo>≤</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>y</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                <msub><mi>f</mi><mi>st</mi></msub>
+                <mrow>
+                  <mo>[</mo><mn>1</mn><mo>−</mo>
+                  <mo>(</mo><mn>1</mn><mo>−</mo><mfrac><msub><mi>f</mi><mi>i</mi></msub><msub><mi>f</mi><mi>it</mi></msub></mfrac><mo>)</mo>
+                  <mfrac>
+                    <mrow><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>y</mi></msub></mrow>
+                    <mrow><msub><mi>ε</mi><mi>i</mi></msub><mo>−</mo><msub><mi>ε</mi><mi>y</mi></msub></mrow>
+                  </mfrac><mo>]</mo>
+                </mrow><mo>}</mo>
+              </mtd>
+              <mtd><msub><mi>ε</mi><mi>y</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>i</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                <msub><mi>f</mi><mi>i</mi></msub><mo>−</mo><mn>0.02</mn><msub><mi>E</mi><mi>s</mi></msub>
+                <mo>(</mo><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>i</mi></msub><mo>)</mo><mo>}</mo>
+              </mtd>
+              <mtd><msub><mi>ε</mi><mi>i</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>ii</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mi>max</mi><mo>{</mo><msub><mi>f</mi><mi>r</mi></msub><mo>,</mo>
+                <mn>0.75</mn><msub><mi>f</mi><mi>i</mi></msub><mo>−</mo><mn>0.01</mn><msub><mi>E</mi><mi>s</mi></msub>
+                <mo>(</mo><mi>e</mi><mo>−</mo><msub><mi>ε</mi><mi>ii</mi></msub><mo>)</mo><mo>}</mo>
+              </mtd>
+              <mtd><msub><mi>ε</mi><mi>ii</mi></msub><mo>&lt;</mo><mi>e</mi><mo>≤</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+            </mtr>
+            <mtr>
+              <mtd><mn>0</mn></mtd>
+              <mtd><mi>e</mi><mo>&gt;</mo><msub><mi>ε</mi><mi>su</mi></msub></mtd>
+            </mtr>
+          </mtable>
+        </mrow>
+      </math>
     </div>
     <div class="formula compact">
-      f<sub>sc</sub>=f<sub>st</sub>{1-(1-f<sub>i</sub>/f<sub>it</sub>)
-      [(e-ε<sub>y</sub>)/(ε<sub>i</sub>-ε<sub>y</sub>)]}
-      &nbsp;para ε<sub>y</sub>&lt;e≤ε<sub>i</sub>
+      <math display="block" aria-label="Definiciones auxiliares de la rama de compresión">
+        <mrow>
+          <msub><mi>f</mi><mi>st</mi></msub><mo>(</mo><mi>e</mi><mo>)</mo>
+          <mo>=</mo><msub><mi>f</mi><mi>t</mi></msub><mo>(</mo><mi>e</mi><mo>)</mo>
+          <mo>,</mo>
+          <mspace width="1.5em"/>
+          <msub><mi>f</mi><mi>r</mi></msub>
+          <mo>=</mo><mn>0.2</mn><msub><mi>f</mi><mi>y</mi></msub>
+          <mo>=</mo><mn>84</mn><mtext> MPa</mtext>
+        </mrow>
+      </math>
     </div>
-    <div class="formula compact">
-      f<sub>sc</sub>=f<sub>i</sub>-0.02Es(e-ε<sub>i</sub>)
-      &nbsp;para ε<sub>i</sub>&lt;e≤ε<sub>ii</sub>
-    </div>
-    <div class="formula compact">
-      f<sub>sc</sub>=0.75f<sub>i</sub>-0.01Es(e-ε<sub>ii</sub>)
-      &nbsp;para ε<sub>ii</sub>&lt;e≤ε<sub>u</sub>
-    </div>
-    <div class="formula">f<sub>sc</sub>(e)≥0.2fy=<strong>84 MPa</strong></div>
 
     <h2>9.1 Continuidad obligatoria</h2>
     <ul>

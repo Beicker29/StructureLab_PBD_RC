@@ -67,8 +67,8 @@ class Stage02ModelInput:
         return (
             self.project_id.casefold(),
             self.case_id.casefold(),
-            self.analysis_type.casefold(),
             self.material.casefold(),
+            self.analysis_type.casefold(),
             self.model_id.casefold(),
         )
 
@@ -89,13 +89,15 @@ def _validate_directory_layout(root: Path) -> list[Path]:
         for entry in direct_entries
         if not entry.is_dir() or entry.name not in MATERIALS
     )
-    missing_materials = sorted(set(MATERIALS) - {entry.name for entry in direct_entries})
-    if unexpected_root_entries or missing_materials:
+    missing_directories = sorted(
+        set(MATERIALS) - {entry.name for entry in direct_entries}
+    )
+    if unexpected_root_entries or missing_directories:
         details: list[str] = []
         if unexpected_root_entries:
             details.append(f"unexpected: {', '.join(unexpected_root_entries)}")
-        if missing_materials:
-            details.append(f"missing: {', '.join(missing_materials)}")
+        if missing_directories:
+            details.append(f"missing: {', '.join(missing_directories)}")
         raise ConfigError(
             "configs/stage_02 must contain only the four material directories ("
             + "; ".join(details)
@@ -171,7 +173,10 @@ def _load_model_input(path: Path) -> tuple[Stage02ModelInput, bool]:
         inputs["project_id"],
         name=f"{path}.inputs.project_id",
     )
-    case_id = _validate_identifier(inputs["case_id"], name=f"{path}.inputs.case_id")
+    case_id = _validate_identifier(
+        inputs["case_id"],
+        name=f"{path}.inputs.case_id",
+    )
     model_id = _validate_identifier(inputs["model_id"], name=f"{path}.inputs.model_id")
     if path.stem != model_id:
         raise ConfigError(
@@ -263,12 +268,20 @@ def load_enabled_stage_02_inputs(path: str | Path) -> list[Stage02ModelInput]:
         )
     if not json_paths:
         raise ConfigError(f"No Stage 2 model JSON files found under {path}.")
-
     all_inputs: list[tuple[Stage02ModelInput, bool]] = []
     for json_path in json_paths:
         item, enabled = _load_model_input(json_path)
         all_inputs.append((item, enabled))
-    _validate_identifiers_and_routes([item for item, _ in all_inputs])
+    all_model_inputs = [item for item, _ in all_inputs]
+    _validate_identifiers_and_routes(all_model_inputs)
+    project_cases = {
+        (item.project_id.casefold(), item.case_id.casefold())
+        for item in all_model_inputs
+    }
+    if len(project_cases) != 1:
+        raise ConfigError(
+            "Every Stage 2 model JSON must use the same project_id and case_id."
+        )
     enabled_inputs = [item for item, enabled in all_inputs if enabled]
     if not enabled_inputs:
         raise ConfigError(f"No enabled Stage 2 model JSON files found under {path}.")

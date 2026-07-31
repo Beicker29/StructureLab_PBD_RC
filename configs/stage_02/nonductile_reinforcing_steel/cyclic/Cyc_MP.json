@@ -1,11 +1,11 @@
 {
   "stage_id": "stage_02",
   "enabled": true,
-  "title": "Acero no ductil - verificacion algoritmica Menegotto-Pinto",
+  "title": "Acero no dúctil - verificación algorítmica Menegotto-Pinto",
   "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
   "inputs": {
-    "project_id": "ntc5806_validation",
-    "case_id": "db6_algorithm_verification",
+    "project_id": "Modelos_constitutivos",
+    "case_id": "COL75X75FC28MPa",
     "model_id": "Cyc_MP",
     "parameters": {
       "diameter_mm": 6.0,

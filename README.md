@@ -5,7 +5,7 @@
 El repositorio contiene actualmente:
 
 - Etapa 1: amenaza sismica mediante espectros NSR-10 y SGC + CCP-14.
-- Etapa 2: caracterizacion constitutiva de acero de refuerzo ductil y no ductil.
+- Etapa 2: caracterizacion constitutiva de concreto confinado y acero de refuerzo.
 - Etapa 3: caracterizacion de secciones mediante bilinealizacion de diagramas momento-curvatura.
 
 La Etapa 2 esta organizada por material, protocolo de carga y modelo constitutivo.
@@ -33,7 +33,7 @@ Los cuatro materiales previstos son:
 - `ductile_reinforcing_steel`: acero de refuerzo ductil.
 - `nonductile_reinforcing_steel`: acero de refuerzo no ductil.
 
-`configs/stage_02/` contiene unicamente las cuatro carpetas de material. Cada una contiene `monotonic/` y `cyclic/`, y cada modelo constitutivo dispone de un unico JSON:
+`configs/stage_02/` contiene únicamente las cuatro carpetas de material. Cada material contiene `monotonic/` y `cyclic/`, y cada modelo constitutivo dispone de un único JSON:
 
 ```text
 configs/stage_02/
@@ -51,10 +51,10 @@ configs/stage_02/
     `-- cyclic/
 ```
 
-Cada JSON declara `stage_id`, `enabled`, `title`, `units` e `inputs`. El bloque `inputs` exige `project_id`, `case_id`, `model_id`, `parameters` y los bloques adicionales requeridos por el modelo. Las unidades son `mm`, `MPa` y `mm/mm`; la fuerza global del proyecto se expresa en `kN`.
+Cada JSON de modelo declara `stage_id`, `enabled`, `title`, `units` e `inputs`; el bloque `inputs` exige `project_id`, `case_id`, `model_id`, `parameters` y únicamente los datos físicos que consume ese modelo. Todos usan `Modelos_constitutivos/COL75X75FC28MPa`. Las unidades son `mm`, `MPa` y `mm/mm`; la fuerza global del proyecto se expresa en `kN`.
 
 ```text
-outputs/stage_02/<project_id>/<case_id>/<behavior>/<material>/<model_id>/
+outputs/stage_02/<project_id>/<case_id>/<material>/<behavior>/<model_id>/
 |-- data/
 |   |-- resolved_inputs.json
 |   |-- calculated_parameters.yaml
@@ -62,13 +62,18 @@ outputs/stage_02/<project_id>/<case_id>/<behavior>/<material>/<model_id>/
 |   |-- curve.csv
 |   `-- curve.xlsx
 |-- figures/
-|   `-- response.png
+|   |-- response.png
+|   `-- response_notable_points.png
 `-- reports/
     |-- model_report.yaml
     `-- model_report.pdf
 ```
 
-Una ejecucion procesa conjuntamente todos los JSON habilitados y los agrupa por `project_id/case_id`. Cada caso procesado se construye completo y reemplaza su carpeta anterior; los demas proyectos y casos se conservan. La carga rechaza mas de un JSON para el mismo modelo, identificadores duplicados por diferencias de mayusculas, combinaciones repetidas y colisiones de ruta.
+Una ejecución procesa conjuntamente todos los JSON habilitados bajo el proyecto `Modelos_constitutivos` y el caso `COL75X75FC28MPa`. Stage 02 se construye primero en una carpeta temporal y reemplaza su árbol anterior solo cuando todos los modelos terminan correctamente. La carga rechaza más de un JSON para el mismo modelo, proyectos o casos inconsistentes y colisiones de ruta.
+
+Modelo implementado para `confined_concrete`:
+
+- `monotonic/Mon_Mander1988.json`: envolvente monotónica de Mander-Popovics. Su propio bloque `parameters.geometry` describe la sección rectangular 750 x 750 mm con 16 barras #7 y flejes #4 cada 100 mm. En rectangulares usa `f_l=0.5*k_e*(rho_x+rho_y)*fyh`; no implementa William-Warnke. La compresión se exporta positiva y el segmento lineal de tracción, definido por `f_t`, `E_c` y `ε_t=f_t/E_c`, se exporta negativo.
 
 Modelos implementados para `nonductile_reinforcing_steel`:
 

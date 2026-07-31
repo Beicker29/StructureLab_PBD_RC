@@ -10,6 +10,8 @@ from uuid import uuid4
 from structurelab_pbd_rc.core.exceptions import ConfigError
 from structurelab_pbd_rc.core.validation import require_keys
 from structurelab_pbd_rc.design.stages.stage_02_input_config import (
+    ANALYSIS_TYPES,
+    MATERIALS,
     Stage02ModelInput,
     load_enabled_stage_02_inputs,
 )
@@ -17,6 +19,17 @@ from structurelab_pbd_rc.io.write_results import (
     write_csv_rows,
     write_json_result,
     write_yaml_result,
+)
+from structurelab_pbd_rc.mechanics.idealization import (
+    BackbonePoint,
+    EnergyEquivalentSettings,
+    bilinearize_energy_equivalent,
+)
+from structurelab_pbd_rc.mechanics.materials.confined_concrete.factory import (
+    build_confined_concrete_model,
+)
+from structurelab_pbd_rc.mechanics.materials.confined_concrete.monotonic.mander_1988 import (
+    Mander1988MonotonicConfinedConcrete,
 )
 from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.factory import (
     build_ductile_steel_model,
@@ -35,7 +48,10 @@ from structurelab_pbd_rc.mechanics.materials.nonductile_reinforcing_steel.monoto
 )
 from structurelab_pbd_rc.mechanics.materials.protocols import linear_strain_vector
 from structurelab_pbd_rc.reports.export_excel import write_xlsx
-from structurelab_pbd_rc.reports.plots import plot_uniaxial_response_rows
+from structurelab_pbd_rc.reports.plots import (
+    plot_stress_strain_bilinear_idealization,
+    plot_uniaxial_response_rows,
+)
 from structurelab_pbd_rc.reports.stage_02_material_report import (
     write_stage_02_pdf_report,
 )
@@ -44,8 +60,19 @@ from structurelab_pbd_rc.reports.stage_02_material_report import (
 DEFAULT_CONFIG_PATH = Path("configs/stage_02")
 
 MATERIAL_MODEL_BUILDERS = {
+    "confined_concrete": build_confined_concrete_model,
     "ductile_reinforcing_steel": build_ductile_steel_model,
     "nonductile_reinforcing_steel": build_nonductile_steel_model,
+}
+MATERIAL_DISPLAY_NAMES = {
+    "confined_concrete": "Concreto confinado",
+    "unconfined_concrete": "Concreto no confinado",
+    "ductile_reinforcing_steel": "Acero de refuerzo dúctil",
+    "nonductile_reinforcing_steel": "Acero de refuerzo no dúctil",
+}
+ANALYSIS_DISPLAY_NAMES = {
+    "monotonic": "Monotónico",
+    "cyclic": "Cíclico",
 }
 
 
@@ -97,7 +124,11 @@ def _response_row(
         "in_domain": response.in_domain,
         "failed": response.failed,
         "compression_policy": getattr(model.parameters, "compression_policy", "history_dependent"),
-        "ultimate_strain": getattr(model.parameters, "ultimate_strain", ""),
+        "ultimate_strain": getattr(
+            model.parameters,
+            "ultimate_strain",
+            getattr(model, "ultimate_strain", ""),
+        ),
         "current_R": diagnostics.get("current_R", ""),
         "xi": diagnostics.get("xi", ""),
         "source": provenance["source"],
@@ -216,6 +247,56 @@ def _evaluate_rdm_case(
     return responses
 
 
+def _evaluate_mander_1988_case(
+    model: Mander1988MonotonicConfinedConcrete,
+    case: Mapping[str, Any],
+) -> list[Any]:
+    generation = _require_mapping(
+        case.get("curve_generation"),
+        context="curve_generation",
+    )
+    require_keys(generation, ("points", "max_strain"), context="curve_generation")
+    points = int(generation["points"])
+    if points < 2:
+        raise ConfigError("curve_generation.points must be at least 2.")
+    max_strain = (
+        model.ultimate_strain
+        if generation["max_strain"] is None
+        else float(generation["max_strain"])
+    )
+    model.generate_curve(num_points=points, max_strain=max_strain)
+    include_tension = _optional_bool(
+        generation,
+        "include_tension",
+        default=True,
+        context="curve_generation",
+    )
+    include_compression = _optional_bool(
+        generation,
+        "include_compression",
+        default=True,
+        context="curve_generation",
+    )
+    responses: list[Any] = []
+    if include_tension:
+        tensile_strains = linear_strain_vector(
+            -model.tensile_ultimate_strain,
+            0.0,
+            points,
+        )
+        responses.extend(model.tension_response(strain) for strain in tensile_strains)
+    if include_compression:
+        compressive_strains = linear_strain_vector(0.0, max_strain, points)
+        if responses:
+            compressive_strains = compressive_strains[1:]
+        responses.extend(model.response(strain) for strain in compressive_strains)
+    if not responses:
+        raise ConfigError(
+            "curve_generation disables both confined-concrete response branches."
+        )
+    return responses
+
+
 def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, Any]:
     stresses = [response.stress_mpa for response in responses]
     strains = [response.strain for response in responses]
@@ -292,6 +373,32 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
                 "sign_convention",
             )
         }
+    elif isinstance(model, Mander1988MonotonicConfinedConcrete):
+        controls = model.summary_parameters()
+        summary["mander_1988_controls"] = {
+            key: controls[key]
+            for key in (
+                "section_type",
+                "transverse_reinforcement",
+                "rho_cc",
+                "rho_s",
+                "rho_x",
+                "rho_y",
+                "k_e",
+                "f_lx_mpa",
+                "f_ly_mpa",
+                "f_l_mpa",
+                "elastic_modulus_mpa",
+                "f_t_mpa",
+                "epsilon_t",
+                "f_cc_mpa",
+                "epsilon_cc",
+                "secant_modulus_mpa",
+                "r",
+                "epsilon_cu",
+                "f_cu_mpa",
+            )
+        }
     return summary
 
 
@@ -315,7 +422,16 @@ def _report_payload(
                 "defecto se considera no soportada. La opcion simetrica, si se activa, constituye "
                 "una hipotesis prepandeo y no una validacion experimental."
             ),
+            (
+                "La fluencia efectiva FEMA no es un input ni un parametro de la ecuacion "
+                "Ramberg-Osgood. Se calcula posteriormente mediante una idealizacion bilineal "
+                "de energia equivalente."
+            ),
         ]
+        model_metadata = {
+            "idealization": "asce_fema_energy_equivalent_stress_strain",
+            "effective_yield_role": "calculated_result_not_material_input",
+        }
     elif model == MenegottoPinto.model_id:
         equation = (
             "Steel02/Menegotto-Pinto con R = R0 * "
@@ -374,6 +490,52 @@ def _report_payload(
                 "A shared keq boundary is assigned to the larger n mode."
             ),
         }
+    elif model == Mander1988MonotonicConfinedConcrete.model_id:
+        equation = (
+            "Mander et al. (1988), Eqs. (3)-(29): "
+            "f_c=f_cc*x*r/(r-1+x^r), x=epsilon_c/epsilon_cc; "
+            "linear tension segment f_c=Ec*epsilon_c up to "
+            "epsilon_t=f_t/Ec; "
+            "for rectangular sections f_l=0.5*k_e*(rho_x+rho_y)*fyh. "
+            "The adopted ultimate criterion "
+            "is epsilon_cu=0.004+1.4*rho_s*fyh*epsilon_su/f_cc."
+        )
+        limitations = [
+            (
+                "La implementacion corresponde a la envolvente uniaxial "
+                "monotonica con compresion positiva y un segmento elastico "
+                "de traccion negativa. No contiene reglas de descarga, recarga "
+                "ni degradacion ciclica."
+            ),
+            (
+                "Para secciones rectangulares se usa la presion efectiva escalar "
+                "f_l=0.5*k_e*rho_s*fyh, con rho_s=rho_x+rho_y. f_lx y f_ly se "
+                "conservan como diagnosticos y William-Warnke no se implementa."
+            ),
+            (
+                "La deformacion epsilon_cu usa la expresion simplificada elegida "
+                "para el proyecto; no implementa el balance energetico de las "
+                "Ecs. (59)-(64) del articulo."
+            ),
+        ]
+        model_metadata = {
+            "reference": (
+                "Mander, J. B., Priestley, M. J. N., & Park, R. (1988). "
+                "Theoretical Stress-Strain Model for Confined Concrete. "
+                "Journal of Structural Engineering, 114(8), 1804-1826."
+            ),
+            "implemented_sections": [
+                "rectangular_hoops_equivalent_scalar_pressure",
+                "circular_hoops",
+                "circular_spiral",
+            ],
+            "rectangular_effective_pressure": (
+                "f_l = 0.5 * k_e * (rho_x + rho_y) * fyh"
+            ),
+            "ultimate_strain_criterion": (
+                "simplified_user_selected_expression"
+            ),
+        }
     else:
         raise ConfigError(f"Missing Stage 2 report definition for model {model!r}.")
     return {
@@ -387,6 +549,90 @@ def _report_payload(
         "limitations": limitations,
         "model_metadata": model_metadata,
         "warnings": warnings,
+    }
+
+
+def _mro_fema_idealization(
+    model: ModifiedRambergOsgood,
+    rows: list[dict[str, Any]],
+    case: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Calculate effective FEMA yield without treating fy as a material input."""
+
+    config = _require_mapping(case.get("idealization"), context="idealization")
+    require_keys(
+        config,
+        (
+            "method",
+            "stiffness_fraction",
+            "tolerance",
+            "search_points",
+            "yield_lower_ratio",
+            "yield_upper_ratio",
+        ),
+        context="idealization",
+    )
+    method = str(config["method"])
+    if method != "asce_fema_energy_equivalent_stress_strain":
+        raise ConfigError(
+            "idealization.method must be "
+            "'asce_fema_energy_equivalent_stress_strain'."
+        )
+    try:
+        result = bilinearize_energy_equivalent(
+            (
+                BackbonePoint(
+                    deformation=float(row["strain"]),
+                    response=float(row["stress_mpa"]),
+                )
+                for row in rows
+                if float(row["strain"]) >= 0.0
+                and float(row["stress_mpa"]) >= 0.0
+            ),
+            deformation_u=model.parameters.ultimate_strain,
+            settings=EnergyEquivalentSettings(
+                stiffness_fraction=float(config["stiffness_fraction"]),
+                tolerance=float(config["tolerance"]),
+                search_points=int(config["search_points"]),
+                yield_lower_ratio=float(config["yield_lower_ratio"]),
+                yield_upper_ratio=float(config["yield_upper_ratio"]),
+            ),
+        )
+    except ValueError as exc:
+        raise ConfigError(f"Invalid Mon_MRO FEMA idealization: {exc}") from exc
+
+    parameters = result["parameters"]
+    area = result["area"]
+    return {
+        "method": method,
+        "status": result["status"],
+        "settings": result["settings"],
+        "parameters": {
+            "E_effective": parameters["effective_stiffness"],
+            "f_y_effective": parameters["yield_response"],
+            "epsilon_y_effective": parameters["yield_deformation"],
+            "E_post_yield": parameters["post_yield_stiffness"],
+            "alpha": parameters["alpha"],
+            "f_u": parameters["ultimate_response"],
+            "epsilon_u": parameters["ultimate_deformation"],
+            "f_60y": parameters["fraction_response"],
+            "epsilon_60y": parameters["fraction_deformation"],
+            "relative_error": parameters["relative_error"],
+            "absolute_relative_error": parameters["absolute_relative_error"],
+            "ductility": parameters["ductility"],
+        },
+        "area": {
+            "actual": area["actual"],
+            "bilinear": area["bilinear"],
+        },
+        "bilinear_curve": [
+            {
+                "point": point["point"],
+                "strain": point["deformation"],
+                "stress_mpa": point["response"],
+            }
+            for point in result["bilinear_curve"]
+        ],
     }
 
 
@@ -404,9 +650,15 @@ def _plot_rows_by_branch(
     compression_rows = [row for row in rows if row["stress_state"] == "compression"]
     tension_rows = [row for row in rows if row["stress_state"] == "tension"]
     if compression_rows:
-        grouped[f"{label} | Compresion"] = [*compression_rows, *zero_rows]
+        grouped[f"{label} | Compresión"] = sorted(
+            [*compression_rows, *zero_rows],
+            key=lambda row: float(row["strain"]),
+        )
     if tension_rows:
-        grouped[f"{label} | Traccion"] = [*zero_rows, *tension_rows]
+        grouped[f"{label} | Tracción"] = sorted(
+            [*zero_rows, *tension_rows],
+            key=lambda row: float(row["strain"]),
+        )
     if not grouped:
         grouped[label] = rows
     return grouped
@@ -419,6 +671,8 @@ def _evaluate_case(model: Any, case: Mapping[str, Any]) -> list[Any]:
         return _evaluate_cyclic_case(model, case)
     if isinstance(model, RDM2019MonotonicCompressionModel):
         return _evaluate_rdm_case(model, case)
+    if isinstance(model, Mander1988MonotonicConfinedConcrete):
+        return _evaluate_mander_1988_case(model, case)
     raise ConfigError(f"Unsupported Stage 2 model instance: {type(model).__name__}")
 
 
@@ -432,6 +686,8 @@ def _calculated_parameters(model: Any) -> dict[str, Any]:
             parameters.tie_spacing_mm / parameters.longitudinal_bar_diameter_mm
         )
         return values
+    if isinstance(model, Mander1988MonotonicConfinedConcrete):
+        return model.summary_parameters()
     if isinstance(model, ModifiedRambergOsgood):
         elastic_ultimate_strain = (
             parameters.ultimate_strength_mpa / parameters.elastic_modulus_mpa
@@ -441,11 +697,6 @@ def _calculated_parameters(model: Any) -> dict[str, Any]:
             "nonlinear_strain_scale": (
                 parameters.ultimate_strain - elastic_ultimate_strain
             ),
-            "yield_strain": (
-                None
-                if parameters.yield_strength_mpa is None
-                else parameters.yield_strength_mpa / parameters.elastic_modulus_mpa
-            ),
         }
     if isinstance(model, MenegottoPinto):
         return {
@@ -453,6 +704,153 @@ def _calculated_parameters(model: Any) -> dict[str, Any]:
             "initial_tangent_mpa": parameters.elastic_modulus_mpa,
         }
     return {}
+
+
+def _notable_points(
+    model: Any,
+    rows: list[dict[str, Any]],
+    idealization: Mapping[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Return model-aware points for a legend-only technical figure."""
+
+    if isinstance(model, RDM2019MonotonicCompressionModel):
+        label_templates = {
+            "tension_yield": ("Fluencia en tracción", "fy", "εy"),
+            "tension_hardening_start": (
+                "Inicio del endurecimiento en tracción",
+                "fsh",
+                "εsh",
+            ),
+            "tension_ultimate": (
+                "Resistencia última en tracción",
+                "fsu",
+                "εsu",
+            ),
+            "compression_yield": ("Fluencia en compresión", "-fy", "-εy"),
+            "compression_hardening_start": (
+                "Inicio del endurecimiento de referencia en compresión",
+                "-fsh",
+                "-εsh",
+            ),
+            "compression_intermediate": (
+                "Punto intermedio RDM en compresión",
+                "-fi",
+                "-εi",
+            ),
+            "compression_second": (
+                "Segundo punto RDM en compresión",
+                "-0.75fi",
+                "-εii",
+            ),
+            "compression_ultimate": (
+                "Respuesta última en compresión",
+                "fsc(εsu)",
+                "-εsu",
+            ),
+        }
+        points: list[dict[str, Any]] = []
+        for point in model.notable_response_points():
+            strain = float(point["strain"])
+            stress = float(point["stress_mpa"])
+            description, stress_symbol, strain_symbol = label_templates[
+                str(point["id"])
+            ]
+            points.append(
+                {
+                    "id": point["id"],
+                    "strain": strain,
+                    "stress_mpa": stress,
+                    "legend_group": (
+                        "Tracción"
+                        if str(point["id"]).startswith("tension_")
+                        else "Compresión"
+                    ),
+                    "label": (
+                        f"{description} "
+                        f"({stress_symbol} = {stress:.3f} [MPa], "
+                        f"{strain_symbol} = {strain:.6f} [mm/mm])"
+                    ),
+                }
+            )
+        return points
+
+    if isinstance(model, ModifiedRambergOsgood):
+        if idealization is None:
+            raise ConfigError("Mon_MRO requires its calculated FEMA idealization.")
+        parameters = _require_mapping(
+            idealization.get("parameters"),
+            context="idealization.parameters",
+        )
+        return [
+            {
+                "id": "ultimate",
+                "strain": float(parameters["epsilon_u"]),
+                "stress_mpa": float(parameters["f_u"]),
+                "label": (
+                    "Resistencia última "
+                    f"(fᵤ = {float(parameters['f_u']):.3f} [MPa], "
+                    f"εᵤ = {float(parameters['epsilon_u']):.6f} [mm/mm])"
+                ),
+            },
+        ]
+
+    if isinstance(model, Mander1988MonotonicConfinedConcrete):
+        values = model.summary_parameters()
+        return [
+            {
+                "strain": -float(values["epsilon_t"]),
+                "stress_mpa": -float(values["f_t_mpa"]),
+                "label": (
+                    "Resistencia última a tracción "
+                    f"(-fₜ = {-float(values['f_t_mpa']):.3f} [MPa], "
+                    f"-εₜ = {-float(values['epsilon_t']):.6f} [mm/mm])"
+                ),
+            },
+            {
+                "strain": float(values["epsilon_cc"]),
+                "stress_mpa": float(values["f_cc_mpa"]),
+                "label": (
+                    "Resistencia máxima confinada "
+                    f"(f′cc = {float(values['f_cc_mpa']):.3f} [MPa], "
+                    f"εcc = {float(values['epsilon_cc']):.6f} [mm/mm])"
+                ),
+            },
+            {
+                "strain": float(values["epsilon_cu"]),
+                "stress_mpa": float(values["f_cu_mpa"]),
+                "label": (
+                    "Deformación última confinada "
+                    f"(fcu = {float(values['f_cu_mpa']):.3f} [MPa], "
+                    f"εcu = {float(values['epsilon_cu']):.6f} [mm/mm])"
+                ),
+            },
+        ]
+
+    candidates = [
+        min(rows, key=lambda row: float(row["stress_mpa"])),
+        max(rows, key=lambda row: float(row["stress_mpa"])),
+    ]
+    points: list[dict[str, Any]] = []
+    seen: set[tuple[float, float]] = set()
+    for row in candidates:
+        strain = float(row["strain"])
+        stress = float(row["stress_mpa"])
+        key = (strain, stress)
+        if key in seen or (strain == 0.0 and stress == 0.0):
+            continue
+        seen.add(key)
+        descriptor = "máximo" if stress >= 0.0 else "mínimo"
+        points.append(
+            {
+                "strain": strain,
+                "stress_mpa": stress,
+                "label": (
+                    f"Esfuerzo {descriptor} "
+                    f"(σ = {stress:.3f} [MPa], ε = {strain:.6f} [mm/mm])"
+                ),
+            }
+        )
+    return points
 
 
 def _prepare_model(item: Stage02ModelInput) -> dict[str, Any]:
@@ -483,11 +881,21 @@ def _prepare_model(item: Stage02ModelInput) -> dict[str, Any]:
             if warning not in warnings:
                 warnings.append(warning)
     summary = _case_summary(item.case_id, model, responses)
+    idealization = (
+        _mro_fema_idealization(model, rows, resolved)
+        if isinstance(model, ModifiedRambergOsgood)
+        else None
+    )
+    calculated = _calculated_parameters(model)
+    if idealization is not None:
+        calculated["fema_bilinear_idealization"] = idealization
     return {
         "input": item,
         "rows": rows,
         "summary": summary,
-        "calculated": _calculated_parameters(model),
+        "calculated": calculated,
+        "idealization": idealization,
+        "notable_points": _notable_points(model, rows, idealization),
         "warnings": warnings,
         "technical_report": _report_payload(resolved, [summary], warnings),
     }
@@ -496,8 +904,8 @@ def _prepare_model(item: Stage02ModelInput) -> dict[str, Any]:
 def _model_output_dirs(case_root: Path, item: Stage02ModelInput) -> dict[str, Path]:
     model_root = (
         case_root
-        / item.analysis_type
         / item.material
+        / item.analysis_type
         / item.model_id
     )
     paths = {
@@ -511,20 +919,20 @@ def _model_output_dirs(case_root: Path, item: Stage02ModelInput) -> dict[str, Pa
     return paths
 
 
-def _replace_case_directory(staged_root: Path, case_root: Path) -> None:
-    """Replace one case transactionally while preserving unrelated cases."""
+def _replace_stage_directory(staged_root: Path, stage_root: Path) -> None:
+    """Replace the generated Stage 2 tree transactionally."""
 
     backup_root: Path | None = None
-    if case_root.exists():
-        backup_root = case_root.parents[1] / f".bak-{uuid4().hex[:8]}"
-        case_root.replace(backup_root)
+    if stage_root.exists():
+        backup_root = stage_root.parent / f".bak-stage_02-{uuid4().hex[:8]}"
+        stage_root.replace(backup_root)
     try:
-        shutil.move(str(staged_root), str(case_root))
+        shutil.move(str(staged_root), str(stage_root))
     except Exception:
-        if case_root.exists():
-            shutil.rmtree(case_root)
-        if backup_root is not None and backup_root.exists() and not case_root.exists():
-            backup_root.replace(case_root)
+        if stage_root.exists():
+            shutil.rmtree(stage_root)
+        if backup_root is not None and backup_root.exists() and not stage_root.exists():
+            backup_root.replace(stage_root)
         raise
     if backup_root is not None:
         shutil.rmtree(backup_root)
@@ -540,8 +948,8 @@ def _write_prepared_model(
     staged_dirs = _model_output_dirs(staged_case_root, item)
     final_model_root = (
         final_case_root
-        / item.analysis_type
         / item.material
+        / item.analysis_type
         / item.model_id
     )
     final_files = {
@@ -553,9 +961,28 @@ def _write_prepared_model(
         "curve_csv": final_model_root / "data" / "curve.csv",
         "curve_xlsx": final_model_root / "data" / "curve.xlsx",
         "figure_png": final_model_root / "figures" / "response.png",
+        "notable_points_figure_png": (
+            final_model_root / "figures" / "response_notable_points.png"
+        ),
         "report_yaml": final_model_root / "reports" / "model_report.yaml",
         "report_pdf": final_model_root / "reports" / "model_report.pdf",
     }
+    if prepared["idealization"] is not None:
+        final_files.update(
+            {
+                "fema_bilinear_csv": (
+                    final_model_root / "data" / "fema_bilinear_idealization.csv"
+                ),
+                "fema_bilinear_xlsx": (
+                    final_model_root / "data" / "fema_bilinear_idealization.xlsx"
+                ),
+                "fema_bilinear_figure_png": (
+                    final_model_root
+                    / "figures"
+                    / "response_fema_bilinear_idealization.png"
+                ),
+            }
+        )
     staged_files = {
         name: staged_dirs[
             "data"
@@ -566,8 +993,17 @@ def _write_prepared_model(
                 "metrics_yaml",
                 "curve_csv",
                 "curve_xlsx",
+                "fema_bilinear_csv",
+                "fema_bilinear_xlsx",
             }
-            else "figures" if name == "figure_png" else "reports"
+            else "figures"
+            if name
+            in {
+                "figure_png",
+                "notable_points_figure_png",
+                "fema_bilinear_figure_png",
+            }
+            else "reports"
         ]
         / path.name
         for name, path in final_files.items()
@@ -593,6 +1029,26 @@ def _write_prepared_model(
     )
     write_csv_rows(prepared["rows"], staged_files["curve_csv"])
     write_xlsx(prepared["rows"], staged_files["curve_xlsx"], sheet_name="curve")
+    if prepared["idealization"] is not None:
+        bilinear_rows = prepared["idealization"]["bilinear_curve"]
+        write_csv_rows(bilinear_rows, staged_files["fema_bilinear_csv"])
+        write_xlsx(
+            bilinear_rows,
+            staged_files["fema_bilinear_xlsx"],
+            sheet_name="fema_bilinear",
+        )
+    plot_subtitle = (
+        f"{ANALYSIS_DISPLAY_NAMES[item.analysis_type]} | "
+        f"{MATERIAL_DISPLAY_NAMES[item.material]} | {item.model_id}"
+    )
+    if item.model_id == RDM2019MonotonicCompressionModel.model_id:
+        l_over_d = float(prepared["calculated"]["L_over_D"])
+        buckling_state = (
+            "Pandeo activo"
+            if prepared["calculated"]["buckling_active"]
+            else "Pandeo inactivo"
+        )
+        plot_subtitle += f" | L/D = {l_over_d:.3f} | {buckling_state}"
     plot_uniaxial_response_rows(
         _plot_rows_by_branch(
             label=str(item.resolved_inputs.get("label", item.title)),
@@ -601,8 +1057,30 @@ def _write_prepared_model(
         ),
         staged_files["figure_png"],
         title=item.title,
-        subtitle=f"{item.analysis_type} | {item.material} | {item.model_id}",
+        subtitle=plot_subtitle,
     )
+    plot_uniaxial_response_rows(
+        _plot_rows_by_branch(
+            label=str(item.resolved_inputs.get("label", item.title)),
+            rows=prepared["rows"],
+            analysis_type=item.analysis_type,
+        ),
+        staged_files["notable_points_figure_png"],
+        title=item.title,
+        subtitle=f"{plot_subtitle} | Puntos notables",
+        notable_points=prepared["notable_points"],
+    )
+    if prepared["idealization"] is not None:
+        plot_stress_strain_bilinear_idealization(
+            prepared["rows"],
+            prepared["idealization"]["bilinear_curve"],
+            staged_files["fema_bilinear_figure_png"],
+            title=f"{item.title} - idealización bilineal",
+            subtitle=(
+                "Curva monotónica e idealización energética ASCE/FEMA | "
+                "$f_{y,\\mathrm{ef}}$ es un resultado calculado"
+            ),
+        )
 
     report_payload = {
         "stage_id": "stage_02",
@@ -621,6 +1099,7 @@ def _write_prepared_model(
         },
         "resolved_inputs": item.resolved_inputs,
         "calculated_parameters": prepared["calculated"],
+        "notable_points": prepared["notable_points"],
         "metrics": prepared["summary"],
         "technical_basis": prepared["technical_report"],
         "warnings": prepared["warnings"],
@@ -629,7 +1108,7 @@ def _write_prepared_model(
     write_yaml_result(report_payload, staged_files["report_yaml"])
     write_stage_02_pdf_report(
         report_payload,
-        staged_files["figure_png"],
+        staged_files["notable_points_figure_png"],
         staged_files["report_pdf"],
     )
     return report_payload
@@ -639,64 +1118,67 @@ def run(
     config_path: str | Path = DEFAULT_CONFIG_PATH,
     output_root: str | Path = "outputs",
 ) -> dict[str, Any]:
-    """Process all enabled model JSONs and transactionally replace selected cases."""
+    """Process all enabled model JSONs and transactionally rebuild Stage 2."""
 
     model_inputs = load_enabled_stage_02_inputs(config_path)
     prepared_models = [_prepare_model(item) for item in model_inputs]
-    grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
-    for prepared in prepared_models:
-        item: Stage02ModelInput = prepared["input"]
-        grouped.setdefault((item.project_id, item.case_id), []).append(prepared)
+    project_ids = {
+        (item.project_id, item.case_id)
+        for item in model_inputs
+    }
+    if len(project_ids) != 1:
+        raise ConfigError(
+            "Stage 2 must resolve every model to the single shared project/case."
+        )
+    project_id, case_id = next(iter(project_ids))
 
-    stage_root = Path(output_root) / "stage_02"
-    stage_root.mkdir(parents=True, exist_ok=True)
+    output_parent = Path(output_root)
+    output_parent.mkdir(parents=True, exist_ok=True)
+    stage_root = output_parent / "stage_02"
+    staged_stage_root = output_parent / f".stage_02-{uuid4().hex[:8]}"
+    staged_case_root = staged_stage_root / project_id / case_id
+    for material in MATERIALS:
+        for analysis_type in ANALYSIS_TYPES:
+            (staged_case_root / material / analysis_type).mkdir(
+                parents=True,
+                exist_ok=True,
+            )
+    final_case_root = stage_root / project_id / case_id
     reports: list[dict[str, Any]] = []
     generated_files: dict[str, Path] = {}
     aggregate_warnings: list[str] = []
-    processed_cases: list[dict[str, Any]] = []
-
-    for (project_id, case_id), case_models in grouped.items():
-        project_root = stage_root / project_id
-        if project_root.exists() and not project_root.is_dir():
-            raise ConfigError(f"Stage 2 project path is not a directory: {project_root}")
-        project_root.mkdir(parents=True, exist_ok=True)
-        final_case_root = project_root / case_id
-        staged_case_root = stage_root / f".s2-{uuid4().hex[:8]}"
-        staged_case_root.mkdir()
-        case_reports: list[dict[str, Any]] = []
-        try:
-            for prepared in case_models:
-                report = _write_prepared_model(
-                    prepared,
-                    staged_case_root=staged_case_root,
-                    final_case_root=final_case_root,
-                )
-                case_reports.append(report)
-            _replace_case_directory(staged_case_root, final_case_root)
-        except Exception:
-            if staged_case_root.exists():
-                shutil.rmtree(staged_case_root)
-            raise
-
-        reports.extend(case_reports)
-        for report in case_reports:
-            item_key = (
-                f"{project_id}/{case_id}/{report['metadata']['analysis_type']}/"
-                f"{report['metadata']['material']}/{report['model_id']}"
+    try:
+        for prepared in prepared_models:
+            report = _write_prepared_model(
+                prepared,
+                staged_case_root=staged_case_root,
+                final_case_root=final_case_root,
             )
-            for name, path in report["generated_files"].items():
-                generated_files[f"{item_key}/{name}"] = path
-            for warning in report["warnings"]:
-                if warning not in aggregate_warnings:
-                    aggregate_warnings.append(warning)
-        processed_cases.append(
-            {
-                "project_id": project_id,
-                "case_id": case_id,
-                "case_root": final_case_root,
-                "model_count": len(case_reports),
-            }
+            reports.append(report)
+        _replace_stage_directory(staged_stage_root, stage_root)
+    except Exception:
+        if staged_stage_root.exists():
+            shutil.rmtree(staged_stage_root)
+        raise
+
+    for report in reports:
+        item_key = (
+            f"{project_id}/{case_id}/{report['metadata']['material']}/"
+            f"{report['metadata']['analysis_type']}/{report['model_id']}"
         )
+        for name, path in report["generated_files"].items():
+            generated_files[f"{item_key}/{name}"] = path
+        for warning in report["warnings"]:
+            if warning not in aggregate_warnings:
+                aggregate_warnings.append(warning)
+    processed_cases = [
+        {
+            "project_id": project_id,
+            "case_id": case_id,
+            "case_root": final_case_root,
+            "model_count": len(reports),
+        }
+    ]
 
     return {
         "stage_id": "stage_02",

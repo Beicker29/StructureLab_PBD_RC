@@ -68,7 +68,7 @@ def test_stage_03_config_contains_excel_bilinearization_inputs() -> None:
     assert "positive_bending" in config["cyclic_diagram"]["cut_points_by_sheet"]["V2"]
 
 
-def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
+def test_stage_02_rdm_json_contains_required_section_inputs() -> None:
     config = load_json_config(
         Path(
             "configs/stage_02/ductile_reinforcing_steel/monotonic/"
@@ -78,12 +78,13 @@ def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
 
     assert config["enabled"] is True
     assert config["units"] == {"length": "mm", "stress": "MPa", "strain": "mm/mm"}
-    assert config["inputs"]["project_id"] == "default"
-    assert config["inputs"]["case_id"] == "rdm_2019_ld5"
+    assert config["inputs"]["project_id"] == "Modelos_constitutivos"
+    assert config["inputs"]["case_id"] == "COL75X75FC28MPa"
     assert config["inputs"]["model_id"] == "Mon_RDM2019"
     parameters = config["inputs"]["parameters"]
+    assert parameters["longitudinal_bar_diameter_mm"] == 22.225
     assert parameters["tie_spacing_mm"] == 100.0
-    assert parameters["tie_bar_diameter_mm"] == 10.0
+    assert parameters["tie_bar_diameter_mm"] == 12.7
     assert parameters["effective_tie_leg_length_mm"] == 200.0
     assert parameters["effective_tie_legs"] == 2
     assert parameters["restrained_longitudinal_bars"] == 2
@@ -98,3 +99,27 @@ def test_stage_02_rdm_json_has_required_input_identifiers() -> None:
         "rb",
     ):
         assert derived not in parameters
+
+
+def test_stage_02_mander_json_has_explicit_material_inputs() -> None:
+    config = load_json_config(
+        Path(
+            "configs/stage_02/confined_concrete/monotonic/"
+            "Mon_Mander1988.json"
+        )
+    )
+
+    inputs = config["inputs"]
+    parameters = inputs["parameters"]
+    assert config["enabled"] is True
+    assert inputs["model_id"] == "Mon_Mander1988"
+    assert parameters["f_co_MPa"] == 28.0
+    assert parameters["epsilon_co"] == 0.002
+    assert parameters["Ec_MPa"] == 24870.0
+    assert parameters["f_t_MPa"] == 3.28
+    assert parameters["fyh_MPa"] == 420.0
+    assert parameters["epsilon_su_transverse"] == 0.10
+    geometry = parameters["geometry"]
+    assert geometry["section_type"] == "rectangular"
+    assert geometry["core_width_mm"] == 657.3
+    assert len(geometry["clear_spacing_wi_mm"]) == 16

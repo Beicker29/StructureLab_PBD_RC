@@ -1,0 +1,13 @@
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 6.0
+  point_count: 201
+  strain_min: 0.0
+  strain_max: 0.0095
+  stress_min_mpa: 0.0
+  stress_max_mpa: 573.0
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_reported_monotonic_profile
+  response_branches: []

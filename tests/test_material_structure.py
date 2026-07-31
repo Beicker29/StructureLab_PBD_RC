@@ -31,9 +31,13 @@ def test_each_material_contains_only_monotonic_and_cyclic() -> None:
 
 def test_every_stage_02_model_definition_is_independent_json() -> None:
     root = Path("configs/stage_02")
-    json_files = sorted(root.rglob("*.json"))
+    json_files = sorted(
+        path
+        for material in MATERIALS
+        for path in (root / material).rglob("*.json")
+    )
 
-    assert len(json_files) == 3
+    assert len(json_files) == 4
     assert not list(root.rglob("*.yaml"))
     assert not list(root.rglob("*.yml"))
 
@@ -60,6 +64,9 @@ def test_stage_02_documentation_mirrors_material_and_behavior_layout() -> None:
         / "ductile_reinforcing_steel/monotonic/Mon_RDM2019/"
         "guia_aplicacion_rdm_2019.pdf"
     ).is_file()
+    assert (
+        root / "confined_concrete/monotonic/Mon_Mander1988"
+    ).is_dir()
     assert (
         root / "nonductile_reinforcing_steel/monotonic/Mon_MRO"
     ).is_dir()

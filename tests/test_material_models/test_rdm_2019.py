@@ -113,6 +113,18 @@ def test_l_over_d_below_five_uses_reference_envelope_without_buckling() -> None:
     assert model.buckling_active is False
     assert model.stress_at_strain(strain) == pytest.approx(expected)
     assert model.summary_parameters()["eps_i"] is None
+    points = {point["id"]: point for point in model.notable_response_points()}
+    assert set(points) == {
+        "tension_yield",
+        "tension_hardening_start",
+        "tension_ultimate",
+        "compression_yield",
+        "compression_hardening_start",
+        "compression_ultimate",
+    }
+    assert points["tension_yield"]["strain"] == pytest.approx(0.0021)
+    assert points["tension_yield"]["stress_mpa"] == pytest.approx(420.0)
+    assert points["compression_ultimate"]["stress_mpa"] == pytest.approx(-630.0)
 
 
 def test_l_over_d_five_activates_rdm_and_matches_table_2_controls() -> None:
@@ -127,6 +139,25 @@ def test_l_over_d_five_activates_rdm_and_matches_table_2_controls() -> None:
     assert summary["f_i_mpa"] == pytest.approx(526.8083)
     assert summary["eps_ii"] == pytest.approx(0.09893274)
     assert summary["residual_stress_mpa"] == 84.0
+    points = {point["id"]: point for point in model.notable_response_points()}
+    assert set(points) == {
+        "tension_yield",
+        "tension_hardening_start",
+        "tension_ultimate",
+        "compression_yield",
+        "compression_intermediate",
+        "compression_second",
+        "compression_ultimate",
+    }
+    assert points["compression_intermediate"]["strain"] == pytest.approx(
+        -summary["eps_i"]
+    )
+    assert points["compression_intermediate"]["stress_mpa"] == pytest.approx(
+        -summary["f_i_mpa"]
+    )
+    assert points["compression_second"]["stress_mpa"] == pytest.approx(
+        -0.75 * summary["f_i_mpa"]
+    )
 
 
 def test_l_over_d_twelve_matches_table_2_controls_and_degrades_more() -> None:

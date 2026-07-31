@@ -714,6 +714,76 @@ class RDM2019MonotonicCompressionModel:
     def evaluate_many(self, strains: list[float]) -> list[UniaxialResponse]:
         return [self.response(strain) for strain in strains]
 
+    def notable_response_points(self) -> tuple[dict[str, float | str], ...]:
+        """Return exact branch-transition coordinates for reporting and plots."""
+
+        p = self.parameters
+        assert p.epsilon_y is not None
+        points: list[dict[str, float | str]] = [
+            {
+                "id": "tension_yield",
+                "strain": p.epsilon_y,
+                "stress_mpa": p.fy_mpa,
+            },
+            {
+                "id": "tension_hardening_start",
+                "strain": p.epsilon_sh,
+                "stress_mpa": p.fy_mpa,
+            },
+            {
+                "id": "tension_ultimate",
+                "strain": p.epsilon_su,
+                "stress_mpa": p.fu_mpa,
+            },
+            {
+                "id": "compression_yield",
+                "strain": -p.epsilon_y,
+                "stress_mpa": -p.fy_mpa,
+            },
+        ]
+        if self.buckling_active:
+            epsilon_i = self.epsilon_i
+            epsilon_ii = self.epsilon_ii
+            f_i = self.f_i_mpa
+            assert epsilon_i is not None
+            assert epsilon_ii is not None
+            assert f_i is not None
+            points.extend(
+                [
+                    {
+                        "id": "compression_intermediate",
+                        "strain": -epsilon_i,
+                        "stress_mpa": -f_i,
+                    },
+                    {
+                        "id": "compression_second",
+                        "strain": -epsilon_ii,
+                        "stress_mpa": -0.75 * f_i,
+                    },
+                    {
+                        "id": "compression_ultimate",
+                        "strain": -p.epsilon_su,
+                        "stress_mpa": -self.stress_at_strain(p.epsilon_su),
+                    },
+                ]
+            )
+        else:
+            points.extend(
+                [
+                    {
+                        "id": "compression_hardening_start",
+                        "strain": -p.epsilon_sh,
+                        "stress_mpa": -p.fy_mpa,
+                    },
+                    {
+                        "id": "compression_ultimate",
+                        "strain": -p.epsilon_su,
+                        "stress_mpa": -p.fu_mpa,
+                    },
+                ]
+            )
+        return tuple(points)
+
     def summary_parameters(self) -> dict[str, Any]:
         """Expose inputs, derived controls, applicability and provenance."""
 

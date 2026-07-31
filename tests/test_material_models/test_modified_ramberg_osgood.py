@@ -15,8 +15,6 @@ def _config() -> dict[str, object]:
         "parameters": {
             "diameter_mm": 4.0,
             "Es_MPa": 200000.0,
-            "fy_MPa": None,
-            "yield_definition": "not_used_in_source_model_curve",
             "fu_MPa": 538.0,
             "eps_u": 0.0124,
             "shape_exponent": 20.0,
@@ -81,6 +79,14 @@ def test_missing_provenance_or_invalid_ultimate_point_is_rejected() -> None:
     invalid_endpoint["parameters"]["eps_u"] = 0.001
     with pytest.raises(ConfigError, match="fu_MPa / Es_MPa"):
         ModifiedRambergOsgood.from_config(invalid_endpoint)
+
+
+def test_fema_effective_yield_cannot_be_supplied_as_material_input() -> None:
+    config = _config()
+    config["parameters"]["fy_MPa"] = 400.0
+
+    with pytest.raises(ConfigError, match="calculated result"):
+        ModifiedRambergOsgood.from_config(config)
 
 
 def test_symmetric_compression_requires_and_reports_explicit_assumption() -> None:

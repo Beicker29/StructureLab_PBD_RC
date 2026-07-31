@@ -393,15 +393,20 @@ def plot_stress_strain_curves(
     *,
     title: str | None = None,
     subtitle: str | None = None,
-    xlabel: str = "Deformacion unitaria, epsilon [mm/mm]",
+    xlabel: str = "Deformación unitaria, ε [mm/mm]",
     ylabel: str = "Esfuerzo, f [MPa]",
+    notable_points: list[dict[str, Any]] | None = None,
 ) -> Path:
     """Plot named stress-strain curves to a polished PNG."""
 
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax = plt.subplots(figsize=(10.8, 6.4), dpi=180)
+    if notable_points and len(notable_points) > 4:
+        figure_size = (14.4, 8.2)
+    else:
+        figure_size = (12.2, 7.6) if notable_points else (10.8, 6.4)
+    fig, ax = plt.subplots(figsize=figure_size, dpi=180)
     fig.patch.set_facecolor("white")
     _style_axes(ax)
 
@@ -418,7 +423,27 @@ def plot_stress_strain_curves(
             linewidth=2.35,
             solid_capstyle="round",
         )
-        _annotate_peak(ax, strain, stress, color)
+    marker_colors = ["#c43c2f", "#2f7d4f", "#7a4f9a", "#d79a2b", "#5b6670"]
+    marker_styles = ["o", "s", "D", "^", "P"]
+    grouped_legend_entries: dict[str, list[tuple[Any, str]]] = {}
+    for index, point in enumerate(notable_points or []):
+        point_label = str(point["label"])
+        point_artist = ax.scatter(
+            [float(point["strain"])],
+            [float(point["stress_mpa"])],
+            s=62,
+            color=marker_colors[index % len(marker_colors)],
+            marker=marker_styles[index % len(marker_styles)],
+            edgecolor="white",
+            linewidth=0.9,
+            zorder=6,
+            label=point_label,
+        )
+        legend_group = point.get("legend_group")
+        if legend_group:
+            grouped_legend_entries.setdefault(str(legend_group), []).append(
+                (point_artist, point_label)
+            )
 
     inferred_title = title or "Curvas esfuerzo-deformacion"
     ax.set_title(inferred_title, loc="left", fontsize=15, fontweight="bold", color="#222831", pad=16)
@@ -436,17 +461,56 @@ def plot_stress_strain_curves(
     ax.set_ylabel(ylabel, fontsize=11, fontweight="bold", color="#30343b", labelpad=10)
 
     ax.margins(x=0.015, y=0.08)
-    legend = ax.legend(
-        loc="best",
-        frameon=True,
-        facecolor="white",
-        edgecolor="#d7d9d4",
-        framealpha=0.96,
-        fontsize=9,
-        title="Modelo",
-        title_fontsize=9,
-    )
-    legend.get_title().set_fontweight("bold")
+    legend_kwargs = {
+        "frameon": True,
+        "facecolor": "white",
+        "edgecolor": "#d7d9d4",
+        "framealpha": 0.96,
+        "fontsize": 9,
+        "title": "Curva y puntos notables" if notable_points else "Modelo",
+        "title_fontsize": 9,
+    }
+    if notable_points and len(grouped_legend_entries) > 1:
+        group_positions = [
+            0.27,
+            0.73,
+        ]
+        for position, (group_name, entries) in zip(
+            group_positions,
+            grouped_legend_entries.items(),
+            strict=False,
+        ):
+            group_handles, group_labels = zip(*entries, strict=True)
+            group_legend = fig.legend(
+                group_handles,
+                group_labels,
+                loc="lower center",
+                bbox_to_anchor=(position, 0.055),
+                ncol=1,
+                title=group_name,
+                title_fontsize=9,
+                frameon=True,
+                facecolor="white",
+                edgecolor="#d7d9d4",
+                framealpha=0.96,
+                fontsize=9,
+            )
+            group_legend.get_title().set_fontweight("bold")
+        legend = None
+    elif notable_points:
+        handles, labels = ax.get_legend_handles_labels()
+        legend = fig.legend(
+            handles,
+            labels,
+            loc="lower center",
+            bbox_to_anchor=(0.5, 0.065),
+            ncol=2 if len(notable_points) > 4 else 1,
+            **legend_kwargs,
+        )
+    else:
+        legend = ax.legend(loc="best", **legend_kwargs)
+    if legend is not None:
+        legend.get_title().set_fontweight("bold")
 
     fig.text(
         0.99,
@@ -457,8 +521,152 @@ def plot_stress_strain_curves(
         fontsize=8,
         color="#7b828a",
     )
-    fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
-    fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    if notable_points:
+        bottom = 0.34 if len(notable_points) > 4 else 0.38
+        fig.subplots_adjust(left=0.075, right=0.98, top=0.86, bottom=bottom)
+        fig.savefig(output_path, facecolor=fig.get_facecolor())
+    else:
+        fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
+        fig.savefig(output_path, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
+    return output_path
+
+
+def plot_stress_strain_bilinear_idealization(
+    actual_rows: list[dict[str, Any]],
+    bilinear_curve: list[dict[str, Any]],
+    path: str | Path,
+    *,
+    title: str,
+    subtitle: str,
+) -> Path:
+    """Overlay a constitutive backbone and its two-segment FEMA idealization."""
+
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if len(bilinear_curve) != 3:
+        raise ValueError("Bilinear idealization must contain origin, yield and ultimate.")
+
+    actual_strain = [float(row["strain"]) for row in actual_rows]
+    actual_stress = [float(row["stress_mpa"]) for row in actual_rows]
+    bilinear_strain = [float(point["strain"]) for point in bilinear_curve]
+    bilinear_stress = [float(point["stress_mpa"]) for point in bilinear_curve]
+    yield_point = bilinear_curve[1]
+    yield_strain = float(yield_point["strain"])
+    yield_stress = float(yield_point["stress_mpa"])
+    ultimate_point = bilinear_curve[2]
+    ultimate_strain = float(ultimate_point["strain"])
+    ultimate_stress = float(ultimate_point["stress_mpa"])
+
+    fig, ax = plt.subplots(figsize=(12.2, 7.4), dpi=180)
+    fig.patch.set_facecolor("white")
+    _style_axes(ax)
+    ax.plot(
+        actual_strain,
+        actual_stress,
+        color="#1f4e79",
+        linewidth=2.55,
+        solid_capstyle="round",
+        label="Curva Ramberg-Osgood modificada",
+    )
+    ax.plot(
+        bilinear_strain,
+        bilinear_stress,
+        color="#c43c2f",
+        linewidth=2.35,
+        linestyle="--",
+        dash_capstyle="round",
+        label="Idealización bilineal FEMA",
+    )
+    ax.scatter(
+        [yield_strain],
+        [yield_stress],
+        s=72,
+        color="#2f7d4f",
+        marker="o",
+        edgecolor="white",
+        linewidth=1.0,
+        zorder=6,
+        label=(
+            "Fluencia efectiva FEMA "
+            f"($f_{{y,\\mathrm{{ef}}}}$ = {yield_stress:.3f} [MPa], "
+            f"$\\varepsilon_{{y,\\mathrm{{ef}}}}$ = "
+            f"{yield_strain:.6f} [mm/mm])"
+        ),
+    )
+    ax.scatter(
+        [ultimate_strain],
+        [ultimate_stress],
+        s=78,
+        color="#7a5195",
+        marker="D",
+        edgecolor="white",
+        linewidth=1.0,
+        zorder=6,
+        label=(
+            "Resistencia última "
+            f"($f_u$ = {ultimate_stress:.3f} [MPa], "
+            f"$\\varepsilon_u$ = {ultimate_strain:.6f} [mm/mm])"
+        ),
+    )
+
+    ax.set_title(
+        title,
+        loc="left",
+        fontsize=15,
+        fontweight="bold",
+        color="#222831",
+        pad=16,
+    )
+    ax.text(
+        0.0,
+        1.015,
+        subtitle,
+        transform=ax.transAxes,
+        fontsize=10,
+        color="#5d636b",
+        va="bottom",
+    )
+    ax.set_xlabel(
+        "Deformación unitaria, ε [mm/mm]",
+        fontsize=11,
+        fontweight="bold",
+        color="#30343b",
+        labelpad=10,
+    )
+    ax.set_ylabel(
+        "Esfuerzo de tracción, σ [MPa]",
+        fontsize=11,
+        fontweight="bold",
+        color="#30343b",
+        labelpad=10,
+    )
+    ax.margins(x=0.02, y=0.08)
+    legend = fig.legend(
+        *ax.get_legend_handles_labels(),
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.065),
+        ncol=1,
+        frameon=True,
+        facecolor="white",
+        edgecolor="#d7d9d4",
+        framealpha=0.96,
+        fontsize=9,
+        title="Curva e idealización",
+        title_fontsize=9,
+    )
+    legend.get_title().set_fontweight("bold")
+    fig.text(
+        0.99,
+        0.015,
+        "StructureLab_PBD_RC | Etapa 2",
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#7b828a",
+    )
+    fig.subplots_adjust(left=0.09, right=0.98, top=0.86, bottom=0.29)
+    fig.savefig(output_path, facecolor=fig.get_facecolor())
     plt.close(fig)
     return output_path
 
@@ -469,6 +677,7 @@ def plot_uniaxial_response_rows(
     *,
     title: str,
     subtitle: str,
+    notable_points: list[dict[str, Any]] | None = None,
 ) -> Path:
     """Plot precomputed uniaxial response rows without material calculations."""
 
@@ -479,7 +688,13 @@ def plot_uniaxial_response_rows(
         }
         for case_id, rows in case_rows.items()
     }
-    return plot_stress_strain_curves(curves, path, title=title, subtitle=subtitle)
+    return plot_stress_strain_curves(
+        curves,
+        path,
+        title=title,
+        subtitle=subtitle,
+        notable_points=notable_points,
+    )
 
 
 def _signed_point_parameters(result: dict[str, object]) -> dict[str, float]:

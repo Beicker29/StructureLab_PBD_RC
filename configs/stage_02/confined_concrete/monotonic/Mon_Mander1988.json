@@ -1,0 +1,44 @@
+{
+  "stage_id": "stage_02",
+  "enabled": true,
+  "title": "Concreto confinado - Mander 1988 monotónico",
+  "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
+  "inputs": {
+    "project_id": "Modelos_constitutivos",
+    "case_id": "COL75X75FC28MPa",
+    "model_id": "Mon_Mander1988",
+    "label": "Mander 1988 | Concreto confinado",
+    "parameters": {
+      "f_co_MPa": 28.0,
+      "epsilon_co": 0.002,
+      "Ec_MPa": 24870.0,
+      "f_t_MPa": 3.28,
+      "fyh_MPa": 420.0,
+      "epsilon_su_transverse": 0.10,
+      "geometry": {
+        "section_type": "rectangular",
+        "core_width_mm": 657.3,
+        "core_depth_mm": 657.3,
+        "tie_bar_diameter_mm": 12.7,
+        "tie_spacing_mm": 100.0,
+        "transverse_legs_x": 4,
+        "transverse_legs_y": 4,
+        "longitudinal_steel_area_mm2": 6207.166618944348,
+        "clear_spacing_wi_mm": [164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325, 164.325]
+      }
+    },
+    "curve_generation": {
+      "points": 401,
+      "max_strain": null,
+      "include_tension": true,
+      "include_compression": true
+    },
+    "provenance": {
+      "source": "Mander, Priestley and Park (1988)",
+      "citation": "Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering 114(8), 1804-1826",
+      "source_location": "references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+      "specimen_or_profile": "COL75X75FC28MPa",
+      "calibration_status": "source_equation_validation_case"
+    }
+  }
+}

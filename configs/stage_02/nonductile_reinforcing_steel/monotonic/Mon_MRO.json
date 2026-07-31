@@ -1,20 +1,26 @@
 {
   "stage_id": "stage_02",
   "enabled": true,
-  "title": "Malla NTC 5806 db6 - Ramberg-Osgood modificado",
+  "title": "Malla NTC 5806 db6 - Ramberg-Osgood modificado monotónico",
   "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
   "inputs": {
-    "project_id": "ntc5806_validation",
-    "case_id": "db6_algorithm_verification",
+    "project_id": "Modelos_constitutivos",
+    "case_id": "COL75X75FC28MPa",
     "model_id": "Mon_MRO",
     "parameters": {
       "diameter_mm": 6.0,
       "Es_MPa": 200000.0,
-      "fy_MPa": null,
-      "yield_definition": "not_used_in_source_model_curve",
       "fu_MPa": 573.0,
       "eps_u": 0.0095,
       "shape_exponent": 20.0
+    },
+    "idealization": {
+      "method": "asce_fema_energy_equivalent_stress_strain",
+      "stiffness_fraction": 0.60,
+      "tolerance": 0.005,
+      "search_points": 5000,
+      "yield_lower_ratio": 0.05,
+      "yield_upper_ratio": 1.00
     },
     "compression": {"policy": "unsupported"},
     "numerical": {"root_tolerance": 1e-12, "max_iterations": 200},

@@ -412,10 +412,11 @@
     </p>
     <h2>2.4 Diferencia entre f<sub>y</sub> y f<sub>u</sub></h2>
     <p>
-      El perfil canónico deja <code>fy_MPa: null</code>. La curva implementada se define con
-      E<sub>s</sub>, f<sub>u</sub>, ε<sub>u</sub> y el exponente. No se mezcla un valor de
-      fluencia obtenido por EUL u offset con el conjunto estadístico usado para construir la
-      curva de la fuente.
+      La curva constitutiva se define únicamente con E<sub>s</sub>, f<sub>u</sub>,
+      ε<sub>u</sub> y el exponente. El modelo no recibe <code>fy_MPa</code>.
+      La resistencia f<sub>y,ef</sub> se obtiene después como resultado de la idealización
+      bilineal de energía equivalente ASCE/FEMA; no es un parámetro de calibración de la
+      ecuación Ramberg-Osgood modificada.
     </p>
     <div class="callout warning">
       <span class="callout-title">No confundir dato normativo con dato constitutivo</span>
@@ -481,8 +482,7 @@
       <tr><td><code>fu_MPa</code></td><td>Sí</td><td>Debe ser mayor que cero.</td></tr>
       <tr><td><code>eps_u</code></td><td>Sí</td><td>Debe satisfacer ε<sub>u</sub> &gt; f<sub>u</sub>/E<sub>s</sub>.</td></tr>
       <tr><td><code>shape_exponent</code></td><td>Sí</td><td>Debe ser mayor que 1.</td></tr>
-      <tr><td><code>fy_MPa</code></td><td>No</td><td>Si existe: 0 &lt; f<sub>y</sub> ≤ f<sub>u</sub>. No modifica la ecuación.</td></tr>
-      <tr><td><code>yield_definition</code></td><td>No</td><td>Etiqueta de procedencia de f<sub>y</sub>.</td></tr>
+      <tr><td><code>idealization</code></td><td>Sí</td><td>Configura la idealización bilineal; no introduce una fluencia como dato.</td></tr>
       <tr><td><code>compression.policy</code></td><td>Sí</td><td><code>unsupported</code> o hipótesis simétrica explícita.</td></tr>
       <tr><td><code>root_tolerance</code></td><td>No</td><td>Positiva; controla la bisección.</td></tr>
       <tr><td><code>max_iterations</code></td><td>No</td><td>Entero mayor o igual que 1.</td></tr>
@@ -531,10 +531,11 @@
       <div class="metric"><span class="value">0.006635</span><span class="label">nonlinear_strain_scale</span></div>
       <div class="metric"><span class="value">n = 20</span><span class="label">shape_exponent</span></div>
     </div>
-    <h2>5.4 Parámetros que no se calculan</h2>
+    <h2>5.4 Parámetros obtenidos por idealización</h2>
     <ul>
-      <li>No se calcula f<sub>y</sub> a partir de la curva.</li>
-      <li>No se determina una deformación de fluencia convencional.</li>
+      <li>f<sub>y,ef</sub> es la resistencia de fluencia efectiva que satisface la condición de energía equivalente.</li>
+      <li>ε<sub>y,ef</sub> = f<sub>y,ef</sub>/E<sub>ef</sub> es la deformación de fluencia efectiva.</li>
+      <li>Ambos valores son resultados calculados y nunca inputs del modelo constitutivo.</li>
       <li>No se calcula una rama pospico ni una deformación de fractura diferente de ε<sub>u</sub>.</li>
       <li>No se deduce una capacidad de compresión desde los datos de tracción.</li>
     </ul>
@@ -637,7 +638,7 @@
       <tr><td>f<sub>u</sub></td><td>573 MPa</td><td>P2 de tabla 4 para 6 mm.</td></tr>
       <tr><td>ε<sub>u</sub></td><td>0.0095</td><td>Media de tabla 4 para 6 mm.</td></tr>
       <tr><td>n</td><td>20</td><td>Exponente de la ecuación 6.</td></tr>
-      <tr><td>f<sub>y</sub></td><td>null</td><td>No interviene en la curva seleccionada.</td></tr>
+      <tr><td>Fracción de rigidez FEMA</td><td>0.60</td><td>Define el punto usado para calcular E<sub>ef</sub>.</td></tr>
       <tr><td>Compresión</td><td>unsupported</td><td>No se genera rama negativa.</td></tr>
       <tr><td>Puntos</td><td>201</td><td>Vector lineal de ε = 0 a ε<sub>u</sub>.</td></tr>
     </table>
@@ -744,17 +745,23 @@
   "title": "Malla NTC 5806 db6 - Ramberg-Osgood modificado",
   "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
   "inputs": {
-    "project_id": "ntc5806_validation",
-    "case_id": "db6_algorithm_verification",
+    "project_id": "Modelos_constitutivos",
+    "case_id": "COL75X75FC28MPa",
     "model_id": "Mon_MRO",
     "parameters": {
       "diameter_mm": 6.0,
       "Es_MPa": 200000.0,
-      "fy_MPa": null,
-      "yield_definition": "not_used_in_source_model_curve",
       "fu_MPa": 573.0,
       "eps_u": 0.0095,
       "shape_exponent": 20.0
+    },
+    "idealization": {
+      "method": "asce_fema_energy_equivalent_stress_strain",
+      "stiffness_fraction": 0.60,
+      "tolerance": 0.005,
+      "search_points": 5000,
+      "yield_lower_ratio": 0.05,
+      "yield_upper_ratio": 1.00
     },
     "compression": {"policy": "unsupported"},
     "numerical": {"root_tolerance": 1e-12, "max_iterations": 200},
@@ -783,8 +790,8 @@
     <h1>10. Outputs y trazabilidad</h1>
     <h2>10.3 Ruta del modelo</h2>
     <pre>outputs/stage_02/
-└── ntc5806_validation/
-    └── db6_algorithm_verification/
+└── Modelos_constitutivos/
+    └── COL75X75FC28MPa/
         └── monotonic/
             └── nonductile_reinforcing_steel/
                 └── Mon_MRO/
@@ -794,10 +801,12 @@
     <table class="dense">
       <tr><th>Archivo</th><th>Contenido</th></tr>
       <tr><td>data/resolved_inputs.json</td><td>JSON original y valores resueltos para la ejecución.</td></tr>
-      <tr><td>data/calculated_parameters.yaml</td><td>ε<sub>e,u</sub>, A y deformación de fluencia si aplica.</td></tr>
+      <tr><td>data/calculated_parameters.yaml</td><td>Parámetros constitutivos derivados e idealización FEMA, incluidos f<sub>y,ef</sub> y ε<sub>y,ef</sub>.</td></tr>
       <tr><td>data/metrics.yaml</td><td>Rangos, conteos y estado de calibración.</td></tr>
       <tr><td>data/curve.csv y curve.xlsx</td><td>ε, σ, tangente, dominio, fuente y advertencias por punto.</td></tr>
+      <tr><td>data/fema_bilinear_idealization.csv y .xlsx</td><td>Origen, fluencia efectiva y punto último de la idealización.</td></tr>
       <tr><td>figures/response.png</td><td>Figura generada para esa corrida.</td></tr>
+      <tr><td>figures/response_fema_bilinear_idealization.png</td><td>Curva real e idealización bilineal superpuestas.</td></tr>
       <tr><td>reports/model_report.yaml</td><td>Reporte técnico estructurado y archivos generados.</td></tr>
       <tr><td>reports/model_report.pdf</td><td>Resumen legible específico de la ejecución.</td></tr>
     </table>

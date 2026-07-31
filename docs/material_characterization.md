@@ -1,6 +1,6 @@
 # Caracterizacion de materiales
 
-La Etapa 2 organiza los modelos constitutivos por material y protocolo de carga. Actualmente implementa RDM 2019 para acero ductil y modelos monotonico y ciclico para acero no ductil.
+La Etapa 2 organiza los modelos constitutivos por material y protocolo de carga. Actualmente implementa Mander 1988 para concreto confinado, RDM 2019 para acero ductil y modelos monotonico y ciclico para acero no ductil.
 
 ## Familias
 
@@ -35,21 +35,22 @@ identificadores implementados son:
 
 | Identificador | Formulacion | Material | Comportamiento |
 |---|---|---|---|
+| `Mon_Mander1988` | Mander-Popovics 1988 | Concreto confinado | Monotonico |
 | `Mon_RDM2019` | RDM 2019 | Acero ductil | Monotonico |
 | `Mon_MRO` | Ramberg-Osgood modificado | Acero no ductil | Monotonico |
 | `Cyc_MP` | Menegotto-Pinto | Acero no ductil | Ciclico |
 
-`configs/stage_02/` no admite archivos sueltos ni directorios diferentes de las cuatro familias. Cada familia debe contener exactamente `monotonic/` y `cyclic/`. Un JSON incluye:
+`configs/stage_02/` contiene únicamente las cuatro familias. Cada familia debe contener exactamente `monotonic/` y `cyclic/`. Un JSON de modelo incluye:
 
 - `stage_id`, `enabled`, `title` y `units`;
 - `inputs.project_id`, `inputs.case_id` e `inputs.model_id`;
-- `inputs.parameters` y los controles particulares del modelo;
+- `inputs.parameters`, los controles particulares y solo la geometría que consume el modelo;
 - procedencia y estado de calibracion cuando corresponda.
 
 Los resultados se escriben en:
 
 ```text
-outputs/stage_02/<project_id>/<case_id>/<behavior>/<material>/<model_id>/
+outputs/stage_02/<project_id>/<case_id>/<material>/<behavior>/<model_id>/
 |-- data/
 |   |-- resolved_inputs.json
 |   |-- calculated_parameters.yaml
@@ -57,17 +58,18 @@ outputs/stage_02/<project_id>/<case_id>/<behavior>/<material>/<model_id>/
 |   |-- curve.csv
 |   `-- curve.xlsx
 |-- figures/
-|   `-- response.png
+|   |-- response.png
+|   `-- response_notable_points.png
 `-- reports/
     |-- model_report.yaml
     `-- model_report.pdf
 ```
 
-El ejecutor carga todos los JSON habilitados y agrupa sus modelos por `project_id/case_id`. Primero calcula y escribe cada caso en una carpeta temporal. Solo cuando todos sus modelos terminan correctamente reemplaza la carpeta del caso. Otros proyectos y casos existentes no se modifican.
+El ejecutor exige que todos los JSON habilitados declaren el proyecto `Modelos_constitutivos` y el caso `COL75X75FC28MPa`. Primero calcula y escribe todo Stage 02 en una carpeta temporal. Solo cuando todos los modelos terminan correctamente reemplaza el árbol anterior de Stage 02.
 
 ## Convenciones
 
-- Traccion: deformacion y esfuerzo positivos.
+- En el concreto confinado, la compresión es positiva y la tracción es negativa.
 - Los modelos con historia firmada representan compresion con deformacion y esfuerzo negativos.
 - RDM 2019 calcula internamente la compresion con magnitudes positivas. El CSV y la figura usan signos fisicos: traccion positiva y compresion negativa.
 - Longitud: `mm`.
@@ -75,6 +77,59 @@ El ejecutor carga todos los JSON habilitados y agrupa sus modelos por `project_i
 - Deformacion: `mm/mm`.
 - Cada JSON concentra los parametros, unidades, procedencia y controles de un modelo.
 - Un modelo constitutivo no puede estar definido en mas de un JSON.
+
+## Mander 1988
+
+El modelo `Mon_Mander1988` implementa la envolvente monotonica de compresion
+de Mander, Priestley y Park (1988). Su guia de aplicacion esta en
+[Markdown](stage_02/confined_concrete/monotonic/Mon_Mander1988/guia_aplicacion_mander_1988.md).
+
+La fuente tecnica local usada es exclusivamente:
+
+```text
+references/stage_02/confined_concrete/monotonic/
+Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf
+```
+
+La geometria admite flejes rectangulares, aros circulares y espirales
+circulares. Para rectangulares:
+
+```text
+rho_s = rho_x + rho_y
+f_l = 0.5 * k_e * rho_s * fyh
+```
+
+`f_lx` y `f_ly` se reportan como diagnosticos. La curva usa la presion
+efectiva escalar `f_l`, incluso cuando ambos valores son diferentes. La
+superficie de William-Warnke no esta implementada.
+
+`Ec` y `f_t` son entradas explícitas. La envolvente de compresión es:
+
+```text
+f_cc = f_co * (-1.254 + 2.254*sqrt(1 + 7.94*f_l/f_co) - 2*f_l/f_co)
+epsilon_cc = epsilon_co * (1 + 5*(f_cc/f_co - 1))
+Esec = f_cc / epsilon_cc
+r = Ec / (Ec - Esec)
+x = epsilon_c / epsilon_cc
+f_c = f_cc*x*r / (r - 1 + x^r)
+```
+
+El segmento de tracción se incorpora en el cuadrante negativo:
+
+```text
+epsilon_t = f_t / Ec
+f_c = Ec * epsilon_c       para -epsilon_t <= epsilon_c <= 0
+```
+
+Por decision del proyecto, la deformacion ultima se obtiene con:
+
+```text
+epsilon_cu = 0.004 + 1.4*rho_s*fyh*epsilon_su/f_cc
+```
+
+El reporte identifica este criterio como una expresión simplificada adoptada
+y no como el balance energético de las ecuaciones 59 a 64 del artículo.
+Stage 02 exporta la compresión positiva y la tracción negativa.
 
 ## RDM 2019
 
@@ -103,7 +158,7 @@ El parametro de pandeo es:
 rb = (L/D)*sqrt(fy/100)
 ```
 
-`epsilon_y`, `buckling_intervals`, `unsupported_length_mm`, `L/D` y `rb` son resultados calculados. El JSON canonico suministra:
+`epsilon_y`, `buckling_intervals`, `unsupported_length_mm`, `L/D` y `rb` son resultados calculados. El JSON `Mon_RDM2019.json` suministra:
 
 - `longitudinal_bar_diameter_mm = D`;
 - `tie_bar_diameter_mm = dt`;
@@ -222,7 +277,9 @@ La fuente publica los siguientes valores P2 en la Tabla 4 de Carrillo et al.:
 | 5 | 650 | 0.0113 |
 | 6 | 573 | 0.0095 |
 
-No se agrega una meseta de fluencia ni una rama descendente. El JSON incluido usa el perfil de 6 mm y deja `fy_MPa` nulo porque la curva publicada selecciona `fu` P2 y la deformacion ultima media; mezclar un `fy` de otro estadistico produciria un perfil no documentado.
+No se agrega una meseta de fluencia ni una rama descendente a la ecuacion constitutiva. El modelo no recibe `fy_MPa`: la curva publicada se define exclusivamente con `Es_MPa`, `fu_MPa`, `eps_u` y `shape_exponent`. La fluencia efectiva se calcula despues, mediante la idealizacion bilineal de energia equivalente ASCE/FEMA, y se reporta como `f_y_effective` junto con `epsilon_y_effective`.
+
+La idealizacion reutiliza el mismo motor mecanico empleado para el diagrama momento-curvatura. Por tanto, la condicion de energia equivalente y el criterio de rigidez al 60 % se mantienen en una unica implementacion compartida, mientras cada aplicacion conserva sus nombres y unidades.
 
 El modelo Ramberg-Osgood modificado implementado para malla electrosoldada representa la respuesta monotonica en traccion. La respuesta monotonica en compresion no cuenta con una calibracion especifica para malla NTC 5806; por defecto se considera no soportada. La opcion simetrica, si se activa, constituye una hipotesis prepandeo y no una validacion experimental.
 
@@ -257,12 +314,13 @@ Fuentes de formulacion: documentacion y codigo fuente de OpenSees Steel02. Conte
 Los JSON canonicos actuales son:
 
 ```text
+configs/stage_02/confined_concrete/monotonic/Mon_Mander1988.json
 configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json
 configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json
 configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json
 ```
 
-Los dos modelos de acero no ductil comparten `project_id/case_id`, por lo que se procesan como un caso con ramas monotonica y ciclica. El archivo `model_report.yaml` de cada modelo incluye:
+Todos los modelos declaran el mismo proyecto y caso. Cada uno contiene solo las propiedades materiales y geométricas que necesita. El archivo `model_report.yaml` de cada modelo incluye:
 
 - input completamente resuelto;
 - parametros calculados, incluidos `s_over_db`, `L/D` y `rb` cuando aplican;

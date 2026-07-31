@@ -1,0 +1,249 @@
+stage_id: stage_02
+project_id: Modelos_constitutivos
+case_id: COL75X75FC28MPa
+model_id: Mon_Mander1988
+title: "Concreto confinado - Mander 1988 monot\xF3nico"
+status: completed
+metadata:
+  material: confined_concrete
+  analysis_type: monotonic
+  model_id: Mon_Mander1988
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  source_json: C:\Users\LENOVO\Documents\Proyectos python\StructureLab_PBD_RC\configs\stage_02\confined_concrete\monotonic\Mon_Mander1988.json
+  provenance:
+    source: Mander, Priestley and Park (1988)
+    citation: Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering
+      114(8), 1804-1826
+    source_location: references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+resolved_inputs:
+  label: Mander 1988 | Concreto confinado
+  parameters:
+    f_co_MPa: 28.0
+    epsilon_co: 0.002
+    Ec_MPa: 24870.0
+    f_t_MPa: 3.28
+    fyh_MPa: 420.0
+    epsilon_su_transverse: 0.1
+    geometry:
+      section_type: rectangular
+      core_width_mm: 657.3
+      core_depth_mm: 657.3
+      tie_bar_diameter_mm: 12.7
+      tie_spacing_mm: 100.0
+      transverse_legs_x: 4
+      transverse_legs_y: 4
+      longitudinal_steel_area_mm2: 6207.166618944348
+      clear_spacing_wi_mm:
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+        - 164.325
+  curve_generation:
+    points: 401
+    max_strain: null
+    include_tension: true
+    include_compression: true
+  provenance:
+    source: Mander, Priestley and Park (1988)
+    citation: Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering
+      114(8), 1804-1826
+    source_location: references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+  case_id: COL75X75FC28MPa
+  material: confined_concrete
+  analysis_type: monotonic
+  model: Mon_Mander1988
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+calculated_parameters:
+  f_co_mpa: 28.0
+  epsilon_co: 0.002
+  elastic_modulus_mpa: 24870.0
+  f_t_mpa: 3.28
+  epsilon_t: 0.00013188580619219944
+  fyh_mpa: 420.0
+  epsilon_su_transverse: 0.1
+  section_type: rectangular
+  transverse_reinforcement: rectangular_hoops
+  core_area_mm2: 432043.2899999999
+  transverse_bar_area_mm2: 126.67686977437442
+  clear_tie_spacing_mm: 87.3
+  rho_cc: 0.014367001554275612
+  rho_s: 0.015417845096531194
+  rho_x: 0.007708922548265597
+  rho_y: 0.007708922548265597
+  sum_wi_squared_mm2: 432043.2899999999
+  k_e: 0.7369155680322457
+  f_lx_mpa: 2.3859465162001263
+  f_ly_mpa: 2.3859465162001263
+  f_l_mpa: 2.3859465162001263
+  f_cc_mpa: 41.83545529270206
+  epsilon_cc: 0.006941234033107877
+  secant_modulus_mpa: 6027.0918821001915
+  r: 1.3198599624001115
+  epsilon_cu: 0.025669879898120283
+  f_cu_mpa: 34.383667166555256
+  loading_type: monotonic
+  sign_convention: compression_positive_tension_negative
+  rectangular_effective_pressure: f_l = 0.5 * k_e * (rho_x + rho_y) * fyh
+  ultimate_strain_criterion: simplified_user_selected_expression
+  equations:
+    elastic_modulus: Ec = input
+    tensile_ultimate_strain: epsilon_t = f_t / Ec
+    tensile_segment: f_c = Ec * epsilon_c, -epsilon_t <= epsilon_c <= 0
+    effective_lateral_pressure: f_l = 0.5 * k_e * rho_s * fyh
+    confined_strength: f_cc = f_co * (-1.254 + 2.254 * sqrt(1 + 7.94*f_l/f_co) - 2*f_l/f_co)
+    peak_strain: epsilon_cc = epsilon_co * (1 + 5*(f_cc/f_co - 1))
+    secant_modulus: Esec = f_cc / epsilon_cc
+    curve_shape: r = Ec / (Ec - Esec)
+    stress: f_c = f_cc*x*r / (r - 1 + x^r), x = epsilon_c/epsilon_cc
+    ultimate_strain: epsilon_cu = 0.004 + 1.4*rho_s*fyh*epsilon_su/f_cc
+  reference: Mander, J. B., Priestley, M. J. N., & Park, R. (1988). Theoretical Stress-Strain Model for
+    Confined Concrete. Journal of Structural Engineering, 114(8), 1804-1826.
+  provenance:
+    source: Mander, Priestley and Park (1988)
+    citation: Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering
+      114(8), 1804-1826
+    source_location: references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf
+    specimen_or_profile: COL75X75FC28MPa
+    calibration_status: source_equation_validation_case
+notable_points:
+  - strain: -0.00013188580619219944
+    stress_mpa: -3.28
+    label: "Resistencia \xFAltima a tracci\xF3n (-f\u209C = -3.280 [MPa], -\u03B5\u209C = -0.000132 [mm/mm])"
+  - strain: 0.006941234033107877
+    stress_mpa: 41.83545529270206
+    label: "Resistencia m\xE1xima confinada (f\u2032cc = 41.835 [MPa], \u03B5cc = 0.006941 [mm/mm])"
+  - strain: 0.025669879898120283
+    stress_mpa: 34.383667166555256
+    label: "Deformaci\xF3n \xFAltima confinada (fcu = 34.384 [MPa], \u03B5cu = 0.025670 [mm/mm])"
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 12.7
+  point_count: 801
+  strain_min: -0.00013188580619219944
+  strain_max: 0.025669879898120283
+  stress_min_mpa: -3.2800000000000002
+  stress_max_mpa: 41.83544034212139
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_equation_validation_case
+  response_branches:
+    - compression
+    - tension
+  mander_1988_controls:
+    section_type: rectangular
+    transverse_reinforcement: rectangular_hoops
+    rho_cc: 0.014367001554275612
+    rho_s: 0.015417845096531194
+    rho_x: 0.007708922548265597
+    rho_y: 0.007708922548265597
+    k_e: 0.7369155680322457
+    f_lx_mpa: 2.3859465162001263
+    f_ly_mpa: 2.3859465162001263
+    f_l_mpa: 2.3859465162001263
+    elastic_modulus_mpa: 24870.0
+    f_t_mpa: 3.28
+    epsilon_t: 0.00013188580619219944
+    f_cc_mpa: 41.83545529270206
+    epsilon_cc: 0.006941234033107877
+    secant_modulus_mpa: 6027.0918821001915
+    r: 1.3198599624001115
+    epsilon_cu: 0.025669879898120283
+    f_cu_mpa: 34.383667166555256
+technical_basis:
+  stage_id: stage_02
+  material: confined_concrete
+  analysis_type: monotonic
+  model: Mon_Mander1988
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  equation: 'Mander et al. (1988), Eqs. (3)-(29): f_c=f_cc*x*r/(r-1+x^r), x=epsilon_c/epsilon_cc; linear
+    tension segment f_c=Ec*epsilon_c up to epsilon_t=f_t/Ec; for rectangular sections f_l=0.5*k_e*(rho_x+rho_y)*fyh.
+    The adopted ultimate criterion is epsilon_cu=0.004+1.4*rho_s*fyh*epsilon_su/f_cc.'
+  case_summaries:
+    - case_id: COL75X75FC28MPa
+      diameter_mm: 12.7
+      point_count: 801
+      strain_min: -0.00013188580619219944
+      strain_max: 0.025669879898120283
+      stress_min_mpa: -3.2800000000000002
+      stress_max_mpa: 41.83544034212139
+      reversal_count: 0
+      out_of_domain_count: 0
+      failed_count: 0
+      calibration_status: source_equation_validation_case
+      response_branches:
+        - compression
+        - tension
+      mander_1988_controls:
+        section_type: rectangular
+        transverse_reinforcement: rectangular_hoops
+        rho_cc: 0.014367001554275612
+        rho_s: 0.015417845096531194
+        rho_x: 0.007708922548265597
+        rho_y: 0.007708922548265597
+        k_e: 0.7369155680322457
+        f_lx_mpa: 2.3859465162001263
+        f_ly_mpa: 2.3859465162001263
+        f_l_mpa: 2.3859465162001263
+        elastic_modulus_mpa: 24870.0
+        f_t_mpa: 3.28
+        epsilon_t: 0.00013188580619219944
+        f_cc_mpa: 41.83545529270206
+        epsilon_cc: 0.006941234033107877
+        secant_modulus_mpa: 6027.0918821001915
+        r: 1.3198599624001115
+        epsilon_cu: 0.025669879898120283
+        f_cu_mpa: 34.383667166555256
+  limitations:
+    - La implementacion corresponde a la envolvente uniaxial monotonica con compresion positiva y un segmento
+      elastico de traccion negativa. No contiene reglas de descarga, recarga ni degradacion ciclica.
+    - Para secciones rectangulares se usa la presion efectiva escalar f_l=0.5*k_e*rho_s*fyh, con rho_s=rho_x+rho_y.
+      f_lx y f_ly se conservan como diagnosticos y William-Warnke no se implementa.
+    - La deformacion epsilon_cu usa la expresion simplificada elegida para el proyecto; no implementa
+      el balance energetico de las Ecs. (59)-(64) del articulo.
+  model_metadata:
+    reference: Mander, J. B., Priestley, M. J. N., & Park, R. (1988). Theoretical Stress-Strain Model
+      for Confined Concrete. Journal of Structural Engineering, 114(8), 1804-1826.
+    implemented_sections:
+      - rectangular_hoops_equivalent_scalar_pressure
+      - circular_hoops
+      - circular_spiral
+    rectangular_effective_pressure: f_l = 0.5 * k_e * (rho_x + rho_y) * fyh
+    ultimate_strain_criterion: simplified_user_selected_expression
+  warnings: []
+warnings: []
+generated_files:
+  resolved_inputs_json: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\data\resolved_inputs.json
+  calculated_parameters_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\data\calculated_parameters.yaml
+  metrics_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\data\metrics.yaml
+  curve_csv: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\data\curve.csv
+  curve_xlsx: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\data\curve.xlsx
+  figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\figures\response.png
+  notable_points_figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\figures\response_notable_points.png
+  report_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\reports\model_report.yaml
+  report_pdf: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\confined_concrete\monotonic\Mon_Mander1988\reports\model_report.pdf

@@ -1,0 +1,4 @@
+point,strain,stress_mpa
+origin,0.0,0.0
+yield,0.002592282449716289,518.4452190438088
+ultimate,0.0095,573.0

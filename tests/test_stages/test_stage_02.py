@@ -62,8 +62,8 @@ def _model_root(
         / "stage_02"
         / project_id
         / case_id
-        / analysis_type
         / material
+        / analysis_type
         / model_id
     )
 
@@ -72,52 +72,80 @@ def test_joint_artifacts(tmp_path: Path) -> None:
     output_root = tmp_path / "outputs"
     result = run(CONFIG_ROOT, output_root=output_root)
 
-    assert len(result["model_reports"]) == 3
-    assert len(result["cases"]) == 2
+    assert len(result["model_reports"]) == 4
+    assert len(result["cases"]) == 1
     assert {
         path.name
         for path in (output_root / "stage_02").iterdir()
         if path.is_dir()
-    } == {"default", "ntc5806_validation"}
+    } == {"Modelos_constitutivos"}
 
-    db6_case = output_root / "stage_02/ntc5806_validation/db6_algorithm_verification"
-    assert {path.name for path in db6_case.iterdir() if path.is_dir()} == {
-        "monotonic",
-        "cyclic",
-    }
+    case_root = (
+        output_root
+        / "stage_02/Modelos_constitutivos/COL75X75FC28MPa"
+    )
+    assert {path.name for path in case_root.iterdir() if path.is_dir()} == set(
+        MATERIALS
+    )
+    for material in MATERIALS:
+        assert {
+            path.name
+            for path in (case_root / material).iterdir()
+            if path.is_dir()
+        } == set(ANALYSIS_TYPES)
     model_roots = [
         path.parent
         for path in (output_root / "stage_02").rglob("data")
         if path.is_dir()
     ]
-    assert len(model_roots) == 3
+    assert len(model_roots) == 4
     for model_root in model_roots:
         assert {path.name for path in model_root.iterdir() if path.is_dir()} == {
             "data",
             "figures",
             "reports",
         }
-        assert {path.name for path in (model_root / "data").iterdir()} == {
+        expected_data = {
             "resolved_inputs.json",
             "calculated_parameters.yaml",
             "metrics.yaml",
             "curve.csv",
             "curve.xlsx",
         }
-        assert {path.name for path in (model_root / "figures").iterdir()} == {
-            "response.png"
+        expected_figures = {
+            "response.png",
+            "response_notable_points.png",
         }
+        if model_root.name == "Mon_MRO":
+            expected_data.update(
+                {
+                    "fema_bilinear_idealization.csv",
+                    "fema_bilinear_idealization.xlsx",
+                }
+            )
+            expected_figures.add("response_fema_bilinear_idealization.png")
+        assert {path.name for path in (model_root / "data").iterdir()} == expected_data
+        assert {
+            path.name for path in (model_root / "figures").iterdir()
+        } == expected_figures
         assert {path.name for path in (model_root / "reports").iterdir()} == {
             "model_report.yaml",
             "model_report.pdf",
         }
         assert ZipFile(model_root / "data/curve.xlsx").testzip() is None
+        if model_root.name == "Mon_MRO":
+            assert (
+                ZipFile(
+                    model_root / "data/fema_bilinear_idealization.xlsx"
+                ).testzip()
+                is None
+            )
         assert (model_root / "reports/model_report.pdf").read_bytes()[:4] == b"%PDF"
 
     rdm_root = _model_root(
         output_root,
-        project_id="default",
-        case_id="rdm_2019_ld5",
+        project_id="Modelos_constitutivos",
+        case_id="COL75X75FC28MPa",
         analysis_type="monotonic",
         material="ductile_reinforcing_steel",
         model_id="Mon_RDM2019",
@@ -130,29 +158,39 @@ def test_joint_artifacts(tmp_path: Path) -> None:
     )
     calculated = report["calculated_parameters"]
     assert calculated["epsilon_y"] == pytest.approx(0.0021)
-    assert calculated["tie_area_mm2"] == pytest.approx(78.5398163397)
+    assert calculated["tie_area_mm2"] == pytest.approx(126.6768697744)
     assert calculated["longitudinal_bar_inertia_mm4"] == pytest.approx(
-        7853.9816339745
+        11976.6946519793
     )
     assert calculated["reduced_flexural_rigidity_N_mm2"] == pytest.approx(
-        804793631.2009
+        1227246004.3776
     )
     assert calculated["bar_normalized_stiffness_N_per_mm"] == pytest.approx(
-        78394.2160852
+        119544.9177615367
     )
-    assert calculated["tie_stiffness_N_per_mm"] == pytest.approx(78539.8163397)
+    assert calculated["tie_stiffness_N_per_mm"] == pytest.approx(126676.8697743744)
     assert calculated["equivalent_stiffness_ratio"] == pytest.approx(
-        1.0018572831
+        1.0596591821
     )
     assert calculated["buckling_intervals"] == 1
     assert calculated["unsupported_length_mm"] == 100.0
-    assert calculated["s_over_db"] == 5.0
-    assert calculated["L_over_D"] == 5.0
-    assert calculated["rb"] == pytest.approx(10.2469507660)
-    assert calculated["buckling_active"] is True
+    assert calculated["s_over_db"] == pytest.approx(4.4994375703)
+    assert calculated["L_over_D"] == pytest.approx(4.4994375703)
+    assert calculated["rb"] == pytest.approx(9.2211030515)
+    assert calculated["buckling_active"] is False
     assert report["metrics"]["response_branches"] == ["compression", "tension"]
-    assert resolved["project_id"] == "default"
-    assert resolved["case_id"] == "rdm_2019_ld5"
+    notable_points = {point["id"]: point for point in report["notable_points"]}
+    assert set(notable_points) == {
+        "tension_yield",
+        "tension_hardening_start",
+        "tension_ultimate",
+        "compression_yield",
+        "compression_hardening_start",
+        "compression_ultimate",
+    }
+    assert notable_points["tension_yield"]["stress_mpa"] == pytest.approx(420.0)
+    assert resolved["project_id"] == "Modelos_constitutivos"
+    assert resolved["case_id"] == "COL75X75FC28MPa"
     assert resolved["model_id"] == "Mon_RDM2019"
     raw_parameters = resolved["raw"]["inputs"]["parameters"]
     assert "epsilon_y" not in raw_parameters
@@ -163,19 +201,100 @@ def test_joint_artifacts(tmp_path: Path) -> None:
     assert max(float(row["strain"]) for row in curve_rows) == pytest.approx(0.10)
     assert min(float(row["strain"]) for row in curve_rows) == pytest.approx(-0.10)
 
+    mro_root = _model_root(
+        output_root,
+        project_id="Modelos_constitutivos",
+        case_id="COL75X75FC28MPa",
+        analysis_type="monotonic",
+        material="nonductile_reinforcing_steel",
+        model_id="Mon_MRO",
+    )
+    mro_report = yaml.safe_load(
+        (mro_root / "reports/model_report.yaml").read_text(encoding="utf-8")
+    )
+    mro_resolved = json.loads(
+        (mro_root / "data/resolved_inputs.json").read_text(encoding="utf-8")
+    )
+    idealization = mro_report["calculated_parameters"][
+        "fema_bilinear_idealization"
+    ]
+    idealization_parameters = idealization["parameters"]
+    assert idealization["method"] == "asce_fema_energy_equivalent_stress_strain"
+    assert idealization["status"] == "converged"
+    assert idealization_parameters["f_y_effective"] > 0.0
+    assert 0.0 < idealization_parameters["epsilon_y_effective"] < 0.0095
+    assert idealization_parameters["absolute_relative_error"] <= 0.005
+    assert "fy_MPa" not in mro_resolved["raw"]["inputs"]["parameters"]
+    mro_notable = {point["id"]: point for point in mro_report["notable_points"]}
+    assert set(mro_notable) == {"ultimate"}
+    with (
+        mro_root / "data/fema_bilinear_idealization.csv"
+    ).open(encoding="utf-8", newline="") as stream:
+        fema_rows = list(csv.DictReader(stream))
+    assert [row["point"] for row in fema_rows] == [
+        "origin",
+        "yield",
+        "ultimate",
+    ]
 
-def test_case_replace_preserves_other_cases(tmp_path: Path) -> None:
+    mander_root = _model_root(
+        output_root,
+        project_id="Modelos_constitutivos",
+        case_id="COL75X75FC28MPa",
+        analysis_type="monotonic",
+        material="confined_concrete",
+        model_id="Mon_Mander1988",
+    )
+    mander_report = yaml.safe_load(
+        (mander_root / "reports/model_report.yaml").read_text(encoding="utf-8")
+    )
+    mander_calculated = mander_report["calculated_parameters"]
+    assert mander_calculated["section_type"] == "rectangular"
+    assert mander_calculated["elastic_modulus_mpa"] == 24870.0
+    assert mander_calculated["f_t_mpa"] == 3.28
+    assert mander_calculated["epsilon_t"] == pytest.approx(3.28 / 24870.0)
+    assert mander_calculated["f_l_mpa"] == pytest.approx(2.3859465162)
+    assert mander_calculated["f_cc_mpa"] == pytest.approx(41.8354552927)
+    assert mander_calculated["epsilon_cc"] == pytest.approx(0.0069412340)
+    assert mander_calculated["epsilon_cu"] == pytest.approx(0.0256698799)
+    with (mander_root / "data/curve.csv").open(
+        encoding="utf-8",
+        newline="",
+    ) as stream:
+        mander_rows = list(csv.DictReader(stream))
+    assert max(float(row["strain"]) for row in mander_rows) == pytest.approx(
+        mander_calculated["epsilon_cu"]
+    )
+    assert min(float(row["strain"]) for row in mander_rows) == pytest.approx(
+        -mander_calculated["epsilon_t"]
+    )
+    assert {row["stress_state"] for row in mander_rows} == {
+        "compression",
+        "tension",
+        "zero",
+    }
+    compression_rows = [
+        row for row in mander_rows if row["stress_state"] == "compression"
+    ]
+    tension_rows = [
+        row for row in mander_rows if row["stress_state"] == "tension"
+    ]
+    assert min(float(row["stress_mpa"]) for row in compression_rows) > 0.0
+    assert max(float(row["stress_mpa"]) for row in tension_rows) < 0.0
+
+
+def test_stage_replace_removes_stale_stage_02_outputs(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [MRO_DB6, MENEGOTTO])
     output_root = tmp_path / "outputs"
     run(config_root, output_root=output_root)
 
-    case_root = (
-        output_root
-        / "stage_02/ntc5806_validation/db6_algorithm_verification"
-    )
+    case_root = output_root / "stage_02/Modelos_constitutivos/COL75X75FC28MPa"
     stale_file = case_root / "stale.txt"
     stale_file.write_text("old", encoding="utf-8")
-    unrelated = output_root / "stage_02/other_project/other_case/keep.txt"
+    stale_project = output_root / "stage_02/old_project/old_case/old.txt"
+    stale_project.parent.mkdir(parents=True)
+    stale_project.write_text("old", encoding="utf-8")
+    unrelated = output_root / "stage_03/keep.txt"
     unrelated.parent.mkdir(parents=True)
     unrelated.write_text("keep", encoding="utf-8")
 
@@ -189,12 +308,13 @@ def test_case_replace_preserves_other_cases(tmp_path: Path) -> None:
     run(config_root, output_root=output_root)
 
     assert not stale_file.exists()
+    assert not stale_project.exists()
     assert unrelated.read_text(encoding="utf-8") == "keep"
-    assert (case_root / "monotonic").is_dir()
-    assert (case_root / "cyclic").is_dir()
+    assert (case_root / "nonductile_reinforcing_steel/monotonic").is_dir()
+    assert (case_root / "nonductile_reinforcing_steel/cyclic").is_dir()
     curve_path = (
         case_root
-        / "monotonic/nonductile_reinforcing_steel/Mon_MRO/data/curve.csv"
+        / "nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.csv"
     )
     with curve_path.open(encoding="utf-8", newline="") as stream:
         assert len(list(csv.DictReader(stream))) == 21
@@ -217,8 +337,14 @@ def test_disabled_json_is_validated_but_not_processed(tmp_path: Path) -> None:
     assert len(result["model_reports"]) == 1
     assert not (
         tmp_path
-        / "outputs/stage_02/ntc5806_validation/db6_algorithm_verification/cyclic"
+        / "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/"
+        "nonductile_reinforcing_steel/cyclic/Cyc_MP"
     ).exists()
+    assert (
+        tmp_path
+        / "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/"
+        "nonductile_reinforcing_steel/cyclic"
+    ).is_dir()
 
 
 def test_more_than_one_json_per_model_is_rejected(tmp_path: Path) -> None:
@@ -231,8 +357,6 @@ def test_more_than_one_json_per_model_is_rejected(tmp_path: Path) -> None:
     shutil.copy2(original, duplicate)
     duplicate_config = json.loads(duplicate.read_text(encoding="utf-8"))
     duplicate_config["enabled"] = False
-    duplicate_config["inputs"]["project_id"] = "another_project"
-    duplicate_config["inputs"]["case_id"] = "another_case"
     duplicate.write_text(json.dumps(duplicate_config), encoding="utf-8")
 
     with pytest.raises(ConfigError, match="JSON filename stem"):
@@ -244,17 +368,14 @@ def test_single_json_path_is_rejected() -> None:
         load_enabled_stage_02_inputs(MRO_DB6)
 
 
-def test_case_insensitive_identifier_collision_is_rejected(tmp_path: Path) -> None:
+def test_all_models_must_use_the_same_project_and_case(tmp_path: Path) -> None:
     config_root = _copy_input_root(tmp_path, [MRO_DB6, MENEGOTTO])
-    second = (
-        config_root
-        / "nonductile_reinforcing_steel/cyclic/Cyc_MP.json"
-    )
-    config = json.loads(second.read_text(encoding="utf-8"))
-    config["inputs"]["project_id"] = "NTC5806_VALIDATION"
-    second.write_text(json.dumps(config), encoding="utf-8")
+    path = config_root / "nonductile_reinforcing_steel/cyclic/Cyc_MP.json"
+    config = json.loads(path.read_text(encoding="utf-8"))
+    config["inputs"]["case_id"] = "another_case"
+    path.write_text(json.dumps(config), encoding="utf-8")
 
-    with pytest.raises(ConfigError, match="differs only by case"):
+    with pytest.raises(ConfigError, match="same project_id and case_id"):
         load_enabled_stage_02_inputs(config_root)
 
 
@@ -301,8 +422,8 @@ def test_rdm_can_disable_compression_curve(tmp_path: Path) -> None:
 
     curve = _model_root(
         output_root,
-        project_id="default",
-        case_id="rdm_2019_ld5",
+        project_id="Modelos_constitutivos",
+        case_id="COL75X75FC28MPa",
         analysis_type="monotonic",
         material="ductile_reinforcing_steel",
         model_id="Mon_RDM2019",

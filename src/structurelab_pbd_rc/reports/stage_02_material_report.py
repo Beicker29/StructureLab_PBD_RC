@@ -76,6 +76,23 @@ def write_stage_02_pdf_report(
         "yield_strain",
         "elastic_ultimate_strain",
         "residual_stress_mpa",
+        "rho_cc",
+        "rho_s",
+        "rho_x",
+        "rho_y",
+        "k_e",
+        "f_lx_mpa",
+        "f_ly_mpa",
+        "f_l_mpa",
+        "elastic_modulus_mpa",
+        "f_t_mpa",
+        "epsilon_t",
+        "f_cc_mpa",
+        "epsilon_cc",
+        "secant_modulus_mpa",
+        "r",
+        "epsilon_cu",
+        "f_cu_mpa",
     )
     shown = False
     for key in preferred_parameters:

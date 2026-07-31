@@ -1,0 +1,162 @@
+stage_id: stage_02
+project_id: Modelos_constitutivos
+case_id: COL75X75FC28MPa
+model_id: Mon_MRO
+title: "Malla NTC 5806 db6 - Ramberg-Osgood modificado monot\xF3nico"
+status: completed
+metadata:
+  material: nonductile_reinforcing_steel
+  analysis_type: monotonic
+  model_id: Mon_MRO
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  source_json: C:\Users\LENOVO\Documents\Proyectos python\StructureLab_PBD_RC\configs\stage_02\nonductile_reinforcing_steel\monotonic\Mon_MRO.json
+  provenance:
+    source: Carrillo et al. (2019)
+    citation: Construction and Building Materials 211 (2019) 53-64; DOI 10.1016/j.conbuildmat.2018.11.096
+    source_location: Equation 6 and Table 4, P2 values for 6 mm wire
+    specimen_or_profile: NTC 5806 welded wire, nominal diameter 6 mm
+    calibration_status: source_reported_monotonic_profile
+resolved_inputs:
+  parameters:
+    diameter_mm: 6.0
+    Es_MPa: 200000.0
+    fu_MPa: 573.0
+    eps_u: 0.0095
+    shape_exponent: 20.0
+  idealization:
+    method: asce_fema_energy_equivalent_stress_strain
+    stiffness_fraction: 0.6
+    tolerance: 0.005
+    search_points: 5000
+    yield_lower_ratio: 0.05
+    yield_upper_ratio: 1.0
+  compression:
+    policy: unsupported
+  numerical:
+    root_tolerance: 1.0e-12
+    max_iterations: 200
+  curve_generation:
+    points: 201
+    include_tension: true
+    include_compression: false
+  provenance:
+    source: Carrillo et al. (2019)
+    citation: Construction and Building Materials 211 (2019) 53-64; DOI 10.1016/j.conbuildmat.2018.11.096
+    source_location: Equation 6 and Table 4, P2 values for 6 mm wire
+    specimen_or_profile: NTC 5806 welded wire, nominal diameter 6 mm
+    calibration_status: source_reported_monotonic_profile
+  case_id: COL75X75FC28MPa
+  material: nonductile_reinforcing_steel
+  analysis_type: monotonic
+  model: Mon_MRO
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+calculated_parameters:
+  elastic_ultimate_strain: 0.002865
+  nonlinear_strain_scale: 0.006635
+  fema_bilinear_idealization:
+    method: asce_fema_energy_equivalent_stress_strain
+    status: converged
+    settings:
+      stiffness_fraction: 0.6
+      tolerance: 0.005
+      search_points: 5000
+      yield_lower_ratio: 0.05
+      yield_upper_ratio: 1.0
+    parameters:
+      E_effective: 199995.6521329494
+      f_y_effective: 518.4452190438088
+      epsilon_y_effective: 0.002592282449716289
+      E_post_yield: 7897.656578901451
+      alpha: 0.03948914136219018
+      f_u: 573.0
+      epsilon_u: 0.0095
+      f_60y: 311.0671314262853
+      epsilon_60y: 0.0015553694698297732
+      relative_error: 1.7086705963806695e-05
+      absolute_relative_error: 1.7086705963806695e-05
+      ductility: 3.6647241125440333
+    area:
+      actual: 4.441599976301571
+      bilinear: 4.441675868614375
+    bilinear_curve:
+      - point: origin
+        strain: 0.0
+        stress_mpa: 0.0
+      - point: yield
+        strain: 0.002592282449716289
+        stress_mpa: 518.4452190438088
+      - point: ultimate
+        strain: 0.0095
+        stress_mpa: 573.0
+notable_points:
+  - id: ultimate
+    strain: 0.0095
+    stress_mpa: 573.0
+    label: "Resistencia \xFAltima (f\u1D64 = 573.000 [MPa], \u03B5\u1D64 = 0.009500 [mm/mm])"
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 6.0
+  point_count: 201
+  strain_min: 0.0
+  strain_max: 0.0095
+  stress_min_mpa: 0.0
+  stress_max_mpa: 573.0
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_reported_monotonic_profile
+  response_branches: []
+technical_basis:
+  stage_id: stage_02
+  material: nonductile_reinforcing_steel
+  analysis_type: monotonic
+  model: Mon_MRO
+  units:
+    length: mm
+    stress: MPa
+    strain: mm/mm
+  equation: epsilon = sigma/Es + (eps_u - fu/Es) * (sigma/fu)^n, 0 <= sigma <= fu
+  case_summaries:
+    - case_id: COL75X75FC28MPa
+      diameter_mm: 6.0
+      point_count: 201
+      strain_min: 0.0
+      strain_max: 0.0095
+      stress_min_mpa: 0.0
+      stress_max_mpa: 573.0
+      reversal_count: 0
+      out_of_domain_count: 0
+      failed_count: 0
+      calibration_status: source_reported_monotonic_profile
+      response_branches: []
+  limitations:
+    - El modelo Ramberg-Osgood modificado implementado para malla electrosoldada representa la respuesta
+      monotonica en traccion. La respuesta monotonica en compresion no cuenta con una calibracion especifica
+      para malla NTC 5806; por defecto se considera no soportada. La opcion simetrica, si se activa, constituye
+      una hipotesis prepandeo y no una validacion experimental.
+    - La fluencia efectiva FEMA no es un input ni un parametro de la ecuacion Ramberg-Osgood. Se calcula
+      posteriormente mediante una idealizacion bilineal de energia equivalente.
+  model_metadata:
+    idealization: asce_fema_energy_equivalent_stress_strain
+    effective_yield_role: calculated_result_not_material_input
+  warnings: []
+warnings: []
+generated_files:
+  resolved_inputs_json: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\resolved_inputs.json
+  calculated_parameters_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\calculated_parameters.yaml
+  metrics_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\metrics.yaml
+  curve_csv: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\curve.csv
+  curve_xlsx: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\curve.xlsx
+  figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\figures\response.png
+  notable_points_figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\figures\response_notable_points.png
+  report_yaml: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\reports\model_report.yaml
+  report_pdf: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\reports\model_report.pdf
+  fema_bilinear_csv: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\fema_bilinear_idealization.csv
+  fema_bilinear_xlsx: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\data\fema_bilinear_idealization.xlsx
+  fema_bilinear_figure_png: outputs\stage_02\Modelos_constitutivos\COL75X75FC28MPa\nonductile_reinforcing_steel\monotonic\Mon_MRO\figures\response_fema_bilinear_idealization.png

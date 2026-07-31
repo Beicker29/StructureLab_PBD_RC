@@ -10,6 +10,7 @@ def test_core_package_imports() -> None:
         "structurelab_pbd_rc",
         "structurelab_pbd_rc.core",
         "structurelab_pbd_rc.mechanics.materials.confined_concrete.monotonic",
+        "structurelab_pbd_rc.mechanics.materials.confined_concrete.monotonic.mander_1988",
         "structurelab_pbd_rc.mechanics.materials.confined_concrete.cyclic",
         "structurelab_pbd_rc.mechanics.materials.unconfined_concrete.monotonic",
         "structurelab_pbd_rc.mechanics.materials.unconfined_concrete.cyclic",

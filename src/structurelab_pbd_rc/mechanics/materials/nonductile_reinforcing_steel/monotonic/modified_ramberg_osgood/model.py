@@ -29,8 +29,6 @@ class ModifiedRambergOsgoodParameters:
     ultimate_strain: float
     shape_exponent: float
     provenance: MaterialProvenance
-    yield_strength_mpa: float | None = None
-    yield_definition: str = "unknown"
     diameter_mm: float | None = None
     compression_policy: str = UNSUPPORTED_COMPRESSION
     compression_strain_limit: float | None = None
@@ -49,10 +47,6 @@ class ModifiedRambergOsgoodParameters:
             raise ConfigError("parameters.eps_u must be greater than fu_MPa / Es_MPa.")
         if self.shape_exponent <= 1.0:
             raise ConfigError("parameters.shape_exponent must be greater than 1.")
-        if self.yield_strength_mpa is not None and not (
-            0.0 < self.yield_strength_mpa <= self.ultimate_strength_mpa
-        ):
-            raise ConfigError("parameters.fy_MPa must satisfy 0 < fy_MPa <= fu_MPa.")
         if self.diameter_mm is not None and self.diameter_mm <= 0.0:
             raise ConfigError("parameters.diameter_mm must be positive.")
         if self.root_tolerance <= 0.0:
@@ -85,6 +79,12 @@ class ModifiedRambergOsgoodParameters:
             raise ConfigError("parameters and compression must be mappings.")
         if not isinstance(provenance, Mapping):
             raise ConfigError("provenance must be a mapping.")
+        forbidden = {"fy_MPa", "yield_definition"}.intersection(parameters)
+        if forbidden:
+            names = ", ".join(sorted(forbidden))
+            raise ConfigError(
+                f"parameters cannot define {names}; FEMA effective yield is a calculated result."
+            )
         require_keys(compression, ("policy",), context="compression")
         numerical = config.get("numerical", {})
         if not isinstance(numerical, Mapping):
@@ -100,8 +100,6 @@ class ModifiedRambergOsgoodParameters:
             ultimate_strength_mpa=required_float(parameters, "fu_MPa", context="parameters"),
             ultimate_strain=required_float(parameters, "eps_u", context="parameters"),
             shape_exponent=required_float(parameters, "shape_exponent", context="parameters"),
-            yield_strength_mpa=optional_float(parameters, "fy_MPa", context="parameters"),
-            yield_definition=str(parameters.get("yield_definition", "unknown")),
             diameter_mm=optional_float(parameters, "diameter_mm", context="parameters"),
             compression_policy=str(compression["policy"]),
             compression_strain_limit=compression_limit,
