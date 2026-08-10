@@ -82,19 +82,27 @@ def test_stage_02_rdm_json_contains_required_section_inputs() -> None:
     assert config["inputs"]["case_id"] == "COL75X75FC28MPa"
     assert config["inputs"]["model_id"] == "Mon_RDM2019"
     parameters = config["inputs"]["parameters"]
+    assert parameters["fy_MPa"] == 470.30
+    assert parameters["fu_MPa"] == 659.74
+    assert parameters["epsilon_y"] == 0.0024
+    assert parameters["epsilon_sh"] == 0.0138
+    assert parameters["epsilon_su"] == 0.1141
+    assert parameters["parameter_p"] == 3.087
     assert parameters["longitudinal_bar_diameter_mm"] == 22.225
-    assert parameters["tie_spacing_mm"] == 100.0
     assert parameters["tie_bar_diameter_mm"] == 12.7
-    assert parameters["effective_tie_leg_length_mm"] == 200.0
-    assert parameters["effective_tie_legs"] == 2
-    assert parameters["restrained_longitudinal_bars"] == 2
+    assert parameters["tie_spacing_mm"] == 100.0
     assert parameters["tie_steel_modulus_MPa"] == 200000.0
-    assert parameters["buckling_restraint_case"] == "bending"
+    assert set(parameters["restraint_cases"]) == {"bending", "pure_compression"}
+    for restraint in parameters["restraint_cases"].values():
+        assert restraint == {
+            "effective_tie_leg_length_mm": 657.3,
+            "effective_tie_legs": 4,
+            "restrained_longitudinal_bars": 5,
+        }
     for derived in (
-        "epsilon_y",
+        "Es_MPa",
         "buckling_intervals",
         "unsupported_length_mm",
-        "l_over_d",
         "L_over_D",
         "rb",
     ):

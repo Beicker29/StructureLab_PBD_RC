@@ -21,7 +21,7 @@ from structurelab_pbd_rc.design.stages.stage_02_material_characterization import
 
 
 CONFIG_ROOT = Path("configs/stage_02")
-RDM_LD5 = (
+RDM_CONFIG = (
     CONFIG_ROOT
     / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"
 )
@@ -157,27 +157,24 @@ def test_joint_artifacts(tmp_path: Path) -> None:
         (rdm_root / "data/resolved_inputs.json").read_text(encoding="utf-8")
     )
     calculated = report["calculated_parameters"]
-    assert calculated["epsilon_y"] == pytest.approx(0.0021)
-    assert calculated["tie_area_mm2"] == pytest.approx(126.6768697744)
-    assert calculated["longitudinal_bar_inertia_mm4"] == pytest.approx(
-        11976.6946519793
-    )
-    assert calculated["reduced_flexural_rigidity_N_mm2"] == pytest.approx(
-        1227246004.3776
-    )
-    assert calculated["bar_normalized_stiffness_N_per_mm"] == pytest.approx(
-        119544.9177615367
-    )
-    assert calculated["tie_stiffness_N_per_mm"] == pytest.approx(126676.8697743744)
-    assert calculated["equivalent_stiffness_ratio"] == pytest.approx(
-        1.0596591821
-    )
-    assert calculated["buckling_intervals"] == 1
-    assert calculated["unsupported_length_mm"] == 100.0
-    assert calculated["s_over_db"] == pytest.approx(4.4994375703)
-    assert calculated["L_over_D"] == pytest.approx(4.4994375703)
-    assert calculated["rb"] == pytest.approx(9.2211030515)
-    assert calculated["buckling_active"] is False
+    material = calculated["material"]
+    assert material["fy_mpa"] == pytest.approx(470.30)
+    assert material["epsilon_y"] == pytest.approx(0.0024)
+    assert material["elastic_modulus_mpa"] == pytest.approx(195958.33333333334)
+    assert material["parameter_p"] == pytest.approx(3.087)
+    restraint_cases = calculated["restraint_cases"]
+    assert set(restraint_cases) == {"bending", "pure_compression"}
+    bending = restraint_cases["bending"]
+    axial = restraint_cases["pure_compression"]
+    assert bending["buckling_intervals"] == 2
+    assert bending["unsupported_length_mm"] == 200.0
+    assert bending["L_over_D"] == pytest.approx(8.998875140607424)
+    assert bending["rb"] == pytest.approx(19.51532172688238)
+    assert axial["buckling_intervals"] == 3
+    assert axial["unsupported_length_mm"] == 300.0
+    assert axial["L_over_D"] == pytest.approx(13.498312710911135)
+    assert axial["rb"] == pytest.approx(29.272982590323565)
+    assert axial["f_i_mpa"] < bending["f_i_mpa"]
     assert report["metrics"]["response_branches"] == ["compression", "tension"]
     notable_points = {point["id"]: point for point in report["notable_points"]}
     assert set(notable_points) == {
@@ -185,21 +182,33 @@ def test_joint_artifacts(tmp_path: Path) -> None:
         "tension_hardening_start",
         "tension_ultimate",
         "compression_yield",
-        "compression_hardening_start",
-        "compression_ultimate",
+        "bending_compression_intermediate",
+        "bending_compression_second",
+        "bending_compression_ultimate",
+        "pure_compression_compression_intermediate",
+        "pure_compression_compression_second",
+        "pure_compression_compression_ultimate",
     }
-    assert notable_points["tension_yield"]["stress_mpa"] == pytest.approx(420.0)
+    assert notable_points["tension_yield"]["stress_mpa"] == pytest.approx(470.30)
     assert resolved["project_id"] == "Modelos_constitutivos"
     assert resolved["case_id"] == "COL75X75FC28MPa"
     assert resolved["model_id"] == "Mon_RDM2019"
     raw_parameters = resolved["raw"]["inputs"]["parameters"]
-    assert "epsilon_y" not in raw_parameters
+    assert raw_parameters["epsilon_y"] == 0.0024
+    assert raw_parameters["parameter_p"] == pytest.approx(3.087)
+    assert "Es_MPa" not in raw_parameters
     assert "buckling_intervals" not in raw_parameters
+    assert "published_l_over_d" not in raw_parameters
 
     with (rdm_root / "data/curve.csv").open(encoding="utf-8", newline="") as stream:
         curve_rows = list(csv.DictReader(stream))
-    assert max(float(row["strain"]) for row in curve_rows) == pytest.approx(0.10)
-    assert min(float(row["strain"]) for row in curve_rows) == pytest.approx(-0.10)
+    assert max(float(row["strain"]) for row in curve_rows) == pytest.approx(0.1141)
+    assert min(float(row["strain"]) for row in curve_rows) == pytest.approx(-0.1141)
+    assert {row["buckling_restraint_case"] for row in curve_rows} == {
+        "bending",
+        "pure_compression",
+        "reference_tension",
+    }
 
     mro_root = _model_root(
         output_root,
@@ -394,7 +403,7 @@ def test_required_input_identifiers_are_enforced(tmp_path: Path) -> None:
 
 
 def test_rdm_rejects_derived_l_over_d_input(tmp_path: Path) -> None:
-    config_root = _copy_input_root(tmp_path, [RDM_LD5])
+    config_root = _copy_input_root(tmp_path, [RDM_CONFIG])
     path = (
         config_root
         / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"
@@ -408,7 +417,7 @@ def test_rdm_rejects_derived_l_over_d_input(tmp_path: Path) -> None:
 
 
 def test_rdm_can_disable_compression_curve(tmp_path: Path) -> None:
-    config_root = _copy_input_root(tmp_path, [RDM_LD5])
+    config_root = _copy_input_root(tmp_path, [RDM_CONFIG])
     path = (
         config_root
         / "ductile_reinforcing_steel/monotonic/Mon_RDM2019.json"

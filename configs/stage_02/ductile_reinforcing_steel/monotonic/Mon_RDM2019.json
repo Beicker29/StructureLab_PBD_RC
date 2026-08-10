@@ -7,22 +7,30 @@
     "project_id": "Modelos_constitutivos",
     "case_id": "COL75X75FC28MPa",
     "model_id": "Mon_RDM2019",
-    "label": "RDM 2019 | Acero longitudinal #7",
+    "label": "RDM 2019 | Acero longitudinal #7 | Flejes #4 @ 100 mm",
     "parameters": {
-      "fy_MPa": 420.0,
-      "fu_MPa": 630.0,
-      "Es_MPa": 200000.0,
-      "epsilon_sh": 0.01,
-      "epsilon_su": 0.10,
-      "parameter_p": 4.0,
+      "fy_MPa": 470.30,
+      "fu_MPa": 659.74,
+      "epsilon_y": 0.0024,
+      "epsilon_sh": 0.0138,
+      "epsilon_su": 0.1141,
+      "parameter_p": 3.087,
       "longitudinal_bar_diameter_mm": 22.225,
       "tie_bar_diameter_mm": 12.7,
       "tie_spacing_mm": 100.0,
-      "effective_tie_leg_length_mm": 200.0,
-      "effective_tie_legs": 2,
-      "restrained_longitudinal_bars": 2,
       "tie_steel_modulus_MPa": 200000.0,
-      "buckling_restraint_case": "bending"
+      "restraint_cases": {
+        "bending": {
+          "effective_tie_leg_length_mm": 657.3,
+          "effective_tie_legs": 4,
+          "restrained_longitudinal_bars": 5
+        },
+        "pure_compression": {
+          "effective_tie_leg_length_mm": 657.3,
+          "effective_tie_legs": 4,
+          "restrained_longitudinal_bars": 5
+        }
+      }
     },
     "curve_generation": {
       "points": 401,
@@ -31,11 +39,11 @@
       "include_compression": true
     },
     "provenance": {
-      "source": "Akkaya, Guner and Vecchio (2019); unsupported length calculated using the Dhakal-Maekawa procedure documented by Salgado and Guner",
-      "citation": "jp116.pdf, Table 2, DOI 10.14359/51711143; 12587353_2002_ASCESTR_2__Stability.pdf, Tables 1-3, DOI 10.1061/(ASCE)0733-9445(2002)128:10(1253); B3_VT5UnsupportedLengthRatio_V1.1.pdf, Tables 1-2 and worked examples",
-      "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/",
-      "specimen_or_profile": "COL75X75FC28MPa",
-      "calibration_status": "source_equation_validation_case"
+      "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+      "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+      "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+      "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm",
+      "calibration_status": "source_equation_application_case"
     }
   }
 }

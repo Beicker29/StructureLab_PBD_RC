@@ -152,30 +152,37 @@ fs = fy                                para epsilon_y < epsilon <= epsilon_sh
 fs = fu + (fy-fu)*((epsilon_u-epsilon)/(epsilon_u-epsilon_sh))^P
 ```
 
+El exponente `P` es el input obligatorio `parameter_p`. Para
+`COL75X75FC28MPa` se adopta el valor medio `P=3.087`. El modelo usa `P=1`
+solamente al evaluar el caso especial definido por la ecuacion (5) de la
+Tabla 2; este valor especial no reemplaza el input de la envolvente general.
+
 El parametro de pandeo es:
 
 ```text
 rb = (L/D)*sqrt(fy/100)
 ```
 
-`epsilon_y`, `buckling_intervals`, `unsupported_length_mm`, `L/D` y `rb` son resultados calculados. El JSON `Mon_RDM2019.json` suministra:
+Para un caso estructural, `epsilon_y` es un dato del acero. El modulo inicial
+se deriva siempre mediante `Es=fy/epsilon_y`. Los valores
+`buckling_intervals`, `unsupported_length_mm`, `L/D` y `rb` son resultados
+calculados. El JSON suministra la geometria fisica de restriccion:
 
 - `longitudinal_bar_diameter_mm = D`;
 - `tie_bar_diameter_mm = dt`;
 - `tie_spacing_mm = s`;
-- `effective_tie_leg_length_mm = le`;
-- `effective_tie_legs = nl`;
-- `restrained_longitudinal_bars = nb`, numero de barras de una cara en la
-  direccion evaluada;
 - `tie_steel_modulus_MPa = Et`;
-- `buckling_restraint_case`, inicialmente `bending` o `pure_compression`.
+- `restraint_cases.bending`, con `le`, `nl` y `nb` para las barras de borde;
+- `restraint_cases.pure_compression`, con `le`, `nl` y `nb` para las barras
+  interiores. El programa duplica internamente `nb` en este segundo caso,
+  conforme al boletin B3.
 
 El usuario debe determinar la longitud efectiva de rama, las ramas efectivas, las barras restringidas y la direccion de pandeo a partir del detalle estructural. El programa no las deduce desde una imagen.
 
 El calculo se ejecuta una sola vez al construir el modelo:
 
 ```text
-epsilon_y = fy/Es
+Es = fy/epsilon_y
 At = pi*dt^2/4
 I = pi*D^4/64
 ErI = 0.5*Es*I*sqrt(fy/400)
@@ -221,7 +228,19 @@ L/D = n*s/D
 rb = (L/D)*sqrt(fy/100)
 ```
 
-La configuracion incluida produce `keq=1.0018573`, `n=1`, `L=100 mm`, `L/D=5` y `rb=10.24695`. Las pruebas de referencia reproducen tambien:
+La configuracion canonica corresponde a `COL75X75FC28MPa`: columna cuadrada
+de 750 mm, 16 barras #7 y flejes #4 cada 100 mm. Utiliza los valores medios
+`fy=470.30 MPa`, `epsilon_y=0.0024`, `epsilon_sh=0.0138`, `fu=659.74 MPa`,
+`epsilon_u=0.1141` y `P=3.087`. Para el nucleo al eje del fleje se adopta
+`le=657.3 mm`, con `nl=4` y `nb=5` en cada condicion documentada.
+
+Los resultados calculados para la seccion son:
+
+- barras de borde en flexion: `n=2`, `L=200 mm`, `L/D=8.998875`;
+- barras interiores en compresion axial: `n=3`, `L=300 mm`,
+  `L/D=13.498313`.
+
+Las pruebas de referencia reproducen tambien:
 
 - boletin B3, viga/columna en flexion: `k=9210.88 N/mm`,
   `kt=40863.03 N/mm`, `keq=4.44`, `n=1` y `L/D=10.23`;
@@ -235,11 +254,9 @@ rectangulares con refuerzo transversal. Secciones circulares, losas,
 secciones sin refuerzo transversal y otras restricciones requieren
 estrategias independientes.
 
-Los casos antiguos que suministran `buckling_intervals` siguen funcionando en modo `legacy_explicit_buckling_intervals`, generan una advertencia de obsolescencia y no pueden mezclar ese valor con las nuevas variables fisicas.
-
 `curve_generation.include_tension` y `curve_generation.include_compression` controlan las ramas exportadas. Una rama de compresion solo se dibuja cuando el modelo la soporta y el input no la deshabilita.
 
-Los autores informan aplicabilidad amplia para `200 < fy < 900 MPa`, `10 < D < 36 mm`, `fu/fy < 2`, `P <= 4`, `epsilon_u > 14epsilon_y`, `8 < rb < 56` y `L/D >= 5`. El modelo emite advertencias cuando un caso de pandeo queda fuera de esos limites, sin alterar silenciosamente la respuesta.
+Los autores informan aplicabilidad amplia para `200 < fy < 900 MPa`, `10 < D < 36 mm`, `fu/fy < 2`, `P <= 4`, `epsilon_u > 14epsilon_y`, `8 < rb < 56` y `L/D >= 5`. En esta implementacion `P` se suministra mediante `parameter_p`. El modelo emite advertencias cuando un caso queda fuera de esos limites, sin alterar silenciosamente la respuesta.
 
 Para `L/D < 5`, no se activa pandeo RDM y la compresion coincide en magnitud con la envolvente de referencia. Para deformaciones mayores que `epsilon_su`, `stress_at_strain` devuelve `0.0`; la curva exportada termina exactamente en su propio `epsilon_su`.
 
@@ -254,6 +271,10 @@ Referencias locales auditadas:
   `10.1061/(ASCE)0733-9445(2002)128:10(1253)`;
 - `references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/B3_VT5UnsupportedLengthRatio_V1.1.pdf`:
   Salgado y Guner (2014), Tablas 1 y 2 y ejemplos resueltos.
+- `references/stage_02/ductile_reinforcing_steel/monotonic/DM/12587352_2002_ASCESTR_1__Modeling.pdf`:
+  Dhakal y Maekawa (2002), modelo mecanico base de pandeo inelastico;
+- `references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/rajesh,+4_BNZSEE1474_Tripathi+and+Dhakal_Anti-buckling+design.pdf`:
+  verificacion independiente de las expresiones de rigidez transversal.
 
 ## Ramberg-Osgood modificado
 

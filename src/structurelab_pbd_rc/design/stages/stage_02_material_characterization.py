@@ -36,6 +36,7 @@ from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.factory i
 )
 from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic.rdm_2019 import (
     RDM2019MonotonicCompressionModel,
+    RDM2019SectionModelSet,
 )
 from structurelab_pbd_rc.mechanics.materials.nonductile_reinforcing_steel.cyclic.menegotto_pinto import (
     MenegottoPinto,
@@ -120,6 +121,10 @@ def _response_row(
         "branch": response.branch,
         "loading_direction": response.loading_direction,
         "stress_state": stress_state,
+        "buckling_restraint_case": diagnostics.get(
+            "buckling_restraint_case",
+            "",
+        ),
         "reversal": response.reversal,
         "in_domain": response.in_domain,
         "failed": response.failed,
@@ -247,6 +252,57 @@ def _evaluate_rdm_case(
     return responses
 
 
+def _evaluate_rdm_section_case(
+    model_set: RDM2019SectionModelSet,
+    case: Mapping[str, Any],
+) -> list[Any]:
+    """Evaluate one common tension branch and every RDM compression case."""
+
+    generation = _require_mapping(case.get("curve_generation"), context="curve_generation")
+    require_keys(generation, ("points", "max_strain"), context="curve_generation")
+    points = int(generation["points"])
+    if points < 2:
+        raise ConfigError("curve_generation.points must be at least 2.")
+    reference_model = model_set.reference_model
+    max_strain = (
+        reference_model.parameters.epsilon_su
+        if generation["max_strain"] is None
+        else float(generation["max_strain"])
+    )
+    include_tension = _optional_bool(
+        generation,
+        "include_tension",
+        default=True,
+        context="curve_generation",
+    )
+    include_compression = _optional_bool(
+        generation,
+        "include_compression",
+        default=True,
+        context="curve_generation",
+    )
+    responses: list[Any] = []
+    if include_compression:
+        for model in model_set.models.values():
+            model.generate_curve(num_points=points, max_strain=max_strain)
+            compressive_strains = linear_strain_vector(-max_strain, 0.0, points)
+            responses.extend(
+                model.signed_compression_response(strain)
+                for strain in compressive_strains
+            )
+    if include_tension:
+        tensile_strains = linear_strain_vector(0.0, max_strain, points)
+        responses.extend(
+            reference_model.tension_response(strain)
+            for strain in tensile_strains
+        )
+    if not responses:
+        raise ConfigError(
+            "curve_generation disables every response branch supported by the model."
+        )
+    return responses
+
+
 def _evaluate_mander_1988_case(
     model: Mander1988MonotonicConfinedConcrete,
     case: Mapping[str, Any],
@@ -320,7 +376,39 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
             }
         ),
     }
-    if isinstance(model, RDM2019MonotonicCompressionModel):
+    if isinstance(model, RDM2019SectionModelSet):
+        controls = model.summary_parameters()
+        summary["rdm_material_inputs"] = controls["material"]
+        summary["rdm_transverse_reinforcement"] = controls[
+            "transverse_reinforcement"
+        ]
+        case_keys = (
+            "buckling_restraint_case",
+            "effective_tie_leg_length_mm",
+            "effective_tie_legs",
+            "restrained_longitudinal_bars",
+            "effective_restrained_bars",
+            "tie_area_mm2",
+            "longitudinal_bar_inertia_mm4",
+            "reduced_flexural_rigidity_N_mm2",
+            "bar_normalized_stiffness_N_per_mm",
+            "tie_stiffness_N_per_mm",
+            "equivalent_stiffness_ratio",
+            "buckling_intervals",
+            "unsupported_length_mm",
+            "L_over_D",
+            "rb",
+            "eps_i",
+            "f_i_mpa",
+            "eps_ii",
+            "compression_ultimate_stress_mpa",
+            "buckling_active",
+        )
+        summary["rdm_restraint_cases"] = {
+            name: {key: values[key] for key in case_keys}
+            for name, values in controls["restraint_cases"].items()
+        }
+    elif isinstance(model, RDM2019MonotonicCompressionModel):
         controls = model.summary_parameters()
         summary["rdm_base_inputs"] = {
             key: controls[key]
@@ -328,6 +416,7 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
                 "fy_mpa",
                 "fu_mpa",
                 "elastic_modulus_mpa",
+                "epsilon_y",
                 "epsilon_sh",
                 "epsilon_su",
                 "parameter_p",
@@ -345,6 +434,9 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
             key: controls[key]
             for key in (
                 "epsilon_y",
+                "fu_over_fy",
+                "epsilon_sh_over_epsilon_y",
+                "epsilon_su_over_epsilon_y",
                 "tie_area_mm2",
                 "longitudinal_bar_inertia_mm4",
                 "reduced_flexural_rigidity_N_mm2",
@@ -361,12 +453,17 @@ def _case_summary(case_id: str, model: Any, responses: list[Any]) -> dict[str, A
                 "eps_i_0",
                 "eps_i_max",
                 "eps_i",
+                "eps_i_over_epsilon_y",
                 "f_it_mpa",
                 "alpha_1",
                 "alpha_2",
                 "alpha",
                 "f_i_mpa",
+                "f_i_over_fy",
                 "eps_ii",
+                "eps_ii_over_epsilon_y",
+                "compression_ultimate_stress_mpa",
+                "compression_ultimate_over_fy",
                 "residual_stress_mpa",
                 "buckling_active",
                 "loading_type",
@@ -453,7 +550,9 @@ def _report_payload(
         equation = (
             "Rectangular-restraint procedure: keq=kt/k, tabulated n, L=n*s and "
             "L/D=(n*s)/D; RDM 2019 Table 2, Eqs. (1)-(8): reference tension "
-            "envelope, intermediate point and bilinear postbuckling degradation."
+            "envelope, intermediate point and bilinear postbuckling degradation. "
+            "Es is derived as fy/epsilon_y; P is supplied by parameter_p, except "
+            "P=1 in the documented Eq. (5) special case."
         )
         limitations = [
             (
@@ -466,9 +565,9 @@ def _report_payload(
                 "no constituyen una historia ciclica."
             ),
             (
-                "El calculo de n implementado corresponde inicialmente a secciones "
-                "rectangulares con refuerzo transversal. Secciones circulares, losas y "
-                "otras configuraciones de restriccion requieren estrategias distintas."
+                "Para la seccion rectangular se calculan independientemente la "
+                "restriccion de barras de borde por flexion y la de barras interiores "
+                "por compresion axial, segun User Bulletin 3."
             ),
         ]
         model_metadata = {
@@ -481,7 +580,7 @@ def _report_payload(
                 "fy_mpa": "200 < fy < 900",
                 "diameter_mm": "10 < D < 36",
                 "fu_over_fy": "< 2",
-                "parameter_p": "<= 4",
+                "parameter_p": "P <= 4; P = 1 in the Eq. (5) special case",
                 "epsilon_su_over_epsilon_y": "> 14",
                 "rb": "8 < rb < 56",
                 "l_over_d": ">= 5 for buckling activation",
@@ -645,6 +744,32 @@ def _plot_rows_by_branch(
     if analysis_type != "monotonic":
         return {label: rows}
 
+    rdm_cases = {
+        str(row.get("buckling_restraint_case", ""))
+        for row in rows
+        if row.get("buckling_restraint_case")
+    }
+    if rdm_cases:
+        case_labels = {
+            "bending": "Compresión | barras de borde en flexión",
+            "pure_compression": "Compresión | barras interiores bajo carga axial",
+            "reference_tension": "Tracción | envolvente de referencia",
+        }
+        grouped: dict[str, list[dict[str, Any]]] = {}
+        for case_name in ("bending", "pure_compression", "reference_tension"):
+            case_rows = [
+                row
+                for row in rows
+                if row.get("buckling_restraint_case") == case_name
+            ]
+            if case_rows:
+                grouped[case_labels[case_name]] = sorted(
+                    case_rows,
+                    key=lambda row: float(row["strain"]),
+                )
+        if grouped:
+            return grouped
+
     zero_rows = [row for row in rows if row["stress_state"] == "zero"]
     grouped: dict[str, list[dict[str, Any]]] = {}
     compression_rows = [row for row in rows if row["stress_state"] == "compression"]
@@ -669,6 +794,8 @@ def _evaluate_case(model: Any, case: Mapping[str, Any]) -> list[Any]:
         return _evaluate_monotonic_case(model, case)
     if isinstance(model, MenegottoPinto):
         return _evaluate_cyclic_case(model, case)
+    if isinstance(model, RDM2019SectionModelSet):
+        return _evaluate_rdm_section_case(model, case)
     if isinstance(model, RDM2019MonotonicCompressionModel):
         return _evaluate_rdm_case(model, case)
     if isinstance(model, Mander1988MonotonicConfinedConcrete):
@@ -680,12 +807,10 @@ def _calculated_parameters(model: Any) -> dict[str, Any]:
     """Return model-derived values without modifying constitutive equations."""
 
     parameters = model.parameters
+    if isinstance(model, RDM2019SectionModelSet):
+        return model.summary_parameters()
     if isinstance(model, RDM2019MonotonicCompressionModel):
-        values = model.summary_parameters()
-        values["s_over_db"] = (
-            parameters.tie_spacing_mm / parameters.longitudinal_bar_diameter_mm
-        )
-        return values
+        return model.summary_parameters()
     if isinstance(model, Mander1988MonotonicConfinedConcrete):
         return model.summary_parameters()
     if isinstance(model, ModifiedRambergOsgood):
@@ -712,6 +837,90 @@ def _notable_points(
     idealization: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Return model-aware points for a legend-only technical figure."""
+
+    if isinstance(model, RDM2019SectionModelSet):
+        reference = model.reference_model
+        reference_points = {
+            str(point["id"]): point
+            for point in reference.notable_response_points()
+        }
+        common_templates = {
+            "tension_yield": ("Fluencia en tracción", "fy", "εy", "Tracción"),
+            "tension_hardening_start": (
+                "Inicio del endurecimiento en tracción",
+                "fy",
+                "εsh",
+                "Tracción",
+            ),
+            "tension_ultimate": (
+                "Resistencia última en tracción",
+                "fu",
+                "εu",
+                "Tracción",
+            ),
+            "compression_yield": (
+                "Fluencia común en compresión",
+                "-fy",
+                "-εy",
+                "Compresión",
+            ),
+        }
+        points: list[dict[str, Any]] = []
+        for point_id, template in common_templates.items():
+            point = reference_points[point_id]
+            strain = float(point["strain"])
+            stress = float(point["stress_mpa"])
+            description, stress_symbol, strain_symbol, legend_group = template
+            points.append(
+                {
+                    "id": point_id,
+                    "strain": strain,
+                    "stress_mpa": stress,
+                    "legend_group": legend_group,
+                    "label": (
+                        f"{description} ({stress_symbol} = {stress:.3f} [MPa], "
+                        f"{strain_symbol} = {strain:.6f} [mm/mm])"
+                    ),
+                }
+            )
+
+        case_labels = {
+            "bending": "Flexión",
+            "pure_compression": "Compresión axial",
+        }
+        compression_templates = {
+            "compression_intermediate": ("Punto intermedio RDM", "-fi", "-εi"),
+            "compression_second": ("Segundo punto RDM", "-0.75fi", "-εii"),
+            "compression_ultimate": (
+                "Respuesta última RDM",
+                "-fsc(εu)",
+                "-εu",
+            ),
+        }
+        for case_name, case_model in model.models.items():
+            for point in case_model.notable_response_points():
+                point_id = str(point["id"])
+                if point_id not in compression_templates:
+                    continue
+                strain = float(point["strain"])
+                stress = float(point["stress_mpa"])
+                description, stress_symbol, strain_symbol = compression_templates[
+                    point_id
+                ]
+                points.append(
+                    {
+                        "id": f"{case_name}_{point_id}",
+                        "strain": strain,
+                        "stress_mpa": stress,
+                        "legend_group": "Compresión",
+                        "label": (
+                            f"{case_labels[case_name]} | {description} "
+                            f"({stress_symbol} = {stress:.3f} [MPa], "
+                            f"{strain_symbol} = {strain:.6f} [mm/mm])"
+                        ),
+                    }
+                )
+        return points
 
     if isinstance(model, RDM2019MonotonicCompressionModel):
         label_templates = {
@@ -1042,13 +1251,28 @@ def _write_prepared_model(
         f"{MATERIAL_DISPLAY_NAMES[item.material]} | {item.model_id}"
     )
     if item.model_id == RDM2019MonotonicCompressionModel.model_id:
-        l_over_d = float(prepared["calculated"]["L_over_D"])
-        buckling_state = (
-            "Pandeo activo"
-            if prepared["calculated"]["buckling_active"]
-            else "Pandeo inactivo"
-        )
-        plot_subtitle += f" | L/D = {l_over_d:.3f} | {buckling_state}"
+        restraint_cases = prepared["calculated"].get("restraint_cases")
+        if isinstance(restraint_cases, Mapping):
+            display = {
+                "bending": "Flexión",
+                "pure_compression": "Compresión axial",
+            }
+            case_controls = [
+                (
+                    f"{display[name]}: n = {values['buckling_intervals']}, "
+                    f"L/D = {float(values['L_over_D']):.3f}"
+                )
+                for name, values in restraint_cases.items()
+            ]
+            plot_subtitle += " | " + " | ".join(case_controls)
+        else:
+            l_over_d = float(prepared["calculated"]["L_over_D"])
+            buckling_state = (
+                "Pandeo activo"
+                if prepared["calculated"]["buckling_active"]
+                else "Pandeo inactivo"
+            )
+            plot_subtitle += f" | L/D = {l_over_d:.3f} | {buckling_state}"
     plot_uniaxial_response_rows(
         _plot_rows_by_branch(
             label=str(item.resolved_inputs.get("label", item.title)),
@@ -1081,7 +1305,6 @@ def _write_prepared_model(
                 "$f_{y,\\mathrm{ef}}$ es un resultado calculado"
             ),
         )
-
     report_payload = {
         "stage_id": "stage_02",
         "project_id": item.project_id,

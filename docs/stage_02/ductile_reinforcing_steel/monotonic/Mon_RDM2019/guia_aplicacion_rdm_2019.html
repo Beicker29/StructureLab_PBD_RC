@@ -512,8 +512,8 @@
       </div>
       <div class="cover-meta">
         Modelo: <strong>Mon_RDM2019</strong><br>
-        Ejemplo reproducible con la configuración canónica del repositorio<br><br>
-        Versión 1.1 | 30 de julio de 2026
+        Aplicación: <strong>COL75X75FC28MPa</strong> | 16 barras #7 | flejes #4 @ 100 mm<br><br>
+        Versión 1.2 | 9 de agosto de 2026
       </div>
     </div>
     <div class="page-tag">Página 1 de 20</div>
@@ -557,9 +557,10 @@
 
     <div class="callout warning">
       <span class="callout-title">Advertencia de ingeniería</span>
-      Los valores numéricos incluidos son un caso sintético de verificación de
-      ecuaciones. No constituyen una calibración universal ni reemplazan los
-      ensayos del acero y la revisión del detalle estructural real.
+      Los valores numéricos corresponden al caso de aplicación
+      <strong>COL75X75FC28MPa</strong>. La formulación se implementa únicamente
+      a partir de las referencias locales indicadas; su uso no reemplaza la
+      revisión del detalle estructural ni la procedencia de las propiedades.
     </div>
     <div class="page-tag">Página 2 de 20</div>
   </section>
@@ -801,7 +802,7 @@
     <div class="page-tag">Página 4 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="input-material">
     <h1>3. Inputs del caso: identificación y acero</h1>
     <p>
       Cada modelo de Stage 2 se define mediante un JSON. El bloque
@@ -839,8 +840,8 @@
           <td>Resistencia máxima de la envolvente de tracción. Debe satisfacer fu ≥ fy.</td>
         </tr>
         <tr>
-          <td><code>Es_MPa</code></td><td>MPa</td>
-          <td>Módulo elástico de la barra longitudinal. Controla epsilon_y y las pendientes RDM.</td>
+          <td><code>epsilon_y</code></td><td>mm/mm</td>
+          <td>Deformación de fluencia medida o caracterizada. El programa deriva siempre Es=fy/epsilon_y.</td>
         </tr>
         <tr>
           <td><code>epsilon_sh</code></td><td>mm/mm</td>
@@ -852,10 +853,17 @@
         </tr>
         <tr>
           <td><code>parameter_p</code></td><td>-</td>
-          <td>Exponente de endurecimiento. La Tabla 2 de RDM admite 0, 1 o 4; el ejemplo usa P=4.</td>
+          <td>Exponente P de la rama general de endurecimiento. Para el caso COL75X75FC28MPa se adopta el valor medio P=3.087.</td>
         </tr>
       </tbody>
     </table>
+
+    <div class="callout">
+      <span class="callout-title">Uso del exponente P</span>
+      La envolvente general usa el input <code>parameter_p</code>. El valor P=1
+      se aplica únicamente al caso especial documentado por la ecuación (5) de
+      la Tabla 2 y no reemplaza el input general.
+    </div>
 
     <div class="callout warning">
       <span class="callout-title">Propiedades para análisis no lineal</span>
@@ -866,7 +874,7 @@
     <div class="page-tag">Página 5 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="input-restraint">
     <h1>3. Inputs del caso: restricción y curva</h1>
     <table class="dense">
       <thead>
@@ -886,24 +894,20 @@
           <td>Separación s entre niveles consecutivos de estribos en la zona evaluada.</td>
         </tr>
         <tr>
-          <td><code>effective_tie_leg_length_mm</code></td><td>mm</td>
+          <td><code>restraint_cases.*.effective_tie_leg_length_mm</code></td><td>mm</td>
           <td>Longitud efectiva l<sub>e</sub> de la rama que se alarga en la dirección de pandeo.</td>
         </tr>
         <tr>
-          <td><code>effective_tie_legs</code></td><td>-</td>
+          <td><code>restraint_cases.*.effective_tie_legs</code></td><td>-</td>
           <td>Número entero n<sub>l</sub> de ramas efectivas paralelas a la dirección de restricción.</td>
         </tr>
         <tr>
-          <td><code>restrained_longitudinal_bars</code></td><td>-</td>
+          <td><code>restraint_cases.*.restrained_longitudinal_bars</code></td><td>-</td>
           <td>Número entero n<sub>b</sub> de barras atendidas en una cara y en la dirección evaluada.</td>
         </tr>
         <tr>
           <td><code>tie_steel_modulus_MPa</code></td><td>MPa</td>
           <td>Módulo E<sub>t</sub> del acero transversal empleado en la rigidez axial de las ramas.</td>
-        </tr>
-        <tr>
-          <td><code>buckling_restraint_case</code></td><td>-</td>
-          <td><code>bending</code> para una cara comprimida; <code>pure_compression</code> para ambas caras.</td>
         </tr>
         <tr>
           <td><code>curve_generation.points</code></td><td>-</td>
@@ -926,7 +930,9 @@
 
     <div class="callout danger">
       <span class="callout-title">Interpretación de nb en compresión pura</span>
-      Ingrese las barras de <strong>una cara</strong>. El programa adopta
+      Defina obligatoriamente los bloques <code>bending</code> y
+      <code>pure_compression</code>. En ambos ingrese las barras de
+      <strong>una cara</strong>. Para compresión axial el programa adopta
       nb<sub>eff</sub>=2nb para considerar simultáneamente las dos caras, tal
       como el ejemplo de viga/columna del boletín B3. No duplique el input.
     </div>
@@ -940,7 +946,8 @@
         <tr><th style="width:23%">Símbolo / output</th><th style="width:13%">Unidad</th><th>Significado</th></tr>
       </thead>
       <tbody>
-        <tr><td>ε<sub>y</sub> / <code>epsilon_y</code></td><td>mm/mm</td><td>Deformación de fluencia fy/Es.</td></tr>
+        <tr><td>ε<sub>y</sub> / <code>epsilon_y</code></td><td>mm/mm</td><td>Deformación de fluencia suministrada como input.</td></tr>
+        <tr><td>E<sub>s</sub> / <code>elastic_modulus_mpa</code></td><td>MPa</td><td>Módulo derivado siempre como fy/εy.</td></tr>
         <tr><td>A<sub>t</sub> / <code>tie_area_mm2</code></td><td>mm²</td><td>Área de una barra transversal circular.</td></tr>
         <tr><td>I / <code>longitudinal_bar_inertia_mm4</code></td><td>mm⁴</td><td>Segundo momento de área de la barra longitudinal.</td></tr>
         <tr><td>E<sub>r</sub>I</td><td>N·mm²</td><td>Rigidez flexional reducida media de la barra en rango inelástico.</td></tr>
@@ -956,7 +963,7 @@
     </table>
 
     <div class="formula compact">
-      ε<sub>y</sub>=fy/Es;&nbsp;
+      E<sub>s</sub>=fy/ε<sub>y</sub>;&nbsp;
       A<sub>t</sub>=πd<sub>t</sub>²/4;&nbsp;
       I=πD⁴/64
     </div>
@@ -1113,31 +1120,32 @@
     <div class="page-tag">Página 10 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="example-inputs">
     <h1>6. Ejemplo reproducible: datos</h1>
     <p>
-      Se usa el caso canónico incluido en el repositorio. La procedencia está
-      marcada como <code>source_equation_validation_case</code>: verifica las
-      ecuaciones, pero debe sustituirse por propiedades reales del proyecto.
+      Se usa la sección <strong>COL75X75FC28MPa</strong>: columna de 750×750 mm,
+      16 barras longitudinales #7 y flejes #4 separados 100 mm. Las propiedades
+      del acero corresponden a los valores caracterizados para este proyecto.
     </p>
 
     <table>
       <thead><tr><th>Grupo</th><th>Variable</th><th class="num">Valor</th><th>Interpretación</th></tr></thead>
       <tbody>
-        <tr><td rowspan="6">Acero longitudinal</td><td>fy</td><td class="num">420 MPa</td><td>Fluencia.</td></tr>
-        <tr><td>fu</td><td class="num">630 MPa</td><td>Resistencia máxima.</td></tr>
-        <tr><td>Es</td><td class="num">200 000 MPa</td><td>Módulo elástico.</td></tr>
-        <tr><td>epsilon_sh</td><td class="num">0.010</td><td>Inicio de endurecimiento.</td></tr>
-        <tr><td>epsilon_su</td><td class="num">0.100</td><td>Fin del dominio.</td></tr>
-        <tr><td>P</td><td class="num">4</td><td>Exponente de endurecimiento.</td></tr>
-        <tr><td rowspan="8">Restricción</td><td>D</td><td class="num">20 mm</td><td>Barra longitudinal.</td></tr>
-        <tr><td>dt</td><td class="num">10 mm</td><td>Barra transversal.</td></tr>
+        <tr><td rowspan="7">Acero longitudinal</td><td>fy</td><td class="num">470.30 MPa</td><td>Fluencia media.</td></tr>
+        <tr><td>fu</td><td class="num">659.74 MPa</td><td>Resistencia máxima media.</td></tr>
+        <tr><td>εy</td><td class="num">0.0024</td><td>Deformación de fluencia suministrada.</td></tr>
+        <tr><td>Es</td><td class="num">195 958.33 MPa</td><td>Resultado derivado: fy/εy.</td></tr>
+        <tr><td>εsh</td><td class="num">0.0138</td><td>Inicio de endurecimiento.</td></tr>
+        <tr><td>εsu</td><td class="num">0.1141</td><td>Fin del dominio.</td></tr>
+        <tr><td>P</td><td class="num">3.087</td><td>Input de la envolvente general; el caso especial de la ecuación (5) usa P=1.</td></tr>
+        <tr><td rowspan="8">Restricción</td><td>D</td><td class="num">22.225 mm</td><td>Barra longitudinal #7.</td></tr>
+        <tr><td>dt</td><td class="num">12.7 mm</td><td>Fleje #4.</td></tr>
         <tr><td>s</td><td class="num">100 mm</td><td>Separación de estribos.</td></tr>
-        <tr><td>le</td><td class="num">200 mm</td><td>Longitud efectiva de rama.</td></tr>
-        <tr><td>nl</td><td class="num">2</td><td>Ramas efectivas.</td></tr>
-        <tr><td>nb</td><td class="num">2</td><td>Barras restringidas de una cara.</td></tr>
+        <tr><td>le</td><td class="num">657.3 mm</td><td>Longitud efectiva de rama.</td></tr>
+        <tr><td>nl</td><td class="num">4</td><td>Ramas efectivas.</td></tr>
+        <tr><td>nb</td><td class="num">5</td><td>Barras restringidas de una cara.</td></tr>
         <tr><td>Et</td><td class="num">200 000 MPa</td><td>Módulo del estribo.</td></tr>
-        <tr><td>Caso</td><td class="num">bending</td><td>Una cara comprimida.</td></tr>
+        <tr><td>Casos</td><td class="num">bending / pure_compression</td><td>Flexión y compresión axial.</td></tr>
       </tbody>
     </table>
 
@@ -1149,55 +1157,47 @@
 
     <h2>6.1 Validaciones previas</h2>
     <ul class="checklist">
-      <li>0 &lt; fy ≤ fu y Es &gt; 0.</li>
-      <li>0 &lt; fy/Es &lt; epsilon_sh &lt; epsilon_su.</li>
-      <li>P pertenece a {0, 1, 4}.</li>
+      <li>0 &lt; fy ≤ fu y 0 &lt; εy ≤ εsh &lt; εsu.</li>
+      <li>Es se deriva como fy/εy; no se recibe como input.</li>
+      <li>parameter_p es obligatorio y no negativo; P=1 se reserva para el caso especial de la ecuación (5).</li>
       <li>D, dt, s, le y Et son positivos; nl y nb son enteros positivos.</li>
-      <li>No se suministran L/D, rb, n ni epsilon_y como inputs derivados.</li>
+      <li>Se definen los casos <code>bending</code> y <code>pure_compression</code>.</li>
+      <li>No se suministran n, L, L/D, rb, k, kt ni keq: todos son derivados.</li>
     </ul>
     <div class="page-tag">Página 11 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="example-stability">
     <h1>6. Ejemplo: cálculo numérico de L/D</h1>
-    <div class="formula compact">ε<sub>y</sub>=420/200000=<strong>0.002100</strong></div>
-    <div class="formula compact">A<sub>t</sub>=π(10)²/4=<strong>78.5398 mm²</strong></div>
-    <div class="formula compact">I=π(20)⁴/64=<strong>7853.9816 mm⁴</strong></div>
+    <div class="formula compact">E<sub>s</sub>=470.30/0.0024=<strong>195 958.33 MPa</strong></div>
+    <div class="formula compact">A<sub>t</sub>=π(12.7)²/4=<strong>126.6769 mm²</strong></div>
+    <div class="formula compact">I=π(22.225)⁴/64=<strong>11 976.6947 mm⁴</strong></div>
     <div class="formula compact">
-      E<sub>r</sub>I=0.5(200000)(7853.9816)√(420/400)
-      =<strong>804 793 631.20 N·mm²</strong>
+      E<sub>r</sub>I=0.5(195958.33)(11976.6947)√(470.30/400)
+      =<strong>1 272 413 336.34 N·mm²</strong>
     </div>
     <div class="formula compact">
-      k=π⁴(804793631.20)/(100)³=<strong>78 394.2161 N/mm</strong>
+      k=π⁴(1272413336.34)/(100)³=<strong>123 944.6265 N/mm</strong>
     </div>
 
-    <p>
-      Como el caso es <code>bending</code>, nb<sub>eff</sub>=nb=2. Para
-      <code>pure_compression</code> habría sido nb<sub>eff</sub>=2nb=4.
-    </p>
-    <div class="formula compact">
-      k<sub>t</sub>=[(200000)(78.5398)/200](2/2)
-      =<strong>78 539.8163 N/mm</strong>
-    </div>
-    <div class="formula compact">
-      k<sub>eq</sub>=78539.8163/78394.2161=<strong>1.001857</strong>
-    </div>
+    <table class="dense">
+      <thead><tr><th>Resultado</th><th class="num">Flexión</th><th class="num">Compresión axial</th></tr></thead>
+      <tbody>
+        <tr><td>nb<sub>eff</sub></td><td class="num">5</td><td class="num">10</td></tr>
+        <tr><td>k<sub>t</sub> [N/mm]</td><td class="num">30 835.6902</td><td class="num">15 417.8451</td></tr>
+        <tr><td>k<sub>eq</sub>=k<sub>t</sub>/k</td><td class="num">0.248786</td><td class="num">0.124393</td></tr>
+        <tr><td>n tabulado</td><td class="num">2</td><td class="num">3</td></tr>
+        <tr><td>L=n·s [mm]</td><td class="num">200</td><td class="num">300</td></tr>
+        <tr><td>L/D</td><td class="num">8.998875</td><td class="num">13.498313</td></tr>
+        <tr><td>r<sub>b</sub></td><td class="num">19.515322</td><td class="num">29.272983</td></tr>
+      </tbody>
+    </table>
 
-    <p>
-      La tabla entrega n=1 porque keq&gt;0.7500. En consecuencia:
-    </p>
-    <div class="formula">
-      L=n·s=1(100)=<strong>100 mm</strong>;&nbsp;&nbsp;
-      L/D=100/20=<strong>5.000</strong>
-    </div>
-    <div class="formula">
-      r<sub>b</sub>=5√(420/100)=<strong>10.246951</strong>
-    </div>
-
-    <div class="grid-3">
-      <div class="metric"><span class="value">1.001857</span><span class="label">keq = kt/k</span></div>
-      <div class="metric"><span class="value">n = 1</span><span class="label">modo estable</span></div>
-      <div class="metric"><span class="value">L/D = 5</span><span class="label">umbral RDM activo</span></div>
+    <div class="callout">
+      <span class="callout-title">Por qué cambian n y L/D</span>
+      En compresión axial, nb<sub>eff</sub>=2nb reduce a la mitad k<sub>t</sub>.
+      La menor relación k<sub>eq</sub> activa un modo estable mayor: n=3 en vez
+      de n=2. Ambos valores se calculan; ninguno se ingresa manualmente.
     </div>
 
     <div class="callout success">
@@ -1262,14 +1262,14 @@
 
     <h2>7.1 Aplicación al ejemplo</h2>
     <ul>
-      <li>εy=0.0021 y f<sub>t</sub>(εy)=200000(0.0021)=420 MPa.</li>
-      <li>Entre 0.0021 y 0.010, f<sub>t</sub>=420 MPa.</li>
-      <li>Entre 0.010 y 0.100, P=4 curva el endurecimiento hacia fu=630 MPa.</li>
+      <li>εy=0.0024 y f<sub>t</sub>(εy)=195958.33(0.0024)=470.30 MPa.</li>
+      <li>Entre 0.0024 y 0.0138, f<sub>t</sub>=470.30 MPa.</li>
+      <li>Entre 0.0138 y 0.1141, P=3.087 curva el endurecimiento hacia fu=659.74 MPa.</li>
     </ul>
     <div class="formula compact">
-      f<sub>t</sub>(0.020)=630+(420-630)
-      [(0.100-0.020)/(0.100-0.010)]⁴
-      =<strong>498.898 MPa</strong>
+      f<sub>t</sub>(0.020)=659.74+(470.30-659.74)
+      [(0.1141-0.020)/(0.1141-0.0138)]<sup>3.087</sup>
+      =<strong>504.170 MPa</strong>
     </div>
 
     <h2>7.2 Tangente útil para un solucionador</h2>
@@ -1290,55 +1290,33 @@
     <div class="page-tag">Página 13 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="rdm-intermediate-results">
     <h1>8. Parámetros intermedios RDM</h1>
     <div class="formula compact">
-      r<sub>b,min</sub>=5√(fy/100)=<strong>10.246951</strong>
+      r<sub>b,min</sub>=5√(fy/100)=<strong>10.843201</strong>
     </div>
-    <div class="formula compact">
-      ε<sub>i</sub><sup>0</sup>=ε<sub>y</sub>(55-2.3r<sub>b</sub>)
-      =<strong>0.06600723</strong>
-    </div>
-    <div class="formula compact">
-      ε<sub>i,max</sub>=ε<sub>y</sub>(55-2.3r<sub>b,min</sub>)
-      =<strong>0.06600723</strong>
-    </div>
+    <table class="dense">
+      <thead><tr><th>Parámetro</th><th class="num">Flexión</th><th class="num">Compresión axial</th></tr></thead>
+      <tbody>
+        <tr><td>r<sub>b</sub></td><td class="num">19.515322</td><td class="num">29.272983</td></tr>
+        <tr><td>ε<sub>i</sub><sup>0</sup></td><td class="num">0.024275</td><td class="num">-0.029587</td></tr>
+        <tr><td>ε<sub>i,max</sub></td><td class="num">0.072146</td><td class="num">0.072146</td></tr>
+        <tr><td>ε<sub>i</sub></td><td class="num">0.024275</td><td class="num">0.016800 = 7εy</td></tr>
+        <tr><td>f<sub>it</sub> [MPa]</td><td class="num">524.9721</td><td class="num">487.2515</td></tr>
+        <tr><td>α<sub>1</sub></td><td class="num">1.080596</td><td class="num">0.987064</td></tr>
+        <tr><td>α<sub>2</sub></td><td class="num">0.787755</td><td class="num">0.631632</td></tr>
+        <tr><td>α=α<sub>1</sub>α<sub>2</sub></td><td class="num">0.851245</td><td class="num">0.623462</td></tr>
+        <tr><td>f<sub>i</sub> [MPa]</td><td class="num">400.3406</td><td class="num">293.2140</td></tr>
+        <tr><td>ε<sub>ii</sub></td><td class="num">0.049813</td><td class="num">0.035504</td></tr>
+      </tbody>
+    </table>
 
     <p>
-      La corrección ε<sub>i</sub><sup>0</sup>ε<sub>u</sub>/ε<sub>i,max</sub>
-      solo aplica si ε<sub>i</sub><sup>0</sup>&lt;ε<sub>u</sub>&lt;ε<sub>i,max</sub>.
-      Aquí εu=0.100 no es menor que εi,max; por tanto no se aplica.
+      En compresión axial, ε<sub>i</sub><sup>0</sup> resulta negativo debido al
+      mayor r<sub>b</sub>; por ello gobierna el límite inferior 7εy. La condición
+      especial completa de la ecuación (5) no se activa porque εsu es mayor que
+      ε<sub>i,max</sub>.
     </p>
-    <div class="formula compact">
-      ε<sub>i</sub>=max(ε<sub>i</sub><sup>0</sup>,7ε<sub>y</sub>)
-      =max(0.06600723,0.0147)=<strong>0.06600723</strong>
-    </div>
-
-    <div class="formula compact">
-      f<sub>it</sub>=f<sub>t</sub>(ε<sub>i</sub>)
-      =<strong>625.7264 MPa</strong>
-    </div>
-    <div class="formula compact">
-      α<sub>1</sub>=0.8+1.8(fu/fy)(D/L)
-      =0.8+1.8(630/420)(20/100)=<strong>1.3400</strong>
-    </div>
-    <div class="formula compact">
-      α<sub>2</sub>=1.1-0.016r<sub>b</sub>
-      =<strong>0.9360488</strong>
-    </div>
-
-    <p>
-      Como εi&gt;εsh y no aplica el caso especial,
-      α=α1α2=<strong>1.2543054</strong>.
-    </p>
-    <div class="formula compact">
-      f<sub>i</sub>=min[f<sub>it</sub>, max(0.2fy, αfy)]
-      =<strong>526.8083 MPa</strong>
-    </div>
-    <div class="formula compact">
-      ε<sub>ii</sub>=ε<sub>i</sub>+0.25f<sub>i</sub>/(0.02Es)
-      =<strong>0.09893274</strong>
-    </div>
 
     <div class="callout">
       <span class="callout-title">Caso especial de la Tabla 2</span>
@@ -1427,42 +1405,45 @@
 
     <h2>9.2 Evaluación de un punto del ejemplo</h2>
     <p>
-      Para e=0.020, f<sub>st</sub>=f<sub>t</sub>(0.020)=498.898 MPa,
-      q=1-fi/fit=0.1580853 y
-      x=(e-εy)/(εi-εy)=0.2800935.
+      Para flexión y e=0.020,
+      f<sub>st</sub>=f<sub>t</sub>(0.020)=504.170 MPa,
+      q=1-fi/fit=0.237406 y
+      x=(e-εy)/(εi-εy)=0.804556.
     </p>
     <div class="formula">
-      f<sub>sc</sub>(0.020)=498.898[1-(0.1580853)(0.2800935)]
-      =<strong>476.8075 MPa</strong>
+      f<sub>sc</sub>(0.020)=504.170[1-(0.237406)(0.804556)]
+      =<strong>407.8700 MPa</strong>
     </div>
     <p>
       El punto físico exportado es
-      (ε<sub>s</sub>,σ<sub>s</sub>)=(-0.020,-476.8075 MPa).
+      (ε<sub>s</sub>,σ<sub>s</sub>)=(-0.020,-407.8700 MPa). Para compresión
+      axial, el mismo nivel de deformación ya pertenece al primer tramo
+      pospandeo y produce -280.6727 MPa.
     </p>
     <div class="page-tag">Página 15 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="numerical-response">
     <h1>10. Respuesta numérica del ejemplo</h1>
     <table class="dense">
       <thead>
         <tr>
           <th>e=|εs|</th><th class="num">Tracción +ft [MPa]</th>
-          <th class="num">Compresión -fsc [MPa]</th><th>Rama de compresión</th>
+          <th class="num">Flexión -fsc [MPa]</th>
+          <th class="num">Compresión axial -fsc [MPa]</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>0.0010</td><td class="num">200.000</td><td class="num">-200.000</td><td>Elástica</td></tr>
-        <tr><td>0.0021</td><td class="num">420.000</td><td class="num">-420.000</td><td>Fluencia</td></tr>
-        <tr><td>0.0050</td><td class="num">420.000</td><td class="num">-416.987</td><td>Transición</td></tr>
-        <tr><td>0.0100</td><td class="num">420.000</td><td class="num">-411.792</td><td>Transición</td></tr>
-        <tr><td>0.0200</td><td class="num">498.898</td><td class="num">-476.807</td><td>Transición</td></tr>
-        <tr><td>0.0400</td><td class="num">588.519</td><td class="num">-533.344</td><td>Transición</td></tr>
-        <tr><td>0.0600</td><td class="num">621.806</td><td class="num">-532.748</td><td>Transición</td></tr>
-        <tr><td>0.066007</td><td class="num">625.726</td><td class="num">-526.808</td><td>Punto (εi,fi)</td></tr>
-        <tr><td>0.0800</td><td class="num">629.488</td><td class="num">-470.837</td><td>Pendiente -0.02Es</td></tr>
-        <tr><td>0.098933</td><td class="num">630.000</td><td class="num">-395.106</td><td>Punto (εii,0.75fi)</td></tr>
-        <tr><td>0.1000</td><td class="num">630.000</td><td class="num">-392.972</td><td>Pendiente -0.01Es</td></tr>
+        <tr><td>0.0010</td><td class="num">195.958</td><td class="num">-195.958</td><td class="num">-195.958</td></tr>
+        <tr><td>0.0024</td><td class="num">470.300</td><td class="num">-470.300</td><td class="num">-470.300</td></tr>
+        <tr><td>0.0050</td><td class="num">470.300</td><td class="num">-457.030</td><td class="num">-436.484</td></tr>
+        <tr><td>0.0138</td><td class="num">470.300</td><td class="num">-412.114</td><td class="num">-322.031</td></tr>
+        <tr><td>0.0168</td><td class="num">487.252</td><td class="num">-411.105</td><td class="num">-293.214</td></tr>
+        <tr><td>0.024275</td><td class="num">524.970</td><td class="num">-400.341</td><td class="num">-263.918</td></tr>
+        <tr><td>0.035504</td><td class="num">570.501</td><td class="num">-356.334</td><td class="num">-219.910</td></tr>
+        <tr><td>0.049813</td><td class="num">611.752</td><td class="num">-300.255</td><td class="num">-191.871</td></tr>
+        <tr><td>0.0800</td><td class="num">652.963</td><td class="num">-241.101</td><td class="num">-132.717</td></tr>
+        <tr><td>0.1141</td><td class="num">659.740</td><td class="num">-174.279</td><td class="num">-94.060</td></tr>
       </tbody>
     </table>
 
@@ -1475,14 +1456,15 @@
 
     <div class="callout success">
       <span class="callout-title">Lectura física</span>
-      La tracción alcanza fu=630 MPa. En compresión, la barra pierde capacidad
-      después de su punto intermedio y llega a -392.97 MPa en |εs|=0.10.
-      Una curva simétrica habría asignado -630 MPa y sobreestimado la capacidad.
+      La tracción alcanza fu=659.74 MPa. En |εs|=0.1141, la envolvente de
+      flexión conserva 174.28 MPa y la de compresión axial alcanza el piso
+      residual 0.2fy=94.06 MPa. La diferencia surge del n calculado para cada
+      condición de restricción.
     </div>
     <div class="page-tag">Página 16 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="canonical-json">
     <h1>11. JSON canónico y ejecución</h1>
     <h2>11.1 Estructura mínima del input</h2>
     <pre>{
@@ -1490,19 +1472,29 @@
   "enabled": true,
   "units": {"length": "mm", "stress": "MPa", "strain": "mm/mm"},
   "inputs": {
-    "project_id": "default",
-    "case_id": "rdm_2019_ld5",
+    "project_id": "Modelos_constitutivos",
+    "case_id": "COL75X75FC28MPa",
     "model_id": "Mon_RDM2019",
-    "label": "RDM 2019 | L/D = 5",
+    "label": "RDM 2019 | Acero longitudinal #7 | Flejes #4 @ 100 mm",
     "parameters": {
-      "fy_MPa": 420.0, "fu_MPa": 630.0, "Es_MPa": 200000.0,
-      "epsilon_sh": 0.01, "epsilon_su": 0.10, "parameter_p": 4.0,
-      "longitudinal_bar_diameter_mm": 20.0,
-      "tie_bar_diameter_mm": 10.0, "tie_spacing_mm": 100.0,
-      "effective_tie_leg_length_mm": 200.0,
-      "effective_tie_legs": 2, "restrained_longitudinal_bars": 2,
+      "fy_MPa": 470.30, "fu_MPa": 659.74, "epsilon_y": 0.0024,
+      "epsilon_sh": 0.0138, "epsilon_su": 0.1141,
+      "parameter_p": 3.087,
+      "longitudinal_bar_diameter_mm": 22.225,
+      "tie_bar_diameter_mm": 12.7, "tie_spacing_mm": 100.0,
       "tie_steel_modulus_MPa": 200000.0,
-      "buckling_restraint_case": "bending"
+      "restraint_cases": {
+        "bending": {
+          "effective_tie_leg_length_mm": 657.3,
+          "effective_tie_legs": 4,
+          "restrained_longitudinal_bars": 5
+        },
+        "pure_compression": {
+          "effective_tie_leg_length_mm": 657.3,
+          "effective_tie_legs": 4,
+          "restrained_longitudinal_bars": 5
+        }
+      }
     },
     "curve_generation": {
       "points": 401, "max_strain": null,
@@ -1511,15 +1503,16 @@
     "provenance": {
       "source": "...", "citation": "...",
       "source_location": "...", "specimen_or_profile": "...",
-      "calibration_status": "source_equation_validation_case"
+      "calibration_status": "source_equation_application_case"
     }
   }
 }</pre>
 
     <div class="callout danger">
       <span class="callout-title">Valores que no son inputs canónicos</span>
-      No ingrese epsilon_y, buckling_intervals, unsupported_length_mm, L/D,
-      rb, k, kt o keq. El ejecutor los calcula y rechaza su duplicación.
+      No ingrese Es, buckling_intervals, unsupported_length_mm, L/D, rb, k,
+      kt o keq. El ejecutor deriva Es de fy/epsilon_y y calcula los parámetros
+      de estabilidad. P sí debe ingresarse mediante <code>parameter_p</code>.
     </div>
 
     <h2>11.2 Ejecución en PowerShell</h2>
@@ -1532,14 +1525,14 @@ python scripts\run_stage_02.py</pre>
     <div class="page-tag">Página 17 de 20</div>
   </section>
 
-  <section class="sheet">
+  <section class="sheet" id="outputs-traceability">
     <h1>11. Outputs y trazabilidad</h1>
     <p>
       El caso queda bajo una ruta determinada exclusivamente por project_id,
       case_id, protocolo, material y model_id.
     </p>
-    <pre>outputs/stage_02/default/rdm_2019_ld5/
-└── monotonic/ductile_reinforcing_steel/
+    <pre>outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/
+└── ductile_reinforcing_steel/monotonic/
     └── Mon_RDM2019/
         ├── data/
         │   ├── resolved_inputs.json
@@ -1548,7 +1541,8 @@ python scripts\run_stage_02.py</pre>
         │   ├── curve.csv
         │   └── curve.xlsx
         ├── figures/
-        │   └── response.png
+        │   ├── response.png
+        │   └── response_notable_points.png
         └── reports/
             ├── model_report.yaml
             └── model_report.pdf</pre>
@@ -1581,7 +1575,7 @@ python scripts\run_stage_02.py</pre>
       <div>
         <h2>12.1 Lista de aceptación</h2>
         <ul class="checklist small">
-          <li>epsilon_y=fy/Es.</li>
+          <li>epsilon_y es input y Es=fy/epsilon_y.</li>
           <li>k y kt están en N/mm.</li>
           <li>keq se calculó como kt/k.</li>
           <li>n pertenece a 1...10.</li>
@@ -1599,7 +1593,7 @@ python scripts\run_stage_02.py</pre>
           <li>200 &lt; fy &lt; 900 MPa.</li>
           <li>10 &lt; D &lt; 36 mm.</li>
           <li>fu/fy &lt; 2.</li>
-          <li>P≤4 y P seleccionado entre 0, 1 y 4.</li>
+          <li>parameter_p es un input; P=1 se usa solo en el caso especial.</li>
           <li>epsilon_u &gt; 14epsilon_y.</li>
           <li>8 &lt; rb &lt; 56.</li>
           <li>L/D≥5 para activar pandeo RDM.</li>

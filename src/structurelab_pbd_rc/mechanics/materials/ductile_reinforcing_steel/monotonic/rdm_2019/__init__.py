@@ -9,10 +9,14 @@ from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic
     RDM2019MonotonicCompressionModel,
     RDM2019Parameters,
 )
+from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic.rdm_2019.section_model import (
+    RDM2019SectionModelSet,
+)
 
 __all__ = [
     "RDM2019MonotonicCompressionModel",
     "RDM2019Parameters",
+    "RDM2019SectionModelSet",
     "UnsupportedBucklingLengthCalculator",
     "UnsupportedBucklingLengthResult",
     "select_buckling_intervals",

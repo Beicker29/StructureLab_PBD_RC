@@ -5,19 +5,16 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from math import isclose, isfinite, sqrt
 from typing import Any, Mapping
-from warnings import warn
 
 from structurelab_pbd_rc.core.exceptions import ConfigError, MaterialDomainError
 from structurelab_pbd_rc.core.validation import require_keys
 from structurelab_pbd_rc.mechanics.materials.common import (
     MaterialProvenance,
     UniaxialResponse,
-    optional_float,
     required_float,
 )
 from structurelab_pbd_rc.mechanics.materials.protocols import linear_strain_vector
 from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic.rdm_2019.buckling_length import (
-    LEGACY_BUCKLING_WARNING,
     UnsupportedBucklingLengthCalculator,
     UnsupportedBucklingLengthResult,
 )
@@ -28,29 +25,28 @@ RDM_REFERENCE = (
     "inelastic buckling behavior of reinforcing bars. ACI Structural Journal, "
     "116(3), 195-204. https://doi.org/10.14359/51711143"
 )
+RDM_SPECIAL_HARDENING_EXPONENT = 1.0
 
 
 @dataclass(frozen=True)
 class RDM2019Parameters:
-    """Inputs and resolved unsupported-length geometry for RDM 2019."""
+    """Physical inputs and resolved unsupported-length geometry for RDM 2019."""
 
     fy_mpa: float
     fu_mpa: float
-    elastic_modulus_mpa: float
+    epsilon_y: float
     epsilon_sh: float
     epsilon_su: float
+    parameter_p: float
     longitudinal_bar_diameter_mm: float
+    tie_bar_diameter_mm: float
     tie_spacing_mm: float
+    effective_tie_leg_length_mm: float
+    effective_tie_legs: int
+    restrained_longitudinal_bars: int
+    tie_steel_modulus_mpa: float
+    buckling_restraint_case: str
     provenance: MaterialProvenance
-    parameter_p: float = 4.0
-    tie_bar_diameter_mm: float | None = None
-    effective_tie_leg_length_mm: float | None = None
-    effective_tie_legs: int | None = None
-    restrained_longitudinal_bars: int | None = None
-    tie_steel_modulus_mpa: float | None = None
-    buckling_restraint_case: str | None = None
-    buckling_intervals: int | None = None
-    epsilon_y: float | None = None
     _buckling_result: UnsupportedBucklingLengthResult = field(
         init=False,
         repr=False,
@@ -60,123 +56,53 @@ class RDM2019Parameters:
         values = (
             self.fy_mpa,
             self.fu_mpa,
-            self.elastic_modulus_mpa,
+            self.epsilon_y,
             self.epsilon_sh,
             self.epsilon_su,
-            self.longitudinal_bar_diameter_mm,
-            self.tie_spacing_mm,
             self.parameter_p,
+            self.longitudinal_bar_diameter_mm,
+            self.tie_bar_diameter_mm,
+            self.tie_spacing_mm,
+            self.effective_tie_leg_length_mm,
+            self.tie_steel_modulus_mpa,
         )
         if not all(isfinite(value) for value in values):
             raise ConfigError("RDM 2019 parameters must be finite.")
-        if self.elastic_modulus_mpa <= 0.0:
-            raise ConfigError("parameters.Es_MPa must be positive.")
         if not 0.0 < self.fy_mpa <= self.fu_mpa:
             raise ConfigError("parameters must satisfy 0 < fy_MPa <= fu_MPa.")
-        if self.longitudinal_bar_diameter_mm <= 0.0:
-            raise ConfigError("parameters.longitudinal_bar_diameter_mm must be positive.")
-        if self.parameter_p not in {0.0, 1.0, 4.0}:
-            raise ConfigError("parameters.parameter_p must be one of 0, 1 or 4 per RDM Table 2.")
-        if self.tie_spacing_mm <= 0.0:
-            raise ConfigError("parameters.tie_spacing_mm must be positive.")
-
-        physical_geometry = (
-            self.tie_bar_diameter_mm,
-            self.effective_tie_leg_length_mm,
-            self.effective_tie_legs,
-            self.restrained_longitudinal_bars,
-            self.tie_steel_modulus_mpa,
-            self.buckling_restraint_case,
+        if not 0.0 < self.epsilon_y <= self.epsilon_sh < self.epsilon_su:
+            raise ConfigError("parameters must satisfy 0 < epsilon_y <= epsilon_sh < epsilon_su.")
+        if self.parameter_p < 0.0:
+            raise ConfigError("parameters.parameter_p must be greater than or equal to zero.")
+        buckling_result = UnsupportedBucklingLengthCalculator.calculate(
+            fy_mpa=self.fy_mpa,
+            epsilon_y=self.epsilon_y,
+            longitudinal_bar_diameter_mm=self.longitudinal_bar_diameter_mm,
+            tie_bar_diameter_mm=self.tie_bar_diameter_mm,
+            tie_spacing_mm=self.tie_spacing_mm,
+            effective_tie_leg_length_mm=self.effective_tie_leg_length_mm,
+            effective_tie_legs=self.effective_tie_legs,
+            restrained_longitudinal_bars=self.restrained_longitudinal_bars,
+            tie_steel_modulus_mpa=self.tie_steel_modulus_mpa,
+            buckling_restraint_case=self.buckling_restraint_case,
         )
-        has_physical_geometry = any(value is not None for value in physical_geometry)
-        has_complete_physical_geometry = all(
-            value is not None for value in physical_geometry
-        )
-        if has_physical_geometry and self.buckling_intervals is not None:
-            raise ConfigError(
-                "parameters cannot combine buckling_intervals with physical "
-                "transverse-restraint variables."
-            )
-        if has_physical_geometry and self.epsilon_y is not None:
-            raise ConfigError(
-                "parameters.epsilon_y is derived from fy_MPa / Es_MPa for physical "
-                "transverse-restraint inputs."
-            )
-        if has_physical_geometry and not has_complete_physical_geometry:
-            raise ConfigError(
-                "Physical RDM restraint geometry requires tie_bar_diameter_mm, "
-                "effective_tie_leg_length_mm, effective_tie_legs, "
-                "restrained_longitudinal_bars, tie_steel_modulus_MPa and "
-                "buckling_restraint_case."
-            )
-
-        if has_complete_physical_geometry:
-            assert self.tie_bar_diameter_mm is not None
-            assert self.effective_tie_leg_length_mm is not None
-            assert self.effective_tie_legs is not None
-            assert self.restrained_longitudinal_bars is not None
-            assert self.tie_steel_modulus_mpa is not None
-            assert self.buckling_restraint_case is not None
-            buckling_result = UnsupportedBucklingLengthCalculator.calculate(
-                fy_mpa=self.fy_mpa,
-                elastic_modulus_mpa=self.elastic_modulus_mpa,
-                longitudinal_bar_diameter_mm=self.longitudinal_bar_diameter_mm,
-                tie_bar_diameter_mm=self.tie_bar_diameter_mm,
-                tie_spacing_mm=self.tie_spacing_mm,
-                effective_tie_leg_length_mm=self.effective_tie_leg_length_mm,
-                effective_tie_legs=self.effective_tie_legs,
-                restrained_longitudinal_bars=self.restrained_longitudinal_bars,
-                tie_steel_modulus_mpa=self.tie_steel_modulus_mpa,
-                buckling_restraint_case=self.buckling_restraint_case,
-            )
-            object.__setattr__(
-                self,
-                "effective_tie_legs",
-                int(self.effective_tie_legs),
-            )
-            object.__setattr__(
-                self,
-                "restrained_longitudinal_bars",
-                int(self.restrained_longitudinal_bars),
-            )
-        else:
-            if self.buckling_intervals is None:
-                raise ConfigError(
-                    "RDM geometry requires complete physical restraint variables. "
-                    "Legacy inputs may provide buckling_intervals explicitly."
-                )
-            warn(LEGACY_BUCKLING_WARNING, DeprecationWarning, stacklevel=2)
-            buckling_result = (
-                UnsupportedBucklingLengthCalculator.calculate_legacy(
-                    fy_mpa=self.fy_mpa,
-                    elastic_modulus_mpa=self.elastic_modulus_mpa,
-                    longitudinal_bar_diameter_mm=(
-                        self.longitudinal_bar_diameter_mm
-                    ),
-                    tie_spacing_mm=self.tie_spacing_mm,
-                    buckling_intervals=self.buckling_intervals,
-                )
-            )
-            if self.epsilon_y is not None and not isclose(
-                self.epsilon_y,
-                buckling_result.epsilon_y,
-                rel_tol=1.0e-9,
-                abs_tol=1.0e-12,
-            ):
-                raise ConfigError(
-                    "parameters.epsilon_y must be consistent with fy_MPa / Es_MPa."
-                )
-
-        epsilon_y = buckling_result.epsilon_y
-        if not 0.0 < epsilon_y < self.epsilon_sh < self.epsilon_su:
-            raise ConfigError("parameters must satisfy 0 < epsilon_y < epsilon_sh < epsilon_su.")
-        object.__setattr__(self, "epsilon_y", epsilon_y)
         object.__setattr__(
             self,
-            "buckling_intervals",
-            buckling_result.buckling_intervals,
+            "effective_tie_legs",
+            int(self.effective_tie_legs),
+        )
+        object.__setattr__(
+            self,
+            "restrained_longitudinal_bars",
+            int(self.restrained_longitudinal_bars),
         )
         object.__setattr__(self, "_buckling_result", buckling_result)
+
+    @property
+    def elastic_modulus_mpa(self) -> float:
+        """Initial modulus derived continuously from ``fy / epsilon_y``."""
+
+        return self.fy_mpa / self.epsilon_y
 
     @property
     def buckling_result(self) -> UnsupportedBucklingLengthResult:
@@ -192,8 +118,6 @@ class RDM2019Parameters:
 
     @property
     def l_over_d_source(self) -> str:
-        if self._buckling_result.calculation_mode == "legacy_explicit_buckling_intervals":
-            return "legacy input n; L=n*s; L/D=(n*s)/D"
         return "keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D"
 
     @property
@@ -224,6 +148,10 @@ class RDM2019Parameters:
         forbidden_geometry = {
             key
             for key in (
+                "Es_MPa",
+                "published_l_over_d",
+                "buckling_intervals",
+                "restraint_cases",
                 "l_over_d",
                 "L_over_D",
                 "unsupported_length_mm",
@@ -248,50 +176,32 @@ class RDM2019Parameters:
         for integer_key in (
             "effective_tie_legs",
             "restrained_longitudinal_bars",
-            "buckling_intervals",
         ):
             if isinstance(parameters.get(integer_key), bool):
                 raise ConfigError(
                     f"parameters.{integer_key} must be a positive integer."
                 )
-        physical_geometry_keys = (
+        required_parameters = (
+            "fy_MPa",
+            "fu_MPa",
+            "epsilon_y",
+            "epsilon_sh",
+            "epsilon_su",
+            "parameter_p",
+            "longitudinal_bar_diameter_mm",
             "tie_bar_diameter_mm",
+            "tie_spacing_mm",
             "effective_tie_leg_length_mm",
             "effective_tie_legs",
             "restrained_longitudinal_bars",
             "tie_steel_modulus_MPa",
             "buckling_restraint_case",
         )
-        has_physical_geometry = any(
-            key in parameters for key in physical_geometry_keys
-        )
-        if has_physical_geometry:
-            require_keys(
-                parameters,
-                physical_geometry_keys,
-                context="parameters",
-            )
-            conflicting = {
-                key
-                for key in ("epsilon_y", "buckling_intervals")
-                if key in parameters
-            }
-            if conflicting:
-                names = ", ".join(sorted(conflicting))
-                raise ConfigError(
-                    "Physical RDM restraint inputs cannot be combined with "
-                    f"derived or legacy values: {names}."
-                )
-        elif "buckling_intervals" not in parameters:
-            raise ConfigError(
-                "parameters requires complete physical transverse-restraint "
-                "variables; legacy cases may provide buckling_intervals."
-            )
+        require_keys(parameters, required_parameters, context="parameters")
         return cls(
             fy_mpa=required_float(parameters, "fy_MPa", context="parameters"),
             fu_mpa=required_float(parameters, "fu_MPa", context="parameters"),
-            elastic_modulus_mpa=required_float(parameters, "Es_MPa", context="parameters"),
-            epsilon_y=optional_float(parameters, "epsilon_y", context="parameters"),
+            epsilon_y=required_float(parameters, "epsilon_y", context="parameters"),
             epsilon_sh=required_float(parameters, "epsilon_sh", context="parameters"),
             epsilon_su=required_float(parameters, "epsilon_su", context="parameters"),
             parameter_p=required_float(parameters, "parameter_p", context="parameters"),
@@ -301,31 +211,29 @@ class RDM2019Parameters:
                 context="parameters",
             ),
             tie_spacing_mm=required_float(
-                parameters,
-                "tie_spacing_mm",
-                context="parameters",
+                parameters, "tie_spacing_mm", context="parameters"
             ),
-            tie_bar_diameter_mm=optional_float(
+            tie_bar_diameter_mm=required_float(
                 parameters,
                 "tie_bar_diameter_mm",
                 context="parameters",
             ),
-            effective_tie_leg_length_mm=optional_float(
+            effective_tie_leg_length_mm=required_float(
                 parameters,
                 "effective_tie_leg_length_mm",
                 context="parameters",
             ),
-            effective_tie_legs=optional_float(
+            effective_tie_legs=required_float(
                 parameters,
                 "effective_tie_legs",
                 context="parameters",
             ),
-            restrained_longitudinal_bars=optional_float(
+            restrained_longitudinal_bars=required_float(
                 parameters,
                 "restrained_longitudinal_bars",
                 context="parameters",
             ),
-            tie_steel_modulus_mpa=optional_float(
+            tie_steel_modulus_mpa=required_float(
                 parameters,
                 "tie_steel_modulus_MPa",
                 context="parameters",
@@ -334,11 +242,6 @@ class RDM2019Parameters:
                 None
                 if "buckling_restraint_case" not in parameters
                 else str(parameters["buckling_restraint_case"])
-            ),
-            buckling_intervals=optional_float(
-                parameters,
-                "buckling_intervals",
-                context="parameters",
             ),
             provenance=MaterialProvenance.from_mapping(provenance),
         )
@@ -425,7 +328,9 @@ class RDM2019MonotonicCompressionModel:
         assert p.epsilon_y is not None
         if strain <= p.epsilon_y:
             return p.elastic_modulus_mpa
-        if strain <= p.epsilon_sh or strain >= p.epsilon_su or p.parameter_p == 0.0:
+        if strain <= p.epsilon_sh or strain >= p.epsilon_su:
+            return 0.0
+        if p.parameter_p == 0.0:
             return 0.0
         ratio = (p.epsilon_su - strain) / (p.epsilon_su - p.epsilon_sh)
         return (
@@ -458,7 +363,7 @@ class RDM2019MonotonicCompressionModel:
             return None
         epsilon_i = self.epsilon_i
         assert epsilon_i is not None
-        exponent = 1.0 if self.uses_special_alpha_case else None
+        exponent = RDM_SPECIAL_HARDENING_EXPONENT if self.uses_special_alpha_case else None
         return self._reference_tension_stress(epsilon_i, exponent=exponent)
 
     @property
@@ -526,7 +431,10 @@ class RDM2019MonotonicCompressionModel:
         assert p.epsilon_y is not None
         checks = (
             (p.fu_mpa / p.fy_mpa < 2.0, "fu/fy is outside the reported fu/fy < 2 range."),
-            (p.parameter_p <= 4.0, "P is outside the reported P <= 4 range."),
+            (
+                p.parameter_p <= 4.0,
+                "parameter_p is outside the reported P <= 4 range.",
+            ),
             (
                 p.epsilon_su > 14.0 * p.epsilon_y,
                 "epsilon_su is outside the reported epsilon_su > 14 epsilon_y range.",
@@ -641,6 +549,7 @@ class RDM2019MonotonicCompressionModel:
                 "buckling_active": self.buckling_active,
                 "L_over_D": p.resolved_l_over_d,
                 "rb": self.rb,
+                "buckling_restraint_case": p.buckling_restraint_case,
                 "epsilon_i": self.epsilon_i,
                 "f_i_mpa": self.f_i_mpa,
                 "epsilon_ii": self.epsilon_ii,
@@ -681,6 +590,7 @@ class RDM2019MonotonicCompressionModel:
                 "stress_state": "tension" if epsilon > 0.0 else "zero",
                 "loading_type": "monotonic",
                 "sign_convention": "tension_positive_compression_negative",
+                "buckling_restraint_case": "reference_tension",
                 "source": p.provenance.source,
                 "calibration_status": p.provenance.calibration_status,
             },
@@ -755,17 +665,22 @@ class RDM2019MonotonicCompressionModel:
                         "strain": -epsilon_i,
                         "stress_mpa": -f_i,
                     },
+                ]
+            )
+            if epsilon_ii <= p.epsilon_su:
+                points.append(
                     {
                         "id": "compression_second",
                         "strain": -epsilon_ii,
                         "stress_mpa": -0.75 * f_i,
-                    },
-                    {
-                        "id": "compression_ultimate",
-                        "strain": -p.epsilon_su,
-                        "stress_mpa": -self.stress_at_strain(p.epsilon_su),
-                    },
-                ]
+                    }
+                )
+            points.append(
+                {
+                    "id": "compression_ultimate",
+                    "strain": -p.epsilon_su,
+                    "stress_mpa": -self.stress_at_strain(p.epsilon_su),
+                }
             )
         else:
             points.extend(
@@ -788,16 +703,24 @@ class RDM2019MonotonicCompressionModel:
         """Expose inputs, derived controls, applicability and provenance."""
 
         p = self.parameters
+        assert p.epsilon_y is not None
         buckling = p.buckling_result.as_dict()
+        epsilon_i = self.epsilon_i
+        f_i = self.f_i_mpa
+        epsilon_ii = self.epsilon_ii
+        compression_ultimate = self.stress_at_strain(p.epsilon_su)
         return {
             "fy_mpa": p.fy_mpa,
             "fu_mpa": p.fu_mpa,
             "elastic_modulus_mpa": p.elastic_modulus_mpa,
-            "eps_y": p.epsilon_y,
             "epsilon_y": p.epsilon_y,
             "epsilon_sh": p.epsilon_sh,
             "epsilon_su": p.epsilon_su,
             "parameter_p": p.parameter_p,
+            "fu_over_fy": p.fu_mpa / p.fy_mpa,
+            "epsilon_sh_over_epsilon_y": p.epsilon_sh / p.epsilon_y,
+            "epsilon_su_over_epsilon_y": p.epsilon_su / p.epsilon_y,
+            "special_case_parameter_p": RDM_SPECIAL_HARDENING_EXPONENT,
             "longitudinal_bar_diameter_mm": p.longitudinal_bar_diameter_mm,
             "tie_bar_diameter_mm": p.tie_bar_diameter_mm,
             "tie_spacing_mm": p.tie_spacing_mm,
@@ -812,24 +735,33 @@ class RDM2019MonotonicCompressionModel:
             "rb_min": self.rb_min,
             "eps_i_0": self.epsilon_i_0,
             "eps_i_max": self.epsilon_i_max,
-            "eps_i": self.epsilon_i,
+            "eps_i": epsilon_i,
+            "eps_i_over_epsilon_y": (
+                None if epsilon_i is None else epsilon_i / p.epsilon_y
+            ),
             "f_it_mpa": self.f_it_mpa,
             "alpha_1": self.alpha_1,
             "alpha_2": self.alpha_2,
             "alpha": self.alpha,
-            "f_i_mpa": self.f_i_mpa,
-            "eps_ii": self.epsilon_ii,
+            "f_i_mpa": f_i,
+            "f_i_over_fy": None if f_i is None else f_i / p.fy_mpa,
+            "eps_ii": epsilon_ii,
+            "eps_ii_over_epsilon_y": (
+                None if epsilon_ii is None else epsilon_ii / p.epsilon_y
+            ),
+            "compression_ultimate_stress_mpa": compression_ultimate,
+            "compression_ultimate_over_fy": compression_ultimate / p.fy_mpa,
             "residual_stress_mpa": self.residual_stress_mpa,
             "buckling_active": self.buckling_active,
             "special_alpha_case": self.uses_special_alpha_case,
             "loading_type": "monotonic",
-            "sign_convention": "compression_positive",
+            "sign_convention": "tension_positive_compression_negative",
             "reference": RDM_REFERENCE,
             "applicability": {
                 "fy_mpa": "200 < fy < 900",
                 "diameter_mm": "10 < D < 36",
                 "fu_over_fy": "< 2",
-                "parameter_p": "<= 4",
+                "parameter_p": "P <= 4; P = 1 only in the Eq. (5) special case",
                 "epsilon_su_over_epsilon_y": "> 14",
                 "rb": "8 < rb < 56",
                 "l_over_d": ">= 5 for buckling activation",

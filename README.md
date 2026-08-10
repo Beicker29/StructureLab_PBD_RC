@@ -87,7 +87,7 @@ Instructivos estaticos:
 
 Modelo implementado para `ductile_reinforcing_steel`:
 
-- `monotonic/Mon_RDM2019.json`: envolvente de traccion de referencia y envolvente RDM 2019 de compresion con pandeo inelastico y degradacion pospandeo. Para restriccion transversal rectangular calcula `epsilon_y`, las rigideces `k` y `kt`, `keq=kt/k`, el modo `n`, `L=n*s`, `L/D` y `rb` a partir de variables fisicas. `epsilon_y`, `buckling_intervals`, `L/D` y `rb` no son inputs canonicos.
+- `monotonic/Mon_RDM2019.json`: envolvente de traccion de referencia y dos envolventes RDM 2019 de compresion para `COL75X75FC28MPa`: barras de borde en flexion y barras interiores en compresion axial. `epsilon_y` y `parameter_p` son inputs; para este caso se adopta `P=3.087`. `Es=fy/epsilon_y`, las rigideces `k` y `kt`, `keq=kt/k`, el modo `n`, `L=n*s`, `L/D` y `rb` son resultados calculados. No se ingresan `Es`, `n` ni `L/D`.
 
 El nombre base de cada JSON debe coincidir exactamente con `inputs.model_id`.
 

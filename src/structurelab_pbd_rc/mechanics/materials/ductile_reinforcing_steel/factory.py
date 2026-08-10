@@ -7,7 +7,7 @@ from typing import Any, Callable, Mapping
 from structurelab_pbd_rc.core.exceptions import ConfigError
 from structurelab_pbd_rc.core.validation import require_keys
 from structurelab_pbd_rc.mechanics.materials.ductile_reinforcing_steel.monotonic.rdm_2019 import (
-    RDM2019MonotonicCompressionModel,
+    RDM2019SectionModelSet,
 )
 
 
@@ -16,8 +16,8 @@ ModelBuilder = Callable[[Mapping[str, Any]], Any]
 MODEL_BUILDERS: dict[tuple[str, str], ModelBuilder] = {
     (
         "monotonic",
-        RDM2019MonotonicCompressionModel.model_id,
-    ): RDM2019MonotonicCompressionModel.from_config,
+        RDM2019SectionModelSet.model_id,
+    ): RDM2019SectionModelSet.from_config,
 }
 
 

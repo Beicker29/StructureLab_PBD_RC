@@ -1,4 +1,9 @@
-"""Unsupported reinforcing-bar length from transverse-restraint stiffness."""
+"""Unsupported reinforcing-bar length from transverse-restraint stiffness.
+
+The implementation follows Dhakal and Maekawa (2002) and User Bulletin 3.
+Only physical section inputs are accepted: the stable buckling mode ``n`` is
+calculated from ``k_eq = k_t / k`` and is never supplied by the user.
+"""
 
 from __future__ import annotations
 
@@ -10,10 +15,6 @@ from structurelab_pbd_rc.core.exceptions import ConfigError
 
 
 BUCKLING_RESTRAINT_CASES = ("bending", "pure_compression")
-LEGACY_BUCKLING_WARNING = (
-    "Legacy RDM geometry uses input buckling_intervals. Migrate to tie diameter, "
-    "effective tie geometry, restrained bars, tie modulus and restraint case."
-)
 
 
 def _positive_float(value: Any, *, name: str) -> float:
@@ -39,11 +40,11 @@ def _positive_integer(value: Any, *, name: str) -> int:
 
 
 def select_buckling_intervals(equivalent_stiffness_ratio: float) -> int:
-    """Select the conservative tabulated buckling mode from ``keq = kt / k``.
+    """Select stable mode ``n`` from User Bulletin 3, Table 1.
 
-    The definition follows Dhakal and Maekawa (2002), Table 1 and Table 3.
-    User Bulletin 3 prints the inverse ratio on its first page, but uses
-    ``kt / k`` in its later definition and in every worked example.
+    The bulletin's worked examples and the Dhakal-Maekawa source use
+    ``k_eq = k_t / k``. At a shared tabulated boundary, the larger mode is
+    selected conservatively.
     """
 
     keq = _positive_float(
@@ -77,16 +78,17 @@ def select_buckling_intervals(equivalent_stiffness_ratio: float) -> int:
 
 @dataclass(frozen=True)
 class UnsupportedBucklingLengthResult:
-    """Validated base-to-derived unsupported-length calculation."""
+    """Calculated unsupported length and every auditable intermediate value."""
 
     epsilon_y: float
-    tie_area_mm2: float | None
+    elastic_modulus_mpa: float
+    tie_area_mm2: float
     longitudinal_bar_inertia_mm4: float
     reduced_flexural_rigidity_n_mm2: float
-    effective_restrained_bars: int | None
+    effective_restrained_bars: int
     bar_normalized_stiffness_n_per_mm: float
-    tie_stiffness_n_per_mm: float | None
-    equivalent_stiffness_ratio: float | None
+    tie_stiffness_n_per_mm: float
+    equivalent_stiffness_ratio: float
     buckling_intervals: int
     unsupported_length_mm: float
     l_over_d: float
@@ -101,6 +103,7 @@ class UnsupportedBucklingLengthResult:
 
         return {
             "epsilon_y": self.epsilon_y,
+            "elastic_modulus_mpa": self.elastic_modulus_mpa,
             "tie_area_mm2": self.tie_area_mm2,
             "longitudinal_bar_inertia_mm4": self.longitudinal_bar_inertia_mm4,
             "reduced_flexural_rigidity_N_mm2": (
@@ -124,27 +127,24 @@ class UnsupportedBucklingLengthResult:
 
 
 class UnsupportedBucklingLengthCalculator:
-    """Calculate the unsupported length for rectangular transverse restraint."""
+    """Calculate ``n``, ``L`` and ``L/D`` for rectangular tie restraint."""
 
     @staticmethod
     def _common_values(
         *,
         fy_mpa: float,
-        elastic_modulus_mpa: float,
+        epsilon_y: float,
         longitudinal_bar_diameter_mm: float,
         tie_spacing_mm: float,
     ) -> tuple[float, float, float, float]:
         fy = _positive_float(fy_mpa, name="fy_MPa")
-        elastic_modulus = _positive_float(
-            elastic_modulus_mpa,
-            name="Es_MPa",
-        )
+        yield_strain = _positive_float(epsilon_y, name="epsilon_y")
         diameter = _positive_float(
             longitudinal_bar_diameter_mm,
             name="longitudinal_bar_diameter_mm",
         )
         spacing = _positive_float(tie_spacing_mm, name="tie_spacing_mm")
-        epsilon_y = fy / elastic_modulus
+        elastic_modulus = fy / yield_strain
         inertia = pi * diameter**4 / 64.0
         reduced_rigidity = (
             0.5 * elastic_modulus * inertia * sqrt(fy / 400.0)
@@ -154,7 +154,7 @@ class UnsupportedBucklingLengthCalculator:
             raise ConfigError(
                 "bar_normalized_stiffness_N_per_mm must be finite and positive."
             )
-        return epsilon_y, inertia, reduced_rigidity, bar_stiffness
+        return elastic_modulus, inertia, reduced_rigidity, bar_stiffness
 
     @staticmethod
     def _applicability_warnings(
@@ -184,7 +184,7 @@ class UnsupportedBucklingLengthCalculator:
         cls,
         *,
         fy_mpa: float,
-        elastic_modulus_mpa: float,
+        epsilon_y: float,
         longitudinal_bar_diameter_mm: float,
         tie_bar_diameter_mm: float,
         tie_spacing_mm: float,
@@ -194,15 +194,18 @@ class UnsupportedBucklingLengthCalculator:
         tie_steel_modulus_mpa: float,
         buckling_restraint_case: str,
     ) -> UnsupportedBucklingLengthResult:
-        """Calculate ``n``, ``L`` and ``L/D`` from physical base variables."""
+        """Resolve unsupported length from the physical transverse restraint."""
 
-        epsilon_y, inertia, reduced_rigidity, bar_stiffness = cls._common_values(
-            fy_mpa=fy_mpa,
-            elastic_modulus_mpa=elastic_modulus_mpa,
-            longitudinal_bar_diameter_mm=longitudinal_bar_diameter_mm,
-            tie_spacing_mm=tie_spacing_mm,
+        elastic_modulus, inertia, reduced_rigidity, bar_stiffness = (
+            cls._common_values(
+                fy_mpa=fy_mpa,
+                epsilon_y=epsilon_y,
+                longitudinal_bar_diameter_mm=longitudinal_bar_diameter_mm,
+                tie_spacing_mm=tie_spacing_mm,
+            )
         )
         fy = float(fy_mpa)
+        yield_strain = float(epsilon_y)
         diameter = float(longitudinal_bar_diameter_mm)
         spacing = float(tie_spacing_mm)
         tie_diameter = _positive_float(
@@ -257,7 +260,8 @@ class UnsupportedBucklingLengthCalculator:
         l_over_d = unsupported_length / diameter
         rb = l_over_d * sqrt(fy / 100.0)
         return UnsupportedBucklingLengthResult(
-            epsilon_y=epsilon_y,
+            epsilon_y=yield_strain,
+            elastic_modulus_mpa=elastic_modulus,
             tie_area_mm2=tie_area,
             longitudinal_bar_inertia_mm4=inertia,
             reduced_flexural_rigidity_n_mm2=reduced_rigidity,
@@ -277,59 +281,4 @@ class UnsupportedBucklingLengthCalculator:
                 diameter_mm=diameter,
                 rb=rb,
             ),
-        )
-
-    @classmethod
-    def calculate_legacy(
-        cls,
-        *,
-        fy_mpa: float,
-        elastic_modulus_mpa: float,
-        longitudinal_bar_diameter_mm: float,
-        tie_spacing_mm: float,
-        buckling_intervals: int,
-    ) -> UnsupportedBucklingLengthResult:
-        """Resolve an old explicit-``n`` configuration without inventing restraint data."""
-
-        epsilon_y, inertia, reduced_rigidity, bar_stiffness = cls._common_values(
-            fy_mpa=fy_mpa,
-            elastic_modulus_mpa=elastic_modulus_mpa,
-            longitudinal_bar_diameter_mm=longitudinal_bar_diameter_mm,
-            tie_spacing_mm=tie_spacing_mm,
-        )
-        intervals = _positive_integer(
-            buckling_intervals,
-            name="buckling_intervals",
-        )
-        fy = float(fy_mpa)
-        diameter = float(longitudinal_bar_diameter_mm)
-        spacing = float(tie_spacing_mm)
-        unsupported_length = intervals * spacing
-        l_over_d = unsupported_length / diameter
-        rb = l_over_d * sqrt(fy / 100.0)
-        warnings = (
-            LEGACY_BUCKLING_WARNING,
-            *cls._applicability_warnings(
-                fy_mpa=fy,
-                diameter_mm=diameter,
-                rb=rb,
-            ),
-        )
-        return UnsupportedBucklingLengthResult(
-            epsilon_y=epsilon_y,
-            tie_area_mm2=None,
-            longitudinal_bar_inertia_mm4=inertia,
-            reduced_flexural_rigidity_n_mm2=reduced_rigidity,
-            effective_restrained_bars=None,
-            bar_normalized_stiffness_n_per_mm=bar_stiffness,
-            tie_stiffness_n_per_mm=None,
-            equivalent_stiffness_ratio=None,
-            buckling_intervals=intervals,
-            unsupported_length_mm=unsupported_length,
-            l_over_d=l_over_d,
-            rb=rb,
-            buckling_active=l_over_d >= 5.0,
-            buckling_restraint_case="legacy_explicit_intervals",
-            calculation_mode="legacy_explicit_buckling_intervals",
-            applicability_warnings=warnings,
         )

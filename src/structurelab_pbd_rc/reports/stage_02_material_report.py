@@ -60,6 +60,9 @@ def write_stage_02_pdf_report(
         "buckling_calculation_mode",
         "buckling_restraint_case",
         "epsilon_y",
+        "fu_over_fy",
+        "epsilon_sh_over_epsilon_y",
+        "epsilon_su_over_epsilon_y",
         "tie_area_mm2",
         "longitudinal_bar_inertia_mm4",
         "reduced_flexural_rigidity_N_mm2",
@@ -72,6 +75,9 @@ def write_stage_02_pdf_report(
         "s_over_db",
         "L_over_D",
         "rb",
+        "eps_i_over_epsilon_y",
+        "f_i_over_fy",
+        "compression_ultimate_over_fy",
         "buckling_active",
         "yield_strain",
         "elastic_ultimate_strain",
@@ -95,6 +101,46 @@ def write_stage_02_pdf_report(
         "f_cu_mpa",
     )
     shown = False
+    material_controls = calculated.get("material")
+    if isinstance(material_controls, Mapping):
+        for key in (
+            "fy_mpa",
+            "fu_mpa",
+            "epsilon_y",
+            "epsilon_sh",
+            "epsilon_su",
+            "parameter_p",
+            "elastic_modulus_mpa",
+            "special_case_parameter_p",
+        ):
+            if material_controls.get(key) not in (None, ""):
+                lines.extend(_wrapped_lines(key, material_controls[key]))
+                shown = True
+    restraint_cases = calculated.get("restraint_cases")
+    if isinstance(restraint_cases, Mapping):
+        case_names = {
+            "bending": "Barras de borde en flexion",
+            "pure_compression": "Barras interiores en compresion axial",
+        }
+        for case_name, controls in restraint_cases.items():
+            lines.append("")
+            lines.append(case_names.get(str(case_name), str(case_name)))
+            for key in (
+                "effective_restrained_bars",
+                "tie_stiffness_N_per_mm",
+                "equivalent_stiffness_ratio",
+                "buckling_intervals",
+                "unsupported_length_mm",
+                "L_over_D",
+                "rb",
+                "eps_i",
+                "f_i_mpa",
+                "eps_ii",
+                "compression_ultimate_stress_mpa",
+            ):
+                if controls.get(key) not in (None, ""):
+                    lines.extend(_wrapped_lines(key, controls[key]))
+                    shown = True
     for key in preferred_parameters:
         if calculated.get(key) not in (None, ""):
             lines.extend(_wrapped_lines(key, calculated[key]))

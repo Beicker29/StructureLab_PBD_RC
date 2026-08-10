@@ -35,6 +35,8 @@ MOMENT_CURVATURE_EXTERNAL_LEGEND_RECT = (0.035, 0.055, 0.70, 0.94)
 def _display_name(model_name: str) -> str:
     """Return a reader-friendly model name."""
 
+    if model_name.startswith(("Compresión |", "Tracción |")):
+        return model_name
     return model_name.replace("_", " ").title()
 
 
@@ -410,11 +412,12 @@ def plot_stress_strain_curves(
     fig.patch.set_facecolor("white")
     _style_axes(ax)
 
+    curve_handles: list[Any] = []
     for index, (model_name, curve) in enumerate(curves.items()):
         strain, stress = _curve_for_plot(curve)
         color = COLOR_CYCLE[index % len(COLOR_CYCLE)]
         line_style = LINE_STYLES[index % len(LINE_STYLES)]
-        ax.plot(
+        (curve_artist,) = ax.plot(
             strain,
             stress,
             label=_display_name(model_name),
@@ -423,6 +426,7 @@ def plot_stress_strain_curves(
             linewidth=2.35,
             solid_capstyle="round",
         )
+        curve_handles.append(curve_artist)
     marker_colors = ["#c43c2f", "#2f7d4f", "#7a4f9a", "#d79a2b", "#5b6670"]
     marker_styles = ["o", "s", "D", "^", "P"]
     grouped_legend_entries: dict[str, list[tuple[Any, str]]] = {}
@@ -467,10 +471,31 @@ def plot_stress_strain_curves(
         "edgecolor": "#d7d9d4",
         "framealpha": 0.96,
         "fontsize": 9,
-        "title": "Curva y puntos notables" if notable_points else "Modelo",
+        "title": (
+            "Curva y puntos notables"
+            if notable_points
+            else "Curvas"
+            if len(curve_handles) > 2
+            else "Modelo"
+        ),
         "title_fontsize": 9,
     }
     if notable_points and len(grouped_legend_entries) > 1:
+        if len(curve_handles) > 2:
+            curve_legend = ax.legend(
+                handles=curve_handles,
+                loc="upper left",
+                bbox_to_anchor=(1.015, 1.0),
+                borderaxespad=0.0,
+                frameon=True,
+                facecolor="white",
+                edgecolor="#d7d9d4",
+                framealpha=0.96,
+                fontsize=8.2,
+                title="Curvas",
+                title_fontsize=9,
+            )
+            curve_legend.get_title().set_fontweight("bold")
         group_positions = [
             0.27,
             0.73,
@@ -508,7 +533,16 @@ def plot_stress_strain_curves(
             **legend_kwargs,
         )
     else:
-        legend = ax.legend(loc="best", **legend_kwargs)
+        if len(curve_handles) > 2:
+            legend = ax.legend(
+                handles=curve_handles,
+                loc="upper left",
+                bbox_to_anchor=(1.015, 1.0),
+                borderaxespad=0.0,
+                **legend_kwargs,
+            )
+        else:
+            legend = ax.legend(loc="best", **legend_kwargs)
     if legend is not None:
         legend.get_title().set_fontweight("bold")
 
@@ -523,7 +557,11 @@ def plot_stress_strain_curves(
     )
     if notable_points:
         bottom = 0.34 if len(notable_points) > 4 else 0.38
-        fig.subplots_adjust(left=0.075, right=0.98, top=0.86, bottom=bottom)
+        right = 0.72 if len(curve_handles) > 2 else 0.98
+        fig.subplots_adjust(left=0.075, right=right, top=0.86, bottom=bottom)
+        fig.savefig(output_path, facecolor=fig.get_facecolor())
+    elif len(curve_handles) > 2:
+        fig.subplots_adjust(left=0.085, right=0.68, top=0.86, bottom=0.13)
         fig.savefig(output_path, facecolor=fig.get_facecolor())
     else:
         fig.tight_layout(rect=(0.035, 0.04, 0.985, 0.94))
