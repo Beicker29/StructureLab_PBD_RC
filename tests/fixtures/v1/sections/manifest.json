@@ -1,0 +1,4998 @@
+{
+  "comparison_basis": "outputs/stage_0x/ captured by V2-002; text compared after CRLF-to-LF normalization",
+  "config": {
+    "bilinearization": {
+      "method": "asce_fema_energy_equivalent_m_phi",
+      "my_lower_ratio": 0.05,
+      "my_upper_ratio": 1.0,
+      "search_points": 5000,
+      "stiffness_fraction": 0.6,
+      "tolerance": 0.001,
+      "ultimate": {
+        "mode": "first_post_peak_strength_drop",
+        "post_peak_strength_ratio": 0.8
+      }
+    },
+    "curve_detection": {
+      "curvature_header_contains": "Curvature",
+      "first_data_row": 4,
+      "header_row": 2,
+      "moment_header_contains": "Moment",
+      "title_row": 1
+    },
+    "cyclic_diagram": {
+      "cut_points_by_sheet": {
+        "V1 (1-2 y 3-4)T": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        },
+        "V1 (2-3)T": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": 753.754,
+            "phi": 0.085863
+          }
+        },
+        "V2": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        },
+        "V2 (1-2 y 3-4)L": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        },
+        "V2 (2-3, C-D y A-B)L": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": 531.501,
+            "phi": 0.114283
+          }
+        },
+        "V2 (C-B)L": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        },
+        "V2 (C-B)T": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        },
+        "V2 (D-C y B-A)T": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": 587.672,
+            "phi": 0.114283
+          }
+        },
+        "V3 (C-B)T": {
+          "negative_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          },
+          "positive_bending": {
+            "moment": "auto",
+            "phi": "auto"
+          }
+        }
+      },
+      "enabled": true
+    },
+    "source": {
+      "sheets": "all",
+      "workbook": "references/stage_03/excel/M-curvatura.xlsx"
+    },
+    "stage_id": "stage_03",
+    "title": "Caracterizacion de la seccion por diagrama momento-curvatura",
+    "units": {
+      "curvature": "1/m",
+      "moment": "kN-m"
+    }
+  },
+  "curve_count": 20,
+  "fixture_schema_version": 1,
+  "input_files": [
+    {
+      "path": "configs/stage_03/section_characterization.yaml",
+      "sha256": "42dd8e6ae65cae24911224aeae11bbdae8a60f9f0a678458a2773142f2f337ab"
+    },
+    {
+      "path": "references/stage_03/excel/M-curvatura.xlsx",
+      "sha256": "ce38cc1aca600805cc852e46d7c564ba5646ed5fdcb4ba1bafdbcdddbd27f427"
+    }
+  ],
+  "matplotlib_version": "3.11.1",
+  "method": "asce_fema_energy_equivalent_m_phi",
+  "numpy_version": "2.5.1",
+  "package_version": "0.1.0",
+  "presentation_artifacts_not_copied": [
+    {
+      "bytes": 152902,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 88761,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 154892,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 150052,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 87212,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 152863,
+      "kind": "png",
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 155899,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 100056,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 159549,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 146289,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85341,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 150268,
+      "kind": "png",
+      "path": "stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 154503,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 89355,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 156142,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 151626,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 87773,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 154175,
+      "kind": "png",
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 164680,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 99137,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 165934,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 156699,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85725,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 159766,
+      "kind": "png",
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 151503,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 86891,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 150674,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 148614,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85324,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 148689,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 151762,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 88705,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 153320,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 148927,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 87114,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 151348,
+      "kind": "png",
+      "path": "stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 161486,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 99358,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 164670,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 153860,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 88241,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 157350,
+      "kind": "png",
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 154399,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85648,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 154645,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 151700,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 84113,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 152664,
+      "kind": "png",
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 148870,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 87133,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 151396,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 145975,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85528,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 149395,
+      "kind": "png",
+      "path": "stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 155842,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 86660,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 159921,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png"
+    },
+    {
+      "bytes": 153291,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_bilinearization.png"
+    },
+    {
+      "bytes": 85120,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real.png"
+    },
+    {
+      "bytes": 157971,
+      "kind": "png",
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png"
+    }
+  ],
+  "processed_sheet_order": [
+    "V1 (2-3)T",
+    "V1 (1-2 y 3-4)T",
+    "V2 (2-3, C-D y A-B)L",
+    "V2 (1-2 y 3-4)L ",
+    "V2 (C-B)L ",
+    "V2 (D-C y B-A)T",
+    "V2 (C-B)T",
+    "V3 (D-C Y B-A)T",
+    "V3 (C-B)T",
+    "V2(0-1 Y 4-5)35X50"
+  ],
+  "python": "3.12.10",
+  "scientific_files": [
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "f745447c5f0e072581ff51e90a52a64f1ef7b80ead39a21a681a02f2c0eb374d"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "1496b7d60b59d38a99034ca7142200c9e6a1ece845a50f7c5e1491b060b99d93"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "cef73dbff85fb9946bd410f32e34beab1b4d753dcf9832ef65fbf9ff66805b23"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 117,
+      "sha256_lf": "c84893d65a57880025fff62508fc03d7cd364ae39090897f30fbf43c45db6a1e"
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "cf83bfcbf487cee76a929329a826d73ebead11bf0dd0a4ffcd8ccd10b5b1c42b"
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "fe0484b466573b870fa100ff9392fa74bffbc98b4c420b1e6dac2f33ce4aa372"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "f745447c5f0e072581ff51e90a52a64f1ef7b80ead39a21a681a02f2c0eb374d"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "1381c69f73748feee11ed4d61a8d2bfed9039e41ed8e6f1023bba57767e1539a"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 117,
+      "sha256_lf": "c84893d65a57880025fff62508fc03d7cd364ae39090897f30fbf43c45db6a1e"
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "3d22dc0be2b820d42af5662ccc89716c5570db5ecd3927d8211faa367aa69d5a"
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "eb64f20955e93d7033d6ec40633f2e9eee16d9b48919940767f8fe8e2d231949"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (2-3)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "6eea3397a4cafcfe718edb2e71539f8d2d40572b23570b23ce27910146909d30"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V1 (2-3)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "7399f8919263d8697ee7a424b2de8de796e59fb0f39998022b9094558a8458fe"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V1 (2-3)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "d5557424ac6ad1782376dc42d2a6a16f8b9d7923d631c399fb88087f5228ab4f"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (2-3)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 113,
+      "sha256_lf": "ccedb022d1a158e61688165f7ab56f2631fc75a92f7ce1f04917b3313f68378c"
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "6ce59841c6806f4cfeb8070faeb88e0d9dfc5196d3c52d0da5513829a020bbe7"
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "5b61514a9359f1011bb357bcaab472fc1cdaaad78356802a674d0542ffbc7980"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (2-3)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "ec14921b4e5ae97e320fee32342bf55c9fd55fafcfc68a347d2f25903fdd2df5"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V1 (2-3)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "29e7348ba03d2431f832a59bc13eb34ec3eea8f679206275c6003410f9ec0bb4"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V1 (2-3)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 118,
+      "sha256_lf": "38e2b753f7a5abe6617b8c6ec6bf2dc3816addaddd900fcb35bf0d24b1cc8b0b"
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "d0942ebc88ef3b2445ddba907624211412fb6084c3bf3ff9ec9227c3fdd9b191"
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "90b0e12c267d8e344d21e03876005ef91ad4b956be6e10cb33b4bef0e8e0c220"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "649fd0a329c07d81fdada4fb69c5f5faeecf06870077b33de993489cf8dfbe8c"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "ae7e28782f7a224fa51d669211ee1c03191c95ec31b3e2c45ca1844b6afcdc9c"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "27cfb1b082ace16f23b4fba111e75579fc180b727754da6a9194fb81396024de"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 125,
+      "sha256_lf": "ba4050fbddfe09751cda78921b17ed931f0e27637bf33d6f85716ebe680f8fe3"
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "f3d56939c8300fd823dc5345ac8c9babb99a8e0d421b1fd45bad48342315fb6d"
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "e6c9d581cf7bd0a16571f578c1515ec276528bc1b62ee30a0c4a1229961c7bbf"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "649fd0a329c07d81fdada4fb69c5f5faeecf06870077b33de993489cf8dfbe8c"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "68fabde180fe3a4e946048902d3d7e5be2a65167d300b1ede4def60698c28b49"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 125,
+      "sha256_lf": "ba4050fbddfe09751cda78921b17ed931f0e27637bf33d6f85716ebe680f8fe3"
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "4ef1e052ed0fa20fd1af7548a1f506e8ce611f9cfc5cba383e904468506fd835"
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "3ad405613b8291fb67804c270538c75447914a550d44a19dc309d78f96f776b4"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "f4207cf1606016f4836398fdced9a38d9d807e56695a7fce5bb4b0e0b8b62fea"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "70e8f96bf2d2e908514d67f9f8fc035a573dfa3ff42e3ae19cae0ff76cd61c81"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "9aa5b70903af3505b3ea3c01750ba92fb385183f3d5ebdddb5949444cde6385e"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 126,
+      "sha256_lf": "7de27012136be8e74cb6e95c4dd011827e9966956c980b98046df68f5556a49d"
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "4072679209acd38c84952cc441022febc4626ace49c652a33a236f72860a7c9e"
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "b6851a4acaa14cefbf2ac42be108cc2fdf19aaf930f8c247e77ffe10baea1279"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "d787882959429f5bf46f3b851715719ffa5ba6c3e3d5331e047c3f81a4323c49"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "e64aae0fed7d24220272259851e7b3a9b9036a35f9f34524e9b25258c980085e"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 127,
+      "sha256_lf": "56ee652e05e37f807ae3e456b2c003b5d8dc0398eccaaba9427fbc1c595353de"
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "707fabf836e279ba99040f433d955695779da7a658bcbaac70630445ee6ed72c"
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "f9f3b98f37cd2d3c53d7d0ee691bdee66ae5ec288e1613c82aaffafcf54ac977"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)L/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "93408f824d8b8666f70aff8718e9d88dc3f67bbec668d1403f61969e3cd0bbe0"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (C-B)L/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "d416334a3bd9ec328cf5a5920558257f70d81930c20db5fc51897149169240f1"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (C-B)L/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "02bef56b31b702bef551d421c10846addc459892f211d0653616640989c75f02"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)L/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 132,
+      "sha256_lf": "e34b2e739854c77721ceaf5cb234a3fccb5c3741bf8fb7f8ffaffa3f7f21b1f8"
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "45301b4b749aa65f9d4d5769d6b0e0845af6dc99c267fc71c1051329cc278eb5"
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "c90da0d34faa6c9a6b28dda41a0dca55caff9af8e42fc0e34779e090ba0bc8c9"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)L/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "93408f824d8b8666f70aff8718e9d88dc3f67bbec668d1403f61969e3cd0bbe0"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2 (C-B)L/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "a923c7d472cad1f6750946f0ca56b88344715aa0233457d153e6cece8ef654bc"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)L/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 132,
+      "sha256_lf": "e34b2e739854c77721ceaf5cb234a3fccb5c3741bf8fb7f8ffaffa3f7f21b1f8"
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "4bcc507e2b1da72c9a47b10bfa83a5110ae28885ff95e7dc0970c6898f3db3c8"
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "c8765c9a64f6d5137f2d1522891d9173317b58bdd507b16fd74e5970a137d13e"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "ff6b841c9001f6cce6e291e4f503056d2f7bc100915d535c6a9a5af61d58ff02"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "461666344db63b1712884ed0a078b3a5e8fc19a660ff5d1e1316136ac467ea4e"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "f58875631f495ff66020c1a2557faac89c421247e58b7bfab67f581f5e413613"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 119,
+      "sha256_lf": "85dc75687193e417a6617bf374708c94519cd595358bcd7bde7d6e9f72c671bb"
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "2c46dd67f445c4a14763e69ebe5b266d427f22d188fd7d8955e39eddde08f59e"
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "66a8942332f2c4c9cc591e46253d6cb122711a30f92f422fe75e66df80bf3bba"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "ff6b841c9001f6cce6e291e4f503056d2f7bc100915d535c6a9a5af61d58ff02"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "717115ecec0a42af90b182a1baa74cfaa75a7f2df2369533a40e9fec4d219b36"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 119,
+      "sha256_lf": "85dc75687193e417a6617bf374708c94519cd595358bcd7bde7d6e9f72c671bb"
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "c4fb7ef3808f3caf312e1007d8bf9fd1bb89f33c57a21528544cb4f2ee7cd55c"
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "f6e7a99b74612bc9725da049ed029f3516fc192760336defb6f4e07dd822fb33"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "3b3bc1a632f280788c24bd758067986f3552cddab59db92db1b4986078c7d102"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "1e120612ca5bc53fae7298a47a352676f072e8b4524d9246bcd8af5c5927b333"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "9516ea23ba0c2cc1f94f30c72c9dd6c205da0b36bf75074c243c2e066b14ba0c"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 126,
+      "sha256_lf": "9ac3e93d9ebe1c3455b322cddaa4b4287827c54e3b527abcaabf1ec2ef1b3a61"
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "494b3942ddf2b1e1677dcea7544236d4d04dc9a30cfa76f77a9abdcc51f12e3d"
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "09dfd56e388c01306613c8e154427542eaab5c1e66627f244a9f39bca8763ded"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "4a3968742e9989b97cf70d93392a39ba33b67638dd851bacdbfab25289fe07ff"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "f9b8773fe6fc5a277edcb29cf0c5ec0a07bfc0256f3739b8c6a14e6736139d36"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 129,
+      "sha256_lf": "1a98b980cdcf304feedcffaae4e83f6d27bdd55f36357315fbf6e919cdde57d1"
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "a5ff4a75904a1706f462656f5f8b5f83c5630b5036a7f4eba38e8528abc0c6fd"
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "202f51a607b1af6f0d9c51f9bd0c0a61e9849848da98e0c047fa6589bfdd05fa"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "c93e9ceddc10d6af4df6e0af56ef0f96952e6a004e8540a9227f9605e9eb1faa"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "c698e491f43f7f81373be3a133b6bf1c65ea5f3a6b33ffc42d52b3ac2961449f"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "64e4194f9e46d66c6ff2920e4c046b70709eae6c8f32ccf6d54c821b3fae14e4"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 124,
+      "sha256_lf": "475ed5d4215bba5407ca96548a9997a21178092c58026498e55814eaa905be1d"
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "40dc7222293cc5d5a8a2e651dcf1f8339059e2b7410f831fe3e705dd8d57cce7"
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "91ec16b63f33ab15a74c6eca189ae4c8b7d01961ef4be5b689ea2424011911b2"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "c93e9ceddc10d6af4df6e0af56ef0f96952e6a004e8540a9227f9605e9eb1faa"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "c1499e7ef8989c605ac8fff3f4aa82c0f5ae3bdc258e62b5d2a678afcf78131c"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 124,
+      "sha256_lf": "475ed5d4215bba5407ca96548a9997a21178092c58026498e55814eaa905be1d"
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "a5aaea845d51df4a155ac1754fdb388cf0b1fdcf5b2a98e3c35df2b8b8081984"
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "1b18b0413a948bb595fb45f30fe1f30240e28734c12c1fa7becaed2d5e45e1d2"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (C-B)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "0287b71773b175c119a5b55b3863bb1b087621b61099230ab5f9ce26568add0b"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V3 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "a40dd98ea538907f6b9936efe80151df112879a85c118ac019328c4f0564ff02"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V3 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "c41e8e4554fe66cef366c01bbc0564050962f3b64ff02c372ccceba1357e409e"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 130,
+      "sha256_lf": "9565b70c8234db7a5fada4c6d70a7eb5408ca74cd8a086374565080bc8c0cc4a"
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "106b9f45a94c8be1a7ddd7ec4c4538580807941df52f24779cc285c3a907c945"
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "fe39bc885700a84af7e8361e847b1e36bf45877f5e2135339a597efe7ae0a90d"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (C-B)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "0287b71773b175c119a5b55b3863bb1b087621b61099230ab5f9ce26568add0b"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V3 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "20a6a55e61d80ccfa4f6e5ffe9a718387ebe3ee790f9a2f788abf96b16aae14b"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 130,
+      "sha256_lf": "9565b70c8234db7a5fada4c6d70a7eb5408ca74cd8a086374565080bc8c0cc4a"
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "bead1ed727b91fc09aa6514ca3d30a01ad8c27935b710929fc7503601fc8df07"
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "6ee5c38360be9288208af499c83aaceba6662c47936f37df6050e3ce8f765e2f"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "2340785fcc5018b60e42c05bc2da47a40cf9582a3c388d5f34346db58cad89ba"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status",
+        "cyclic_cut_phi",
+        "cyclic_cut_moment",
+        "cyclic_cut_phi_abs",
+        "cyclic_cut_moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "b5dc24c104dc40604c9fc45a95ae37f30f0c9da64cf33e11beececdb33b18be2"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "mode",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs",
+        "phi_u_ciclico",
+        "Mu_ciclico"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/data/cyclic_cut_points.csv",
+      "row_count": 2,
+      "sha256_lf": "cd5054695060ff5ad407e5221b881acb3b0639dc3d06611fef33037dd2cabb68"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/data/moment_curvature_curves.csv",
+      "row_count": 111,
+      "sha256_lf": "9ed6892abfa47730abbf11504b68b20898d763aab227b453829d7c2c13090f8c"
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "77004063ff9609bbd2afe359b7040e2be2165e0cec1124a6871525e7168b1c36"
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "11c24f7d462bbcb726ff001b8f6721a60382ecf09924b83f0e812d3dd6c1d8ad"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "point",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinear_curves.csv",
+      "row_count": 6,
+      "sha256_lf": "2340785fcc5018b60e42c05bc2da47a40cf9582a3c388d5f34346db58cad89ba"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "Ke",
+        "My",
+        "phi_y",
+        "Kp",
+        "alpha",
+        "Mu",
+        "phi_u",
+        "signed_My",
+        "signed_phi_y",
+        "signed_Mu",
+        "signed_phi_u",
+        "M_60My",
+        "phi_60My",
+        "M_peak",
+        "phi_peak",
+        "A_real",
+        "A_bilinear",
+        "relative_error",
+        "absolute_relative_error",
+        "ductility_phi",
+        "status"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinearization_parameters.csv",
+      "row_count": 2,
+      "sha256_lf": "c8f6785dcd7ceadf2e3431137690049dc77f90308b62a9634dc467aa6b3ff4fa"
+    },
+    {
+      "columns": [
+        "curve_id",
+        "curve_name",
+        "point_index",
+        "phi",
+        "moment",
+        "phi_abs",
+        "moment_abs"
+      ],
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/data/moment_curvature_curves.csv",
+      "row_count": 111,
+      "sha256_lf": "9ed6892abfa47730abbf11504b68b20898d763aab227b453829d7c2c13090f8c"
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "6dc9ec56e77589152f32d1088bbaba711b5892e444fa81ad22fdda099cdf12b0"
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ],
+      "sha256_lf": "f2487d5b0e0ab14be32088c035fd1d284bfbb7ae8080a760319efadb37fd9486"
+    }
+  ],
+  "sheet_count": 10,
+  "sheets": [
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V1 (2-3)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V1 (2-3)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 57.44586148156647,
+              "A_real": 57.44699349000001,
+              "Ke": 98800.48671490034,
+              "Kp": 1416.6813036216686,
+              "M_60My": 384.7854611522305,
+              "M_peak": 753.754,
+              "Mu": 753.754,
+              "Mu_ciclico": 753.754,
+              "My": 641.3091019203841,
+              "absolute_relative_error": 1.9705268540133898e-05,
+              "alpha": 0.014338808954551592,
+              "curve_id": "positive_bending",
+              "curve_name": "V1 (2-3)T",
+              "cyclic_cut_moment": 753.754,
+              "cyclic_cut_moment_abs": 753.754,
+              "cyclic_cut_phi": 0.085863,
+              "cyclic_cut_phi_abs": 0.085863,
+              "ductility_phi": 13.228108201487299,
+              "phi_60My": 0.0038945705020924765,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_u_ciclico": 0.085863,
+              "phi_y": 0.006490950836820795,
+              "relative_error": -1.9705268540133898e-05,
+              "signed_Mu": 753.754,
+              "signed_My": 641.3091019203841,
+              "signed_phi_u": 0.085863,
+              "signed_phi_y": 0.006490950836820795,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 58.098880136554136,
+              "A_real": 58.5893857035,
+              "Ke": 115432.64328839895,
+              "Kp": -1112.945454203259,
+              "M_60My": 539.649,
+              "M_peak": 899.415,
+              "Mu": 829.111,
+              "Mu_ciclico": "",
+              "My": 899.415,
+              "absolute_relative_error": 0.008371918583139567,
+              "alpha": -0.00964151406827492,
+              "curve_id": "negative_bending",
+              "curve_name": "V1 (2-3)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 9.10727061521998,
+              "phi_60My": 0.0046750120644099905,
+              "phi_peak": 0.033104,
+              "phi_u": 0.070961,
+              "phi_u_ciclico": "",
+              "phi_y": 0.00779168677401665,
+              "relative_error": -0.008371918583139567,
+              "signed_Mu": -829.111,
+              "signed_My": -899.415,
+              "signed_phi_u": -0.070961,
+              "signed_phi_y": -0.00779168677401665,
+              "status": "best_effort"
+            }
+          ],
+          "status": "completed",
+          "warnings": [
+            "V1 (2-3)T/negative_bending: bilinearization did not reach tolerance; best error = 0.008372."
+          ]
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V1 (2-3)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V1 (2-3)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 96.72954499949013,
+              "A_real": 96.72878077450001,
+              "Ke": 97160.76102406645,
+              "Kp": 448.19327898663585,
+              "M_60My": 413.5770847369474,
+              "M_peak": 753.754,
+              "Mu": 748.093,
+              "My": 689.2951412282457,
+              "absolute_relative_error": 7.900699088749736e-06,
+              "alpha": 0.0046129041627784246,
+              "curve_id": "positive_bending",
+              "curve_name": "V1 (2-3)T",
+              "ductility_phi": 19.49191385964236,
+              "phi_60My": 0.0042566266502843215,
+              "phi_peak": 0.085863,
+              "phi_u": 0.138283,
+              "phi_y": 0.007094377750473869,
+              "relative_error": 7.900699088749736e-06,
+              "signed_Mu": 748.093,
+              "signed_My": 689.2951412282457,
+              "signed_phi_u": 0.138283,
+              "signed_phi_y": 0.007094377750473869,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 58.098880136554136,
+              "A_real": 58.5893857035,
+              "Ke": 115432.64328839895,
+              "Kp": -1112.945454203259,
+              "M_60My": 539.649,
+              "M_peak": 899.415,
+              "Mu": 829.111,
+              "My": 899.415,
+              "absolute_relative_error": 0.008371918583139567,
+              "alpha": -0.00964151406827492,
+              "curve_id": "negative_bending",
+              "curve_name": "V1 (2-3)T-INV",
+              "ductility_phi": 9.10727061521998,
+              "phi_60My": 0.0046750120644099905,
+              "phi_peak": 0.033104,
+              "phi_u": 0.070961,
+              "phi_y": 0.00779168677401665,
+              "relative_error": -0.008371918583139567,
+              "signed_Mu": -829.111,
+              "signed_My": -899.415,
+              "signed_phi_u": -0.070961,
+              "signed_phi_y": -0.00779168677401665,
+              "status": "best_effort"
+            }
+          ],
+          "status": "completed",
+          "warnings": [
+            "V1 (2-3)T/negative_bending: bilinearization did not reach tolerance; best error = 0.008372."
+          ]
+        }
+      },
+      "output_folder": "V1 (2-3)T",
+      "sheet_name": "V1 (2-3)T",
+      "status": "completed",
+      "warnings": [
+        "V1 (2-3)T/negative_bending: bilinearization did not reach tolerance; best error = 0.008372."
+      ]
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V1 (1-2 y 3-4)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V1 (1-2 y 3-4)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 72.16039406064591,
+              "A_real": 72.15987867300001,
+              "Ke": 88091.46819836582,
+              "Kp": 496.0801805372227,
+              "M_60My": 375.56786213842764,
+              "M_peak": 680.381,
+              "Mu": 679.115,
+              "Mu_ciclico": "",
+              "My": 625.9464368973794,
+              "absolute_relative_error": 7.142302001923882e-06,
+              "alpha": 0.005631421415523932,
+              "curve_id": "positive_bending",
+              "curve_name": "V1 (1-2 y 3-4)T",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 16.083416514062417,
+              "phi_60My": 0.0042633852042597105,
+              "phi_peak": 0.103894,
+              "phi_u": 0.114283,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007105642007099517,
+              "relative_error": 7.142302001923882e-06,
+              "signed_Mu": 679.115,
+              "signed_My": 625.9464368973794,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007105642007099517,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 54.94438807389451,
+              "A_real": 54.945986078,
+              "Ke": 103062.94623787027,
+              "Kp": -352.12725168758345,
+              "M_60My": 498.8141212522505,
+              "M_peak": 841.269,
+              "Mu": 809.21,
+              "Mu_ciclico": "",
+              "My": 831.3568687537509,
+              "absolute_relative_error": 2.9083181858276928e-05,
+              "alpha": -0.003416623185551773,
+              "curve_id": "negative_bending",
+              "curve_name": "V1 (1-2 y 3-4)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 8.797004033837803,
+              "phi_60My": 0.004839897746576958,
+              "phi_peak": 0.030094000000000003,
+              "phi_u": 0.070961,
+              "phi_u_ciclico": "",
+              "phi_y": 0.008066496244294931,
+              "relative_error": -2.9083181858276928e-05,
+              "signed_Mu": -809.21,
+              "signed_My": -831.3568687537509,
+              "signed_phi_u": -0.070961,
+              "signed_phi_y": -0.008066496244294931,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V1 (1-2 y 3-4)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V1 (1-2 y 3-4)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 72.16039406064591,
+              "A_real": 72.15987867300001,
+              "Ke": 88091.46819836582,
+              "Kp": 496.0801805372227,
+              "M_60My": 375.56786213842764,
+              "M_peak": 680.381,
+              "Mu": 679.115,
+              "My": 625.9464368973794,
+              "absolute_relative_error": 7.142302001923882e-06,
+              "alpha": 0.005631421415523932,
+              "curve_id": "positive_bending",
+              "curve_name": "V1 (1-2 y 3-4)T",
+              "ductility_phi": 16.083416514062417,
+              "phi_60My": 0.0042633852042597105,
+              "phi_peak": 0.103894,
+              "phi_u": 0.114283,
+              "phi_y": 0.007105642007099517,
+              "relative_error": 7.142302001923882e-06,
+              "signed_Mu": 679.115,
+              "signed_My": 625.9464368973794,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007105642007099517,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 54.94438807389451,
+              "A_real": 54.945986078,
+              "Ke": 103062.94623787027,
+              "Kp": -352.12725168758345,
+              "M_60My": 498.8141212522505,
+              "M_peak": 841.269,
+              "Mu": 809.21,
+              "My": 831.3568687537509,
+              "absolute_relative_error": 2.9083181858276928e-05,
+              "alpha": -0.003416623185551773,
+              "curve_id": "negative_bending",
+              "curve_name": "V1 (1-2 y 3-4)T-INV",
+              "ductility_phi": 8.797004033837803,
+              "phi_60My": 0.004839897746576958,
+              "phi_peak": 0.030094000000000003,
+              "phi_u": 0.070961,
+              "phi_y": 0.008066496244294931,
+              "relative_error": -2.9083181858276928e-05,
+              "signed_Mu": -809.21,
+              "signed_My": -831.3568687537509,
+              "signed_phi_u": -0.070961,
+              "signed_phi_y": -0.008066496244294931,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V1 (1-2 y 3-4)T",
+      "sheet_name": "V1 (1-2 y 3-4)T",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (2-3, C-D y A-B)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (2-3, C-D y A-B)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 55.918912760739765,
+              "A_real": 55.91773609149999,
+              "Ke": 67304.6991460764,
+              "Kp": 477.9393572466441,
+              "M_60My": 288.17476003400674,
+              "M_peak": 531.501,
+              "Mu": 531.501,
+              "Mu_ciclico": 531.501,
+              "My": 480.2912667233446,
+              "absolute_relative_error": 2.1042862641116965e-05,
+              "alpha": 0.007101129093666056,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (2-3, C-D y A-B)L",
+              "cyclic_cut_moment": 531.501,
+              "cyclic_cut_moment_abs": 531.501,
+              "cyclic_cut_phi": 0.114283,
+              "cyclic_cut_phi_abs": 0.114283,
+              "ductility_phi": 16.014829886427307,
+              "phi_60My": 0.004281643981626893,
+              "phi_peak": 0.114283,
+              "phi_u": 0.114283,
+              "phi_u_ciclico": 0.114283,
+              "phi_y": 0.00713607330271149,
+              "relative_error": 2.1042862641116965e-05,
+              "signed_Mu": 531.501,
+              "signed_My": 480.2912667233446,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.00713607330271149,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.23812240772793,
+              "A_real": 37.237351219999994,
+              "Ke": 65172.362466556275,
+              "Kp": 302.4336809710428,
+              "M_60My": 294.6822394578916,
+              "M_peak": 512.465,
+              "Mu": 512.465,
+              "Mu_ciclico": "",
+              "My": 491.1370657631527,
+              "absolute_relative_error": 2.0710058655316735e-05,
+              "alpha": 0.004640520452611168,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (2-3, C-D y A-B)L-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 10.357921345535809,
+              "phi_60My": 0.00452158289657077,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007535971494284616,
+              "relative_error": 2.0710058655316735e-05,
+              "signed_Mu": -512.465,
+              "signed_My": -491.1370657631527,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007535971494284616,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (2-3, C-D y A-B)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (2-3, C-D y A-B)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 61.98514266528932,
+              "A_real": 61.98618079249999,
+              "Ke": 67176.01864154756,
+              "Kp": 372.96440471303856,
+              "M_60My": 291.7503508781756,
+              "M_peak": 531.501,
+              "Mu": 530.437,
+              "My": 486.25058479695934,
+              "absolute_relative_error": 1.6747720175647254e-05,
+              "alpha": 0.0055520468800508,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (2-3, C-D y A-B)L",
+              "ductility_phi": 17.36724215764693,
+              "phi_60My": 0.004343072971248277,
+              "phi_peak": 0.114283,
+              "phi_u": 0.125712,
+              "phi_y": 0.007238454952080461,
+              "relative_error": -1.6747720175647254e-05,
+              "signed_Mu": 530.437,
+              "signed_My": 486.25058479695934,
+              "signed_phi_u": 0.125712,
+              "signed_phi_y": 0.007238454952080461,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.23812240772793,
+              "A_real": 37.237351219999994,
+              "Ke": 65172.362466556275,
+              "Kp": 302.4336809710428,
+              "M_60My": 294.6822394578916,
+              "M_peak": 512.465,
+              "Mu": 512.465,
+              "My": 491.1370657631527,
+              "absolute_relative_error": 2.0710058655316735e-05,
+              "alpha": 0.004640520452611168,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (2-3, C-D y A-B)L-INV",
+              "ductility_phi": 10.357921345535809,
+              "phi_60My": 0.00452158289657077,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_y": 0.007535971494284616,
+              "relative_error": 2.0710058655316735e-05,
+              "signed_Mu": -512.465,
+              "signed_My": -491.1370657631527,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007535971494284616,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2 (2-3, C-D y A-B)L",
+      "sheet_name": "V2 (2-3, C-D y A-B)L",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (1-2 y 3-4)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (1-2 y 3-4)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 55.746413019368134,
+              "A_real": 55.7442491945,
+              "Ke": 66998.91567092582,
+              "Kp": 464.7452068572643,
+              "M_60My": 287.6822531006201,
+              "M_peak": 529.257,
+              "Mu": 529.257,
+              "Mu_ciclico": "",
+              "My": 479.47042183436685,
+              "absolute_relative_error": 3.881700622757065e-05,
+              "alpha": 0.0069366078869085405,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (1-2 y 3-4)L",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 15.969362719657964,
+              "phi_60My": 0.004293834463136838,
+              "phi_peak": 0.114283,
+              "phi_u": 0.114283,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007156390771894731,
+              "relative_error": 3.881700622757065e-05,
+              "signed_Mu": 529.257,
+              "signed_My": 479.47042183436685,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007156390771894731,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.2055291474902,
+              "A_real": 37.2056908745,
+              "Ke": 64957.7019093913,
+              "Kp": 303.69818697970084,
+              "M_60My": 294.4335099019804,
+              "M_peak": 512.134,
+              "Mu": 512.134,
+              "Mu_ciclico": "",
+              "My": 490.7225165033007,
+              "absolute_relative_error": 4.346835282327956e-06,
+              "alpha": 0.0046753222181924745,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (1-2 y 3-4)L-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 10.332526361478365,
+              "phi_60My": 0.004532695912067242,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007554493186778737,
+              "relative_error": -4.346835282327956e-06,
+              "signed_Mu": -512.134,
+              "signed_My": -490.7225165033007,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007554493186778737,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (1-2 y 3-4)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (1-2 y 3-4)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 55.746413019368134,
+              "A_real": 55.7442491945,
+              "Ke": 66998.91567092582,
+              "Kp": 464.7452068572643,
+              "M_60My": 287.6822531006201,
+              "M_peak": 529.257,
+              "Mu": 529.257,
+              "My": 479.47042183436685,
+              "absolute_relative_error": 3.881700622757065e-05,
+              "alpha": 0.0069366078869085405,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (1-2 y 3-4)L",
+              "ductility_phi": 15.969362719657964,
+              "phi_60My": 0.004293834463136838,
+              "phi_peak": 0.114283,
+              "phi_u": 0.114283,
+              "phi_y": 0.007156390771894731,
+              "relative_error": 3.881700622757065e-05,
+              "signed_Mu": 529.257,
+              "signed_My": 479.47042183436685,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007156390771894731,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.2055291474902,
+              "A_real": 37.2056908745,
+              "Ke": 64957.7019093913,
+              "Kp": 303.69818697970084,
+              "M_60My": 294.4335099019804,
+              "M_peak": 512.134,
+              "Mu": 512.134,
+              "My": 490.7225165033007,
+              "absolute_relative_error": 4.346835282327956e-06,
+              "alpha": 0.0046753222181924745,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (1-2 y 3-4)L-INV",
+              "ductility_phi": 10.332526361478365,
+              "phi_60My": 0.004532695912067242,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_y": 0.007554493186778737,
+              "relative_error": -4.346835282327956e-06,
+              "signed_Mu": -512.134,
+              "signed_My": -490.7225165033007,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007554493186778737,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2 (1-2 y 3-4)L",
+      "sheet_name": "V2 (1-2 y 3-4)L ",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (C-B)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (C-B)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 48.271716475088596,
+              "A_real": 48.2731833215,
+              "Ke": 62967.59517330414,
+              "Kp": 441.0605612808035,
+              "M_60My": 276.64625890178036,
+              "M_peak": 503.671,
+              "Mu": 503.671,
+              "Mu_ciclico": "",
+              "My": 461.0770981696339,
+              "absolute_relative_error": 3.0386361753576645e-05,
+              "alpha": 0.0070045641741102475,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (C-B)L",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 14.188419591658883,
+              "phi_60My": 0.004393470294369251,
+              "phi_peak": 0.103894,
+              "phi_u": 0.103894,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007322450490615418,
+              "relative_error": -3.0386361753576645e-05,
+              "signed_Mu": 503.671,
+              "signed_My": 461.0770981696339,
+              "signed_phi_u": 0.103894,
+              "signed_phi_y": 0.007322450490615418,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 39.97773901351782,
+              "A_real": 39.977038219499995,
+              "Ke": 61469.64458368968,
+              "Kp": 320.30093281843546,
+              "M_60My": 285.38847925385073,
+              "M_peak": 500.671,
+              "Mu": 500.671,
+              "Mu_ciclico": "",
+              "My": 475.6474654230846,
+              "absolute_relative_error": 1.752991339619169e-05,
+              "alpha": 0.005210717175733011,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (C-B)L-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 11.096386455448966,
+              "phi_60My": 0.004642754666741241,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007737924444568736,
+              "relative_error": 1.752991339619169e-05,
+              "signed_Mu": -500.671,
+              "signed_My": -475.6474654230846,
+              "signed_phi_u": -0.085863,
+              "signed_phi_y": -0.007737924444568736,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (C-B)L",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (C-B)L-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 48.271716475088596,
+              "A_real": 48.2731833215,
+              "Ke": 62967.59517330414,
+              "Kp": 441.0605612808035,
+              "M_60My": 276.64625890178036,
+              "M_peak": 503.671,
+              "Mu": 503.671,
+              "My": 461.0770981696339,
+              "absolute_relative_error": 3.0386361753576645e-05,
+              "alpha": 0.0070045641741102475,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (C-B)L",
+              "ductility_phi": 14.188419591658883,
+              "phi_60My": 0.004393470294369251,
+              "phi_peak": 0.103894,
+              "phi_u": 0.103894,
+              "phi_y": 0.007322450490615418,
+              "relative_error": -3.0386361753576645e-05,
+              "signed_Mu": 503.671,
+              "signed_My": 461.0770981696339,
+              "signed_phi_u": 0.103894,
+              "signed_phi_y": 0.007322450490615418,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 39.97773901351782,
+              "A_real": 39.977038219499995,
+              "Ke": 61469.64458368968,
+              "Kp": 320.30093281843546,
+              "M_60My": 285.38847925385073,
+              "M_peak": 500.671,
+              "Mu": 500.671,
+              "My": 475.6474654230846,
+              "absolute_relative_error": 1.752991339619169e-05,
+              "alpha": 0.005210717175733011,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (C-B)L-INV",
+              "ductility_phi": 11.096386455448966,
+              "phi_60My": 0.004642754666741241,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_y": 0.007737924444568736,
+              "relative_error": 1.752991339619169e-05,
+              "signed_Mu": -500.671,
+              "signed_My": -475.6474654230846,
+              "signed_phi_u": -0.085863,
+              "signed_phi_y": -0.007737924444568736,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2 (C-B)L",
+      "sheet_name": "V2 (C-B)L ",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (D-C y B-A)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (D-C y B-A)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 60.49745646258807,
+              "A_real": 60.49485179999999,
+              "Ke": 74492.84903863557,
+              "Kp": 759.9271950912835,
+              "M_60My": 303.5921926785357,
+              "M_peak": 588.787,
+              "Mu": 587.672,
+              "Mu_ciclico": 587.672,
+              "My": 505.98698779755955,
+              "absolute_relative_error": 4.3055937994324974e-05,
+              "alpha": 0.010201344221606408,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (D-C y B-A)T",
+              "cyclic_cut_moment": 587.672,
+              "cyclic_cut_moment_abs": 587.672,
+              "cyclic_cut_phi": 0.114283,
+              "cyclic_cut_phi_abs": 0.114283,
+              "ductility_phi": 16.82506956105453,
+              "phi_60My": 0.0040754541757568995,
+              "phi_peak": 0.103894,
+              "phi_u": 0.114283,
+              "phi_u_ciclico": 0.114283,
+              "phi_y": 0.006792423626261501,
+              "relative_error": 4.3055937994324974e-05,
+              "signed_Mu": 587.672,
+              "signed_My": 505.98698779755955,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.006792423626261501,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 40.633371942696925,
+              "A_real": 40.63399613500001,
+              "Ke": 76235.30523115279,
+              "Kp": 232.0185909161087,
+              "M_60My": 322.39539022204445,
+              "M_peak": 556.138,
+              "Mu": 553.801,
+              "Mu_ciclico": "",
+              "My": 537.3256503700741,
+              "absolute_relative_error": 1.536133195002174e-05,
+              "alpha": 0.0030434532951971005,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (D-C y B-A)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 11.074660620295436,
+              "phi_60My": 0.004228951261420291,
+              "phi_peak": 0.048466999999999996,
+              "phi_u": 0.078057,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007048252102367151,
+              "relative_error": -1.536133195002174e-05,
+              "signed_Mu": -553.801,
+              "signed_My": -537.3256503700741,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007048252102367151,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (D-C y B-A)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (D-C y B-A)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 82.6576774131413,
+              "A_real": 82.6575182835,
+              "Ke": 73960.93956999943,
+              "Kp": 389.6269992791432,
+              "M_60My": 317.3548974094819,
+              "M_peak": 588.787,
+              "Mu": 585.405,
+              "My": 528.9248290158032,
+              "absolute_relative_error": 1.9251683888953603e-06,
+              "alpha": 0.00526801040582219,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (D-C y B-A)T",
+              "ductility_phi": 21.27007820726837,
+              "phi_60My": 0.004290844589786819,
+              "phi_peak": 0.103894,
+              "phi_u": 0.152111,
+              "phi_y": 0.007151407649644698,
+              "relative_error": 1.9251683888953603e-06,
+              "signed_Mu": 585.405,
+              "signed_My": 528.9248290158032,
+              "signed_phi_u": 0.152111,
+              "signed_phi_y": 0.007151407649644698,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 40.633371942696925,
+              "A_real": 40.63399613500001,
+              "Ke": 76235.30523115279,
+              "Kp": 232.0185909161087,
+              "M_60My": 322.39539022204445,
+              "M_peak": 556.138,
+              "Mu": 553.801,
+              "My": 537.3256503700741,
+              "absolute_relative_error": 1.536133195002174e-05,
+              "alpha": 0.0030434532951971005,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (D-C y B-A)T-INV",
+              "ductility_phi": 11.074660620295436,
+              "phi_60My": 0.004228951261420291,
+              "phi_peak": 0.048466999999999996,
+              "phi_u": 0.078057,
+              "phi_y": 0.007048252102367151,
+              "relative_error": -1.536133195002174e-05,
+              "signed_Mu": -553.801,
+              "signed_My": -537.3256503700741,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007048252102367151,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2 (D-C y B-A)T",
+      "sheet_name": "V2 (D-C y B-A)T",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (C-B)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (C-B)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 55.52519863632717,
+              "A_real": 55.5244000795,
+              "Ke": 66645.94874444362,
+              "Kp": 428.92182469669683,
+              "M_60My": 287.6550142948589,
+              "M_peak": 526.007,
+              "Mu": 525.358,
+              "Mu_ciclico": "",
+              "My": 479.4250238247649,
+              "absolute_relative_error": 1.4382088343634422e-05,
+              "alpha": 0.0064358274250309435,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (C-B)T",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 15.88673636515303,
+              "phi_60My": 0.0043161665444644325,
+              "phi_peak": 0.103894,
+              "phi_u": 0.114283,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007193610907440721,
+              "relative_error": 1.4382088343634422e-05,
+              "signed_Mu": 525.358,
+              "signed_My": 479.4250238247649,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007193610907440721,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.173484425126986,
+              "A_real": 37.17508600800001,
+              "Ke": 64741.36514526844,
+              "Kp": 304.96889982097434,
+              "M_60My": 294.19002903780756,
+              "M_peak": 511.812,
+              "Mu": 511.812,
+              "Mu_ciclico": "",
+              "My": 490.3167150630126,
+              "absolute_relative_error": 4.308215649258092e-05,
+              "alpha": 0.004710572585806258,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (C-B)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 10.306637697421289,
+              "phi_60My": 0.004544081336216744,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007573468893694574,
+              "relative_error": -4.308215649258092e-05,
+              "signed_Mu": -511.812,
+              "signed_My": -490.3167150630126,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007573468893694574,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2 (C-B)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2 (C-B)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 55.52519863632717,
+              "A_real": 55.5244000795,
+              "Ke": 66645.94874444362,
+              "Kp": 428.92182469669683,
+              "M_60My": 287.6550142948589,
+              "M_peak": 526.007,
+              "Mu": 525.358,
+              "My": 479.4250238247649,
+              "absolute_relative_error": 1.4382088343634422e-05,
+              "alpha": 0.0064358274250309435,
+              "curve_id": "positive_bending",
+              "curve_name": "V2 (C-B)T",
+              "ductility_phi": 15.88673636515303,
+              "phi_60My": 0.0043161665444644325,
+              "phi_peak": 0.103894,
+              "phi_u": 0.114283,
+              "phi_y": 0.007193610907440721,
+              "relative_error": 1.4382088343634422e-05,
+              "signed_Mu": 525.358,
+              "signed_My": 479.4250238247649,
+              "signed_phi_u": 0.114283,
+              "signed_phi_y": 0.007193610907440721,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 37.173484425126986,
+              "A_real": 37.17508600800001,
+              "Ke": 64741.36514526844,
+              "Kp": 304.96889982097434,
+              "M_60My": 294.19002903780756,
+              "M_peak": 511.812,
+              "Mu": 511.812,
+              "My": 490.3167150630126,
+              "absolute_relative_error": 4.308215649258092e-05,
+              "alpha": 0.004710572585806258,
+              "curve_id": "negative_bending",
+              "curve_name": "V2 (C-B)T-INV",
+              "ductility_phi": 10.306637697421289,
+              "phi_60My": 0.004544081336216744,
+              "phi_peak": 0.078057,
+              "phi_u": 0.078057,
+              "phi_y": 0.007573468893694574,
+              "relative_error": -4.308215649258092e-05,
+              "signed_Mu": -511.812,
+              "signed_My": -490.3167150630126,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.007573468893694574,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2 (C-B)T",
+      "sheet_name": "V2 (C-B)T",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V3 (D-C Y B-A)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V3 (D-C Y B-A)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 13.786314108707755,
+              "A_real": 13.786773427499998,
+              "Ke": 44933.812474718296,
+              "Kp": 697.8949562813573,
+              "M_60My": 112.98124647329466,
+              "M_peak": 232.701,
+              "Mu": 232.701,
+              "Mu_ciclico": "",
+              "My": 188.30207745549112,
+              "absolute_relative_error": 3.331590198815425e-05,
+              "alpha": 0.015531621241220588,
+              "curve_id": "positive_bending",
+              "curve_name": "V3 (D-C Y B-A)T",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 16.181005176739866,
+              "phi_60My": 0.002514392619964371,
+              "phi_peak": 0.067809,
+              "phi_u": 0.067809,
+              "phi_u_ciclico": "",
+              "phi_y": 0.004190654366607285,
+              "relative_error": -3.331590198815425e-05,
+              "signed_Mu": 232.701,
+              "signed_My": 188.30207745549112,
+              "signed_phi_u": 0.067809,
+              "signed_phi_y": 0.004190654366607285,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 27.064064685355483,
+              "A_real": 27.064349169499998,
+              "Ke": 63661.52638030632,
+              "Kp": -252.89487443695126,
+              "M_60My": 221.3231248889778,
+              "M_peak": 370.138,
+              "Mu": 350.597,
+              "Mu_ciclico": "",
+              "My": 368.871874814963,
+              "absolute_relative_error": 1.0511397955060215e-05,
+              "alpha": -0.003972491531638554,
+              "curve_id": "negative_bending",
+              "curve_name": "V3 (D-C Y B-A)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 13.471419492636247,
+              "phi_60My": 0.003476560137229824,
+              "phi_peak": 0.06451000000000001,
+              "phi_u": 0.078057,
+              "phi_u_ciclico": "",
+              "phi_y": 0.0057942668953830405,
+              "relative_error": -1.0511397955060215e-05,
+              "signed_Mu": -350.597,
+              "signed_My": -368.871874814963,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.0057942668953830405,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V3 (D-C Y B-A)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V3 (D-C Y B-A)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 13.786314108707755,
+              "A_real": 13.786773427499998,
+              "Ke": 44933.812474718296,
+              "Kp": 697.8949562813573,
+              "M_60My": 112.98124647329466,
+              "M_peak": 232.701,
+              "Mu": 232.701,
+              "My": 188.30207745549112,
+              "absolute_relative_error": 3.331590198815425e-05,
+              "alpha": 0.015531621241220588,
+              "curve_id": "positive_bending",
+              "curve_name": "V3 (D-C Y B-A)T",
+              "ductility_phi": 16.181005176739866,
+              "phi_60My": 0.002514392619964371,
+              "phi_peak": 0.067809,
+              "phi_u": 0.067809,
+              "phi_y": 0.004190654366607285,
+              "relative_error": -3.331590198815425e-05,
+              "signed_Mu": 232.701,
+              "signed_My": 188.30207745549112,
+              "signed_phi_u": 0.067809,
+              "signed_phi_y": 0.004190654366607285,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 27.064064685355483,
+              "A_real": 27.064349169499998,
+              "Ke": 63661.52638030632,
+              "Kp": -252.89487443695126,
+              "M_60My": 221.3231248889778,
+              "M_peak": 370.138,
+              "Mu": 350.597,
+              "My": 368.871874814963,
+              "absolute_relative_error": 1.0511397955060215e-05,
+              "alpha": -0.003972491531638554,
+              "curve_id": "negative_bending",
+              "curve_name": "V3 (D-C Y B-A)T-INV",
+              "ductility_phi": 13.471419492636247,
+              "phi_60My": 0.003476560137229824,
+              "phi_peak": 0.06451000000000001,
+              "phi_u": 0.078057,
+              "phi_y": 0.0057942668953830405,
+              "relative_error": -1.0511397955060215e-05,
+              "signed_Mu": -350.597,
+              "signed_My": -368.871874814963,
+              "signed_phi_u": -0.078057,
+              "signed_phi_y": -0.0057942668953830405,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V3 (D-C Y B-A)T",
+      "sheet_name": "V3 (D-C Y B-A)T",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V3 (C-B)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V3 (C-B)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 19.685346712069514,
+              "A_real": 19.685576374000004,
+              "Ke": 39052.21609464714,
+              "Kp": 458.09782932567964,
+              "M_60My": 110.94614542108421,
+              "M_peak": 227.654,
+              "Mu": 227.654,
+              "Mu_ciclico": "",
+              "My": 184.9102423684737,
+              "absolute_relative_error": 1.1666507808902138e-05,
+              "alpha": 0.011730392667484773,
+              "curve_id": "positive_bending",
+              "curve_name": "V3 (C-B)T",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 20.70603186340412,
+              "phi_60My": 0.0028409692590093886,
+              "phi_peak": 0.098042,
+              "phi_u": 0.098042,
+              "phi_u_ciclico": "",
+              "phi_y": 0.004734948765015648,
+              "relative_error": -1.1666507808902138e-05,
+              "signed_Mu": 227.654,
+              "signed_My": 184.9102423684737,
+              "signed_phi_u": 0.098042,
+              "signed_phi_y": 0.004734948765015648,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 30.56530039680815,
+              "A_real": 30.5654973015,
+              "Ke": 47476.01898155808,
+              "Kp": -58.2237064807696,
+              "M_60My": 183.82341863572714,
+              "M_peak": 316.228,
+              "Mu": 300.699,
+              "Mu_ciclico": "",
+              "My": 306.3723643928786,
+              "absolute_relative_error": 6.442057523397743e-06,
+              "alpha": -0.0012263813969614096,
+              "curve_id": "negative_bending",
+              "curve_name": "V3 (C-B)T-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 16.09960325842185,
+              "phi_60My": 0.003871921500139529,
+              "phi_peak": 0.09444899999999999,
+              "phi_u": 0.103894,
+              "phi_u_ciclico": "",
+              "phi_y": 0.00645320250023255,
+              "relative_error": -6.442057523397743e-06,
+              "signed_Mu": -300.699,
+              "signed_My": -306.3723643928786,
+              "signed_phi_u": -0.103894,
+              "signed_phi_y": -0.00645320250023255,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V3 (C-B)T",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V3 (C-B)T-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 19.685346712069514,
+              "A_real": 19.685576374000004,
+              "Ke": 39052.21609464714,
+              "Kp": 458.09782932567964,
+              "M_60My": 110.94614542108421,
+              "M_peak": 227.654,
+              "Mu": 227.654,
+              "My": 184.9102423684737,
+              "absolute_relative_error": 1.1666507808902138e-05,
+              "alpha": 0.011730392667484773,
+              "curve_id": "positive_bending",
+              "curve_name": "V3 (C-B)T",
+              "ductility_phi": 20.70603186340412,
+              "phi_60My": 0.0028409692590093886,
+              "phi_peak": 0.098042,
+              "phi_u": 0.098042,
+              "phi_y": 0.004734948765015648,
+              "relative_error": -1.1666507808902138e-05,
+              "signed_Mu": 227.654,
+              "signed_My": 184.9102423684737,
+              "signed_phi_u": 0.098042,
+              "signed_phi_y": 0.004734948765015648,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 30.56530039680815,
+              "A_real": 30.5654973015,
+              "Ke": 47476.01898155808,
+              "Kp": -58.2237064807696,
+              "M_60My": 183.82341863572714,
+              "M_peak": 316.228,
+              "Mu": 300.699,
+              "My": 306.3723643928786,
+              "absolute_relative_error": 6.442057523397743e-06,
+              "alpha": -0.0012263813969614096,
+              "curve_id": "negative_bending",
+              "curve_name": "V3 (C-B)T-INV",
+              "ductility_phi": 16.09960325842185,
+              "phi_60My": 0.003871921500139529,
+              "phi_peak": 0.09444899999999999,
+              "phi_u": 0.103894,
+              "phi_y": 0.00645320250023255,
+              "relative_error": -6.442057523397743e-06,
+              "signed_Mu": -300.699,
+              "signed_My": -306.3723643928786,
+              "signed_phi_u": -0.103894,
+              "signed_phi_y": -0.00645320250023255,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V3 (C-B)T",
+      "sheet_name": "V3 (C-B)T",
+      "status": "completed",
+      "warnings": []
+    },
+    {
+      "curve_count": 2,
+      "modes": {
+        "ciclica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2(0-1 Y 4-5)35X50",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2(0-1 Y 4-5)35X50-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "ciclica",
+          "parameters": [
+            {
+              "A_bilinear": 36.81415092014328,
+              "A_real": 36.815206709499996,
+              "Ke": 55476.4568779097,
+              "Kp": 358.3187944301964,
+              "M_60My": 261.6083149509902,
+              "M_peak": 463.964,
+              "Mu": 463.964,
+              "Mu_ciclico": "",
+              "My": 436.0138582516503,
+              "absolute_relative_error": 2.867807765010132e-05,
+              "alpha": 0.006458934376771207,
+              "curve_id": "positive_bending",
+              "curve_name": "V2(0-1 Y 4-5)35X50",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 10.924824811780926,
+              "phi_60My": 0.0047156637188767656,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007859439531461275,
+              "relative_error": -2.867807765010132e-05,
+              "signed_Mu": 463.964,
+              "signed_My": 436.0138582516503,
+              "signed_phi_u": 0.085863,
+              "signed_phi_y": 0.007859439531461275,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 36.81415092014328,
+              "A_real": 36.815206709499996,
+              "Ke": 55476.4568779097,
+              "Kp": 358.3187944301964,
+              "M_60My": 261.6083149509902,
+              "M_peak": 463.964,
+              "Mu": 463.964,
+              "Mu_ciclico": "",
+              "My": 436.0138582516503,
+              "absolute_relative_error": 2.867807765010132e-05,
+              "alpha": 0.006458934376771207,
+              "curve_id": "negative_bending",
+              "curve_name": "V2(0-1 Y 4-5)35X50-INV",
+              "cyclic_cut_moment": "",
+              "cyclic_cut_moment_abs": "",
+              "cyclic_cut_phi": "",
+              "cyclic_cut_phi_abs": "",
+              "ductility_phi": 10.924824811780926,
+              "phi_60My": 0.0047156637188767656,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_u_ciclico": "",
+              "phi_y": 0.007859439531461275,
+              "relative_error": -2.867807765010132e-05,
+              "signed_Mu": -463.964,
+              "signed_My": -436.0138582516503,
+              "signed_phi_u": -0.085863,
+              "signed_phi_y": -0.007859439531461275,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        },
+        "monotonica": {
+          "curves": [
+            {
+              "curvature_column": "A",
+              "first_data_row": 4,
+              "id": "positive_bending",
+              "moment_column": "B",
+              "name": "V2(0-1 Y 4-5)35X50",
+              "sign": "positive"
+            },
+            {
+              "curvature_column": "C",
+              "first_data_row": 4,
+              "id": "negative_bending",
+              "moment_column": "D",
+              "name": "V2(0-1 Y 4-5)35X50-INV",
+              "sign": "negative"
+            }
+          ],
+          "diagram_type": "monotonica",
+          "parameters": [
+            {
+              "A_bilinear": 36.81415092014328,
+              "A_real": 36.815206709499996,
+              "Ke": 55476.4568779097,
+              "Kp": 358.3187944301964,
+              "M_60My": 261.6083149509902,
+              "M_peak": 463.964,
+              "Mu": 463.964,
+              "My": 436.0138582516503,
+              "absolute_relative_error": 2.867807765010132e-05,
+              "alpha": 0.006458934376771207,
+              "curve_id": "positive_bending",
+              "curve_name": "V2(0-1 Y 4-5)35X50",
+              "ductility_phi": 10.924824811780926,
+              "phi_60My": 0.0047156637188767656,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_y": 0.007859439531461275,
+              "relative_error": -2.867807765010132e-05,
+              "signed_Mu": 463.964,
+              "signed_My": 436.0138582516503,
+              "signed_phi_u": 0.085863,
+              "signed_phi_y": 0.007859439531461275,
+              "status": "converged"
+            },
+            {
+              "A_bilinear": 36.81415092014328,
+              "A_real": 36.815206709499996,
+              "Ke": 55476.4568779097,
+              "Kp": 358.3187944301964,
+              "M_60My": 261.6083149509902,
+              "M_peak": 463.964,
+              "Mu": 463.964,
+              "My": 436.0138582516503,
+              "absolute_relative_error": 2.867807765010132e-05,
+              "alpha": 0.006458934376771207,
+              "curve_id": "negative_bending",
+              "curve_name": "V2(0-1 Y 4-5)35X50-INV",
+              "ductility_phi": 10.924824811780926,
+              "phi_60My": 0.0047156637188767656,
+              "phi_peak": 0.085863,
+              "phi_u": 0.085863,
+              "phi_y": 0.007859439531461275,
+              "relative_error": -2.867807765010132e-05,
+              "signed_Mu": -463.964,
+              "signed_My": -436.0138582516503,
+              "signed_phi_u": -0.085863,
+              "signed_phi_y": -0.007859439531461275,
+              "status": "converged"
+            }
+          ],
+          "status": "completed",
+          "warnings": []
+        }
+      },
+      "output_folder": "V2(0-1 Y 4-5)35X50",
+      "sheet_name": "V2(0-1 Y 4-5)35X50",
+      "status": "completed",
+      "warnings": []
+    }
+  ],
+  "sign_convention": "positive/negative bending stored with signed phi and moment; phi_abs and moment_abs are magnitudes",
+  "source_workbook_order_matches_processing": true,
+  "source_workbook_sheet_order": [
+    "V1 (2-3)T",
+    "V1 (1-2 y 3-4)T",
+    "V2 (2-3, C-D y A-B)L",
+    "V2 (1-2 y 3-4)L ",
+    "V2 (C-B)L ",
+    "V2 (D-C y B-A)T",
+    "V2 (C-B)T",
+    "V3 (D-C Y B-A)T",
+    "V3 (C-B)T",
+    "V2(0-1 Y 4-5)35X50"
+  ],
+  "stage_id": "stage_03",
+  "status": "completed",
+  "structured_artifacts": [
+    {
+      "path": "stage_03/data/stage_03_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "status",
+        "config",
+        "config_path",
+        "output_dirs",
+        "source",
+        "method",
+        "sheet_count",
+        "curve_count",
+        "sheets",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (1-2 y 3-4)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V1 (2-3)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (1-2 y 3-4)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2 (D-C y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path",
+        "diagram_type"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/data/stage_03_sheet_results.json",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "sheet",
+        "sheet_output_root",
+        "status",
+        "source",
+        "method",
+        "curve_count",
+        "curves",
+        "parameters",
+        "generated_files",
+        "warnings",
+        "results_path"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    },
+    {
+      "path": "stage_03/V3 (D-C Y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "schema_keys": [
+        "stage_id",
+        "title",
+        "model",
+        "curve",
+        "units",
+        "datos_de_entrada",
+        "datos_de_salida"
+      ]
+    }
+  ],
+  "units": {
+    "area_under_M_phi": "kN",
+    "curvature": "1/m",
+    "moment": "kN-m",
+    "stiffness": "kN-m²"
+  },
+  "warnings": [
+    "V1 (2-3)T/negative_bending: bilinearization did not reach tolerance; best error = 0.008372."
+  ],
+  "xlsx_artifacts": []
+}

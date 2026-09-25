@@ -1,0 +1,745 @@
+{
+  "cases": [
+    {
+      "case_id": "case_01_nsr10",
+      "generated_file_keys": [
+        "case_01_design_spectrum_figure",
+        "case_01_maximum_considered_spectrum_figure",
+        "case_01_nsr10_design_etabs_txt",
+        "case_01_nsr10_maximum_considered_etabs_txt",
+        "case_01_nsr10_service_etabs_txt",
+        "case_01_parameters_csv",
+        "case_01_parameters_xlsx",
+        "case_01_report_yaml",
+        "case_01_service_spectrum_figure",
+        "case_01_spectra_csv",
+        "case_01_spectra_figure",
+        "case_01_spectra_xlsx",
+        "data_results_json"
+      ],
+      "output_folder": "nsr10_spectra",
+      "parameter_rows": [
+        {
+          "equation": "input",
+          "parameter": "Aa",
+          "unit": "g",
+          "value": 0.35
+        },
+        {
+          "equation": "input",
+          "parameter": "Av",
+          "unit": "g",
+          "value": 0.3
+        },
+        {
+          "equation": "input",
+          "parameter": "Fa",
+          "unit": "-",
+          "value": 1.15
+        },
+        {
+          "equation": "input",
+          "parameter": "Fv",
+          "unit": "-",
+          "value": 1.7
+        },
+        {
+          "equation": "input",
+          "parameter": "I",
+          "unit": "-",
+          "value": 1.0
+        },
+        {
+          "equation": "0.1 * Av * Fv / (Aa * Fa)",
+          "parameter": "T0",
+          "unit": "s",
+          "value": 0.12670807453416152
+        },
+        {
+          "equation": "0.48 * Av * Fv / (Aa * Fa)",
+          "parameter": "Tc",
+          "unit": "s",
+          "value": 0.6081987577639753
+        },
+        {
+          "equation": "2.4 * Fv",
+          "parameter": "TL",
+          "unit": "s",
+          "value": 4.08
+        },
+        {
+          "equation": "2.5 * Aa * Fa * I",
+          "parameter": "Sa_plateau",
+          "unit": "g",
+          "value": 1.0062499999999999
+        },
+        {
+          "equation": "Sa_31(T) = F_31 * Sa_475(T)",
+          "parameter": "F_31",
+          "unit": "-",
+          "value": 0.35
+        },
+        {
+          "equation": "Sa_2500(T) = F_2500 * Sa_475(T)",
+          "parameter": "F_2500",
+          "unit": "-",
+          "value": 1.5
+        }
+      ],
+      "period_count": 501,
+      "period_first_s": 0.0,
+      "period_last_s": 5.0,
+      "report_inputs": {
+        "hazard": {
+          "seismic": {
+            "hazard_levels": {
+              "design": {
+                "name": "Diseno",
+                "return_period_years": 475,
+                "scale_factor": 1.0
+              },
+              "maximum_considered": {
+                "name": "Maximo considerado",
+                "return_period_years": 2500,
+                "scale_factor": 1.5
+              },
+              "service": {
+                "name": "Servicio",
+                "return_period_years": 31,
+                "scale_factor": 0.35
+              }
+            },
+            "nsr10_parameters": {
+              "Aa": 0.35,
+              "Av": 0.3,
+              "Fa": 1.15,
+              "Fv": 1.7,
+              "importance_factor": 1.0,
+              "soil_profile": "D"
+            },
+            "period_range": {
+              "end": 5.0,
+              "start": 0.0,
+              "step": 0.01
+            },
+            "source": {
+              "code": "NSR-10",
+              "description": "Espectro elastico de aceleraciones de diseno, Titulo A, forma A.2.6."
+            }
+          }
+        },
+        "units": {
+          "period": "s",
+          "spectral_acceleration": "g"
+        }
+      },
+      "report_outputs": {
+        "equations": {
+          "Sa_T0_to_Tc": "Sa = 2.5 * Aa * Fa * I",
+          "Sa_T_greater_TL": "Sa = 1.2 * Av * Fv * TL * I / T^2",
+          "Sa_T_less_T0": "Sa = 2.5 * Aa * Fa * I * (0.4 + 0.6 * T / T0)",
+          "Sa_Tc_to_TL": "Sa = 1.2 * Av * Fv * I / T",
+          "T0": "T0 = 0.1 * Av * Fv / (Aa * Fa)",
+          "TL": "TL = 2.4 * Fv",
+          "Tc": "Tc = 0.48 * Av * Fv / (Aa * Fa)",
+          "maximum_scaling": "Sa_2500(T) = F_2500 * Sa_475(T)",
+          "service_scaling": "Sa_31(T) = F_31 * Sa_475(T)"
+        },
+        "rows_count": 501,
+        "transition_parameters": {
+          "Aa": 0.35,
+          "Av": 0.3,
+          "Fa": 1.15,
+          "Fv": 1.7,
+          "Sa_plateau": 1.0062499999999999,
+          "T0": 0.12670807453416152,
+          "TL": 4.08,
+          "Tc": 0.6081987577639753,
+          "importance_factor": 1.0
+        }
+      },
+      "status": "completed",
+      "transition_parameters": {
+        "Aa": 0.35,
+        "Av": 0.3,
+        "Fa": 1.15,
+        "Fv": 1.7,
+        "Sa_plateau": 1.0062499999999999,
+        "T0": 0.12670807453416152,
+        "TL": 4.08,
+        "Tc": 0.6081987577639753,
+        "importance_factor": 1.0
+      },
+      "warnings": []
+    },
+    {
+      "case_id": "case_02_sgc_ccp14",
+      "generated_file_keys": [
+        "case_02_design_spectrum_figure",
+        "case_02_maximum_considered_spectrum_figure",
+        "case_02_parameters_csv",
+        "case_02_parameters_xlsx",
+        "case_02_report_yaml",
+        "case_02_service_spectrum_figure",
+        "case_02_sgc_ccp14_design_etabs_txt",
+        "case_02_sgc_ccp14_maximum_considered_etabs_txt",
+        "case_02_sgc_ccp14_service_etabs_txt",
+        "case_02_spectra_csv",
+        "case_02_spectra_figure",
+        "case_02_spectra_xlsx",
+        "data_results_json"
+      ],
+      "output_folder": "ccp14_spectra",
+      "parameter_rows": [
+        {
+          "As": 0.11080058813095094,
+          "Fa": 1.6,
+          "Fpga": 1.6,
+          "Fv": 2.4,
+          "PGA": 0.06925036758184433,
+          "SD1": 0.06484641283750534,
+          "SDS": 0.2287165403366089,
+          "Sa_0_2": 0.14294783771038055,
+          "Sa_1_0": 0.027019338682293892,
+          "Sa_at_T_0": 0.11080058813095094,
+          "Sa_at_T_0_2": 0.2287165403366089,
+          "Sa_at_T_1_0": 0.06484641283750534,
+          "T0": 0.05670461151788057,
+          "Ts": 0.2835230575894028,
+          "return_period_years": 31,
+          "source": "SGC hazard values with CCP-14 interpolated site factors",
+          "units": "g, s"
+        },
+        {
+          "As": 0.35743376391856246,
+          "Fa": 1.3080790519714354,
+          "Fpga": 1.208435523509979,
+          "Fv": 2.30530868768692,
+          "PGA": 0.2957822382450104,
+          "SD1": 0.2851040449996466,
+          "SDS": 0.8043393591776179,
+          "Sa_0_2": 0.6149011850357056,
+          "Sa_1_0": 0.12367282807826996,
+          "Sa_at_T_0": 0.35743376391856246,
+          "Sa_at_T_0_2": 0.8043393591776179,
+          "Sa_at_T_1_0": 0.2851040449996466,
+          "T0": 0.07089148174749176,
+          "Ts": 0.3544574087374588,
+          "return_period_years": 475,
+          "source": "SGC hazard values with CCP-14 interpolated site factors",
+          "units": "g, s"
+        },
+        {
+          "As": 0.582956075668335,
+          "Fa": 1.0166367530822753,
+          "Fpga": 1.0,
+          "Fv": 1.869586968421936,
+          "PGA": 0.582956075668335,
+          "SD1": 0.4958266458597606,
+          "SDS": 1.2285121047643541,
+          "Sa_0_2": 1.2084081172943115,
+          "Sa_1_0": 0.265206515789032,
+          "Sa_at_T_0": 0.582956075668335,
+          "Sa_at_T_0_2": 1.2285121047643541,
+          "Sa_at_T_1_0": 0.4958266458597606,
+          "T0": 0.08071986331056415,
+          "Ts": 0.4035993165528207,
+          "return_period_years": 2500,
+          "source": "SGC hazard values with CCP-14 interpolated site factors",
+          "units": "g, s"
+        }
+      ],
+      "period_count": 501,
+      "period_first_s": 0.0,
+      "period_last_s": 5.0,
+      "report_inputs": {
+        "hazard": {
+          "seismic": {
+            "hazard_levels": {
+              "design": {
+                "PGA": 0.2957822382450104,
+                "Sa_0_2": 0.6149011850357056,
+                "Sa_1_0": 0.12367282807826996,
+                "name": "Diseno",
+                "return_period_years": 475
+              },
+              "maximum_considered": {
+                "PGA": 0.582956075668335,
+                "Sa_0_2": 1.2084081172943115,
+                "Sa_1_0": 0.265206515789032,
+                "name": "Maximo considerado",
+                "return_period_years": 2500
+              },
+              "service": {
+                "PGA": 0.06925036758184433,
+                "Sa_0_2": 0.14294783771038055,
+                "Sa_1_0": 0.027019338682293892,
+                "name": "Servicio",
+                "return_period_years": 31
+              }
+            },
+            "period_range": {
+              "end": 5.0,
+              "start": 0.0,
+              "step": 0.01
+            },
+            "site": {
+              "profile": "D"
+            },
+            "source": {
+              "hazard_provider": "Servicio Geologico Colombiano",
+              "spectral_shape_code": "CCP-14",
+              "spectral_shape_section": "3.10"
+            }
+          }
+        },
+        "units": {
+          "period": "s",
+          "spectral_acceleration": "g"
+        }
+      },
+      "report_outputs": {
+        "equations": {
+          "As": "As = Fpga * PGA",
+          "Csm_descending": "Csm = SD1 / T",
+          "Csm_initial": "Csm = As + (SDS - As) * (T / T0)",
+          "Csm_plateau": "Csm = SDS",
+          "Fa": "Interpolacion lineal de Tabla 3.10.3.2-2 con Ss y tipo de perfil",
+          "Fpga": "Interpolacion lineal de Tabla 3.10.3.2-1 con PGA y tipo de perfil",
+          "Fv": "Interpolacion lineal de Tabla 3.10.3.2-3 con S1 y tipo de perfil",
+          "SD1": "SD1 = Fv * S1",
+          "SDS": "SDS = Fa * Ss",
+          "T0": "T0 = 0.2 * Ts",
+          "Ts": "Ts = SD1 / SDS"
+        },
+        "parameters_by_return_period": [
+          {
+            "As": 0.11080058813095094,
+            "Fa": 1.6,
+            "Fpga": 1.6,
+            "Fv": 2.4,
+            "PGA": 0.06925036758184433,
+            "S1": 0.027019338682293892,
+            "SD1": 0.06484641283750534,
+            "SDS": 0.2287165403366089,
+            "Ss": 0.14294783771038055,
+            "T0": 0.05670461151788057,
+            "Ts": 0.2835230575894028,
+            "return_period_years": 31,
+            "site_profile": "D"
+          },
+          {
+            "As": 0.35743376391856246,
+            "Fa": 1.3080790519714354,
+            "Fpga": 1.208435523509979,
+            "Fv": 2.30530868768692,
+            "PGA": 0.2957822382450104,
+            "S1": 0.12367282807826996,
+            "SD1": 0.2851040449996466,
+            "SDS": 0.8043393591776179,
+            "Ss": 0.6149011850357056,
+            "T0": 0.07089148174749176,
+            "Ts": 0.3544574087374588,
+            "return_period_years": 475,
+            "site_profile": "D"
+          },
+          {
+            "As": 0.582956075668335,
+            "Fa": 1.0166367530822753,
+            "Fpga": 1.0,
+            "Fv": 1.869586968421936,
+            "PGA": 0.582956075668335,
+            "S1": 0.265206515789032,
+            "SD1": 0.4958266458597606,
+            "SDS": 1.2285121047643541,
+            "Ss": 1.2084081172943115,
+            "T0": 0.08071986331056415,
+            "Ts": 0.4035993165528207,
+            "return_period_years": 2500,
+            "site_profile": "D"
+          }
+        ],
+        "rows_count": 501
+      },
+      "status": "completed",
+      "transition_parameters": [
+        {
+          "As": 0.11080058813095094,
+          "Fa": 1.6,
+          "Fpga": 1.6,
+          "Fv": 2.4,
+          "PGA": 0.06925036758184433,
+          "S1": 0.027019338682293892,
+          "SD1": 0.06484641283750534,
+          "SDS": 0.2287165403366089,
+          "Ss": 0.14294783771038055,
+          "T0": 0.05670461151788057,
+          "Ts": 0.2835230575894028,
+          "return_period_years": 31,
+          "site_profile": "D"
+        },
+        {
+          "As": 0.35743376391856246,
+          "Fa": 1.3080790519714354,
+          "Fpga": 1.208435523509979,
+          "Fv": 2.30530868768692,
+          "PGA": 0.2957822382450104,
+          "S1": 0.12367282807826996,
+          "SD1": 0.2851040449996466,
+          "SDS": 0.8043393591776179,
+          "Ss": 0.6149011850357056,
+          "T0": 0.07089148174749176,
+          "Ts": 0.3544574087374588,
+          "return_period_years": 475,
+          "site_profile": "D"
+        },
+        {
+          "As": 0.582956075668335,
+          "Fa": 1.0166367530822753,
+          "Fpga": 1.0,
+          "Fv": 1.869586968421936,
+          "PGA": 0.582956075668335,
+          "S1": 0.265206515789032,
+          "SD1": 0.4958266458597606,
+          "SDS": 1.2285121047643541,
+          "Ss": 1.2084081172943115,
+          "T0": 0.08071986331056415,
+          "Ts": 0.4035993165528207,
+          "return_period_years": 2500,
+          "site_profile": "D"
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "comparison_basis": "outputs/stage_0x/ captured by V2-002; text compared after CRLF-to-LF normalization",
+  "fixture_schema_version": 1,
+  "input_files": [
+    {
+      "path": "configs/stage_01/case_01_nsr10_spectra.yaml",
+      "sha256": "71e6d729c10f75607b459634f7f86ade69398044919510a6450be25dc20cf289"
+    },
+    {
+      "path": "configs/stage_01/case_02_sgc_ccp14_spectra.yaml",
+      "sha256": "b6cfb6ece04eae78fd4280f20d8f1d520d906ca52875d2bbc262b67ef0f71d4c"
+    }
+  ],
+  "matplotlib_version": "3.11.1",
+  "numpy_version": "2.5.1",
+  "package_version": "0.1.0",
+  "presentation_artifacts_not_copied": [
+    {
+      "bytes": 161775,
+      "kind": "png",
+      "path": "stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_design_spectrum.png"
+    },
+    {
+      "bytes": 168086,
+      "kind": "png",
+      "path": "stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_maximum_considered_spectrum.png"
+    },
+    {
+      "bytes": 161157,
+      "kind": "png",
+      "path": "stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_service_spectrum.png"
+    },
+    {
+      "bytes": 169079,
+      "kind": "png",
+      "path": "stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_spectra.png"
+    },
+    {
+      "bytes": 161379,
+      "kind": "png",
+      "path": "stage_01/nsr10_spectra/figures/case_01_nsr10_design_spectrum.png"
+    },
+    {
+      "bytes": 167263,
+      "kind": "png",
+      "path": "stage_01/nsr10_spectra/figures/case_01_nsr10_maximum_considered_spectrum.png"
+    },
+    {
+      "bytes": 162479,
+      "kind": "png",
+      "path": "stage_01/nsr10_spectra/figures/case_01_nsr10_service_spectrum.png"
+    },
+    {
+      "bytes": 182212,
+      "kind": "png",
+      "path": "stage_01/nsr10_spectra/figures/case_01_nsr10_spectra.png"
+    }
+  ],
+  "python": "3.12.10",
+  "scientific_files": [
+    {
+      "columns": [
+        "return_period_years",
+        "PGA",
+        "Sa_0_2",
+        "Sa_1_0",
+        "Fpga",
+        "Fa",
+        "Fv",
+        "As",
+        "SDS",
+        "SD1",
+        "T0",
+        "Ts",
+        "Sa_at_T_0",
+        "Sa_at_T_0_2",
+        "Sa_at_T_1_0",
+        "units",
+        "source"
+      ],
+      "path": "stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.csv",
+      "row_count": 3,
+      "sha256_lf": "eaaf9d0bc75b22619210933b11c6b3dc27a9a41f0ebea17d8998731874e2d5ee"
+    },
+    {
+      "columns": [
+        "period_s",
+        "Sa_SGC_CCP14_31",
+        "Sa_SGC_CCP14_475",
+        "Sa_SGC_CCP14_2500"
+      ],
+      "path": "stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.csv",
+      "row_count": 501,
+      "sha256_lf": "5da39a4343c737dc69c664856755fee8d23d2691bb1aed09a0f33384ee2eb1d1"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_design_475_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "acae7deea0a96a269fd3bbbeb5c9adcae4110b129a774cbf09f6b93770e9d03a"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_maximum_considered_2500_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "6c9a8cb9faa046183f945cec4130e17793f222af8928a8de5d6627da1e430eac"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_service_31_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "6b63bdcee2988b6ced744f3ba8e5371057eff05e61cc19cf20ea471373809832"
+    },
+    {
+      "columns": [
+        "parameter",
+        "value",
+        "unit",
+        "equation"
+      ],
+      "path": "stage_01/nsr10_spectra/data/case_01_nsr10_parameters.csv",
+      "row_count": 11,
+      "sha256_lf": "d4ebc898ef6e2f44f0b2ff9e1f946c4205130662842f428b59f4f9aa4143ea2a"
+    },
+    {
+      "columns": [
+        "period_s",
+        "Sa_servicio_31",
+        "Sa_diseno_475",
+        "Sa_maximo_considerado_2500"
+      ],
+      "path": "stage_01/nsr10_spectra/data/case_01_nsr10_spectra.csv",
+      "row_count": 501,
+      "sha256_lf": "c18a6326869f32fe4d2ba496f54a240daa44205a455e78b3d41723d2068211df"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/nsr10_spectra/data/etabs/case_01_nsr10_design_475_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "c7020b5bd522ee40d10ca3b446715a670b3fc2d6c1df5a0073f5f08aaabb6139"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/nsr10_spectra/data/etabs/case_01_nsr10_maximum_considered_2500_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "d17a33687bac253595c1f8570f7795461288ec7d84083d4a6b5d94f9c2d89bfb"
+    },
+    {
+      "columns": [
+        "period_s",
+        "spectral_acceleration_g"
+      ],
+      "decimal_places": 8,
+      "delimiter": "tab",
+      "header_lines": 0,
+      "line_ending_at_capture": "LF",
+      "path": "stage_01/nsr10_spectra/data/etabs/case_01_nsr10_service_31_etabs_v22.txt",
+      "row_count": 501,
+      "sha256_lf": "a8e1cb720a9e5e25e23574159ad4416ca2dcc2357684d8986c13b4a9b86b6f20"
+    }
+  ],
+  "sign_convention": "nonnegative spectral ordinates; no signed response history",
+  "stage_id": "stage_01",
+  "structured_artifacts": [
+    {
+      "path": "stage_01/ccp14_spectra/data/stage_01_results.json",
+      "schema_keys": [
+        "stage_id",
+        "case_id",
+        "title",
+        "status",
+        "config",
+        "config_path",
+        "output_dirs",
+        "generated_files",
+        "warnings",
+        "case_result"
+      ]
+    },
+    {
+      "path": "stage_01/ccp14_spectra/reports/case_02_sgc_ccp14_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "case_id",
+        "title",
+        "datos_de_entrada",
+        "datos_de_salida",
+        "generated_files"
+      ]
+    },
+    {
+      "path": "stage_01/nsr10_spectra/data/stage_01_results.json",
+      "schema_keys": [
+        "stage_id",
+        "case_id",
+        "title",
+        "status",
+        "config",
+        "config_path",
+        "output_dirs",
+        "generated_files",
+        "warnings",
+        "case_result"
+      ]
+    },
+    {
+      "path": "stage_01/nsr10_spectra/reports/case_01_nsr10_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "case_id",
+        "title",
+        "datos_de_entrada",
+        "datos_de_salida",
+        "generated_files"
+      ]
+    }
+  ],
+  "units": {
+    "period": "s",
+    "spectral_acceleration": "g"
+  },
+  "xlsx_artifacts": [
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "return_period_years",
+        "PGA",
+        "Sa_0_2",
+        "Sa_1_0",
+        "Fpga",
+        "Fa",
+        "Fv",
+        "As",
+        "SDS",
+        "SD1",
+        "T0",
+        "Ts",
+        "Sa_at_T_0",
+        "Sa_at_T_0_2",
+        "Sa_at_T_1_0",
+        "units",
+        "source"
+      ],
+      "path": "stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.xlsx",
+      "row_count": 3,
+      "sheet_names": [
+        "case_02_parameters"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "period_s",
+        "Sa_SGC_CCP14_31",
+        "Sa_SGC_CCP14_475",
+        "Sa_SGC_CCP14_2500"
+      ],
+      "path": "stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.xlsx",
+      "row_count": 501,
+      "sheet_names": [
+        "case_02_spectra"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "parameter",
+        "value",
+        "unit",
+        "equation"
+      ],
+      "path": "stage_01/nsr10_spectra/data/case_01_nsr10_parameters.xlsx",
+      "row_count": 11,
+      "sheet_names": [
+        "case_01_parameters"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "period_s",
+        "Sa_servicio_31",
+        "Sa_diseno_475",
+        "Sa_maximo_considerado_2500"
+      ],
+      "path": "stage_01/nsr10_spectra/data/case_01_nsr10_spectra.xlsx",
+      "row_count": 501,
+      "sheet_names": [
+        "case_01_spectra"
+      ]
+    }
+  ]
+}

@@ -123,8 +123,8 @@ def test_stage_01_case_01_scales_design_spectrum(tmp_path: Path) -> None:
     assert Path(result["generated_files"]["case_01_nsr10_design_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_01_nsr10_maximum_considered_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_01_report_yaml"]).exists()
-    assert Path(result["generated_files"]["case_01_nsr10_report_qmd"]).exists()
-    assert Path(result["generated_files"]["case_01_nsr10_report_pdf"]).exists()
+    assert not list((tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "reports").rglob("*.qmd"))
+    assert not list((tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "reports").rglob("*.pdf"))
     assert spectra_path.parent == tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "data"
     assert result["results_path"] == (
         tmp_path / "outputs" / "stage_01" / "nsr10_spectra" / "data" / "stage_01_results.json"
@@ -179,8 +179,8 @@ def test_stage_01_case_02_uses_independent_sgc_values(tmp_path: Path) -> None:
     assert Path(result["generated_files"]["case_02_sgc_ccp14_design_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_02_sgc_ccp14_maximum_considered_etabs_txt"]).exists()
     assert Path(result["generated_files"]["case_02_report_yaml"]).exists()
-    assert Path(result["generated_files"]["case_02_sgc_ccp14_report_qmd"]).exists()
-    assert Path(result["generated_files"]["case_02_sgc_ccp14_report_pdf"]).exists()
+    assert not list((tmp_path / "outputs" / "stage_01" / "ccp14_spectra" / "reports").rglob("*.qmd"))
+    assert not list((tmp_path / "outputs" / "stage_01" / "ccp14_spectra" / "reports").rglob("*.pdf"))
     assert Path(result["generated_files"]["case_02_spectra_csv"]).parent == (
         tmp_path / "outputs" / "stage_01" / "ccp14_spectra" / "data"
     )

@@ -1,0 +1,1691 @@
+{
+  "comparison_basis": "outputs/stage_0x/ captured by V2-002; text compared after CRLF-to-LF normalization",
+  "fixture_schema_version": 1,
+  "input_files": [
+    {
+      "path": "configs/stage_02/confined_concrete/monotonic/Mon_Mander1988.json",
+      "sha256": "f15e494be1c496e2a30e8c02432292fe3d28f911dcda4d6b0428ab7b9e91b032"
+    },
+    {
+      "path": "configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json",
+      "sha256": "dba8a6e78c58974838bca7601201e14690faafd6270625231bff16bc995f5d3b"
+    },
+    {
+      "path": "configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json",
+      "sha256": "ca97e22b5c4a14fe5dfe7f2ef5ffb5b8a20cb2ef5c4a55dc2c566f10bca4ac67"
+    },
+    {
+      "path": "configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json",
+      "sha256": "bb5974e305c9f91870b4f986967ce1df2c8f05890a229d341a953a268b0aa9c9"
+    }
+  ],
+  "matplotlib_version": "3.11.1",
+  "models": [
+    {
+      "calculated_parameters": {
+        "clear_tie_spacing_mm": 87.3,
+        "core_area_mm2": 432043.2899999999,
+        "elastic_modulus_mpa": 24870.0,
+        "epsilon_cc": 0.006941234033107877,
+        "epsilon_co": 0.002,
+        "epsilon_cu": 0.025669879898120283,
+        "epsilon_su_transverse": 0.1,
+        "epsilon_t": 0.00013188580619219944,
+        "equations": {
+          "confined_strength": "f_cc = f_co * (-1.254 + 2.254 * sqrt(1 + 7.94*f_l/f_co) - 2*f_l/f_co)",
+          "curve_shape": "r = Ec / (Ec - Esec)",
+          "effective_lateral_pressure": "f_l = 0.5 * k_e * rho_s * fyh",
+          "elastic_modulus": "Ec = input",
+          "peak_strain": "epsilon_cc = epsilon_co * (1 + 5*(f_cc/f_co - 1))",
+          "secant_modulus": "Esec = f_cc / epsilon_cc",
+          "stress": "f_c = f_cc*x*r / (r - 1 + x^r), x = epsilon_c/epsilon_cc",
+          "tensile_segment": "f_c = Ec * epsilon_c, -epsilon_t <= epsilon_c <= 0",
+          "tensile_ultimate_strain": "epsilon_t = f_t / Ec",
+          "ultimate_strain": "epsilon_cu = 0.004 + 1.4*rho_s*fyh*epsilon_su/f_cc"
+        },
+        "f_cc_mpa": 41.83545529270206,
+        "f_co_mpa": 28.0,
+        "f_cu_mpa": 34.383667166555256,
+        "f_l_mpa": 2.3859465162001263,
+        "f_lx_mpa": 2.3859465162001263,
+        "f_ly_mpa": 2.3859465162001263,
+        "f_t_mpa": 3.28,
+        "fyh_mpa": 420.0,
+        "k_e": 0.7369155680322457,
+        "loading_type": "monotonic",
+        "provenance": {
+          "calibration_status": "source_equation_validation_case",
+          "citation": "Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering 114(8), 1804-1826",
+          "source": "Mander, Priestley and Park (1988)",
+          "source_location": "references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+          "specimen_or_profile": "COL75X75FC28MPa"
+        },
+        "r": 1.3198599624001115,
+        "rectangular_effective_pressure": "f_l = 0.5 * k_e * (rho_x + rho_y) * fyh",
+        "reference": "Mander, J. B., Priestley, M. J. N., & Park, R. (1988). Theoretical Stress-Strain Model for Confined Concrete. Journal of Structural Engineering, 114(8), 1804-1826.",
+        "rho_cc": 0.014367001554275612,
+        "rho_s": 0.015417845096531194,
+        "rho_x": 0.007708922548265597,
+        "rho_y": 0.007708922548265597,
+        "secant_modulus_mpa": 6027.0918821001915,
+        "section_type": "rectangular",
+        "sign_convention": "compression_positive_tension_negative",
+        "sum_wi_squared_mm2": 432043.2899999999,
+        "transverse_bar_area_mm2": 126.67686977437442,
+        "transverse_reinforcement": "rectangular_hoops",
+        "ultimate_strain_criterion": "simplified_user_selected_expression"
+      },
+      "case_id": "COL75X75FC28MPa",
+      "metadata": {
+        "analysis_type": "monotonic",
+        "material": "confined_concrete",
+        "model_id": "Mon_Mander1988",
+        "provenance": {
+          "calibration_status": "source_equation_validation_case",
+          "citation": "Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering 114(8), 1804-1826",
+          "source": "Mander, Priestley and Park (1988)",
+          "source_location": "references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+          "specimen_or_profile": "COL75X75FC28MPa"
+        },
+        "source_json": "configs/stage_02/confined_concrete/monotonic/Mon_Mander1988.json",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "metrics": {
+        "calibration_status": "source_equation_validation_case",
+        "case_id": "COL75X75FC28MPa",
+        "diameter_mm": 12.7,
+        "failed_count": 0,
+        "mander_1988_controls": {
+          "elastic_modulus_mpa": 24870.0,
+          "epsilon_cc": 0.006941234033107877,
+          "epsilon_cu": 0.025669879898120283,
+          "epsilon_t": 0.00013188580619219944,
+          "f_cc_mpa": 41.83545529270206,
+          "f_cu_mpa": 34.383667166555256,
+          "f_l_mpa": 2.3859465162001263,
+          "f_lx_mpa": 2.3859465162001263,
+          "f_ly_mpa": 2.3859465162001263,
+          "f_t_mpa": 3.28,
+          "k_e": 0.7369155680322457,
+          "r": 1.3198599624001115,
+          "rho_cc": 0.014367001554275612,
+          "rho_s": 0.015417845096531194,
+          "rho_x": 0.007708922548265597,
+          "rho_y": 0.007708922548265597,
+          "secant_modulus_mpa": 6027.0918821001915,
+          "section_type": "rectangular",
+          "transverse_reinforcement": "rectangular_hoops"
+        },
+        "out_of_domain_count": 0,
+        "point_count": 801,
+        "response_branches": [
+          "compression",
+          "tension"
+        ],
+        "reversal_count": 0,
+        "strain_max": 0.025669879898120283,
+        "strain_min": -0.00013188580619219944,
+        "stress_max_mpa": 41.83544034212139,
+        "stress_min_mpa": -3.2800000000000002
+      },
+      "model_id": "Mon_Mander1988",
+      "notable_points": [
+        {
+          "label": "Resistencia última a tracción (-fₜ = -3.280 [MPa], -εₜ = -0.000132 [mm/mm])",
+          "strain": -0.00013188580619219944,
+          "stress_mpa": -3.28
+        },
+        {
+          "label": "Resistencia máxima confinada (f′cc = 41.835 [MPa], εcc = 0.006941 [mm/mm])",
+          "strain": 0.006941234033107877,
+          "stress_mpa": 41.83545529270206
+        },
+        {
+          "label": "Deformación última confinada (fcu = 34.384 [MPa], εcu = 0.025670 [mm/mm])",
+          "strain": 0.025669879898120283,
+          "stress_mpa": 34.383667166555256
+        }
+      ],
+      "project_id": "Modelos_constitutivos",
+      "resolved_inputs": {
+        "analysis_type": "monotonic",
+        "case_id": "COL75X75FC28MPa",
+        "curve_generation": {
+          "include_compression": true,
+          "include_tension": true,
+          "max_strain": null,
+          "points": 401
+        },
+        "label": "Mander 1988 | Concreto confinado",
+        "material": "confined_concrete",
+        "model": "Mon_Mander1988",
+        "parameters": {
+          "Ec_MPa": 24870.0,
+          "epsilon_co": 0.002,
+          "epsilon_su_transverse": 0.1,
+          "f_co_MPa": 28.0,
+          "f_t_MPa": 3.28,
+          "fyh_MPa": 420.0,
+          "geometry": {
+            "clear_spacing_wi_mm": [
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325,
+              164.325
+            ],
+            "core_depth_mm": 657.3,
+            "core_width_mm": 657.3,
+            "longitudinal_steel_area_mm2": 6207.166618944348,
+            "section_type": "rectangular",
+            "tie_bar_diameter_mm": 12.7,
+            "tie_spacing_mm": 100.0,
+            "transverse_legs_x": 4,
+            "transverse_legs_y": 4
+          }
+        },
+        "provenance": {
+          "calibration_status": "source_equation_validation_case",
+          "citation": "Theoretical Stress-Strain Model for Confined Concrete, Journal of Structural Engineering 114(8), 1804-1826",
+          "source": "Mander, Priestley and Park (1988)",
+          "source_location": "references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+          "specimen_or_profile": "COL75X75FC28MPa"
+        },
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "status": "completed",
+      "technical_basis": {
+        "analysis_type": "monotonic",
+        "case_summaries": [
+          {
+            "calibration_status": "source_equation_validation_case",
+            "case_id": "COL75X75FC28MPa",
+            "diameter_mm": 12.7,
+            "failed_count": 0,
+            "mander_1988_controls": {
+              "elastic_modulus_mpa": 24870.0,
+              "epsilon_cc": 0.006941234033107877,
+              "epsilon_cu": 0.025669879898120283,
+              "epsilon_t": 0.00013188580619219944,
+              "f_cc_mpa": 41.83545529270206,
+              "f_cu_mpa": 34.383667166555256,
+              "f_l_mpa": 2.3859465162001263,
+              "f_lx_mpa": 2.3859465162001263,
+              "f_ly_mpa": 2.3859465162001263,
+              "f_t_mpa": 3.28,
+              "k_e": 0.7369155680322457,
+              "r": 1.3198599624001115,
+              "rho_cc": 0.014367001554275612,
+              "rho_s": 0.015417845096531194,
+              "rho_x": 0.007708922548265597,
+              "rho_y": 0.007708922548265597,
+              "secant_modulus_mpa": 6027.0918821001915,
+              "section_type": "rectangular",
+              "transverse_reinforcement": "rectangular_hoops"
+            },
+            "out_of_domain_count": 0,
+            "point_count": 801,
+            "response_branches": [
+              "compression",
+              "tension"
+            ],
+            "reversal_count": 0,
+            "strain_max": 0.025669879898120283,
+            "strain_min": -0.00013188580619219944,
+            "stress_max_mpa": 41.83544034212139,
+            "stress_min_mpa": -3.2800000000000002
+          }
+        ],
+        "equation": "Mander et al. (1988), Eqs. (3)-(29): f_c=f_cc*x*r/(r-1+x^r), x=epsilon_c/epsilon_cc; linear tension segment f_c=Ec*epsilon_c up to epsilon_t=f_t/Ec; for rectangular sections f_l=0.5*k_e*(rho_x+rho_y)*fyh. The adopted ultimate criterion is epsilon_cu=0.004+1.4*rho_s*fyh*epsilon_su/f_cc.",
+        "limitations": [
+          "La implementacion corresponde a la envolvente uniaxial monotonica con compresion positiva y un segmento elastico de traccion negativa. No contiene reglas de descarga, recarga ni degradacion ciclica.",
+          "Para secciones rectangulares se usa la presion efectiva escalar f_l=0.5*k_e*rho_s*fyh, con rho_s=rho_x+rho_y. f_lx y f_ly se conservan como diagnosticos y William-Warnke no se implementa.",
+          "La deformacion epsilon_cu usa la expresion simplificada elegida para el proyecto; no implementa el balance energetico de las Ecs. (59)-(64) del articulo."
+        ],
+        "material": "confined_concrete",
+        "model": "Mon_Mander1988",
+        "model_metadata": {
+          "implemented_sections": [
+            "rectangular_hoops_equivalent_scalar_pressure",
+            "circular_hoops",
+            "circular_spiral"
+          ],
+          "rectangular_effective_pressure": "f_l = 0.5 * k_e * (rho_x + rho_y) * fyh",
+          "reference": "Mander, J. B., Priestley, M. J. N., & Park, R. (1988). Theoretical Stress-Strain Model for Confined Concrete. Journal of Structural Engineering, 114(8), 1804-1826.",
+          "ultimate_strain_criterion": "simplified_user_selected_expression"
+        },
+        "stage_id": "stage_02",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        },
+        "warnings": []
+      },
+      "warnings": []
+    },
+    {
+      "calculated_parameters": {
+        "material": {
+          "elastic_modulus_mpa": 195958.33333333334,
+          "epsilon_sh": 0.0138,
+          "epsilon_su": 0.1141,
+          "epsilon_y": 0.0024,
+          "fu_mpa": 659.74,
+          "fy_mpa": 470.3,
+          "parameter_p": 3.087,
+          "special_case_parameter_p": 1.0
+        },
+        "provenance": {
+          "calibration_status": "source_equation_application_case",
+          "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+          "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+          "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+          "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm"
+        },
+        "reference": "Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143",
+        "restraint_cases": {
+          "bending": {
+            "L_over_D": 8.998875140607424,
+            "L_over_D_source": "keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D",
+            "alpha": 0.851245068574959,
+            "alpha_1": 1.0805964139910695,
+            "alpha_2": 0.7877548523698821,
+            "applicability": {
+              "diameter_mm": "10 < D < 36",
+              "epsilon_su_over_epsilon_y": "> 14",
+              "fu_over_fy": "< 2",
+              "fy_mpa": "200 < fy < 900",
+              "l_over_d": ">= 5 for buckling activation",
+              "parameter_p": "P <= 4; P = 1 only in the Eq. (5) special case",
+              "rb": "8 < rb < 56"
+            },
+            "applicability_warnings": [],
+            "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+            "buckling_active": true,
+            "buckling_calculation_mode": "rectangular_transverse_restraint",
+            "buckling_intervals": 2,
+            "buckling_restraint_case": "bending",
+            "compression_ultimate_over_fy": 0.37057036861812775,
+            "compression_ultimate_stress_mpa": 174.2792443611055,
+            "effective_restrained_bars": 5,
+            "effective_tie_leg_length_mm": 657.3,
+            "effective_tie_legs": 4,
+            "elastic_modulus_mpa": 195958.33333333334,
+            "eps_i": 0.02427542406760927,
+            "eps_i_0": 0.02427542406760927,
+            "eps_i_max": 0.0721455324975654,
+            "eps_i_over_epsilon_y": 10.11476002817053,
+            "eps_ii": 0.04981277612485804,
+            "eps_ii_over_epsilon_y": 20.755323385357517,
+            "epsilon_sh": 0.0138,
+            "epsilon_sh_over_epsilon_y": 5.75,
+            "epsilon_su": 0.1141,
+            "epsilon_su_over_epsilon_y": 47.54166666666667,
+            "epsilon_y": 0.0024,
+            "equivalent_stiffness_ratio": 0.24878601889233665,
+            "f_i_mpa": 400.3405557508032,
+            "f_i_over_fy": 0.851245068574959,
+            "f_it_mpa": 524.9720532555846,
+            "fu_mpa": 659.74,
+            "fu_over_fy": 1.4028067191154583,
+            "fy_mpa": 470.3,
+            "loading_type": "monotonic",
+            "longitudinal_bar_diameter_mm": 22.225,
+            "longitudinal_bar_inertia_mm4": 11976.69465197929,
+            "parameter_p": 3.087,
+            "provenance": {
+              "calibration_status": "source_equation_application_case",
+              "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+              "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+              "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+              "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm"
+            },
+            "rb": 19.51532172688238,
+            "rb_min": 10.843200634499022,
+            "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+            "reference": "Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143",
+            "residual_stress_mpa": 94.06,
+            "restrained_longitudinal_bars": 5,
+            "s_over_db": 4.499437570303712,
+            "sign_convention": "tension_positive_compression_negative",
+            "special_alpha_case": false,
+            "special_case_parameter_p": 1.0,
+            "tie_area_mm2": 126.67686977437442,
+            "tie_bar_diameter_mm": 12.7,
+            "tie_spacing_mm": 100.0,
+            "tie_steel_modulus_MPa": 200000.0,
+            "tie_stiffness_N_per_mm": 30835.690193062394,
+            "unsupported_length_mm": 200.0,
+            "warnings": []
+          },
+          "pure_compression": {
+            "L_over_D": 13.498312710911135,
+            "L_over_D_source": "keq=kt/k; tabulated n; L=n*s; L/D=(n*s)/D",
+            "alpha": 0.6234616577261862,
+            "alpha_1": 0.9870642759940464,
+            "alpha_2": 0.631632278554823,
+            "applicability": {
+              "diameter_mm": "10 < D < 36",
+              "epsilon_su_over_epsilon_y": "> 14",
+              "fu_over_fy": "< 2",
+              "fy_mpa": "200 < fy < 900",
+              "l_over_d": ">= 5 for buckling activation",
+              "parameter_p": "P <= 4; P = 1 only in the Eq. (5) special case",
+              "rb": "8 < rb < 56"
+            },
+            "applicability_warnings": [],
+            "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+            "buckling_active": true,
+            "buckling_calculation_mode": "rectangular_transverse_restraint",
+            "buckling_intervals": 3,
+            "buckling_restraint_case": "pure_compression",
+            "compression_ultimate_over_fy": 0.2,
+            "compression_ultimate_stress_mpa": 94.06,
+            "effective_restrained_bars": 10,
+            "effective_tie_leg_length_mm": 657.3,
+            "effective_tie_legs": 4,
+            "elastic_modulus_mpa": 195958.33333333334,
+            "eps_i": 0.0168,
+            "eps_i_0": -0.029586863898586065,
+            "eps_i_max": 0.0721455324975654,
+            "eps_i_over_epsilon_y": 7.0,
+            "eps_ii": 0.03550384973178559,
+            "eps_ii_over_epsilon_y": 14.79327072157733,
+            "epsilon_sh": 0.0138,
+            "epsilon_sh_over_epsilon_y": 5.75,
+            "epsilon_su": 0.1141,
+            "epsilon_su_over_epsilon_y": 47.54166666666667,
+            "epsilon_y": 0.0024,
+            "equivalent_stiffness_ratio": 0.12439300944616832,
+            "f_i_mpa": 293.2140176286254,
+            "f_i_over_fy": 0.6234616577261862,
+            "f_it_mpa": 487.251540813721,
+            "fu_mpa": 659.74,
+            "fu_over_fy": 1.4028067191154583,
+            "fy_mpa": 470.3,
+            "loading_type": "monotonic",
+            "longitudinal_bar_diameter_mm": 22.225,
+            "longitudinal_bar_inertia_mm4": 11976.69465197929,
+            "parameter_p": 3.087,
+            "provenance": {
+              "calibration_status": "source_equation_application_case",
+              "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+              "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+              "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+              "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm"
+            },
+            "rb": 29.272982590323565,
+            "rb_min": 10.843200634499022,
+            "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+            "reference": "Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. https://doi.org/10.14359/51711143",
+            "residual_stress_mpa": 94.06,
+            "restrained_longitudinal_bars": 5,
+            "s_over_db": 4.499437570303712,
+            "sign_convention": "tension_positive_compression_negative",
+            "special_alpha_case": false,
+            "special_case_parameter_p": 1.0,
+            "tie_area_mm2": 126.67686977437442,
+            "tie_bar_diameter_mm": 12.7,
+            "tie_spacing_mm": 100.0,
+            "tie_steel_modulus_MPa": 200000.0,
+            "tie_stiffness_N_per_mm": 15417.845096531197,
+            "unsupported_length_mm": 300.0,
+            "warnings": []
+          }
+        },
+        "transverse_reinforcement": {
+          "longitudinal_bar_diameter_mm": 22.225,
+          "tie_bar_diameter_mm": 12.7,
+          "tie_spacing_mm": 100.0,
+          "tie_steel_modulus_mpa": 200000.0
+        }
+      },
+      "case_id": "COL75X75FC28MPa",
+      "metadata": {
+        "analysis_type": "monotonic",
+        "material": "ductile_reinforcing_steel",
+        "model_id": "Mon_RDM2019",
+        "provenance": {
+          "calibration_status": "source_equation_application_case",
+          "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+          "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+          "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+          "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm"
+        },
+        "source_json": "configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "metrics": {
+        "calibration_status": "source_equation_application_case",
+        "case_id": "COL75X75FC28MPa",
+        "diameter_mm": 22.225,
+        "failed_count": 0,
+        "out_of_domain_count": 0,
+        "point_count": 1203,
+        "rdm_material_inputs": {
+          "elastic_modulus_mpa": 195958.33333333334,
+          "epsilon_sh": 0.0138,
+          "epsilon_su": 0.1141,
+          "epsilon_y": 0.0024,
+          "fu_mpa": 659.74,
+          "fy_mpa": 470.3,
+          "parameter_p": 3.087,
+          "special_case_parameter_p": 1.0
+        },
+        "rdm_restraint_cases": {
+          "bending": {
+            "L_over_D": 8.998875140607424,
+            "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+            "buckling_active": true,
+            "buckling_intervals": 2,
+            "buckling_restraint_case": "bending",
+            "compression_ultimate_stress_mpa": 174.2792443611055,
+            "effective_restrained_bars": 5,
+            "effective_tie_leg_length_mm": 657.3,
+            "effective_tie_legs": 4,
+            "eps_i": 0.02427542406760927,
+            "eps_ii": 0.04981277612485804,
+            "equivalent_stiffness_ratio": 0.24878601889233665,
+            "f_i_mpa": 400.3405557508032,
+            "longitudinal_bar_inertia_mm4": 11976.69465197929,
+            "rb": 19.51532172688238,
+            "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+            "restrained_longitudinal_bars": 5,
+            "tie_area_mm2": 126.67686977437442,
+            "tie_stiffness_N_per_mm": 30835.690193062394,
+            "unsupported_length_mm": 200.0
+          },
+          "pure_compression": {
+            "L_over_D": 13.498312710911135,
+            "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+            "buckling_active": true,
+            "buckling_intervals": 3,
+            "buckling_restraint_case": "pure_compression",
+            "compression_ultimate_stress_mpa": 94.06,
+            "effective_restrained_bars": 10,
+            "effective_tie_leg_length_mm": 657.3,
+            "effective_tie_legs": 4,
+            "eps_i": 0.0168,
+            "eps_ii": 0.03550384973178559,
+            "equivalent_stiffness_ratio": 0.12439300944616832,
+            "f_i_mpa": 293.2140176286254,
+            "longitudinal_bar_inertia_mm4": 11976.69465197929,
+            "rb": 29.272982590323565,
+            "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+            "restrained_longitudinal_bars": 5,
+            "tie_area_mm2": 126.67686977437442,
+            "tie_stiffness_N_per_mm": 15417.845096531197,
+            "unsupported_length_mm": 300.0
+          }
+        },
+        "rdm_transverse_reinforcement": {
+          "longitudinal_bar_diameter_mm": 22.225,
+          "tie_bar_diameter_mm": 12.7,
+          "tie_spacing_mm": 100.0,
+          "tie_steel_modulus_mpa": 200000.0
+        },
+        "response_branches": [
+          "compression",
+          "tension"
+        ],
+        "reversal_count": 0,
+        "strain_max": 0.1141,
+        "strain_min": -0.1141,
+        "stress_max_mpa": 659.74,
+        "stress_min_mpa": -469.44635705937594
+      },
+      "model_id": "Mon_RDM2019",
+      "notable_points": [
+        {
+          "id": "tension_yield",
+          "label": "Fluencia en tracción (fy = 470.300 [MPa], εy = 0.002400 [mm/mm])",
+          "legend_group": "Tracción",
+          "strain": 0.0024,
+          "stress_mpa": 470.3
+        },
+        {
+          "id": "tension_hardening_start",
+          "label": "Inicio del endurecimiento en tracción (fy = 470.300 [MPa], εsh = 0.013800 [mm/mm])",
+          "legend_group": "Tracción",
+          "strain": 0.0138,
+          "stress_mpa": 470.3
+        },
+        {
+          "id": "tension_ultimate",
+          "label": "Resistencia última en tracción (fu = 659.740 [MPa], εu = 0.114100 [mm/mm])",
+          "legend_group": "Tracción",
+          "strain": 0.1141,
+          "stress_mpa": 659.74
+        },
+        {
+          "id": "compression_yield",
+          "label": "Fluencia común en compresión (-fy = -470.300 [MPa], -εy = -0.002400 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.0024,
+          "stress_mpa": -470.3
+        },
+        {
+          "id": "bending_compression_intermediate",
+          "label": "Flexión | Punto intermedio RDM (-fi = -400.341 [MPa], -εi = -0.024275 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.02427542406760927,
+          "stress_mpa": -400.3405557508032
+        },
+        {
+          "id": "bending_compression_second",
+          "label": "Flexión | Segundo punto RDM (-0.75fi = -300.255 [MPa], -εii = -0.049813 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.04981277612485804,
+          "stress_mpa": -300.25541681310244
+        },
+        {
+          "id": "bending_compression_ultimate",
+          "label": "Flexión | Respuesta última RDM (-fsc(εu) = -174.279 [MPa], -εu = -0.114100 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.1141,
+          "stress_mpa": -174.2792443611055
+        },
+        {
+          "id": "pure_compression_compression_intermediate",
+          "label": "Compresión axial | Punto intermedio RDM (-fi = -293.214 [MPa], -εi = -0.016800 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.0168,
+          "stress_mpa": -293.2140176286254
+        },
+        {
+          "id": "pure_compression_compression_second",
+          "label": "Compresión axial | Segundo punto RDM (-0.75fi = -219.911 [MPa], -εii = -0.035504 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.03550384973178559,
+          "stress_mpa": -219.91051322146905
+        },
+        {
+          "id": "pure_compression_compression_ultimate",
+          "label": "Compresión axial | Respuesta última RDM (-fsc(εu) = -94.060 [MPa], -εu = -0.114100 [mm/mm])",
+          "legend_group": "Compresión",
+          "strain": -0.1141,
+          "stress_mpa": -94.06
+        }
+      ],
+      "project_id": "Modelos_constitutivos",
+      "resolved_inputs": {
+        "analysis_type": "monotonic",
+        "case_id": "COL75X75FC28MPa",
+        "curve_generation": {
+          "include_compression": true,
+          "include_tension": true,
+          "max_strain": null,
+          "points": 401
+        },
+        "label": "RDM 2019 | Acero longitudinal #7 | Flejes #4 @ 100 mm",
+        "material": "ductile_reinforcing_steel",
+        "model": "Mon_RDM2019",
+        "parameters": {
+          "epsilon_sh": 0.0138,
+          "epsilon_su": 0.1141,
+          "epsilon_y": 0.0024,
+          "fu_MPa": 659.74,
+          "fy_MPa": 470.3,
+          "longitudinal_bar_diameter_mm": 22.225,
+          "parameter_p": 3.087,
+          "restraint_cases": {
+            "bending": {
+              "effective_tie_leg_length_mm": 657.3,
+              "effective_tie_legs": 4,
+              "restrained_longitudinal_bars": 5
+            },
+            "pure_compression": {
+              "effective_tie_leg_length_mm": 657.3,
+              "effective_tie_legs": 4,
+              "restrained_longitudinal_bars": 5
+            }
+          },
+          "tie_bar_diameter_mm": 12.7,
+          "tie_spacing_mm": 100.0,
+          "tie_steel_modulus_MPa": 200000.0
+        },
+        "provenance": {
+          "calibration_status": "source_equation_application_case",
+          "citation": "jp116.pdf, Table 2; 12587353_2002_ASCESTR_2__Stability.pdf; B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+          "source": "Akkaya, Guner and Vecchio (2019); Dhakal and Maekawa (2002); Salgado and Guner (2014)",
+          "source_location": "references/stage_02/ductile_reinforcing_steel/monotonic/",
+          "specimen_or_profile": "COL75X75FC28MPa | 16 barras #7 | flejes #4 @ 100 mm"
+        },
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "status": "completed",
+      "technical_basis": {
+        "analysis_type": "monotonic",
+        "case_summaries": [
+          {
+            "calibration_status": "source_equation_application_case",
+            "case_id": "COL75X75FC28MPa",
+            "diameter_mm": 22.225,
+            "failed_count": 0,
+            "out_of_domain_count": 0,
+            "point_count": 1203,
+            "rdm_material_inputs": {
+              "elastic_modulus_mpa": 195958.33333333334,
+              "epsilon_sh": 0.0138,
+              "epsilon_su": 0.1141,
+              "epsilon_y": 0.0024,
+              "fu_mpa": 659.74,
+              "fy_mpa": 470.3,
+              "parameter_p": 3.087,
+              "special_case_parameter_p": 1.0
+            },
+            "rdm_restraint_cases": {
+              "bending": {
+                "L_over_D": 8.998875140607424,
+                "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+                "buckling_active": true,
+                "buckling_intervals": 2,
+                "buckling_restraint_case": "bending",
+                "compression_ultimate_stress_mpa": 174.2792443611055,
+                "effective_restrained_bars": 5,
+                "effective_tie_leg_length_mm": 657.3,
+                "effective_tie_legs": 4,
+                "eps_i": 0.02427542406760927,
+                "eps_ii": 0.04981277612485804,
+                "equivalent_stiffness_ratio": 0.24878601889233665,
+                "f_i_mpa": 400.3405557508032,
+                "longitudinal_bar_inertia_mm4": 11976.69465197929,
+                "rb": 19.51532172688238,
+                "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+                "restrained_longitudinal_bars": 5,
+                "tie_area_mm2": 126.67686977437442,
+                "tie_stiffness_N_per_mm": 30835.690193062394,
+                "unsupported_length_mm": 200.0
+              },
+              "pure_compression": {
+                "L_over_D": 13.498312710911135,
+                "bar_normalized_stiffness_N_per_mm": 123944.62651217828,
+                "buckling_active": true,
+                "buckling_intervals": 3,
+                "buckling_restraint_case": "pure_compression",
+                "compression_ultimate_stress_mpa": 94.06,
+                "effective_restrained_bars": 10,
+                "effective_tie_leg_length_mm": 657.3,
+                "effective_tie_legs": 4,
+                "eps_i": 0.0168,
+                "eps_ii": 0.03550384973178559,
+                "equivalent_stiffness_ratio": 0.12439300944616832,
+                "f_i_mpa": 293.2140176286254,
+                "longitudinal_bar_inertia_mm4": 11976.69465197929,
+                "rb": 29.272982590323565,
+                "reduced_flexural_rigidity_N_mm2": 1272413336.3375,
+                "restrained_longitudinal_bars": 5,
+                "tie_area_mm2": 126.67686977437442,
+                "tie_stiffness_N_per_mm": 15417.845096531197,
+                "unsupported_length_mm": 300.0
+              }
+            },
+            "rdm_transverse_reinforcement": {
+              "longitudinal_bar_diameter_mm": 22.225,
+              "tie_bar_diameter_mm": 12.7,
+              "tie_spacing_mm": 100.0,
+              "tie_steel_modulus_mpa": 200000.0
+            },
+            "response_branches": [
+              "compression",
+              "tension"
+            ],
+            "reversal_count": 0,
+            "strain_max": 0.1141,
+            "strain_min": -0.1141,
+            "stress_max_mpa": 659.74,
+            "stress_min_mpa": -469.44635705937594
+          }
+        ],
+        "equation": "Rectangular-restraint procedure: keq=kt/k, tabulated n, L=n*s and L/D=(n*s)/D; RDM 2019 Table 2, Eqs. (1)-(8): reference tension envelope, intermediate point and bilinear postbuckling degradation. Es is derived as fy/epsilon_y; P is supplied by parameter_p, except P=1 in the documented Eq. (5) special case.",
+        "limitations": [
+          "La implementacion RDM 2019 corresponde a una envolvente constitutiva uniaxial monotonica. No incluye reglas historicas ciclicas.",
+          "El calculo interno RDM usa magnitudes positivas de compresion. El CSV y la figura exportan traccion con signo positivo y compresion con signo negativo; no constituyen una historia ciclica.",
+          "Para la seccion rectangular se calculan independientemente la restriccion de barras de borde por flexion y la de barras interiores por compresion axial, segun User Bulletin 3."
+        ],
+        "material": "ductile_reinforcing_steel",
+        "model": "Mon_RDM2019",
+        "model_metadata": {
+          "applicability": {
+            "diameter_mm": "10 < D < 36",
+            "epsilon_su_over_epsilon_y": "> 14",
+            "fu_over_fy": "< 2",
+            "fy_mpa": "200 < fy < 900",
+            "l_over_d": ">= 5 for buckling activation",
+            "parameter_p": "P <= 4; P = 1 in the Eq. (5) special case",
+            "rb": "8 < rb < 56"
+          },
+          "buckling_interval_boundary_convention": "A shared keq boundary is assigned to the larger n mode.",
+          "reference": "Akkaya, Y., Guner, S., & Vecchio, F. J. (2019). Constitutive model for inelastic buckling behavior of reinforcing bars. ACI Structural Journal, 116(3), 195-204. DOI 10.14359/51711143."
+        },
+        "stage_id": "stage_02",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        },
+        "warnings": []
+      },
+      "warnings": []
+    },
+    {
+      "calculated_parameters": {
+        "initial_tangent_mpa": 200000.0,
+        "yield_strain": 0.0025
+      },
+      "case_id": "COL75X75FC28MPa",
+      "metadata": {
+        "analysis_type": "cyclic",
+        "material": "nonductile_reinforcing_steel",
+        "model_id": "Cyc_MP",
+        "provenance": {
+          "calibration_status": "synthetic_algorithm_verification_only",
+          "citation": "OpenSees Steel02 documentation and Steel02.cpp history rules",
+          "source": "OpenSees Steel02 formulation",
+          "source_location": "Synthetic algorithm-verification parameters; not an NTC 5806 calibration",
+          "specimen_or_profile": "Synthetic nonductile-steel verification profile, D=6 mm"
+        },
+        "source_json": "configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "metrics": {
+        "calibration_status": "synthetic_algorithm_verification_only",
+        "case_id": "COL75X75FC28MPa",
+        "diameter_mm": 6.0,
+        "failed_count": 0,
+        "out_of_domain_count": 0,
+        "point_count": 241,
+        "response_branches": [],
+        "reversal_count": 4,
+        "strain_max": 0.008,
+        "strain_min": -0.004,
+        "stress_max_mpa": 540.0557866277463,
+        "stress_min_mpa": -510.40018403534896
+      },
+      "model_id": "Cyc_MP",
+      "notable_points": [
+        {
+          "label": "Esfuerzo mínimo (σ = -510.400 [MPa], ε = -0.004000 [mm/mm])",
+          "strain": -0.004,
+          "stress_mpa": -510.40018403534896
+        },
+        {
+          "label": "Esfuerzo máximo (σ = 540.056 [MPa], ε = 0.008000 [mm/mm])",
+          "strain": 0.008,
+          "stress_mpa": 540.0557866277463
+        }
+      ],
+      "project_id": "Modelos_constitutivos",
+      "resolved_inputs": {
+        "analysis_type": "cyclic",
+        "case_id": "COL75X75FC28MPa",
+        "failure": {
+          "policy": "none"
+        },
+        "history_interpolation": {
+          "points_per_segment": 31
+        },
+        "material": "nonductile_reinforcing_steel",
+        "model": "Cyc_MP",
+        "parameters": {
+          "Es_MPa": 200000.0,
+          "R0": 12.0,
+          "a1": 0.05,
+          "a2": 1.2,
+          "a3": 0.07,
+          "a4": 1.3,
+          "b": 0.01,
+          "cR1": 0.8,
+          "cR2": 0.2,
+          "diameter_mm": 6.0,
+          "fy_MPa": 500.0
+        },
+        "provenance": {
+          "calibration_status": "synthetic_algorithm_verification_only",
+          "citation": "OpenSees Steel02 documentation and Steel02.cpp history rules",
+          "source": "OpenSees Steel02 formulation",
+          "source_location": "Synthetic algorithm-verification parameters; not an NTC 5806 calibration",
+          "specimen_or_profile": "Synthetic nonductile-steel verification profile, D=6 mm"
+        },
+        "strain_history": [
+          0.0,
+          0.001,
+          0.004,
+          0.001,
+          -0.002,
+          0.0,
+          0.006,
+          -0.004,
+          0.008
+        ],
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        },
+        "validity": {
+          "eps_compression_min": -0.006,
+          "eps_tension_max": 0.008
+        }
+      },
+      "status": "completed",
+      "technical_basis": {
+        "analysis_type": "cyclic",
+        "case_summaries": [
+          {
+            "calibration_status": "synthetic_algorithm_verification_only",
+            "case_id": "COL75X75FC28MPa",
+            "diameter_mm": 6.0,
+            "failed_count": 0,
+            "out_of_domain_count": 0,
+            "point_count": 241,
+            "response_branches": [],
+            "reversal_count": 4,
+            "strain_max": 0.008,
+            "strain_min": -0.004,
+            "stress_max_mpa": 540.0557866277463,
+            "stress_min_mpa": -510.40018403534896
+          }
+        ],
+        "equation": "Steel02/Menegotto-Pinto con R = R0 * (1 - cR1 * xi / (cR2 + xi)) y reglas explicitas de reversion.",
+        "limitations": [
+          "El modelo Menegotto-Pinto representa la respuesta axial ciclica dentro del rango y protocolo respaldados por la calibracion seleccionada. No representa por si solo pandeo, degradacion pospandeo, fractura por fatiga de bajo ciclo ni falla de soldaduras.",
+          "La configuracion incluida verifica el algoritmo y no constituye una calibracion experimental de malla NTC 5806."
+        ],
+        "material": "nonductile_reinforcing_steel",
+        "model": "Cyc_MP",
+        "model_metadata": {},
+        "stage_id": "stage_02",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        },
+        "warnings": []
+      },
+      "warnings": []
+    },
+    {
+      "calculated_parameters": {
+        "elastic_ultimate_strain": 0.002865,
+        "fema_bilinear_idealization": {
+          "area": {
+            "actual": 4.441599976301571,
+            "bilinear": 4.441675868614375
+          },
+          "bilinear_curve": [
+            {
+              "point": "origin",
+              "strain": 0.0,
+              "stress_mpa": 0.0
+            },
+            {
+              "point": "yield",
+              "strain": 0.002592282449716289,
+              "stress_mpa": 518.4452190438088
+            },
+            {
+              "point": "ultimate",
+              "strain": 0.0095,
+              "stress_mpa": 573.0
+            }
+          ],
+          "method": "asce_fema_energy_equivalent_stress_strain",
+          "parameters": {
+            "E_effective": 199995.6521329494,
+            "E_post_yield": 7897.656578901451,
+            "absolute_relative_error": 1.7086705963806695e-05,
+            "alpha": 0.03948914136219018,
+            "ductility": 3.6647241125440333,
+            "epsilon_60y": 0.0015553694698297732,
+            "epsilon_u": 0.0095,
+            "epsilon_y_effective": 0.002592282449716289,
+            "f_60y": 311.0671314262853,
+            "f_u": 573.0,
+            "f_y_effective": 518.4452190438088,
+            "relative_error": 1.7086705963806695e-05
+          },
+          "settings": {
+            "search_points": 5000,
+            "stiffness_fraction": 0.6,
+            "tolerance": 0.005,
+            "yield_lower_ratio": 0.05,
+            "yield_upper_ratio": 1.0
+          },
+          "status": "converged"
+        },
+        "nonlinear_strain_scale": 0.006635
+      },
+      "case_id": "COL75X75FC28MPa",
+      "metadata": {
+        "analysis_type": "monotonic",
+        "material": "nonductile_reinforcing_steel",
+        "model_id": "Mon_MRO",
+        "provenance": {
+          "calibration_status": "source_reported_monotonic_profile",
+          "citation": "Construction and Building Materials 211 (2019) 53-64; DOI 10.1016/j.conbuildmat.2018.11.096",
+          "source": "Carrillo et al. (2019)",
+          "source_location": "Equation 6 and Table 4, P2 values for 6 mm wire",
+          "specimen_or_profile": "NTC 5806 welded wire, nominal diameter 6 mm"
+        },
+        "source_json": "configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "metrics": {
+        "calibration_status": "source_reported_monotonic_profile",
+        "case_id": "COL75X75FC28MPa",
+        "diameter_mm": 6.0,
+        "failed_count": 0,
+        "out_of_domain_count": 0,
+        "point_count": 201,
+        "response_branches": [],
+        "reversal_count": 0,
+        "strain_max": 0.0095,
+        "strain_min": 0.0,
+        "stress_max_mpa": 573.0,
+        "stress_min_mpa": 0.0
+      },
+      "model_id": "Mon_MRO",
+      "notable_points": [
+        {
+          "id": "ultimate",
+          "label": "Resistencia última (fᵤ = 573.000 [MPa], εᵤ = 0.009500 [mm/mm])",
+          "strain": 0.0095,
+          "stress_mpa": 573.0
+        }
+      ],
+      "project_id": "Modelos_constitutivos",
+      "resolved_inputs": {
+        "analysis_type": "monotonic",
+        "case_id": "COL75X75FC28MPa",
+        "compression": {
+          "policy": "unsupported"
+        },
+        "curve_generation": {
+          "include_compression": false,
+          "include_tension": true,
+          "points": 201
+        },
+        "idealization": {
+          "method": "asce_fema_energy_equivalent_stress_strain",
+          "search_points": 5000,
+          "stiffness_fraction": 0.6,
+          "tolerance": 0.005,
+          "yield_lower_ratio": 0.05,
+          "yield_upper_ratio": 1.0
+        },
+        "material": "nonductile_reinforcing_steel",
+        "model": "Mon_MRO",
+        "numerical": {
+          "max_iterations": 200,
+          "root_tolerance": 1e-12
+        },
+        "parameters": {
+          "Es_MPa": 200000.0,
+          "diameter_mm": 6.0,
+          "eps_u": 0.0095,
+          "fu_MPa": 573.0,
+          "shape_exponent": 20.0
+        },
+        "provenance": {
+          "calibration_status": "source_reported_monotonic_profile",
+          "citation": "Construction and Building Materials 211 (2019) 53-64; DOI 10.1016/j.conbuildmat.2018.11.096",
+          "source": "Carrillo et al. (2019)",
+          "source_location": "Equation 6 and Table 4, P2 values for 6 mm wire",
+          "specimen_or_profile": "NTC 5806 welded wire, nominal diameter 6 mm"
+        },
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        }
+      },
+      "status": "completed",
+      "technical_basis": {
+        "analysis_type": "monotonic",
+        "case_summaries": [
+          {
+            "calibration_status": "source_reported_monotonic_profile",
+            "case_id": "COL75X75FC28MPa",
+            "diameter_mm": 6.0,
+            "failed_count": 0,
+            "out_of_domain_count": 0,
+            "point_count": 201,
+            "response_branches": [],
+            "reversal_count": 0,
+            "strain_max": 0.0095,
+            "strain_min": 0.0,
+            "stress_max_mpa": 573.0,
+            "stress_min_mpa": 0.0
+          }
+        ],
+        "equation": "epsilon = sigma/Es + (eps_u - fu/Es) * (sigma/fu)^n, 0 <= sigma <= fu",
+        "limitations": [
+          "El modelo Ramberg-Osgood modificado implementado para malla electrosoldada representa la respuesta monotonica en traccion. La respuesta monotonica en compresion no cuenta con una calibracion especifica para malla NTC 5806; por defecto se considera no soportada. La opcion simetrica, si se activa, constituye una hipotesis prepandeo y no una validacion experimental.",
+          "La fluencia efectiva FEMA no es un input ni un parametro de la ecuacion Ramberg-Osgood. Se calcula posteriormente mediante una idealizacion bilineal de energia equivalente."
+        ],
+        "material": "nonductile_reinforcing_steel",
+        "model": "Mon_MRO",
+        "model_metadata": {
+          "effective_yield_role": "calculated_result_not_material_input",
+          "idealization": "asce_fema_energy_equivalent_stress_strain"
+        },
+        "stage_id": "stage_02",
+        "units": {
+          "length": "mm",
+          "strain": "mm/mm",
+          "stress": "MPa"
+        },
+        "warnings": []
+      },
+      "warnings": []
+    }
+  ],
+  "numpy_version": "2.5.1",
+  "package_version": "0.1.0",
+  "presentation_artifacts_not_copied": [
+    {
+      "bytes": 103525,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response.png"
+    },
+    {
+      "bytes": 145444,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response_notable_points.png"
+    },
+    {
+      "bytes": 218634,
+      "kind": "pdf",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.pdf"
+    },
+    {
+      "bytes": 133718,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response.png"
+    },
+    {
+      "bytes": 258839,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response_notable_points.png"
+    },
+    {
+      "bytes": 274256,
+      "kind": "pdf",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.pdf"
+    },
+    {
+      "bytes": 154182,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response.png"
+    },
+    {
+      "bytes": 177075,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response_notable_points.png"
+    },
+    {
+      "bytes": 241592,
+      "kind": "pdf",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.pdf"
+    },
+    {
+      "bytes": 108776,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response.png"
+    },
+    {
+      "bytes": 171956,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_fema_bilinear_idealization.png"
+    },
+    {
+      "bytes": 129073,
+      "kind": "png",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_notable_points.png"
+    },
+    {
+      "bytes": 197842,
+      "kind": "pdf",
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.pdf"
+    }
+  ],
+  "python": "3.12.10",
+  "reference_catalog": {
+    "path": "references/catalog.yaml",
+    "sha256": "c67c37873cb2efc9707bfdebd4b79789d20ff84a7a1f3c82fba71c5e964929f6"
+  },
+  "scientific_files": [
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ],
+      "sha256_lf": "53c0c01c33f0075c7d61c11724e07855932945f396e78d9fcb874e25c4731487"
+    },
+    {
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.csv",
+      "row_count": 801,
+      "sha256_lf": "9cd1882308037b7aaac53c94e28c6e096149c424af429468ddbc7f5f9ed8ba37"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ],
+      "sha256_lf": "6c488e70aa32fc47ca7af24653844e21968d20cd2d60408c703b6bcbdb35bd28"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ],
+      "sha256_lf": "3d3443a34838513c33a59fd9d21cadc0b51d77a9ec74ad73ce49acac7b6c1092"
+    },
+    {
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.csv",
+      "row_count": 1203,
+      "sha256_lf": "f4446fc48224f16f68b080adca31a2368207e9f5fad7a3f4ff6b0479e9622f7f"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ],
+      "sha256_lf": "8b0b56b123a0f06ff91359813884d5d5173ecbffae04ad3d3d4015b4803da31e"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ],
+      "sha256_lf": "be5e1729e24d151de730ac2033cbaac4d4da4cb442277076fd806171b60b5897"
+    },
+    {
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.csv",
+      "row_count": 241,
+      "sha256_lf": "e2a2001db3cd0ad6c09ada57f62c773c8df2e33f79bdfeda7a83df79422db682"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ],
+      "sha256_lf": "c734264adf0e42607d87dce5b94329b80953a12df95a55d5edb7c455f5ccd4ff"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ],
+      "sha256_lf": "60b8401452cd625ae530f57e60469a18a31f1b216c5236aaadd4b72428942a67"
+    },
+    {
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.csv",
+      "row_count": 201,
+      "sha256_lf": "d4d537bb937143a18303f30e948722a3ff752db2e7938ba2dbdada12e1d95f44"
+    },
+    {
+      "columns": [
+        "point",
+        "strain",
+        "stress_mpa"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.csv",
+      "row_count": 3,
+      "sha256_lf": "0b74b47d28ba4b4cd66bdd5a2395645348b7547fae0eef998d1f24e8d5fb72cb"
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ],
+      "sha256_lf": "afb07f6191b1004b48f6a62c7e853839752edadca8743ff6f3a0c600a74b4696"
+    }
+  ],
+  "stage_id": "stage_02",
+  "structured_artifacts": [
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/resolved_inputs.json",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "source_json",
+        "raw",
+        "resolved"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "title",
+        "status",
+        "metadata",
+        "resolved_inputs",
+        "calculated_parameters",
+        "notable_points",
+        "metrics",
+        "technical_basis",
+        "warnings",
+        "generated_files"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/resolved_inputs.json",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "source_json",
+        "raw",
+        "resolved"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "title",
+        "status",
+        "metadata",
+        "resolved_inputs",
+        "calculated_parameters",
+        "notable_points",
+        "metrics",
+        "technical_basis",
+        "warnings",
+        "generated_files"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/resolved_inputs.json",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "source_json",
+        "raw",
+        "resolved"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "title",
+        "status",
+        "metadata",
+        "resolved_inputs",
+        "calculated_parameters",
+        "notable_points",
+        "metrics",
+        "technical_basis",
+        "warnings",
+        "generated_files"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/calculated_parameters.yaml",
+      "schema_keys": [
+        "calculated_parameters"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/metrics.yaml",
+      "schema_keys": [
+        "metrics"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/resolved_inputs.json",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "source_json",
+        "raw",
+        "resolved"
+      ]
+    },
+    {
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.yaml",
+      "schema_keys": [
+        "stage_id",
+        "project_id",
+        "case_id",
+        "model_id",
+        "title",
+        "status",
+        "metadata",
+        "resolved_inputs",
+        "calculated_parameters",
+        "notable_points",
+        "metrics",
+        "technical_basis",
+        "warnings",
+        "generated_files"
+      ]
+    }
+  ],
+  "units": {
+    "length": "mm",
+    "strain": "mm/mm",
+    "stress": "MPa",
+    "tangent": "MPa"
+  },
+  "xlsx_artifacts": [
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.xlsx",
+      "row_count": 801,
+      "sheet_names": [
+        "curve"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.xlsx",
+      "row_count": 1203,
+      "sheet_names": [
+        "curve"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.xlsx",
+      "row_count": 241,
+      "sheet_names": [
+        "curve"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "case_id",
+        "step",
+        "strain",
+        "stress_mpa",
+        "tangent_mpa",
+        "branch",
+        "loading_direction",
+        "stress_state",
+        "buckling_restraint_case",
+        "reversal",
+        "in_domain",
+        "failed",
+        "compression_policy",
+        "ultimate_strain",
+        "current_R",
+        "xi",
+        "source",
+        "calibration_status",
+        "source_location",
+        "warnings"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.xlsx",
+      "row_count": 201,
+      "sheet_names": [
+        "curve"
+      ]
+    },
+    {
+      "cells_equal_to_csv": true,
+      "cells_equal_to_historical": true,
+      "columns": [
+        "point",
+        "strain",
+        "stress_mpa"
+      ],
+      "path": "stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.xlsx",
+      "row_count": 3,
+      "sheet_names": [
+        "fema_bilinear"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Temporary root: D:\Users\byomayusa\AppData\Local\Temp\s5cf9f3
+pytest 0700 directory creation uses 0777 only inside isolated temporary root
+........................................................................ [ 60%]
+................................................                         [100%]
+120 passed in 27.71s

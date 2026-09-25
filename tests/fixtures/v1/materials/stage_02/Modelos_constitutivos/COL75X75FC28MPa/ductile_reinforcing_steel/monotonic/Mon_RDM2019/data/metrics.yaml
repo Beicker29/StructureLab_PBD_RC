@@ -1,0 +1,72 @@
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 22.225
+  point_count: 1203
+  strain_min: -0.1141
+  strain_max: 0.1141
+  stress_min_mpa: -469.44635705937594
+  stress_max_mpa: 659.74
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_equation_application_case
+  response_branches:
+    - compression
+    - tension
+  rdm_material_inputs:
+    fy_mpa: 470.3
+    fu_mpa: 659.74
+    epsilon_y: 0.0024
+    epsilon_sh: 0.0138
+    epsilon_su: 0.1141
+    parameter_p: 3.087
+    elastic_modulus_mpa: 195958.33333333334
+    special_case_parameter_p: 1.0
+  rdm_transverse_reinforcement:
+    longitudinal_bar_diameter_mm: 22.225
+    tie_bar_diameter_mm: 12.7
+    tie_spacing_mm: 100.0
+    tie_steel_modulus_mpa: 200000.0
+  rdm_restraint_cases:
+    bending:
+      buckling_restraint_case: bending
+      effective_tie_leg_length_mm: 657.3
+      effective_tie_legs: 4
+      restrained_longitudinal_bars: 5
+      effective_restrained_bars: 5
+      tie_area_mm2: 126.67686977437442
+      longitudinal_bar_inertia_mm4: 11976.69465197929
+      reduced_flexural_rigidity_N_mm2: 1272413336.3375
+      bar_normalized_stiffness_N_per_mm: 123944.62651217828
+      tie_stiffness_N_per_mm: 30835.690193062394
+      equivalent_stiffness_ratio: 0.24878601889233665
+      buckling_intervals: 2
+      unsupported_length_mm: 200.0
+      L_over_D: 8.998875140607424
+      rb: 19.51532172688238
+      eps_i: 0.02427542406760927
+      f_i_mpa: 400.3405557508032
+      eps_ii: 0.04981277612485804
+      compression_ultimate_stress_mpa: 174.2792443611055
+      buckling_active: true
+    pure_compression:
+      buckling_restraint_case: pure_compression
+      effective_tie_leg_length_mm: 657.3
+      effective_tie_legs: 4
+      restrained_longitudinal_bars: 5
+      effective_restrained_bars: 10
+      tie_area_mm2: 126.67686977437442
+      longitudinal_bar_inertia_mm4: 11976.69465197929
+      reduced_flexural_rigidity_N_mm2: 1272413336.3375
+      bar_normalized_stiffness_N_per_mm: 123944.62651217828
+      tie_stiffness_N_per_mm: 15417.845096531197
+      equivalent_stiffness_ratio: 0.12439300944616832
+      buckling_intervals: 3
+      unsupported_length_mm: 300.0
+      L_over_D: 13.498312710911135
+      rb: 29.272982590323565
+      eps_i: 0.0168
+      f_i_mpa: 293.2140176286254
+      eps_ii: 0.03550384973178559
+      compression_ultimate_stress_mpa: 94.06
+      buckling_active: true

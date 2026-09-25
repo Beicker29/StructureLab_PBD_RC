@@ -1,0 +1,3 @@
+curve_id,curve_name,mode,phi,moment,phi_abs,moment_abs,phi_u_ciclico,Mu_ciclico
+positive_bending,V3 (D-C Y B-A)T,auto,,,,,,
+negative_bending,V3 (D-C Y B-A)T-INV,auto,,,,,,

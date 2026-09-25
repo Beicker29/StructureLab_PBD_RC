@@ -1,0 +1,35 @@
+metrics:
+  case_id: COL75X75FC28MPa
+  diameter_mm: 12.7
+  point_count: 801
+  strain_min: -0.00013188580619219944
+  strain_max: 0.025669879898120283
+  stress_min_mpa: -3.2800000000000002
+  stress_max_mpa: 41.83544034212139
+  reversal_count: 0
+  out_of_domain_count: 0
+  failed_count: 0
+  calibration_status: source_equation_validation_case
+  response_branches:
+    - compression
+    - tension
+  mander_1988_controls:
+    section_type: rectangular
+    transverse_reinforcement: rectangular_hoops
+    rho_cc: 0.014367001554275612
+    rho_s: 0.015417845096531194
+    rho_x: 0.007708922548265597
+    rho_y: 0.007708922548265597
+    k_e: 0.7369155680322457
+    f_lx_mpa: 2.3859465162001263
+    f_ly_mpa: 2.3859465162001263
+    f_l_mpa: 2.3859465162001263
+    elastic_modulus_mpa: 24870.0
+    f_t_mpa: 3.28
+    epsilon_t: 0.00013188580619219944
+    f_cc_mpa: 41.83545529270206
+    epsilon_cc: 0.006941234033107877
+    secant_modulus_mpa: 6027.0918821001915
+    r: 1.3198599624001115
+    epsilon_cu: 0.025669879898120283
+    f_cu_mpa: 34.383667166555256

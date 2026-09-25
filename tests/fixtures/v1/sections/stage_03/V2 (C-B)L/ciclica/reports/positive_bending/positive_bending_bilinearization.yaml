@@ -1,0 +1,162 @@
+stage_id: stage_03
+title: Caracterizacion de la seccion por diagrama momento-curvatura
+model:
+  key: asce_fema_moment_curvature_bilinearization
+  description: Idealizacion bilineal ASCE/FEMA adaptada al diagrama momento-curvatura.
+curve:
+  id: positive_bending
+  name: V2 (C-B)L
+  sign: positive
+  sheet: 'V2 (C-B)L '
+  diagram_type: ciclica
+units:
+  curvature: '[1/m]'
+  moment: '[kN-m]'
+  stiffness: '[kN-m/(1/m)]'
+  area: '[kN]'
+datos_de_entrada:
+  source_workbook: references\stage_03\excel\M-curvatura.xlsx
+  sheet: 'V2 (C-B)L '
+  curvature_column: A
+  moment_column: B
+  first_data_row: 4
+  stiffness_fraction: 0.6
+  tolerance: 0.001
+  ultimate:
+    mode: first_post_peak_strength_drop
+    post_peak_strength_ratio: 0.8
+  cyclic_diagram:
+    enabled: true
+    cut_points_by_sheet:
+      V1 (1-2 y 3-4)T:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+      V1 (2-3)T:
+        positive_bending:
+          phi: 0.085863
+          moment: 753.754
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2 (1-2 y 3-4)L:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2 (C-B)L:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2 (C-B)T:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2 (2-3, C-D y A-B)L:
+        positive_bending:
+          phi: 0.114283
+          moment: 531.501
+        negative_bending:
+          phi: auto
+          moment: auto
+      V2 (D-C y B-A)T:
+        positive_bending:
+          phi: 0.114283
+          moment: 587.672
+        negative_bending:
+          phi: auto
+          moment: auto
+      V3 (C-B)T:
+        positive_bending:
+          phi: auto
+          moment: auto
+        negative_bending:
+          phi: auto
+          moment: auto
+  cyclic_cut_point: null
+datos_de_salida:
+  M_peak:
+    value: 503.671
+    unit: '[kN-m]'
+  phi_peak:
+    value: 0.103894
+    unit: '[1/m]'
+  phi_u:
+    value: 0.103894
+    unit: '[1/m]'
+    criterion: final_valid_point
+  Mu:
+    value: 503.671
+    unit: '[kN-m]'
+    equation: Mu = M(phi_u)
+  M_60My:
+    value: 276.64625890178036
+    unit: '[kN-m]'
+    equation: M_60My = 0.60 * My
+  phi_60My:
+    value: 0.004393470294369251
+    unit: '[1/m]'
+    equation: phi_60My = phi(M_60My)
+  Ke:
+    value: 62967.59517330414
+    unit: '[kN-m/(1/m)]'
+    equation: Ke = M_60My / phi_60My
+  My:
+    value: 461.0770981696339
+    unit: '[kN-m]'
+    criterion: energia_equivalente
+  phi_y:
+    value: 0.007322450490615418
+    unit: '[1/m]'
+    equation: phi_y = My / Ke
+  Kp:
+    value: 441.0605612808035
+    unit: '[kN-m/(1/m)]'
+    equation: Kp = (Mu - My) / (phi_u - phi_y)
+  alpha:
+    value: 0.0070045641741102475
+    unit: '[-]'
+    equation: alpha = Kp / Ke
+  A_real:
+    value: 48.2731833215
+    unit: '[kN]'
+    equation: A_real = integral M(phi) dphi
+  A_bilinear:
+    value: 48.271716475088596
+    unit: '[kN]'
+    equation: A_bilinear = 0.5*My*phi_y + 0.5*(My + Mu)*(phi_u - phi_y)
+  relative_error:
+    value: -3.0386361753576645e-05
+    unit: '[-]'
+  absolute_relative_error:
+    value: 3.0386361753576645e-05
+    unit: '[-]'
+  ductility_phi:
+    value: 14.188419591658883
+    unit: '[-]'
+    equation: mu_phi = phi_u / phi_y
+  constitutive_function:
+    branches:
+      - range: 0 <= phi <= phi_y
+        equation: M(phi) = 62967.595 * phi
+      - range: phi_y < phi <= phi_u
+        equation: M(phi) = 461.0771 + (441.06056) * (phi - 0.0073224505)
+  status: converged

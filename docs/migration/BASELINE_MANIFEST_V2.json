@@ -1,0 +1,2980 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-09-25T16:54:54.791493+00:00",
+  "scope": "V2-002 effective repository baseline before V2-003 test execution and before creation of this manifest/report",
+  "repository_root": "D:\\Users\\byomayusa\\Documents\\GitHub\\StructureLab_PBD_RC",
+  "git": {
+    "executable": "D:\\Users\\byomayusa\\AppData\\Local\\GitHubDesktop\\app-3.6.6\\resources\\app\\git\\cmd\\git.exe",
+    "version": "git version 2.53.0.windows.4",
+    "head": "1d1490e17a8cbcd1ee65e3d78d989e19bae7a18f",
+    "branch": "main",
+    "tracked_count": 432,
+    "untracked_count": 4,
+    "porcelain_status_before_capture": [
+      "?? AGENTS.md",
+      "?? docs/BASELINE_TASKS_V2.md",
+      "?? docs/MIGRATION_PLAN_V2.md",
+      "?? references/catalog.yaml"
+    ],
+    "untracked_paths_before_capture": [
+      "AGENTS.md",
+      "docs/BASELINE_TASKS_V2.md",
+      "docs/MIGRATION_PLAN_V2.md",
+      "references/catalog.yaml"
+    ]
+  },
+  "runtime": {
+    "python_executable": "D:\\Users\\byomayusa\\Documents\\GitHub\\StructureLab_PBD_RC\\.venv_structurelab_pbd_rc\\Scripts\\python.exe",
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "installed_distributions": {
+      "colorama": "0.4.6",
+      "contourpy": "1.3.3",
+      "cycler": "0.12.1",
+      "fonttools": "4.63.0",
+      "iniconfig": "2.3.0",
+      "kiwisolver": "1.5.0",
+      "matplotlib": "3.11.1",
+      "numpy": "2.5.1",
+      "packaging": "26.2",
+      "pillow": "12.3.0",
+      "pip": "25.0.1",
+      "pluggy": "1.6.0",
+      "Pygments": "2.20.0",
+      "pyparsing": "3.3.2",
+      "pypdfium2": "5.12.1",
+      "pytest": "9.1.1",
+      "python-dateutil": "2.9.0.post0",
+      "PyYAML": "6.0.3",
+      "six": "1.17.0",
+      "structurelab-pbd-rc": "0.1.0"
+    }
+  },
+  "canonical_inputs": {
+    "config_paths": [
+      "configs/stage_01/case_01_nsr10_spectra.yaml",
+      "configs/stage_01/case_02_sgc_ccp14_spectra.yaml",
+      "configs/stage_02/confined_concrete/monotonic/Mon_Mander1988.json",
+      "configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json",
+      "configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json",
+      "configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json",
+      "configs/stage_03/section_characterization.yaml"
+    ],
+    "workbook_paths": [
+      "references/stage_03/excel/M-curvatura tALLER #3.xlsx",
+      "references/stage_03/excel/M-curvatura.xlsx"
+    ]
+  },
+  "reference_catalog": {
+    "path": "references/catalog.yaml",
+    "entry_count": 28,
+    "sha256_verified": true,
+    "binary_duplicate_links": 3
+  },
+  "existing_outputs_before_test": {
+    "stage_01": {
+      "file_count": 38,
+      "total_bytes": 4278365,
+      "paths": [
+        "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.csv",
+        "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.xlsx",
+        "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.csv",
+        "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.xlsx",
+        "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_design_475_etabs_v22.txt",
+        "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_maximum_considered_2500_etabs_v22.txt",
+        "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_service_31_etabs_v22.txt",
+        "outputs/stage_01/ccp14_spectra/data/stage_01_results.json",
+        "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_design_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_maximum_considered_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_service_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_spectra.png",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_design_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_maximum_considered_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_service_spectrum.png",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_spectra.png",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/case_02_sgc_ccp14_memoria.pdf",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/case_02_sgc_ccp14_memoria.qmd",
+        "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14_report.yaml",
+        "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.csv",
+        "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.xlsx",
+        "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.csv",
+        "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.xlsx",
+        "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_design_475_etabs_v22.txt",
+        "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_maximum_considered_2500_etabs_v22.txt",
+        "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_service_31_etabs_v22.txt",
+        "outputs/stage_01/nsr10_spectra/data/stage_01_results.json",
+        "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_design_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_maximum_considered_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_service_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_spectra.png",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_design_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_maximum_considered_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_service_spectrum.png",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_spectra.png",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/case_01_nsr10_memoria.pdf",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/case_01_nsr10_memoria.qmd",
+        "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10_report.yaml"
+      ]
+    },
+    "stage_02": {
+      "file_count": 39,
+      "total_bytes": 3524954,
+      "paths": [
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/calculated_parameters.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.csv",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.xlsx",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/metrics.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/resolved_inputs.json",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response_notable_points.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.pdf",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/calculated_parameters.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.csv",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.xlsx",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/metrics.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/resolved_inputs.json",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response_notable_points.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.pdf",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/calculated_parameters.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.csv",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.xlsx",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/metrics.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/resolved_inputs.json",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response_notable_points.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.pdf",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/calculated_parameters.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.csv",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.xlsx",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.csv",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.xlsx",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/metrics.yaml",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/resolved_inputs.json",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_fema_bilinear_idealization.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_notable_points.png",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.pdf",
+        "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.yaml"
+      ]
+    },
+    "stage_03": {
+      "file_count": 191,
+      "total_bytes": 8533805,
+      "paths": [
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (2-3)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V1 (2-3)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V1 (2-3)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V1 (2-3)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V1 (2-3)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V1 (2-3)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (2-3)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (2-3)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V1 (2-3)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V1 (2-3)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V1 (2-3)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V1 (2-3)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V1 (2-3)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)L/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (C-B)L/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (C-B)L/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2 (C-B)L/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (C-B)L/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (C-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)L/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (C-B)L/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (C-B)L/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (C-B)L/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (C-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (D-C y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2 (D-C y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (C-B)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V3 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V3 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V3 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V3 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V3 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (C-B)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V3 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V3 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V3 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V3 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinear_curves.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/cyclic_cut_points.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinear_curves.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinearization_parameters.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/moment_curvature_curves.csv",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/stage_03_sheet_results.json",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_bilinearization.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+        "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+        "outputs/stage_03/data/stage_03_results.json"
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": ".envrc",
+      "sha256": "ef988b2139f6ec8b6fce4ae4f2e78ef068109406897f7f5da7acaaa14ecc2cce",
+      "bytes": 53,
+      "indexed": true
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "d8fb0de4792538f93822b2c0d235604921299d5e54a3d6ec7a6cb34536e8bf1e",
+      "bytes": 68,
+      "indexed": true
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "107c4eaf87f9d1378de15b54c4077bb450d07ef3f87e0f9e268db34641170b32",
+      "bytes": 356,
+      "indexed": true
+    },
+    {
+      "path": ".vscode/settings.json",
+      "sha256": "0116206fc482592770eafe5de43bebec8d8edea6d0562acfa9eeae8eff16019d",
+      "bytes": 638,
+      "indexed": true
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "b75a75bcb78b69b10417a28c654fcfaff283e9e92e8e58462a02f1688ade3a9c",
+      "bytes": 3628,
+      "indexed": false
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "d482e498b9a43c50c119ed7b3796f04c9b38b0d63453e06f1b6ec7fc5728d7a9",
+      "bytes": 1099,
+      "indexed": true
+    },
+    {
+      "path": "README.md",
+      "sha256": "f8f4f7865d6e1def8ddde5260ab3718ec5c5eac8394496fab8fe06740ebe8d19",
+      "bytes": 6994,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_01/case_01_nsr10_spectra.yaml",
+      "sha256": "71e6d729c10f75607b459634f7f86ade69398044919510a6450be25dc20cf289",
+      "bytes": 877,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_01/case_02_sgc_ccp14_spectra.yaml",
+      "sha256": "b6cfb6ece04eae78fd4280f20d8f1d520d906ca52875d2bbc262b67ef0f71d4c",
+      "bytes": 1024,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/confined_concrete/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/confined_concrete/monotonic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/confined_concrete/monotonic/Mon_Mander1988.json",
+      "sha256": "f15e494be1c496e2a30e8c02432292fe3d28f911dcda4d6b0428ab7b9e91b032",
+      "bytes": 1682,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/ductile_reinforcing_steel/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019.json",
+      "sha256": "dba8a6e78c58974838bca7601201e14690faafd6270625231bff16bc995f5d3b",
+      "bytes": 1750,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP.json",
+      "sha256": "ca97e22b5c4a14fe5dfe7f2ef5ffb5b8a20cb2ef5c4a55dc2c566f10bca4ac67",
+      "bytes": 1253,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO.json",
+      "sha256": "bb5974e305c9f91870b4f986967ce1df2c8f05890a229d341a953a268b0aa9c9",
+      "bytes": 1377,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/unconfined_concrete/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_02/unconfined_concrete/monotonic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "configs/stage_03/section_characterization.yaml",
+      "sha256": "42dd8e6ae65cae24911224aeae11bbdae8a60f9f0a678458a2773142f2f337ab",
+      "bytes": 2481,
+      "indexed": true
+    },
+    {
+      "path": "docs/00_project_scope.md",
+      "sha256": "f6a5058f67c403683c84dd13fbb9c349119f21275e011f2c52b0feac9e5030cc",
+      "bytes": 1930,
+      "indexed": true
+    },
+    {
+      "path": "docs/01_hazard.md",
+      "sha256": "e043ca15ceac4fbbfefef8f81149d8cd0ef8e2ba721fd8c97b9af719491f52c4",
+      "bytes": 2403,
+      "indexed": true
+    },
+    {
+      "path": "docs/03_section_characterization.md",
+      "sha256": "47ba6bb6b9b76a2396d717e7f0ad109f5b42538f9be1f471e9397d8243933f69",
+      "bytes": 3467,
+      "indexed": true
+    },
+    {
+      "path": "docs/BASELINE_TASKS_V2.md",
+      "sha256": "261d9fddb782efdba943c93e646d23c5b705c28f161f18b105654875f558e836",
+      "bytes": 11294,
+      "indexed": false
+    },
+    {
+      "path": "docs/MIGRATION_PLAN_V2.md",
+      "sha256": "dc0b22bd3ec77d78c61c45f56999bda493713777a2e11cb2c690bf51f21d0357",
+      "bytes": 68259,
+      "indexed": false
+    },
+    {
+      "path": "docs/material_characterization.md",
+      "sha256": "65b3f9ebd30e67bd4ea71cc39d4e950d2f8f70f40cff71df60f28ece4b31889c",
+      "bytes": 17056,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/confined_concrete/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/confined_concrete/monotonic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/confined_concrete/monotonic/Mon_Mander1988/guia_aplicacion_mander_1988.md",
+      "sha256": "b5613e16f0e9d7c920fcc39cf89d66a56bcdb46b1542c9366f7718f481fad0e6",
+      "bytes": 1887,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/ductile_reinforcing_steel/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019/assets/rdm_2019_example_response.png",
+      "sha256": "48a1680eb830aaf68eba625f665f811be68f1ff8b09b94fca58d5530c5f53891",
+      "bytes": 258825,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019/guia_aplicacion_rdm_2019.html",
+      "sha256": "5b2e7a0e31db3054adc9c71539110045d7ef3aea91ffa77eece5437966afb1ed",
+      "bytes": 70333,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/ductile_reinforcing_steel/monotonic/Mon_RDM2019/guia_aplicacion_rdm_2019.pdf",
+      "sha256": "f6286b1648831e6b0311f4d44ef43b16420c38d056e6e20dd5d14f29e1d9062d",
+      "bytes": 899397,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/assets/cyc_mp_canonical_example.png",
+      "sha256": "4d81622a018a26adb49e87a9369e33d37b5d43d5aecc6acd6695c33125b56def",
+      "bytes": 154097,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/guia_aplicacion_cyc_mp.html",
+      "sha256": "6fe9857a1bd30a64ddbf2b3c3be2422d4ec6ca61d247e59f8e5058362173fb0f",
+      "bytes": 40498,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/cyclic/Cyc_MP/guia_aplicacion_cyc_mp.pdf",
+      "sha256": "71f7c1017ed201febb7cfd33d04b4aadb76b5e3964797906936463422938611d",
+      "bytes": 558145,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/assets/mon_mro_canonical_example.png",
+      "sha256": "5f9df6271a4e99fb9b07ba21d3d14f53fdc6948ee1f619252c207af3e4e6b0bb",
+      "bytes": 107358,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/guia_aplicacion_mon_mro.html",
+      "sha256": "7f9b1f10a467d8e8b60ace8ec0c01fff6745b9817ae9e424d83bb88e20814e36",
+      "bytes": 38294,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/nonductile_reinforcing_steel/monotonic/Mon_MRO/guia_aplicacion_mon_mro.pdf",
+      "sha256": "4637404db47935a139696167c34f8cc20b29e602f77d3dc06378bd8cb4175f8a",
+      "bytes": 481228,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/unconfined_concrete/cyclic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "docs/stage_02/unconfined_concrete/monotonic/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.csv",
+      "sha256": "bd8802e47fc69c7758b9d9aef460b4c0cff3f0adc96bfda2312ab6ed8eecdb9e",
+      "bytes": 1062,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_parameters.xlsx",
+      "sha256": "069270117cd6c8a8fbefc2531448a88b273a611a376b0143d6bc29f6e387ff69",
+      "bytes": 2279,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.csv",
+      "sha256": "265b351973cdcbb60043d389648fbe71327d9bf93fb43c270381d6c3df50e549",
+      "bytes": 32785,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/case_02_sgc_ccp14_spectra.xlsx",
+      "sha256": "3744be12d7245fe96e0aa51b5689d07e4ccb71499b425c6926b1cd1435fed578",
+      "bytes": 24927,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_design_475_etabs_v22.txt",
+      "sha256": "f53c23e6e381499a12a6ecbdf0293a975d214fdd4ce02824dc7f534287ad4eda",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_maximum_considered_2500_etabs_v22.txt",
+      "sha256": "430bccf1abe1da80885a63dd75e068122646916525dc487e8191b784616e95e8",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/etabs/case_02_sgc_ccp14_service_31_etabs_v22.txt",
+      "sha256": "6df1b4952abffb8db7996351afe34bd5a630101b1262d4c524b801ea1bd8f03d",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/data/stage_01_results.json",
+      "sha256": "5591bb79e6cda3cf5151a4daf684d2dd9c0cdd41574cb91fbc76e378f7593680",
+      "bytes": 9260,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_design_spectrum.png",
+      "sha256": "53d939cfeb2e2ff1f6127bc62be363623f246ca22c57bb766cde9deda92161eb",
+      "bytes": 161775,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_maximum_considered_spectrum.png",
+      "sha256": "3a7e72d255f49270ae924992eaeff3ca71197c04efc07618ee60fdb5cea2d609",
+      "bytes": 168086,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_service_spectrum.png",
+      "sha256": "efa8555b611997cced7ff4a70bc84eebf6f6f17fdc867cb0ab35b4e8a4345b15",
+      "bytes": 161157,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/figures/case_02_sgc_ccp14_spectra.png",
+      "sha256": "9593b40a1203e9123b432cc74a39ec059fe5c523efaeb80a8dbab57ca49e602f",
+      "bytes": 169079,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_design_spectrum.png",
+      "sha256": "53d939cfeb2e2ff1f6127bc62be363623f246ca22c57bb766cde9deda92161eb",
+      "bytes": 161775,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_maximum_considered_spectrum.png",
+      "sha256": "3a7e72d255f49270ae924992eaeff3ca71197c04efc07618ee60fdb5cea2d609",
+      "bytes": 168086,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_service_spectrum.png",
+      "sha256": "efa8555b611997cced7ff4a70bc84eebf6f6f17fdc867cb0ab35b4e8a4345b15",
+      "bytes": 161157,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/assets/case_02_sgc_ccp14_spectra.png",
+      "sha256": "9593b40a1203e9123b432cc74a39ec059fe5c523efaeb80a8dbab57ca49e602f",
+      "bytes": 169079,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/case_02_sgc_ccp14_memoria.pdf",
+      "sha256": "b06592aca6e0cb4a6086a38d4f4b722999f2e20fc7156e822d1e9f0fb9cb82e2",
+      "bytes": 697385,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14/case_02_sgc_ccp14_memoria.qmd",
+      "sha256": "c94fbbe02acf97f2810d563199bc981eb1d2ecfa7d21148afec5575845128730",
+      "bytes": 3911,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/ccp14_spectra/reports/case_02_sgc_ccp14_report.yaml",
+      "sha256": "1a3d1ea630d7399b129a56aa27f0fe1e7e147cf9eb3e29e912e0da0675ef05f6",
+      "bytes": 4328,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.csv",
+      "sha256": "5efdb11fc01d159fafc721b9b5254eb7580721a81b63c47f1729824d5519bd6e",
+      "bytes": 374,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_parameters.xlsx",
+      "sha256": "80ce43649236db22e4cc296642fd6a5a34feee5301d32d3682a15f4ccf845ed1",
+      "bytes": 1971,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.csv",
+      "sha256": "b06587f546d105c3a439a619ad7883b99c08946b12cef1d5ad8c1187b43d17a5",
+      "bytes": 31053,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/case_01_nsr10_spectra.xlsx",
+      "sha256": "1bca46908b784fd2adeacabe2cd982645847727fe440e5e6d07b72f0b27dc3ff",
+      "bytes": 20779,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_design_475_etabs_v22.txt",
+      "sha256": "8fe6c7866fd5eee90ec40c4baa34989b5d3f192787937ad4dee6fcfd9794b6ea",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_maximum_considered_2500_etabs_v22.txt",
+      "sha256": "f29506884d7260fb4b068255c10a696e47f31a2720f3b28b87b92ad665a7241e",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/etabs/case_01_nsr10_service_31_etabs_v22.txt",
+      "sha256": "203dae1b934b6950c7c0dd2ab9689e3803f785d9e83139018bbb22adc2866f64",
+      "bytes": 11523,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/data/stage_01_results.json",
+      "sha256": "383fcce2003c4b5ddfb30baf42bddf4afa1c087bb0997bd9c56dbc3e48434df2",
+      "bytes": 7271,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_design_spectrum.png",
+      "sha256": "22f054a1f9a78c85b0aa214b0cc9b2160936bb4fd74e69863f4299b679c166d8",
+      "bytes": 161379,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_maximum_considered_spectrum.png",
+      "sha256": "bf14abea77faf797ae023f1f0e7f3524b92dddd2a4d0433f6f05722f3b5ffcce",
+      "bytes": 167263,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_service_spectrum.png",
+      "sha256": "7bd8aaedb7b4930e2b955f1b61a796857069bad5950a7ff3e5b38b365745ecd7",
+      "bytes": 162479,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/figures/case_01_nsr10_spectra.png",
+      "sha256": "3842527450e6564803d40200fac68b6bb377026510be90d71a40a103b7a2d6a0",
+      "bytes": 182212,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_design_spectrum.png",
+      "sha256": "22f054a1f9a78c85b0aa214b0cc9b2160936bb4fd74e69863f4299b679c166d8",
+      "bytes": 161379,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_maximum_considered_spectrum.png",
+      "sha256": "bf14abea77faf797ae023f1f0e7f3524b92dddd2a4d0433f6f05722f3b5ffcce",
+      "bytes": 167263,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_service_spectrum.png",
+      "sha256": "7bd8aaedb7b4930e2b955f1b61a796857069bad5950a7ff3e5b38b365745ecd7",
+      "bytes": 162479,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/assets/case_01_nsr10_spectra.png",
+      "sha256": "3842527450e6564803d40200fac68b6bb377026510be90d71a40a103b7a2d6a0",
+      "bytes": 182212,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/case_01_nsr10_memoria.pdf",
+      "sha256": "724e9b18729df2ba17a114f51136f3caf205902b9ee7a1dd1db3f99f2598e4ab",
+      "bytes": 698467,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10/case_01_nsr10_memoria.qmd",
+      "sha256": "ef89c21ff4e6a2268b7a3bab4e59cd9d0f63f0e5ac0ae73d6484eba21a01e195",
+      "bytes": 3400,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_01/nsr10_spectra/reports/case_01_nsr10_report.yaml",
+      "sha256": "15fac6d44fd41c8516405f82214bfdfc7ca3ae1a1969cb45f1fdd6f84a24f174",
+      "bytes": 3115,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/calculated_parameters.yaml",
+      "sha256": "549610a8dae6115133841ff5e949e6ba665064d23777c2bfc471a9d7c5419b60",
+      "bytes": 2332,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.csv",
+      "sha256": "4733c7f4e397201924de5ef678c9fc9b7ac5fc3b9acc9c53101d5c3505d4e3f5",
+      "bytes": 305111,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/curve.xlsx",
+      "sha256": "b28bd2b421035b700dfc5e94e31592654a863158add9a9e44e063d998963ca15",
+      "bytes": 81907,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/metrics.yaml",
+      "sha256": "d1db36fba1852d131133cb1f1744783094a68e485979814bc9729870508b2162",
+      "bytes": 1081,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/data/resolved_inputs.json",
+      "sha256": "7fdd091d9220120e0de4a851821fda6ef6a87cbc55ba3184954471bda2ffb7ab",
+      "bytes": 4141,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response.png",
+      "sha256": "c761955c52b0c5cb04534b77e908c3e5e860d32bdc31e679b632f5622ba0357a",
+      "bytes": 103525,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/figures/response_notable_points.png",
+      "sha256": "38d33c1e873536495444b5e1242f1a3a774b1da2c2f7e04d7e04661f67eff467",
+      "bytes": 145444,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.pdf",
+      "sha256": "c0a9393d2607b3341e5804915c587a3d64dab9ddb02122d36aed5e9c55b372fe",
+      "bytes": 218458,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/confined_concrete/monotonic/Mon_Mander1988/reports/model_report.yaml",
+      "sha256": "0881f736435ff3578c856c7e66fbb776b7dc09e79eed10b60841f1942bede9e3",
+      "bytes": 10512,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/calculated_parameters.yaml",
+      "sha256": "af0a21c25936fa5a6fcd55f809df9a7a5ee0b3ede3b1a8b921ee6f7304374d40",
+      "bytes": 7358,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.csv",
+      "sha256": "8ea08deab1cd4a67e51d99f14d6226f49a6cd01c56f7f7709d9219d7f9d2d21c",
+      "bytes": 452704,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/curve.xlsx",
+      "sha256": "ffeaccf233f43bf953f0a57da38de8ef7d8ed6cce1025ee6ad8e5a384245734f",
+      "bytes": 116340,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/metrics.yaml",
+      "sha256": "e758a96d0194d19340d9fdd6d2e0bffdc0555a583c6c6ed0aaa78603bfeec2cf",
+      "bytes": 2470,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/data/resolved_inputs.json",
+      "sha256": "dbf4c93d5b78b02e3a1a4f885f01ef56215a45289c61a7baece43e88b0b7e174",
+      "bytes": 3888,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response.png",
+      "sha256": "822dcd0eba495eb349932eefffe71f05a8b5a349e286c1b5d97f16d186d763ba",
+      "bytes": 133718,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/figures/response_notable_points.png",
+      "sha256": "48a1680eb830aaf68eba625f665f811be68f1ff8b09b94fca58d5530c5f53891",
+      "bytes": 258825,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.pdf",
+      "sha256": "1ef7488ab3a2dd2b9f892089b7c38ab972c429ab073f2e86c5f93b7b0c7622f8",
+      "bytes": 275592,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/ductile_reinforcing_steel/monotonic/Mon_RDM2019/reports/model_report.yaml",
+      "sha256": "2af9e5d00ab3e087045e769ba53ea87de1ed7fb72c0a085977aa627057017424",
+      "bytes": 20348,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/calculated_parameters.yaml",
+      "sha256": "df50f9543bd446955631f05a2413f07ec4b39d47007d3c555e1e3f55934f4951",
+      "bytes": 81,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.csv",
+      "sha256": "d69a62fc7d4461930c4c81d3543afd0cfc814760a3ba9a14dbc0605c1a3f0969",
+      "bytes": 78856,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/curve.xlsx",
+      "sha256": "756266866dfa08d0bb921cc1848ba617bb40149395ae8ecf240b938317b97a42",
+      "bytes": 26719,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/metrics.yaml",
+      "sha256": "2f5b5d5e02b7c1de3056e2fa9be340750a4343ef88b3f40ad306da57521bde23",
+      "bytes": 349,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/data/resolved_inputs.json",
+      "sha256": "2ade5cd6fba3ea15b0b9dc017c2b58ee287ad4331582cc9964ef51ee404cc52c",
+      "bytes": 3122,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response.png",
+      "sha256": "f6c893c6073620ccd9bf2a8d6760e63624fdc08b22e4707de50fd21eb53724df",
+      "bytes": 154182,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/figures/response_notable_points.png",
+      "sha256": "4e45e086ba1d7be2270f61ac46b184d3fc4b7525831f9669c16d41b5d7675b19",
+      "bytes": 177075,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.pdf",
+      "sha256": "4094785a18402efdc97507d8c566a3adc21d4185fdb68a126171efd762791389",
+      "bytes": 241395,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/cyclic/Cyc_MP/reports/model_report.yaml",
+      "sha256": "2a79efd58f2458ca054630ad49ea8500d48425cb8d82dd5ac0c9c2b8630f3511",
+      "bytes": 5112,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/calculated_parameters.yaml",
+      "sha256": "d3d1b44e0ea95508a18f61b0f0fb6bba8c304bf0f4f13c53eda824be394f5e57",
+      "bytes": 1180,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.csv",
+      "sha256": "4a44d7de84de0ab0ee5699039ff9bbcc4b58ac3f3a033d0c89d4228238b88131",
+      "bytes": 51259,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/curve.xlsx",
+      "sha256": "bc3e5dde6bde00e6ffed8f8bcfe3eceb6a663aa97a85f645945b222986e869bd",
+      "bytes": 22262,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.csv",
+      "sha256": "3eced7efd4fd9971ff7186fd01ef01dd63cd058dc19b4faa990cbf195d71e96b",
+      "bytes": 110,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/fema_bilinear_idealization.xlsx",
+      "sha256": "3e350c25c9799a2697b397a60fd49757cdd9baebed8e3fc44eff7e3ac9413cec",
+      "bytes": 1687,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/metrics.yaml",
+      "sha256": "0e758e4e0f71ef10a9c6f18d2605db8a40a0344dc7810b71438e9887c163c27e",
+      "bytes": 315,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/data/resolved_inputs.json",
+      "sha256": "1fc7f563d86a3ea0e0dc02847ceed1a172bcacaa708a94a21fe3f9804dc3d724",
+      "bytes": 3187,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response.png",
+      "sha256": "ac020dccac350ddb26311fd489a2f6a93fd23f6af825f09bf8b961659df44eaa",
+      "bytes": 108776,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_fema_bilinear_idealization.png",
+      "sha256": "d8d9c1ca845a2aef7b77c6c2ac558db053eb1afb14d79df301481020e4fbc75c",
+      "bytes": 171956,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/figures/response_notable_points.png",
+      "sha256": "8348e600734e205b1b3f853aa0dfaea44c4393eb63609ef5b18771fd4bbef41d",
+      "bytes": 129073,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.pdf",
+      "sha256": "2d51ff721b78300ea22270484b993505d260a88cc819f7cc67bff3633493fe59",
+      "bytes": 197644,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_02/Modelos_constitutivos/COL75X75FC28MPa/nonductile_reinforcing_steel/monotonic/Mon_MRO/reports/model_report.yaml",
+      "sha256": "d6d261f92aca17716be6d569ce762af7327d64aacd9a2d82acd62a48a36024f4",
+      "bytes": 6860,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "a6c5618dbd76d7f322711ed891b1df4239aa9f462c0e867b46376540174f5258",
+      "bytes": 601,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "9ef41fe680155b1bfc9e5eda359e3ba147fe2e0ed76f01ecd9a141d48b957cb2",
+      "bytes": 1075,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "8201bf7c8a73dd0b09587618e93f8916a7b0aba3c71476e6dbcab4f3541bde1c",
+      "bytes": 175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "ae20ede953458cd3583bd3a2a42b83ef4d30780c65283045cad62b60c0baa078",
+      "bytes": 9328,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "ed2b6dea0208aeabd54ecb8984602c6229568fdd8afe7a40da005756ac3dc15c",
+      "bytes": 6949,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "6caddffb1ccbeb8c4cf62d68b956db74313c5cdde6c008b589efd7741ed88380",
+      "bytes": 152902,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "3e0c0fe799b80c5cc677d3e5e7d0257bc8e2a4a1e51c8575decf041e38729367",
+      "bytes": 88761,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "5dde025b22caf539f0f1894459f20bf77e4873374aead31cfb4a2b72f4978884",
+      "bytes": 154892,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "31a452cac6db3806de015c308b2dac1e0e75df3f67869eabb7d597baee94f565",
+      "bytes": 4087,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "d0a012a25306b67718c441cee71d0e23f979c18865dd158fc2092a3c57d8405d",
+      "bytes": 4071,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "a6c5618dbd76d7f322711ed891b1df4239aa9f462c0e867b46376540174f5258",
+      "bytes": 601,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "9935989c0956f2864c8fcc11a926832e3cb5c9ede0104c4bbb33064ff7f13629",
+      "bytes": 964,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "ae20ede953458cd3583bd3a2a42b83ef4d30780c65283045cad62b60c0baa078",
+      "bytes": 9328,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "121faf0dd6a71aa2c83ac363ddb625015aa3b0045f1eb9d1cb3edefab8a98e93",
+      "bytes": 6556,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "5b94a46fbf4ead25f6f81c853a1cd1c69579f79ec442baf97886cb1ebb015e0b",
+      "bytes": 150052,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "501071f05193580fee5308249860f2417b38200a5acf1f222828fcad9e2903a6",
+      "bytes": 87212,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "90a4cb1f27ee146528da27cbde0b843f233cb8dfcdd673d3cb76877ab5d89a99",
+      "bytes": 152863,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "119eb82f26a57bfeaca2297045d67fa28dbefbad3e3115b792e828b93f8296c1",
+      "bytes": 4090,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (1-2 y 3-4)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "63434e6e709cf416abff1c40a177ec8df3446e08294a18eb147e4e305cee8810",
+      "bytes": 4074,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "2062d8b7df4fd2ad0ace3e699610c869da0e5a32811a623cb9481135093d63b8",
+      "bytes": 545,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "bd946a66e824fc57bc90d478a335e46e211737b0031edbc987e9ef7984b987b7",
+      "bytes": 1067,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "521106e8f7b8bb370de0f7d42bd187b44bbd3a93aaeb799605cc3705e6d6998f",
+      "bytes": 214,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "ce3dcdde49cb1fc54e3619ad840af8f6ec2be2eae193f6a8e82e06f5b37d78e6",
+      "bytes": 8274,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "edd6a79b5b4df9171175d5b73e15424d0b1d07071e69c5683998e527bfcac1dc",
+      "bytes": 6828,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "4318affb288c12126b8ba1ea990755e196252d72a3cca937545153dd43f03899",
+      "bytes": 155899,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "240765e0ccfd7f4e53747af84bdca980b87d4e918793fa3040e34043e8e47822",
+      "bytes": 100056,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "ea8cf6c4a5670071b10e46f02de8b774c8680f1c851c3d8bfaa1d24890872087",
+      "bytes": 159549,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "329081e7c9e102c938858205910d8f0cab5581870263ba105d618576e15cbbcb",
+      "bytes": 4033,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "a88be2fa077d8c36b01555ca068a06af5b4c3c70b9209788f6ec54cf151c9436",
+      "bytes": 4092,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "c729a72ec6d93e5e9d4af2553e123fbbb58a0e6c7982e703f6743bc673028264",
+      "bytes": 545,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "3be12c49d82a683b71c001ca4947db43995dae9126eb8d419ab070221fa9c98f",
+      "bytes": 908,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "ed799181e8f5aa0030a11cb663aa60bf9e3c26fb23dd84628e6f3274bf4f269f",
+      "bytes": 8619,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "217cbb5e19ba9058196b4664cbf1ae391ef638a12789b35da263a296809814c1",
+      "bytes": 6399,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "fa2c92b4593856aa50571658b2631e5039a9ff25ba0fb3976ee163aac4dbc88f",
+      "bytes": 146289,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "0b108fe7abf039c3a4e4b12e42a16f999a1235a0f8cf80d782b742d3803335d5",
+      "bytes": 85341,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "2d66bfac19be1271507458c1fdfe3f29c630ef0f266e000b04a9699b55b6206e",
+      "bytes": 150268,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "1b1d47d9df68da60031502eaab50608dc2b870be45789d876c8b6489b7acb401",
+      "bytes": 4036,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V1 (2-3)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "7e0738e6c0d9d0ad7e32e18a73acc682383219c97a51e668d83c30f277d64b80",
+      "bytes": 4057,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinear_curves.csv",
+      "sha256": "cf510f3fd139add454746c90ece3638cef05a2dd62187419fc9fed09dade5d39",
+      "bytes": 605,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "ca92717e9a3667daeaba7af71fec2ae46b32a8f2aee8dec181a88b343c001e68",
+      "bytes": 1059,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "00943445e8afdf0094950471896751ca3b5e47f4392d712e39508c44c6f58825",
+      "bytes": 175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "b8c73ed4efe404be3f391c39620ec7a77566c2789a0498a2945fb17fa483a97a",
+      "bytes": 9894,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "cd175a49c5615d2a2cc445ab34ee2186a3e2bd2ff64bb7de12ea70bdd14b4f78",
+      "bytes": 6935,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "4da46cdb3eec84e1904dc0962c06cb4582492025e4f1e259a1356b471315fa9e",
+      "bytes": 154503,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real.png",
+      "sha256": "d8e8c37eea5bda48b2eb4e1b3b7b66021514c489e394000c33d26b88fa3ea17b",
+      "bytes": 89355,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "783803f01f4c2b2495843966aa09c5281cdfaf306cbf8441b14c4615e47c0f6b",
+      "bytes": 156142,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "ae41d0c6eb3087168068efaee9510591b414d92bbdfbf5e1749c70d8f1a63058",
+      "bytes": 4077,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "622229f2619cfd4b98ef38de30e8660a995979e00a9531f70b79f103ad5f69f7",
+      "bytes": 4075,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinear_curves.csv",
+      "sha256": "cf510f3fd139add454746c90ece3638cef05a2dd62187419fc9fed09dade5d39",
+      "bytes": 605,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "56a4fd558ff27370251ebc6d25a68c468fa65cddaf902a1c2a09c7f3217cc3fb",
+      "bytes": 948,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "b8c73ed4efe404be3f391c39620ec7a77566c2789a0498a2945fb17fa483a97a",
+      "bytes": 9894,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "068578b5653e51ee73cd2018284867bd3debf60858611ae20b20d7c1801873df",
+      "bytes": 6542,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "4141dba2c211381830e0b07055421cec40d46c31b4e4f22be8f2f37263b3d173",
+      "bytes": 151626,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real.png",
+      "sha256": "0e3c9157445df1f282d806cdb9de34d1c1482a43ba4d310fa1c8780c625f28da",
+      "bytes": 87773,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "114a0c5c811bceb71925ee890f9be334a200aa083ce7e84000d53dd5b9dcd504",
+      "bytes": 154175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "86946bdc5c28363c61be2051352daddb5d8e97991520c43b89249606b225225f",
+      "bytes": 4080,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (1-2 y 3-4)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "95ac672f17bfd3d1dec9b267e62d6d370013b7516f2067d2df0acd8bbffd71fc",
+      "bytes": 4078,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinear_curves.csv",
+      "sha256": "ed4365065537425ef57fc0a1756f725e26d90ff48e19facd05049157e459d088",
+      "bytes": 643,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "9a7d42929d5949ba2f33934a9a1df516e382a6fc7c1b27d0a7aa72c5a9197b3e",
+      "bytes": 1125,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "99141344e897267ee7439896c0f8f90211d2d0f87081dbba446438b9be2157a9",
+      "bytes": 240,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "490c23d52c34b46ddae7164d810b784a112ed8026559962ef282e0f033597648",
+      "bytes": 10817,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "8f378c9b42539687272986bfcdb56a17acc4dde1244ed64c4b00975917ee9f48",
+      "bytes": 7153,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "3b193f58a9edc7f2e8ffcc108a766bc627c254be01cd4f4728fa62ad9e4ccdda",
+      "bytes": 164680,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real.png",
+      "sha256": "b7616a44e9be95e0ff381b169091d35c16c15fbec5944b175087e716948f7f86",
+      "bytes": 99137,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "ab95bb8386fa66246053fb5ba813707253a920281658428498f7ce1dd1028924",
+      "bytes": 165934,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "dfd9ae3c9c71b2b5f72f89df8d1d429bbd253e8679d2e59a5f8018b3b5a6f206",
+      "bytes": 4092,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "f7cecfcc0eda5c014fba347e462313a274bc72019c45f3cec9924ac7268fd9d3",
+      "bytes": 4123,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinear_curves.csv",
+      "sha256": "dac09b6cd7937615d2552093dcc9e241a86680079ea31eacbc96cfc4297dd9a8",
+      "bytes": 647,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "8327adca412278af8ff0b85b483e29b2841eadddbf541e01f4639b45ea62ddbb",
+      "bytes": 971,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "017578296abf63e7a3b40f04cd4adb12a3d3be2ef2e1b5361d386326e3770ef8",
+      "bytes": 10895,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "01aff5574764b5b0f37c28b8c467b8af2e9dbb73753142e69ace0f4f128002cd",
+      "bytes": 6729,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "877576b0b987f8887149b1abb3c0f9516bb4e3e75b882fece8d4c5a83371f445",
+      "bytes": 156699,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real.png",
+      "sha256": "7d011e12183583cd66fca7d5922d5c0f5daf5d9c72c02f4712703d972b37dc07",
+      "bytes": 85725,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "c6e50f2556f209b156491f36873bdbd9be832f2cd35d87e107ef7b1a24183a79",
+      "bytes": 159766,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "0291eb10e2e175db3ffe8dcba56890bc4cbcbda3ccb8c3bd87da4f4a09b5f2ef",
+      "bytes": 4095,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (2-3, C-D y A-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "2d7d2332d182163eb68099eb7fa81ea7ce0c5b5372eab4e0f964a4146349369c",
+      "bytes": 4088,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/data/bilinear_curves.csv",
+      "sha256": "bd4071e392717bbe787cd88aa2e82ce857bc7cb5b948ff4fc96fd930ea44c57d",
+      "bytes": 567,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "635066c0a88cfe8081c397c8ab1cfb9024f56827ae25353304cabf54ceff2449",
+      "bytes": 1055,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "c4ba8bfba5e358382549600c69724ffea87c4793c55c3f8944d402e0cd6bde70",
+      "bytes": 163,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "887411062a22e0131da9a0b34d4c8f0d3771a3cfd462b77f9dcd2560aca42d02",
+      "bytes": 9723,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "c31d88a195fdbeb0cce6bedcb94449c8abab1631a8bbb2248b59cfdaab28c612",
+      "bytes": 6727,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "6bfe6386c2e31cb7d5522a529444eca98558060ca753ea2628dd761b1bc977cb",
+      "bytes": 151503,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real.png",
+      "sha256": "c0e7f34c44e30c2b670cb1de29e79516d1ed42b4ff3c96c7a014ab045d9d2173",
+      "bytes": 86891,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "d5e13fa5676f0a56829c56d8bc87bf9068b40e760205bbf3bc594630d6387b70",
+      "bytes": 150674,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "fdc7bc7cc3770f508d2de9b55855a401de39fe65349e74245ca98671551d4207",
+      "bytes": 4065,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "e7bf1ba12b2b881a5f0c44977471c57dadb19d04daa87123fdc0ab2d7770c4aa",
+      "bytes": 4059,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/data/bilinear_curves.csv",
+      "sha256": "bd4071e392717bbe787cd88aa2e82ce857bc7cb5b948ff4fc96fd930ea44c57d",
+      "bytes": 567,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "3c128202ab746fe593421653b77cda5b97f3396862c5018c6b4d924aae5e9157",
+      "bytes": 944,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "887411062a22e0131da9a0b34d4c8f0d3771a3cfd462b77f9dcd2560aca42d02",
+      "bytes": 9723,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "370a72a3672058050f30090370f07121f8ee94e73591a396695dbfe5f8dda94c",
+      "bytes": 6334,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "dcc8342dd834f93ff64deeb2fc5b32fc4b94ff1d97601f65acbd423f72b7fe88",
+      "bytes": 148614,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real.png",
+      "sha256": "e26943f2b73e153c8a7d614e42e5602f80466e4f98af7db8ee912758b6194897",
+      "bytes": 85324,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "89f4adb4b78de6d65aa2f2341dfab9ab1957998fd16aee356446cc0de3f508cd",
+      "bytes": 148689,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "962a65c9f850db100d406d79332a839567c7a12b155e35c51acdee8a7ad250f3",
+      "bytes": 4068,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)L/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "c5061f008e20166637d46703f17e819d77902c1c3b0c723adc3f9843d6709895",
+      "bytes": 4062,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "027dbc80da3c3d052c067431287ed3722d1718742ed8cd0e859121b3c3e054fd",
+      "bytes": 567,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "37a6ca365c8e2577c0e385953bdb53361b838cd45a940941b13aaf34d1aba9de",
+      "bytes": 1054,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "4eece77acb2ea7ec7c2b0739f281cc0a188d50bf4fa181fe8a51ae4f2f3d16c5",
+      "bytes": 163,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "5fe8c2527853e1abc2198a230ad6234ec1e2646e0485a70409aa26e25d1a0c07",
+      "bytes": 8800,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "06bc4b761e34d71f901a394480ed11399fab113796c22dad5dd61def8db68df4",
+      "bytes": 6724,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "e88dce80da42e56132a6d3cf8ba9f6782b06d0f6f988bf5bcfe7f0644c4d6c08",
+      "bytes": 151762,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "6fe97c3312c3cfc06f42b05ac84ef2e6c4b2019f68205fa60c960b35d1f66ce9",
+      "bytes": 88705,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "829adf213eb5a385ab933066de50f410924be3ee3374df30c50c57ebd27f8478",
+      "bytes": 153320,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "6b7d2fee356b2baa124f7dfccbbb1790b604c34550d5d24effb91bb647fe677c",
+      "bytes": 4059,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "35f91017282a7779e515d710bd910e88d7ddac3b07558655bbd3635994118132",
+      "bytes": 4052,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "027dbc80da3c3d052c067431287ed3722d1718742ed8cd0e859121b3c3e054fd",
+      "bytes": 567,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "747b406d713ef1836002f128742764a7035fd9d058d959af5a9a84295536d848",
+      "bytes": 943,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "5fe8c2527853e1abc2198a230ad6234ec1e2646e0485a70409aa26e25d1a0c07",
+      "bytes": 8800,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "867358d96a66e79b58245df7df5e5eebe70d1d24b7b96a805b6f7e722fb81246",
+      "bytes": 6331,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "21807d5426b7fe8cbbd657955b2ff7287e0a0a58bcfc55e70273c2d8d3e68516",
+      "bytes": 148927,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "72cd1f04be3ac4d0af323dcaa34f7907d04a34d510fd0528effd118a990f5746",
+      "bytes": 87114,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "fe0c3b08bfd9e123c1d63a0c9b14decb6a7c3ed0b315aee6f43081fd8007a6a3",
+      "bytes": 151348,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "32528fde16833ccaff121e0d3113280f33daa6648e47af540af06b370e3c644e",
+      "bytes": 4062,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "df6ea907fa1397b93c4518f42211bb671d5ceb5d0193263fde4345c65e3b9e8b",
+      "bytes": 4055,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "0e63b816d77d33ef3858b642731d2c8133e335e15a56ad48fce89d9c0f0527bc",
+      "bytes": 605,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "eb070e0acabf18cce512db0d1108abe3b1d5c59094f288b5a2e29b209c756b62",
+      "bytes": 1127,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "fb8af067e972938cdb85a8a2cf990661a92c54b934a2b482825378c6b531806a",
+      "bytes": 226,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "b3bc655e655a3705c0998716db492060d920afd759d54eff28c797007be8c153",
+      "bytes": 10027,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "5536ee74e5e922fe0c37ccce36fcf6f9fb1b8e9685e706b7408555ec69efb2fd",
+      "bytes": 6989,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "f443445f8b0aed2a6afd027e73d92b7e2c1f26e128a42584c592eb4b235b97fd",
+      "bytes": 161486,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "081758fc414770501e5cf18d0c6cf6d1b315b48570c50760b2aaff7a27954005",
+      "bytes": 99358,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "254d157fcbc6009112d62b21b42f129acc8a1e13b4e6ced7d70d74cb354881ed",
+      "bytes": 164670,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "61c82c6aec86b9c4b28a8b8d0c3564e3b82eb6a4a763a91d7ccb5c02459f6072",
+      "bytes": 4090,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "41cc8489cbad4cf4492c1c7205574482bad72c3bfbc4133a1a42fc3179a0e3c1",
+      "bytes": 4108,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "ffbfecd6f57ef9395804a44ffd90d4ff5411b7b076c5418d05be58045c771a4e",
+      "bytes": 603,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "c2e646c82654b6c933172d084079effa36c505baf0d7b26842bcb8c60edfe8d0",
+      "bytes": 962,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "229cb3aa99d67f805e634479024a38d20ae2d971bd1a92ba5a4487f239dc033d",
+      "bytes": 10240,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "d08a1a6ae3ea2a239e473328284dc9271ee1442bdd3034cbc0ab524e41f9f987",
+      "bytes": 6554,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "013fe4fc60b6f73ba87963e2f023af49f71dcfc3dfae2814be955412bf59c161",
+      "bytes": 153860,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "558d1cc136b4d75ed81e12a74e023b147c687d16c7a5c113b14c67a9ce162ddd",
+      "bytes": 88241,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "55050fa2de478b02b0e353866017b28f1d43941ae1bac0fdb0472168fd55e363",
+      "bytes": 157350,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "40c0b9b7aa65465837b6700094c8fc087fc92be475187b2af2052fc741989da2",
+      "bytes": 4093,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2 (D-C y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "d78d75f71df8899af1cf7ba122341515c3d9e6d0eabbb43505ed1705a551299b",
+      "bytes": 4065,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinear_curves.csv",
+      "sha256": "382b1544824522b2fe6bd733828813f0e244579de1714132264ae71ad2ee2ba0",
+      "bytes": 621,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "c7c08e6481f9c35fea9f6801e1238f0fc962e654b96d60e345a4568aa567c3ef",
+      "bytes": 1072,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "a30ede783db4275eaf85f333174f7b0f9296db7905b8d8ce8529b3aec028bd20",
+      "bytes": 181,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "bf606234a406e972a943f294b07cb510d7d18dbf6b04d44f6f7c0902fa7adb3c",
+      "bytes": 10175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "bdbdf032ee3bde373b0cb22ee77f5cd3cf29f8177602ff04097fc91aaf57b322",
+      "bytes": 7048,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "5cd7cd4da739b9b7f28000296211cf894db28e9c80d34fce3bbb6fe42a885289",
+      "bytes": 154399,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real.png",
+      "sha256": "d4f516ece83e495264273942293793c78e7de462259f420b0d6ea35c94467c56",
+      "bytes": 85648,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "97f263c6e39070f56280be8ef68c75b0e21d310ca252e673c44473efdd327191",
+      "bytes": 154645,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "293b395578d29f54d166c0f93c406fd583570c23198b9d2f13a914d454e056e9",
+      "bytes": 4085,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "bff0156340b4d837c9729cdb333fddb4a132a91fd5374174033652e61e84c0d6",
+      "bytes": 4081,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinear_curves.csv",
+      "sha256": "382b1544824522b2fe6bd733828813f0e244579de1714132264ae71ad2ee2ba0",
+      "bytes": 621,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "fedcd96ec5d8a660d77ff4191f8e5ce70bf4e4e33f97d854329fc604d469c528",
+      "bytes": 961,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "bf606234a406e972a943f294b07cb510d7d18dbf6b04d44f6f7c0902fa7adb3c",
+      "bytes": 10175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "7eeeed51f98d61ec4b967f637228a293daf180a72138481374536adc807e6a76",
+      "bytes": 6655,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "5c629ccea6ee587dcc762f095a8ab73e181697370d0f56b5fcb26ed0f43da2c9",
+      "bytes": 151700,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real.png",
+      "sha256": "c4fc0aab67bb5ed9e5c22417f69476d83d5d80b3de119d57c40d7893b0ab2529",
+      "bytes": 84113,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "7cc49958877c17628a93e6bd6bb1f5561ed334d67709bfc54a2e813534360191",
+      "bytes": 152664,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "cf2d708363e07bba6712261e4fad03076c1d73b929574c978d69b3aa4ebc8da2",
+      "bytes": 4088,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V2(0-1 Y 4-5)35X50/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "0705d130ea6175b2e4ac4b840157a36e97ca52c62fe84ee30ec5856d64b77639",
+      "bytes": 4084,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "1825c607050ac7f25dc28c929bcc3777fa1ce2e5ca502b070a244779020e9218",
+      "bytes": 565,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "14fe090bb773c6bbae2cd5483431b373c1abe2b65b9d6321e338895b8e48aa28",
+      "bytes": 1065,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "42ae71b4372797f3acdf0a9f20f20f17564d88bc8a5187c3bdf6a4a594fdf0a3",
+      "bytes": 163,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "07562e507c5beb888cd1ad7e735336ac8141577c71e2baee0f7a141dc0ae4620",
+      "bytes": 9475,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "7e0d694e494aaf271e2f846f2035bff8586eff27fc620fe977ab9ac9b52f168a",
+      "bytes": 6735,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "b68904afd2effa3dc78802ae2c7313a3b94713e3c8ee31cb8bbf6d89cd2d6eda",
+      "bytes": 148870,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "431f380c9799b3318de857a3433534e0158a39ea4494c1f50ca3e21e34a5faf6",
+      "bytes": 87133,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "2fd4b43b3b2f84db4122a20d4bf5dc014f3163e378ae571a480e24fe880c70c6",
+      "bytes": 151396,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "4d8ba4bf7ae0371fd1aaee95df55b403ecbd67f0bf44c42bf2e5a45da0e22b4a",
+      "bytes": 4066,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "8691590454ca8ea02fdb4a0abfebcd27c2d8fadcdd91afda5bde738a6d48b6c5",
+      "bytes": 4059,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "1825c607050ac7f25dc28c929bcc3777fa1ce2e5ca502b070a244779020e9218",
+      "bytes": 565,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "44bc4e0f3906c980041cd0863c20947ee7e517715c45bd9911b4af5c9dfd9047",
+      "bytes": 954,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "07562e507c5beb888cd1ad7e735336ac8141577c71e2baee0f7a141dc0ae4620",
+      "bytes": 9475,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "ca5645d6dbc8d21486df8139ed9b01e82f759d3443d427e371adf356b980dd7e",
+      "bytes": 6342,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "28d5af432e796154dbb6f010542d8c55be007028cae0ae67e1c7297548f26cea",
+      "bytes": 145975,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "d4f884068b22a7195af6b3482f1f767afe7448877bc2e490c474cde7399915df",
+      "bytes": 85528,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "b1b93e729d2e6722be7b2e1c3f37d1e7703324bde92411f3891c735c5cfa3639",
+      "bytes": 149395,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "35a11f20d0bacf2c5eba99cdec8cd9d3991167a8171a151731878e1958ae2942",
+      "bytes": 4069,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (C-B)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "55e11ba2fc09e8f6b7e8ce4504edc644afdf95816a945b91ce32888febd4f763",
+      "bytes": 4062,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinear_curves.csv",
+      "sha256": "f31af32443f27274737717bbc43425665d18c44ca722f92ef619b18026d3b890",
+      "bytes": 605,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/bilinearization_parameters.csv",
+      "sha256": "76e7d0e057cb543a5439b0baccaae1f8f0373e88261e9e103a10d6d2f301627d",
+      "bytes": 1088,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/cyclic_cut_points.csv",
+      "sha256": "ed548c1f6f78601aece003f9e3f84121d6a4e41543e98d223421b12622532506",
+      "bytes": 175,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/moment_curvature_curves.csv",
+      "sha256": "ce999f5b615ddbcc3b0e1283b1f700c809b5a6e71675fb1a6da7375e1a7fa344",
+      "bytes": 8816,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/data/stage_03_sheet_results.json",
+      "sha256": "2568e81a8b0c1d7d412dee769c919d38ca2bea52eea91077890bf76ae6ac9848",
+      "bytes": 6962,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_bilinearization.png",
+      "sha256": "ba94996320bd4d0a07ed2cd05643d03304a4dd73ac951c1f65c46cee2c65a4f5",
+      "bytes": 155842,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real.png",
+      "sha256": "6448dc8841021b392d2e5969ce0e7b8808165a15d04b2976e4cd2f98966c49af",
+      "bytes": 86660,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "944c4176e7a39ae2a2190316a28a4750e969a7cb7064cce77cde34b1a1b109dc",
+      "bytes": 159921,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "0e739b7a72cbe2e0984cc02d1a8ff6da86687051b37f09aa6ef5e891d2554430",
+      "bytes": 4094,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/ciclica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "b679b71e7df1e68039ce4acfbd270db0d3f4cc40a7818d1ad966a24e2bc819ec",
+      "bytes": 4076,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinear_curves.csv",
+      "sha256": "f31af32443f27274737717bbc43425665d18c44ca722f92ef619b18026d3b890",
+      "bytes": 605,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/bilinearization_parameters.csv",
+      "sha256": "128fdd3a9304a280f1c4bcca5cf5596dd3c36c93fb8cdbaf78f89162083954e8",
+      "bytes": 977,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/moment_curvature_curves.csv",
+      "sha256": "ce999f5b615ddbcc3b0e1283b1f700c809b5a6e71675fb1a6da7375e1a7fa344",
+      "bytes": 8816,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/data/stage_03_sheet_results.json",
+      "sha256": "0b5eb122b76b247e29d8864c767600193d376770cc61312995611f94adb6ed4a",
+      "bytes": 6569,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_bilinearization.png",
+      "sha256": "b844347e959211b3e7f0374cf3428979e127b19a1910e891212dd8ccba38593d",
+      "bytes": 153291,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real.png",
+      "sha256": "089c05aa44bac41fcabfbc34dd6e858ace87d57ae5e1cb3b5bd40ba09b08de04",
+      "bytes": 85120,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/figures/moment_curvature_real_vs_bilinear.png",
+      "sha256": "4e660d44b08037618ba757ab58aca2361a64991be1b84b5325c1416188eefd84",
+      "bytes": 157971,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/reports/negative_bending/negative_bending_bilinearization.yaml",
+      "sha256": "2c3a91f66c01321c28a9b77af729691a4dc177712559f46f24a8bbea28385e8e",
+      "bytes": 4097,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/V3 (D-C Y B-A)T/monotonica/reports/positive_bending/positive_bending_bilinearization.yaml",
+      "sha256": "73b3d33ace451df6c003c40a0946946779102f5814196c068f758c1dab93340a",
+      "bytes": 4079,
+      "indexed": true
+    },
+    {
+      "path": "outputs/stage_03/data/stage_03_results.json",
+      "sha256": "d1782be8afdf22235abf1039fc7592351a92aed052117e951c23a892f66e748b",
+      "bytes": 73674,
+      "indexed": true
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "9f89a7f5577af399d23154228beab8d6a8be3307dafa5c86b3a7de6eb0a2a772",
+      "bytes": 1395,
+      "indexed": true
+    },
+    {
+      "path": "references/catalog.yaml",
+      "sha256": "c67c37873cb2efc9707bfdebd4b79789d20ff84a7a1f3c82fba71c5e964929f6",
+      "bytes": 7209,
+      "indexed": false
+    },
+    {
+      "path": "references/stage_02/confined_concrete/cyclic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+      "sha256": "067c78f67dc0e1844bc6d926b9a0d16cde46fcdc6ae614970843f3486a56cc33",
+      "bytes": 1117778,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/cyclic/PB94219185.pdf",
+      "sha256": "db0b9ca513b586159b77401d46d932142f5c6cc3190cfbd3df6d4aac5153c10c",
+      "bytes": 6796968,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/cyclic/referencia.txt",
+      "sha256": "99ca71cb479c3a8a0d82e948587aa0782f99f40655af4f1415cb95ea01422aef",
+      "bytes": 135,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/cyclic/tsai1988.pdf",
+      "sha256": "7a3df9c6d2d3a3c350fd57a0a061eb34b4b5fa10f1d302d39a0617a2f5e86cd9",
+      "bytes": 190060,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/monotonic/Mander_Priestley_Park_StressStrainModelforConfinedConcrete.pdf",
+      "sha256": "067c78f67dc0e1844bc6d926b9a0d16cde46fcdc6ae614970843f3486a56cc33",
+      "bytes": 1117778,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/monotonic/mander1988.pdf",
+      "sha256": "82a52f668ec0266f18cdcca5a63a0b72b1edc59cdf8b2ef1eb4d54dc02ee148e",
+      "bytes": 1546335,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/monotonic/popovics1973.pdf",
+      "sha256": "c8a556a2ab028d9f72872677500f8cde7ec3b0a388a55a179621a4bc7921fcbc",
+      "bytes": 625400,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/confined_concrete/monotonic/thesis_fulltext.pdf",
+      "sha256": "6b852aab467b6180b62616526c6ae410cc7547129d1aea022b72345877fbde11",
+      "bytes": 28469097,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/ductile_reinforcing_steel/monotonic/DM/12587352_2002_ASCESTR_1__Modeling.pdf",
+      "sha256": "b9a992edc602146dec606c38ac0f0e9af2d8602ff9df78c4d212af242ab03bff",
+      "bytes": 659086,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/12587353_2002_ASCESTR_2__Stability.pdf",
+      "sha256": "2ace763ea6026483e8784847fbf977755d1c429863a179871ef46ae89a518473",
+      "bytes": 570816,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/B3_VT5UnsupportedLengthRatio_V1.1.pdf",
+      "sha256": "ac5736fcf208f470cdc7ae973da3e014684d66c392454ad982b11ce89c3d33c7",
+      "bytes": 903904,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/jp116.pdf",
+      "sha256": "82d21719bca290672b5713d438ccdcd34e4c1285e6372fba73a6b52566509dec",
+      "bytes": 6287663,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/ductile_reinforcing_steel/monotonic/RDM2019/rajesh,+4_BNZSEE1474_Tripathi+and+Dhakal_Anti-buckling+design.pdf",
+      "sha256": "665dd33b2df2958144cea7905fca93d1cdcfc32b8df44d926022542d0a5bea1a",
+      "bytes": 1721343,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/cyclic/1-s2.0-S2214509524000378-main.pdf",
+      "sha256": "0b9ac8569c4505dfdee860f441c11e8614fef089a057bca5dc61bf012bd7bac5",
+      "bytes": 6974207,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/cyclic/1-s2.0-S2452321624002907-main.pdf",
+      "sha256": "2729b660290c2d4fd74150af7a25f24404ffa7105226b7f6ca2012896b61916e",
+      "bytes": 964386,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/cyclic/Carillo-et-al-2019-2.pdf",
+      "sha256": "5c6abf0da51440cbcfa5f7db2e903701c36b39d8846fd20a90b6497bf48b7b7c",
+      "bytes": 8805055,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/cyclic/PB84192020.pdf",
+      "sha256": "8a1e01ff15daabaa1e4aa67d192b23267a322890861af3e1df5ffba7b0f7bc4a",
+      "bytes": 6862299,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/cyclic/fuente.txt",
+      "sha256": "69cbeae61de0ae71a040d45d8c78c7574bcc103a567d54a0d840add8a6887298",
+      "bytes": 123,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/monotonic/1-s2.0-S2214509524000378-main (1).pdf",
+      "sha256": "af1956188b15fbd0976d53df355bcd55ea644c07791d6665a56d81c2bd605608",
+      "bytes": 6974059,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/monotonic/19930081614.pdf",
+      "sha256": "0d93f47951ae6b8612333d5028119990745a7a2dd8d75c9d5f054a86d7bc6581",
+      "bytes": 2364594,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/nonductile_reinforcing_steel/monotonic/Carillo-et-al-2019-2.pdf",
+      "sha256": "51d9f4cd3ef789bc9cc359ff063727ef2e17815c0507b0c3540ab1b4e793f7af",
+      "bytes": 866723,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/unconfined_concrete/Mander_Priestley_Park_StressStrainModelforConfinedConcrete (1).pdf",
+      "sha256": "067c78f67dc0e1844bc6d926b9a0d16cde46fcdc6ae614970843f3486a56cc33",
+      "bytes": 1117778,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/unconfined_concrete/popovics1973.pdf",
+      "sha256": "c8a556a2ab028d9f72872677500f8cde7ec3b0a388a55a179621a4bc7921fcbc",
+      "bytes": 625400,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_02/unconfined_concrete/referencias.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_03/excel/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_03/excel/M-curvatura tALLER #3.xlsx",
+      "sha256": "2bb3b835791e56f6683608b69c1346cf973ea2abc1088d11c6d33e16af510c52",
+      "bytes": 18156,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_03/excel/M-curvatura.xlsx",
+      "sha256": "ce38cc1aca600805cc852e46d7c564ba5646ed5fdcb4ba1bafdbcdddbd27f427",
+      "bytes": 41384,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_03/pdfs/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "indexed": true
+    },
+    {
+      "path": "references/stage_03/pdfs/ACTIVIDAD 2 DISEÑO CONVENCIONAL DE PÓRTICO PLANO.pdf",
+      "sha256": "2f458f6105d06de48f2530dba7293dc18b8ad3022982bc7f1b28bea1f318a4e5",
+      "bytes": 494357,
+      "indexed": true
+    },
+    {
+      "path": "references/unassigned/pdfs/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "indexed": true
+    },
+    {
+      "path": "references/unassigned/pdfs/ACTIVIDAD 6 EVALUACIÓN DESEMPEÑO ENCAMISADO VIGA DSBD.pdf",
+      "sha256": "0b9033c5e893064076623f81f29b5a043aad28a6177bf8eaa07d17a9e2458a11",
+      "bytes": 372673,
+      "indexed": true
+    },
+    {
+      "path": "scripts/Activate-StructureLab.ps1",
+      "sha256": "755cbe7030b7a3e08874a2ab793688906584cba82f77eab6e7efb55004fa1701",
+      "bytes": 377,
+      "indexed": true
+    },
+    {
+      "path": "scripts/Enter-StructureLab.cmd",
+      "sha256": "670a2edf02ef493867ad94b0ebce3833d6023de77ae4654e6ae6f0b07731cdb8",
+      "bytes": 161,
+      "indexed": true
+    },
+    {
+      "path": "scripts/Register-StructureLabAutoActivate.ps1",
+      "sha256": "d2a40a522ca4d4b54ba21e0412ef6ebdca8928442ebdfaa6745ea8aa7f1d2aa2",
+      "bytes": 2520,
+      "indexed": true
+    },
+    {
+      "path": "scripts/run_stage_01.py",
+      "sha256": "536c4a929dcd01fcd1294fb9167beae4c71d502c0e9c2b672c29150933ef25a7",
+      "bytes": 398,
+      "indexed": true
+    },
+    {
+      "path": "scripts/run_stage_02.py",
+      "sha256": "a54c8b4ced2dcc3628502c6e52fc680baa74725b58a5d7bd87ab019ef9bbf830",
+      "bytes": 407,
+      "indexed": true
+    },
+    {
+      "path": "scripts/run_stage_03.py",
+      "sha256": "e3b93dd54a0a276260cc9896a5e4ed0ded023f5891454637a41ada29eb8ddb3a",
+      "bytes": 398,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/__init__.py",
+      "sha256": "7dcdde5961348c51d8bc678f71a5ad349b8d5c6687b411d2f83525d33699c606",
+      "bytes": 92,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/cli/__init__.py",
+      "sha256": "2327253de41b19a29978645e67d899be5fe4af204dbc6624fb7a9f1b318e3855",
+      "bytes": 36,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/cli/run.py",
+      "sha256": "2795f04a7926842308aac7b833d92f7ee773fac46cadc9abb9ff715740a39f7f",
+      "bytes": 3609,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/__init__.py",
+      "sha256": "ee3018a29ff3a353eb675db5f549107750626eb6c493d9abafe33bb7f3d3a982",
+      "bytes": 153,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/constants.py",
+      "sha256": "a402e8a74f0b71ec1abdd0ab3946cbc20c0e8e0955bf96a0f8e7abdb191b0b57",
+      "bytes": 100,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/exceptions.py",
+      "sha256": "991f35ccb2d44becd4cf5878d02bc4631b67796597a03e650c1c376270a5cf7c",
+      "bytes": 657,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/registry.py",
+      "sha256": "872016ea0605e656825487d99c7f642b86bd082c3a2d6612eda3cbadbc0b1acc",
+      "bytes": 1648,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/units.py",
+      "sha256": "19deacfa345606d6514b610d09064b0eb02e82ecd6b6ed41cef4e9cc74160e70",
+      "bytes": 572,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/core/validation.py",
+      "sha256": "ade491f3f53216523a2827b7e7ec004e50e6d952e90c0dbea18f71ec2bcda88a",
+      "bytes": 1617,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/__init__.py",
+      "sha256": "fb63de6c01f7c6244dc1370a03dd84a03daadd322fd2f0463814045e4df27721",
+      "bytes": 68,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/__init__.py",
+      "sha256": "66e89af68fa95c4ba5b771bfc5416ac8ecaaade9e9b8c3abe619f8428dbc7347",
+      "bytes": 38,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/_base.py",
+      "sha256": "2d7b4c4cebde7ba5727898e6e1a0d58033d7aba323d12bb6e69cb3ed2959f0c8",
+      "bytes": 1781,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/stage_01_hazard.py",
+      "sha256": "022b85a81a102273dcf99c95c41a6b29fc1d8b570d41b38fe5e5ab3721f1ecf5",
+      "bytes": 31160,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/stage_02_input_config.py",
+      "sha256": "50c803dccc7f6d39b2c3c82e836b06f691d50c138c653048717e3354f826d850",
+      "bytes": 10943,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/stage_02_material_characterization.py",
+      "sha256": "f641ecb0a6d045d9a68c3519e535b013b610afc9179481d659af071c373b6023",
+      "bytes": 53729,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/design/stages/stage_03_section_characterization.py",
+      "sha256": "83750bb5accfaaf8a774804cc35b6679118d1735c2c754d8265e316454cecf29",
+      "bytes": 36809,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/__init__.py",
+      "sha256": "a0ea639d4da2621409a381854396e4d56fbc0e6013fb5a90e13c5a92c243bb87",
+      "bytes": 444,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/etabs.py",
+      "sha256": "34819600c3efc1e27071843d3203474c507345933aa3806b96ed3d3e7e6bdecb",
+      "bytes": 917,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/paths.py",
+      "sha256": "04af41be1a3b983e5b7a389e4c5d7bb88b9bed690dbe49dd4732b71d4d512407",
+      "bytes": 2456,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/read_config.py",
+      "sha256": "88207fdaf871e39267d6007d8bf63cddd277c43b0b4509d53d7b5c158250fe1d",
+      "bytes": 2182,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/read_xlsx.py",
+      "sha256": "6b4b0dfbaf376768de5183c19d3738f6ed417329d7848f62e0bcde7a99f1650f",
+      "bytes": 6348,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/serialization.py",
+      "sha256": "3fa6bc942c4757c9973bb324970ae55b821f3278a4907514eb460d0b43a36e00",
+      "bytes": 510,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/io/write_results.py",
+      "sha256": "4e8235d581952944888f59658af3c30cad621403e0f6caacb4456d0565a22ef0",
+      "bytes": 3106,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/__init__.py",
+      "sha256": "345da449637f3e81a5b6e91f5bb86d97bf3df9db8a67b9b509f1894ce066ea73",
+      "bytes": 63,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/geometry/__init__.py",
+      "sha256": "00d9fcde4d6c2382e8bcb7ef33d11428058fd640e0293b0ac847cc9568337a35",
+      "bytes": 182,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/geometry/sections.py",
+      "sha256": "cc32c61bd3ed54113287e8f73fd73e42c1fa556319bd76efadfe24bc9bda736d",
+      "bytes": 945,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/hazard/__init__.py",
+      "sha256": "f21e353824ffdc24784eacb757c6fab1e55bdcb6d64347e8dd72be5312a87411",
+      "bytes": 50,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/hazard/seismic/__init__.py",
+      "sha256": "923729753db2cc5d353dc55bbd92981fc62f22bf92c23fbb6586242b96f0b606",
+      "bytes": 673,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/hazard/seismic/spectra.py",
+      "sha256": "7d245edb99231cd7a21bd020eb7913f3433ae8d4768fb26a592186508a98c29d",
+      "bytes": 8012,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/idealization/__init__.py",
+      "sha256": "8e80db927af0e11c0d026ceec9ea49e38bc80e432e0923552297d39e6b15720b",
+      "bytes": 407,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/idealization/energy_equivalent.py",
+      "sha256": "577f003941a58174c2bdbe48082eb16e68c40f9c4d143295f8411715332e6889",
+      "bytes": 11032,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/__init__.py",
+      "sha256": "f189dcdae2c8a79c6a13158789531fc4a9e0d4627673c699db2b3a469b0ea0b5",
+      "bytes": 82,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/common.py",
+      "sha256": "3af333b96d9e45fe2c87ac1a3b50362ec8f708ee4c261fe9816450d966c15998",
+      "bytes": 3716,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/__init__.py",
+      "sha256": "1c02f153599b7876e6a256481cce4c8cb6c201c5d82f3832bba7f037748f0591",
+      "bytes": 219,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/cyclic/__init__.py",
+      "sha256": "f45f1e26e37e58f599ec981ba8e333e85524a4e2ccf789e821718c5e00f2fd2c",
+      "bytes": 56,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/factory.py",
+      "sha256": "990a4fe2af275dc70f80c1050b31e336b2b3660678979cc383c90aed45f0a32a",
+      "bytes": 1323,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/monotonic/__init__.py",
+      "sha256": "f22a50614e23b75ba6a69bdf57f0b9bfd7d5c75c0d90f54a9ec6580e01d9b1e4",
+      "bytes": 320,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/monotonic/mander_1988/__init__.py",
+      "sha256": "935290d2696db39cd25859908a9d2187c788fd8fc351e11572c3a30a2adef918",
+      "bytes": 717,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/monotonic/mander_1988/confinement.py",
+      "sha256": "1e7a03d84db6cb0a087e48482a516251f4eb03dcae646a921c72c495387954f0",
+      "bytes": 10497,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/monotonic/mander_1988/equations.py",
+      "sha256": "bdb4801ee2fbb8ec851ff4b30ad55b48771f3106a2b003196eca7458409efff5",
+      "bytes": 2418,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/confined_concrete/monotonic/mander_1988/model.py",
+      "sha256": "99ce7077709ffa9f91b5586ad890c29a1d21ba2f541c1ea794d15410511ded44",
+      "bytes": 16105,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/__init__.py",
+      "sha256": "c8e7810179a92e357b235429299a9ad1dbe6de7ebc78387f1bd303d33ecf47d0",
+      "bytes": 269,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/cyclic/__init__.py",
+      "sha256": "7f193fcb22c01c212b142fcc877565dee4e3e61626f86a7b96aea5fb94fd8902",
+      "bytes": 64,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/factory.py",
+      "sha256": "031e1c8c2d3f5c7f0a77b6bed51f56014fa299e9ac7ca90dc77e1666609ea03d",
+      "bytes": 1207,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/__init__.py",
+      "sha256": "283090a7d5650441c70ade3e26bee102980bca88fb55094e9cad563242d051d9",
+      "bytes": 67,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/__init__.py",
+      "sha256": "da85c32914111f59504a48417ca225ab332091d97d08b4559476c0adf9886176",
+      "bytes": 852,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/buckling_length.py",
+      "sha256": "865fcdab79f5b5d9e60039a191a5ae86844c21ed8a54cca5d5234914c457fc1a",
+      "bytes": 10357,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/model.py",
+      "sha256": "3ce70348822b5a5dcb0cbf7bfb9aa1d26cee721be3782b5e01045775319a38c2",
+      "bytes": 31169,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/ductile_reinforcing_steel/monotonic/rdm_2019/section_model.py",
+      "sha256": "3063b1331bc45c153e5caf3fc1d0358292e2f132e881949470c477400eee7725",
+      "bytes": 6544,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/__init__.py",
+      "sha256": "0eaee40d8d2db2199cad8d5d802f0c4f18097ee5329d82ae65febf424f64a1e7",
+      "bytes": 155,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/cyclic/__init__.py",
+      "sha256": "28186515c0ecc15e6d2500ef70b871cfde6789a443ddf92a54fe98c12adb23cb",
+      "bytes": 67,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/cyclic/menegotto_pinto/__init__.py",
+      "sha256": "8e6e15947a8bcc658e7292ea01d82e4cdff9fa15514c1c0607684ecdc06ccee0",
+      "bytes": 220,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/cyclic/menegotto_pinto/model.py",
+      "sha256": "e53b645c89955a33f96be2f998f5c720e187f1e8e5d4150fcc91e976f91f7684",
+      "bytes": 15903,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/factory.py",
+      "sha256": "b5ad39afcb355b7ee452615372c09ac797028a3da860b27e60cb5b6dfa88c461",
+      "bytes": 1405,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/monotonic/__init__.py",
+      "sha256": "26ad8abd7eecb61dd3ef443b238dfed8cde26141d7420224f17f37655b43eb39",
+      "bytes": 70,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood/__init__.py",
+      "sha256": "4fce4e2b21212aaaa0f379849f36cad204ed0332a8a57e7f603a24264e400983",
+      "bytes": 218,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/nonductile_reinforcing_steel/monotonic/modified_ramberg_osgood/model.py",
+      "sha256": "9e22738bc9d60a6147fc798ab794074a9884854905a2aacaeff63d9365d71dfb",
+      "bytes": 11627,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/protocols.py",
+      "sha256": "7835e6716b1ec3828a8fb5ffbff81fbc98e20e4c8b94a98df92e526771712044",
+      "bytes": 1262,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/unconfined_concrete/__init__.py",
+      "sha256": "3157cbcc2fbae321524ab2647b44dda7dc990ce3e992b986d627e74e3f587f2b",
+      "bytes": 51,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/unconfined_concrete/cyclic/__init__.py",
+      "sha256": "079859db6211010af027f6284ffbd77e386766f93ea1cbb640937fd844b434e2",
+      "bytes": 58,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/materials/unconfined_concrete/monotonic/__init__.py",
+      "sha256": "1c1237517cb59c11b373bcdf85b1dc02802420d61a1b3a5d7ba0ffd490999e0d",
+      "bytes": 61,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/sections/__init__.py",
+      "sha256": "d970ba04d5167ea7512782ab22574d2b762ff6af59de8c36ba6d422c22178d89",
+      "bytes": 412,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/mechanics/sections/moment_curvature.py",
+      "sha256": "f81ddf50e36c9f9907c429d7b4cf642acccdb0c0d81769982949c03a221284e7",
+      "bytes": 7702,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/__init__.py",
+      "sha256": "d86ffe9c7a1a0163f61797e238472b5280d90213d8b4e740194a8ee03d2b97f9",
+      "bytes": 30,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/export_excel.py",
+      "sha256": "0aad37aa722bca65c26b9b1be05591d649eb10b187790e33026c8e64e5d438fa",
+      "bytes": 4501,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/export_quarto.py",
+      "sha256": "0c8a20f7ca19f01e1f544ebe5e060def6045044912dad0936b730dbcd0be6459",
+      "bytes": 2229,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/plots.py",
+      "sha256": "91309206ab0e516913bb077a5b931b28efef558ecc40124f6c34a5cea0733ac4",
+      "bytes": 40537,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/report_builder.py",
+      "sha256": "75b219fbbca43e657d77f908c815eb8619fbd9926dd22cdb58bee3d9bb9a1eb9",
+      "bytes": 360,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/stage_01_hazard_report.py",
+      "sha256": "d9bf16e1b092cd45b3b4ef7e242a4de63978d7f824197dc17c521a70ffbe983a",
+      "bytes": 15679,
+      "indexed": true
+    },
+    {
+      "path": "src/structurelab_pbd_rc/reports/stage_02_material_report.py",
+      "sha256": "a57137484bbe9dd287e90bd91181b6506a669435c5672ea49060fa53a9dfcd84",
+      "bytes": 6371,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_config_loading.py",
+      "sha256": "674d73b926b42d771c935e1d947ce7e9ff34aeed26e362bdfef36de053ec6ec5",
+      "bytes": 5647,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_elements/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_frames/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_geometry/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_hazard/test_seismic_spectra.py",
+      "sha256": "3ca69783f49369714fccfa05196b2f92f6b3fbceafa826bb399674a52f7fa5eb",
+      "bytes": 2938,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_imports.py",
+      "sha256": "5a9efc118bd1fb33749d16bf9b2b02407e14122cbcc7da839b85407f58ee6305",
+      "bytes": 1970,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_io/test_read_xlsx.py",
+      "sha256": "5f6af2a03aaa71d431c37161ccc21b94eef984734ffc66001a392f970e845d58",
+      "bytes": 998,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/test_mander_1988.py",
+      "sha256": "8c9c94510f23128621c728cb31691810597e58219d839898e4e26c9417bc5f0c",
+      "bytes": 7963,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/test_menegotto_pinto.py",
+      "sha256": "5094f6f74ffc65812ea04a5ccafd8d34d2ace960d3ae56cdb1dce90cfd4af441",
+      "bytes": 3719,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/test_modified_ramberg_osgood.py",
+      "sha256": "3a2ed307898e1d476f174316da2b10b62b3cc08c5602114f04500814b11a69bc",
+      "bytes": 3922,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/test_rdm_2019.py",
+      "sha256": "26d8e2e52c44a2c7e0ea6d9416835ef7d0b490ab2e8e205d44ce909f315e6990",
+      "bytes": 10900,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_models/test_rdm_buckling_length.py",
+      "sha256": "74b53f99683ef870c741b0ac24ac12c6ed6e19a6b4fff18854402889a5cd7612",
+      "bytes": 8544,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_material_structure.py",
+      "sha256": "ec7718e051e5aca9786e20bf4bad2b464cd289e56345563abb780cd55f241934",
+      "bytes": 3040,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_sections/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_sections/test_moment_curvature_bilinearization.py",
+      "sha256": "e149cc2c7b1303c28a2dc11a0c56259c46519f8a580fe1aaecf7827c1a28ee8a",
+      "bytes": 2591,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_stages/test_stage_01.py",
+      "sha256": "e5538c434199f2cf341c441140e370f808e196c4b33212f079157fe3d3b8113f",
+      "bytes": 12154,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_stages/test_stage_02.py",
+      "sha256": "1a3734c2a74db1756c4116141dcfc0177571835b5617909614ae757cf0dfc41c",
+      "bytes": 16872,
+      "indexed": true
+    },
+    {
+      "path": "tests/test_stages/test_stage_03.py",
+      "sha256": "f7ccfcc6bf314a5b55d7d26b1c24f30d6108cc9c75d225bc91e89a6ae5a0e317",
+      "bytes": 8533,
+      "indexed": true
+    }
+  ]
+}
