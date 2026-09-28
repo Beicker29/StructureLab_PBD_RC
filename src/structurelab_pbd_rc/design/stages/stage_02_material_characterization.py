@@ -56,6 +56,10 @@ from structurelab_pbd_rc.reports.plots import (
 from structurelab_pbd_rc.reports.stage_02_material_report import (
     write_stage_02_pdf_report,
 )
+from structurelab_pbd_rc.services.material_evaluation import (
+    MaterialEvaluationInput,
+    evaluate_material,
+)
 
 
 DEFAULT_CONFIG_PATH = Path("configs/stage_02")
@@ -1064,47 +1068,29 @@ def _notable_points(
 
 def _prepare_model(item: Stage02ModelInput) -> dict[str, Any]:
     resolved = item.resolved_inputs
-    try:
-        model_builder = MATERIAL_MODEL_BUILDERS[item.material]
-    except KeyError as exc:
-        available = ", ".join(sorted(MATERIAL_MODEL_BUILDERS))
-        raise ConfigError(
-            f"Unsupported Stage 2 material {item.material!r}. Available: {available}"
-        ) from exc
-    model = model_builder(resolved)
-    responses = _evaluate_case(model, resolved)
-    provenance = model.parameters.provenance.as_dict()
-    rows = [
-        _response_row(
-            case_id=item.case_id,
-            step=step,
-            response=response,
-            model=model,
-            provenance=provenance,
-        )
-        for step, response in enumerate(responses)
-    ]
-    warnings: list[str] = []
-    for response in responses:
-        for warning in response.warnings:
-            if warning not in warnings:
-                warnings.append(warning)
-    summary = _case_summary(item.case_id, model, responses)
-    idealization = (
-        _mro_fema_idealization(model, rows, resolved)
-        if isinstance(model, ModifiedRambergOsgood)
-        else None
+    service_input = MaterialEvaluationInput.from_resolved_inputs(
+        resolved,
+        parameter_set_id=f"{item.model_id}:parameters",
+        material_instance_id=(
+            f"{item.project_id}/{item.case_id}/{item.material}/{item.model_id}"
+        ),
     )
-    calculated = _calculated_parameters(model)
-    if idealization is not None:
-        calculated["fema_bilinear_idealization"] = idealization
+    evaluation = evaluate_material(service_input)
+    rows = [dict(row) for row in evaluation.curve]
+    summary = dict(evaluation.metrics)
+    calculated = dict(evaluation.calculated_parameters)
+    service_idealization = getattr(evaluation, "idealization", None)
+    idealization = (
+        None if service_idealization is None else dict(service_idealization)
+    )
+    warnings = list(evaluation.warnings)
     return {
         "input": item,
         "rows": rows,
         "summary": summary,
         "calculated": calculated,
         "idealization": idealization,
-        "notable_points": _notable_points(model, rows, idealization),
+        "notable_points": [dict(point) for point in evaluation.notable_points],
         "warnings": warnings,
         "technical_report": _report_payload(resolved, [summary], warnings),
     }

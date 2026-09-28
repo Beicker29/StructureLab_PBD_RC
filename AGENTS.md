@@ -4,7 +4,7 @@
 
 `StructureLab_PBD_RC` está en transición hacia un orquestador PBSD/PBEE para edificaciones de concreto reforzado. Leer `docs/MIGRATION_PLAN_V2.md` y `docs/BASELINE_TASKS_V2.md` antes de planificar cambios de migración. La arquitectura aprobada tiene módulos visibles 00–12 con IDs semánticos. Las capacidades actuales son amenaza espectral, caracterización de cuatro modelos de materiales e idealización de curvas M–φ importadas.
 
-V2-001 a V2-009 y la Issue independiente V2-003R de retirada de Quarto/Typst ya se ejecutaron y documentaron. V2-010 y posteriores permanecen sin ejecutar; no anticipar movimientos de fuentes ni refactorizaciones.
+V2-001 a V2-021 y la Issue independiente V2-003R de retirada de Quarto/Typst ya se ejecutaron y documentaron. V2-022 y posteriores permanecen sin ejecutar; no anticipar el motor nativo de fibras, múltiples conjuntos de materiales, movimientos de fuentes ni refactorizaciones.
 
 ## Límites de la arquitectura
 
@@ -26,4 +26,4 @@ V2-001 a V2-009 y la Issue independiente V2-003R de retirada de Quarto/Typst ya 
 
 ## Alcance de tareas preparadas
 
-V2-001 a V2-009 están especificadas en `docs/BASELINE_TASKS_V2.md`; V2-003R tiene ficha independiente en `docs/migration/REMOVE_QUARTO_REPORTING_DEPENDENCY.md`. El resto de Issues del plan es backlog propuesto; las V2-031 a V2-039 describen el motor de fibras y su validación futura.
+V2-001 a V2-009 están especificadas en `docs/BASELINE_TASKS_V2.md`; V2-003R tiene ficha independiente en `docs/migration/REMOVE_QUARTO_REPORTING_DEPENDENCY.md`. V2-010 a V2-012 se documentan en `docs/migration/CONTRACTS_V2_010_012.md`, V2-013 a V2-014 en `docs/migration/BOUNDARIES_PUBLICATION_V2_013_014.md`, V2-015 en `docs/migration/WORKFLOW_RUNNER_V2_015.md`, V2-016 en `docs/migration/INVALIDATION_REUSE_V2_016.md`, V2-017 en `docs/migration/HAZARD_SERVICE_V2_017.md`, V2-018 en `docs/migration/MATERIAL_SERVICE_V2_018.md`, V2-019 en `docs/migration/MATERIAL_PUBLICATION_V2_019.md`, V2-020 en `docs/migration/SECTION_SERVICE_V2_020.md` y V2-021 en `docs/migration/SECTION_PUBLICATION_V2_021.md`. El resto de Issues del plan es backlog propuesto; las V2-031 a V2-039 describen el motor de fibras y su validación futura.
