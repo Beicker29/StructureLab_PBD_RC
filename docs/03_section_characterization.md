@@ -1,5 +1,7 @@
 # Caracterizacion de seccion
 
+Esta página describe la importación e idealización Stage 03 V1, conservada en V2 `section_component_characterization` (04). El [estado V2](ARCHITECTURE_V2.md) distingue esta vía Excel del motor nativo por fibras, aún pendiente. La salida denominada `ciclica` es una envolvente recortada o reutilizada, no un modelo histerético.
+
 La Etapa 3 usa diagramas momento-curvatura para obtener una idealizacion bilineal equivalente de la respuesta seccional.
 
 ## Entrada

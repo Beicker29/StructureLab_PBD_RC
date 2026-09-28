@@ -1,28 +1,52 @@
 # StructureLab_PBD_RC
 
-`StructureLab_PBD_RC` es un proyecto Python para analisis basado en desempeno de estructuras de concreto reforzado.
+`StructureLab_PBD_RC` es un orquestador Python en desarrollo para un flujo PBSD/PBEE de edificaciones de concreto reforzado. La arquitectura V2 define módulos visibles **00–12** con IDs semánticos. Actualmente solo son ejecutables `project_objectives` (00), `site_hazard` (01), `material_characterization` (03) y `section_component_characterization` (04). Este último caracteriza curvas M–φ **importadas**; todavía no calcula secciones por fibras. Los módulos 02 y 05–12 siguen pendientes. Consulte la [arquitectura y matriz de estado](docs/ARCHITECTURE_V2.md) antes de usar resultados para un proyecto.
 
-El repositorio contiene actualmente:
+Las tres etapas V1 permanecen disponibles: `stage_01` genera espectros NSR-10 o con forma CCP-14 y valores SGC configurados; `stage_02` caracteriza cuatro formulaciones constitutivas; `stage_03` importa e idealiza curvas M–φ de Excel. V2 conserva esos cálculos y publica corridas independientes con manifiesto. La numeración V2 **no cambia el significado** de los comandos V1: `stage_02` V1 sigue siendo materiales, mientras 02 V2 es el modelo estructural base todavía no implementado.
 
-- Etapa 1: amenaza sismica mediante espectros NSR-10 y SGC + CCP-14.
-- Etapa 2: caracterizacion constitutiva de concreto confinado y acero de refuerzo.
-- Etapa 3: caracterizacion de secciones mediante bilinealizacion de diagramas momento-curvatura.
+## Instalación
 
-La Etapa 2 esta organizada por material, protocolo de carga y modelo constitutivo.
+Requiere Python 3.10 o posterior. En PowerShell, desde la raíz del repositorio:
 
-## Arquitectura
+```powershell
+python -m venv .venv_structurelab_pbd_rc
+.\.venv_structurelab_pbd_rc\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv_structurelab_pbd_rc\Scripts\Activate.ps1
+structurelab workflow --help
+```
 
-- `core/`: validacion, excepciones, unidades y registro de modelos.
-- `design/stages/`: orquestacion de las etapas vigentes.
-- `io/`: lectura y escritura de datos.
-- `mechanics/materials/`: modelos constitutivos y estado de historia.
-- `mechanics/hazard/`: calculos de amenaza.
-- `mechanics/sections/`: calculos de seccion.
-- `reports/`: tablas, figuras y reportes.
-- `configs/stage_02/<material>/<behavior>/`: un JSON independiente por modelo.
-- `outputs/stage_02/`: resultados aislados por proyecto y caso.
+El build aislado de `pip` instala `setuptools>=68` según `pyproject.toml`; no hace falta instalarlo manualmente en el entorno de ejecución. Una instalación sin acceso al índice requiere un repositorio local de wheels para los requisitos de build y runtime. En Linux/macOS se usan los ejecutables equivalentes bajo `bin/`. Los ejemplos siguientes suponen el entorno activado; también puede invocar directamente `Scripts/structurelab.exe`. El paquete instala `structurelab` y conserva `structurelab-stage-01`, `structurelab-stage-02` y `structurelab-stage-03`.
 
-La teoria central se implementa en `mechanics/`. Los flujos solo deben validar entradas, coordinar calculos y escribir resultados.
+## Workflow V2
+
+Prepare un YAML de decisiones del proyecto como explica la [guía V1→V2](docs/migration/COMPATIBILITY_CLI_V2_023_025.md). La conversión de un caso existente se revisa primero sin escribir archivos:
+
+```powershell
+structurelab workflow convert --project-template decision.yaml `
+  --stage-01 configs/stage_01/case_01_nsr10_spectra.yaml `
+  --stage-02 configs/stage_02 `
+  --stage-03 configs/stage_03/section_characterization.yaml `
+  --source-root . --destination converted/project_01
+```
+
+Después de verificar el preview, repita el comando con `--write`. El destino debe ser nuevo; el conversor no modifica configs ni outputs V1. Planifique y ejecute con IDs semánticos:
+
+```powershell
+structurelab workflow plan --project converted/project_01/project.yaml `
+  --module site_hazard --module material_characterization `
+  --module section_component_characterization
+structurelab workflow run --project converted/project_01/project.yaml `
+  --module site_hazard --module material_characterization `
+  --module section_component_characterization --output-root isolated_outputs
+```
+
+`plan` informa `ready`, `reusable`, `invalidated`, `not_implemented` o `blocked` con razones. `run` solo publica los módulos ejecutables. La CLI también admite `--project-id`, `--design-revision`, `--case-id`, `--config MODULE_ID=PATH` y `--reuse-manifest`; los valores deben concordar con `ProjectSpec` y sus hashes. Si el entorno aún no se ha reinstalado, `python -m structurelab_pbd_rc workflow ...` ofrece la misma CLI desde el checkout. El [cierre de migración](docs/migration/V2_MIGRATION_CLOSURE.md) registra la regresión y las limitaciones.
+
+## Compatibilidad V1
+
+`design/stages/` conserva los runners históricos; `mechanics/` contiene los cálculos reutilizables, `services/` los prepara para V2, `workflow/` coordina contratos y DAG, `presentation/` crea tablas/figuras e `io/` publica artefactos. Las salidas V1 siguen bajo `outputs/stage_01`, `stage_02` y `stage_03`; las V2 se aíslan bajo `outputs/v2` de la raíz elegida. [La biblioteca científica](references/catalog.yaml) conserva rutas y hashes de sus fuentes.
+
+La información siguiente documenta las entradas y el comportamiento V1 que se mantienen durante la compatibilidad. La Etapa 2 está organizada por material, protocolo de carga y modelo constitutivo.
 
 ## Etapa 2: materiales
 
@@ -32,6 +56,8 @@ Los cuatro materiales previstos son:
 - `unconfined_concrete`: concreto no confinado.
 - `ductile_reinforcing_steel`: acero de refuerzo ductil.
 - `nonductile_reinforcing_steel`: acero de refuerzo no ductil.
+
+`unconfined_concrete` conserva su carpeta como reserva; no tiene una formulación ejecutable. Los cuatro modelos implementados se distribuyen entre las otras tres familias. Los parámetros canónicos de `Cyc_MP` son sintéticos para verificar el algoritmo, no una calibración experimental.
 
 `configs/stage_02/` contiene únicamente las cuatro carpetas de material. Cada material contiene `monotonic/` y `cyclic/`, y cada modelo constitutivo dispone de un único JSON:
 
@@ -91,27 +117,6 @@ Modelo implementado para `ductile_reinforcing_steel`:
 
 El nombre base de cada JSON debe coincidir exactamente con `inputs.model_id`.
 
-## Entorno virtual
-
-El entorno virtual del proyecto se llama:
-
-```powershell
-.venv_structurelab_pbd_rc
-```
-
-Activacion manual desde PowerShell:
-
-```powershell
-.\.venv_structurelab_pbd_rc\Scripts\Activate.ps1
-```
-
-Instalacion local:
-
-```powershell
-.\.venv_structurelab_pbd_rc\Scripts\python.exe -m pip install setuptools
-.\.venv_structurelab_pbd_rc\Scripts\python.exe -m pip install -e ".[dev]" --no-build-isolation
-```
-
 ## Etapa 1
 
 Ejecucion con las configuraciones disponibles:
@@ -151,7 +156,7 @@ Ejecucion:
 .\.venv_structurelab_pbd_rc\Scripts\python.exe scripts\run_stage_03.py --config configs\stage_03\section_characterization.yaml
 ```
 
-El flujo importa el Excel definido en `source.workbook`, procesa las hojas seleccionadas y genera salidas monotonicas y ciclicas por hoja. Los resultados se guardan bajo `outputs/stage_03/`.
+El flujo importa el Excel definido en `source.workbook`, procesa las hojas seleccionadas y genera salidas `monotonica` y `ciclica` por hoja. La segunda etiqueta representa una envolvente recortada o reutilizada; no incluye descarga/recarga histerética. Los resultados se guardan bajo `outputs/stage_03/`.
 
 La bilinealizacion produce:
 

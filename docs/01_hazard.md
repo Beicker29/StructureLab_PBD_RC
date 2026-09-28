@@ -1,5 +1,7 @@
 # Etapa 1: Amenaza
 
+Esta página describe Stage 01 V1 y el cálculo espectral conservado en V2 `site_hazard`. Consulte la [arquitectura V2](ARCHITECTURE_V2.md) para el estado actual: los valores SGC configurados no equivalen a una curva probabilística de tasas de excedencia ni existe importador OpenQuake.
+
 La Etapa 1 agrupa los calculos de amenaza. La implementacion inicial cubre amenaza sismica, pero la estructura se deja preparada para incorporar otras amenazas en el futuro.
 
 ## Configuracion

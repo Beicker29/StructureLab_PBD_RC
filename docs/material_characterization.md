@@ -1,5 +1,7 @@
 # Caracterizacion de materiales
 
+Esta página documenta Stage 02 V1, conservado en V2 `material_characterization` (03). La [arquitectura V2](ARCHITECTURE_V2.md) mantiene los cuatro modelos implementados y no declara aún múltiples `material_set_id` ni asignaciones a un modelo estructural base.
+
 La Etapa 2 organiza los modelos constitutivos por material y protocolo de carga. Actualmente implementa Mander 1988 para concreto confinado, RDM 2019 para acero ductil y modelos monotonico y ciclico para acero no ductil.
 
 ## Familias

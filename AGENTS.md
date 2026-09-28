@@ -4,7 +4,7 @@
 
 `StructureLab_PBD_RC` está en transición hacia un orquestador PBSD/PBEE para edificaciones de concreto reforzado. Leer `docs/MIGRATION_PLAN_V2.md` y `docs/BASELINE_TASKS_V2.md` antes de planificar cambios de migración. La arquitectura aprobada tiene módulos visibles 00–12 con IDs semánticos. Las capacidades actuales son amenaza espectral, caracterización de cuatro modelos de materiales e idealización de curvas M–φ importadas.
 
-V2-001 a V2-021 y la Issue independiente V2-003R de retirada de Quarto/Typst ya se ejecutaron y documentaron. V2-022 y posteriores permanecen sin ejecutar; no anticipar el motor nativo de fibras, múltiples conjuntos de materiales, movimientos de fuentes ni refactorizaciones.
+V2-001 a V2-021 y la Issue independiente V2-003R de retirada de Quarto/Typst ya se ejecutaron y documentaron. La conversión V1→V2 y la CLI oficial del Frente 1 también están implementadas y documentadas en `docs/migration/V2_MIGRATION_CLOSURE.md`. V2-022, V2-024 y las capacidades científicas posteriores permanecen pendientes; no anticipar el motor nativo de fibras, múltiples conjuntos de materiales, movimientos de fuentes ni refactorizaciones.
 
 ## Límites de la arquitectura
 
@@ -21,7 +21,7 @@ V2-001 a V2-021 y la Issue independiente V2-003R de retirada de Quarto/Typst ya 
 
 - `references/` es la biblioteca científica. `references/catalog.yaml` inventaría las rutas y hashes actuales. Completar su procedencia y verificar enlaces antes de cualquier reorganización física; conservar rutas originales hasta que existan alias comprobados.
 - Tratar `outputs/stage_01`, `stage_02` y `stage_03` como resultados V1; no renumerarlos ni sobreescribirlos. Las fixtures V2-004 a V2-006 están bajo `tests/fixtures/v1/` y sus memorias en `docs/migration/`; proceden de salidas temporales aisladas.
-- El ajuste ambiental limitado a pytest resolvió los errores de permisos de `tmp_path`. Tras V2-007 a V2-009, la suite completa pasó 169 tests; la corrida anterior de 120 tests y los resultados históricos de 104/16 y 116/4 permanecen en `docs/migration/BASELINE_STATUS_V2.md`.
+- El ajuste ambiental limitado a pytest resuelve los errores de permisos de `tmp_path` y acorta rutas temporales de Windows. La suite de cierre V1+V2 se registra en `docs/migration/pytest_v2_migration_closure.log`; la corrida anterior de 286 tests y los resultados históricos permanecen en `docs/migration/`.
 - Stage 01 conserva YAML, CSV/XLSX, TXT ETABS y figuras; su cálculo no depende de PDF. No reinstalar Quarto ni introducir otro renderer como arreglo implícito. El motor final de reporting se decidirá en el módulo 12. Separar pruebas de ecuaciones, contratos e integración; comparar valores, signos, estados, warnings y procedencia sin confundir coincidencia de archivos con validación física.
 
 ## Alcance de tareas preparadas
