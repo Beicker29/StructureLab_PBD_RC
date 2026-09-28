@@ -1,6 +1,6 @@
 # V2-006 — Línea base de curvas M–φ importadas V1
 
-**Estado:** libro canónico ejecutado en una raíz aislada; diez hojas, veinte ramas y dos árboles de salida por hoja capturados sin cambiar el importador ni la idealización. La corrida está en [el log canónico](canonical_run_v1.log); los valores completos están en [el manifiesto de fixtures](../../tests/fixtures/v1/sections/manifest.json) y en sus CSV/YAML.
+**Estado:** libro canónico ejecutado en una raíz aislada; diez hojas, veinte ramas y dos árboles de salida por hoja capturados sin cambiar el importador ni la idealización. La ejecución canónica completó las diez hojas y veinte ramas; los valores completos están en [el manifiesto de fixtures](../../tests/fixtures/v1/sections/manifest.json) y en sus CSV/YAML.
 
 ## Inputs, unidades y detección
 
@@ -48,4 +48,4 @@ Los 110 archivos científicos son idénticos a sus equivalentes en `outputs/stag
 | Envolvente externa importada e idealización de energía | Carga axial y condición de equilibrio; leyes y conjuntos de materiales realmente asignados |
 | Etiquetas de hoja y cortes de posprocesamiento | Procedencia del modelo que produjo cada curva, criterios de falla y condiciones de carga equivalentes |
 
-Por ello, una coincidencia de forma o de `My` con el futuro motor no bastaría para afirmar validación física. Esta captura es un benchmark del **importador e idealizador V1** y conserva expresamente sus límites. La [suite completa posterior](pytest_v2_004_006.log) terminó con **120 passed**.
+Por ello, una coincidencia de forma o de `My` con el futuro motor no bastaría para afirmar validación física. Esta captura es un benchmark del **importador e idealizador V1** y conserva expresamente sus límites. La suite completa posterior terminó con **120 passed**.

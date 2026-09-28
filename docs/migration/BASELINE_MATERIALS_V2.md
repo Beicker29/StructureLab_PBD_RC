@@ -1,6 +1,6 @@
 # V2-005 — Línea base de materiales V1
 
-**Estado:** cuatro configuraciones habilitadas ejecutadas juntas en una raíz aislada y comparadas con `outputs/stage_02/`; sin cambios de modelos. La ejecución está en [el log canónico](canonical_run_v1.log). El [manifiesto de fixtures](../../tests/fixtures/v1/materials/manifest.json) conserva parámetros, métricas, puntos notables, procedencia y estados; los CSV/YAML científicos completos están junto a él.
+**Estado:** cuatro configuraciones habilitadas ejecutadas juntas en una raíz aislada y comparadas con `outputs/stage_02/`; sin cambios de modelos. La ejecución canónica completó los cuatro modelos en una raíz aislada. El [manifiesto de fixtures](../../tests/fixtures/v1/materials/manifest.json) conserva parámetros, métricas, puntos notables, procedencia y estados; los CSV/YAML científicos completos están junto a él.
 
 ## Inputs y alcance
 
@@ -37,4 +37,4 @@ Se copiaron **cinco CSV** (`curve.csv` por modelo y la bilineal de Mon_MRO) y **
 
 Los **13 archivos científicos textuales** nuevos son iguales a los históricos; también coinciden estado, inputs resueltos, parámetros, métricas, puntos notables, base técnica y warnings de los cuatro reportes. Los **13 artefactos de presentación** (nueve PNG y cuatro PDF de Matplotlib) se inventariaron sin copiarlos ni usar identidad binaria como oráculo. Los 39 archivos históricos Stage 02 conservaron sus hashes de V2-002.
 
-Esta captura fija las respuestas actuales, incluidas sus convenciones y limitaciones. No prueba que los cuatro materiales pertenezcan a la sección del libro M–φ ni valida experimentalmente el perfil sintético. La [suite completa posterior](pytest_v2_004_006.log) terminó con **120 passed**. No se corrigieron formulaciones o defectos y no se ejecutaron V2-007 a V2-009.
+Esta captura fija las respuestas actuales, incluidas sus convenciones y limitaciones. No prueba que los cuatro materiales pertenezcan a la sección del libro M–φ ni valida experimentalmente el perfil sintético. La suite completa posterior terminó con **120 passed**. No se corrigieron formulaciones o defectos y no se ejecutaron V2-007 a V2-009.

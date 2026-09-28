@@ -16,6 +16,11 @@ from structurelab_pbd_rc.contracts.boundaries import (
     convert_boundary_artifact,
     convert_values,
 )
+from structurelab_pbd_rc.contracts.materials import (
+    ConstitutiveReference,
+    MaterialDefinition,
+    MaterialType,
+)
 from structurelab_pbd_rc.contracts.project import (
     BaseUnits,
     HazardLevel,
@@ -42,9 +47,12 @@ __all__ = [
     "BoundaryArtifact",
     "BoundaryDefinition",
     "ConversionRecord",
+    "ConstitutiveReference",
     "ExecutionStatus",
     "HazardLevel",
     "InputReference",
+    "MaterialDefinition",
+    "MaterialType",
     "NumericalQualityStatus",
     "PhysicalQuantity",
     "PerformanceAcceptanceStatus",

@@ -21,7 +21,7 @@ V2-001 a V2-021 y la Issue independiente V2-003R de retirada de Quarto/Typst ya 
 
 - `references/` es la biblioteca científica. `references/catalog.yaml` inventaría las rutas y hashes actuales. Completar su procedencia y verificar enlaces antes de cualquier reorganización física; conservar rutas originales hasta que existan alias comprobados.
 - Tratar `outputs/stage_01`, `stage_02` y `stage_03` como resultados V1; no renumerarlos ni sobreescribirlos. Las fixtures V2-004 a V2-006 están bajo `tests/fixtures/v1/` y sus memorias en `docs/migration/`; proceden de salidas temporales aisladas.
-- El ajuste ambiental limitado a pytest resuelve los errores de permisos de `tmp_path` y acorta rutas temporales de Windows. La suite de cierre V1+V2 se registra en `docs/migration/pytest_v2_migration_closure.log`; la corrida anterior de 286 tests y los resultados históricos permanecen en `docs/migration/`.
+- El ajuste ambiental limitado a pytest resuelve los errores de permisos de `tmp_path` y acorta rutas temporales de Windows. La suite de cierre V1+V2 se registra en `docs/migration/V2_MIGRATION_CLOSURE.md`; la corrida anterior de 286 tests y los resultados históricos permanecen en `docs/migration/`.
 - Stage 01 conserva YAML, CSV/XLSX, TXT ETABS y figuras; su cálculo no depende de PDF. No reinstalar Quarto ni introducir otro renderer como arreglo implícito. El motor final de reporting se decidirá en el módulo 12. Separar pruebas de ecuaciones, contratos e integración; comparar valores, signos, estados, warnings y procedencia sin confundir coincidencia de archivos con validación física.
 
 ## Alcance de tareas preparadas

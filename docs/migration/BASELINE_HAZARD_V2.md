@@ -1,6 +1,6 @@
 # V2-004 — Línea base de amenaza espectral V1
 
-**Estado:** capturada y comparada con los outputs históricos; sin cambios de formulación. Corrida canónica registrada en [el log](canonical_run_v1.log), con salida aislada fuera de `outputs/`. Los datos completos están en [las fixtures de amenaza](../../tests/fixtures/v1/hazard/manifest.json) y sus CSV/TXT asociados.
+**Estado:** capturada y comparada con los outputs históricos; sin cambios de formulación. La ejecución canónica completó ambos casos y produjo 13 filas por CSV en una raíz aislada fuera de `outputs/`. Los datos completos están en [las fixtures de amenaza](../../tests/fixtures/v1/hazard/manifest.json) y sus CSV/TXT asociados.
 
 ## Inputs y contrato
 
@@ -34,4 +34,4 @@ La tabla es un índice humano; las **501 filas completas por caso**, los paráme
 
 Los cuatro CSV nuevos son idénticos byte a byte a los históricos. Las 501 líneas de cada uno de los seis TXT son idénticas; el checkout histórico usa CRLF y la nueva escritura LF. Git informa `i/lf w/crlf attr/text=auto` y `core.autocrlf=true` para esos TXT, por lo que se compara su contenido tras normalizar fin de línea, sin ocultar la diferencia de bytes. Los campos científicos de ambos YAML también coinciden. Los hashes de los outputs históricos registrados en V2-002 permanecen intactos.
 
-Esta captura fija **resultados V1**, no certifica la fuente SGC ni el uso de los espectros como amenaza probabilística para riesgo. Una comparación futura en otro entorno debe separar tolerancia numérica por magnitud del redondeo ETABS de ocho decimales. La [suite completa posterior](pytest_v2_004_006.log) terminó con **120 passed**. No se ejecutó V2-007 ni se probó CLI desde otro directorio.
+Esta captura fija **resultados V1**, no certifica la fuente SGC ni el uso de los espectros como amenaza probabilística para riesgo. Una comparación futura en otro entorno debe separar tolerancia numérica por magnitud del redondeo ETABS de ocho decimales. La suite completa posterior terminó con **120 passed**. No se ejecutó V2-007 ni se probó CLI desde otro directorio.

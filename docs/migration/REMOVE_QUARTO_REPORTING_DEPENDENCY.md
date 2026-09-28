@@ -19,7 +19,7 @@ Los PDF de materiales se generan con Matplotlib y no dependen de Quarto. Los PDF
 
 ## Validación
 
-- [Suite completa](pytest_remove_quarto.log): **120 passed**, 0 failed, 0 setup errors, 0 skipped, usando la raíz temporal corta y el ajuste de permisos limitado al proceso documentados en [el estado de línea base](BASELINE_STATUS_V2.md).
+- Suite completa: **120 passed**, 0 failed, 0 setup errors, 0 skipped, usando la raíz temporal corta y el ajuste de permisos limitado al proceso documentados en [el estado de línea base](BASELINE_STATUS_V2.md).
 - Se compararon los 20 CSV/TXT de los tests Stage 01 que existían tanto en la corrida anterior como en la nueva: **contenido binario idéntico**. Los cinco CSV/TXT adicionales pertenecen a la segunda ejecución del test de escalamiento, que antes se detenía al intentar renderizar el primer PDF.
 - Se compararon los campos `stage_id`, `case_id`, `title`, `datos_de_entrada` y `datos_de_salida` de los cuatro YAML de Stage 01 disponibles en ambas corridas: **sin diferencias semánticas**. `generated_files` cambia solo por la retirada de salidas del renderer y por las raíces temporales.
 - El manifiesto V2-002 conserva la identidad y hashes de los resultados históricos; no se ejecutaron los YAML canónicos para crear fixtures ni se modificaron `outputs/stage_01`, `outputs/stage_02` o `outputs/stage_03`.
