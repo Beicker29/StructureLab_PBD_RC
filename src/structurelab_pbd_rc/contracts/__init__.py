@@ -16,6 +16,13 @@ from structurelab_pbd_rc.contracts.boundaries import (
     convert_boundary_artifact,
     convert_values,
 )
+from structurelab_pbd_rc.contracts.elements import (
+    ElementType,
+    NormalizedStation,
+    SectionForceState,
+    StructuralElementRef,
+    validate_section_force_states,
+)
 from structurelab_pbd_rc.contracts.materials import (
     ConstitutiveReference,
     MaterialDefinition,
@@ -61,12 +68,14 @@ __all__ = [
     "ConstitutiveReference",
     "ConcreteRegion",
     "ExecutionStatus",
+    "ElementType",
     "HazardLevel",
     "InputReference",
     "LongitudinalBar",
     "MaterialDefinition",
     "MaterialType",
     "NumericalQualityStatus",
+    "NormalizedStation",
     "PhysicalQuantity",
     "PerformanceAcceptanceStatus",
     "PerformanceObjective",
@@ -77,16 +86,19 @@ __all__ = [
     "RectangularRegionGeometry",
     "SectionCoordinateSystem",
     "SectionDefinition",
+    "SectionForceState",
     "SectionType",
     "SignConvention",
     "SiteInfo",
     "StageMessage",
     "StageResult",
+    "StructuralElementRef",
     "TransverseOrientation",
     "TransverseReinforcement",
     "STANDARD_GRAVITY_M_PER_S2",
     "convert_boundary_artifact",
     "convert_values",
     "validate_artifact_dependencies",
+    "validate_section_force_states",
 ]
 
