@@ -1,0 +1,15 @@
+# Frente 2 · 1B — `SectionDefinition`
+
+`SectionDefinition`, en `structurelab_pbd_rc.contracts.sections`, describe una **sección física de concreto reforzado**. Su `section_id` es la identidad estable; `source` declara el origen y `external_name` conserva opcionalmente el nombre ETABS/SAP2000 sin sustituir el ID interno. `section_type` identifica el tipo de sección. El contrato no analiza ni discretiza la sección.
+
+Las coordenadas se expresan en el plano local **`y-z`**, en `mm`; `x` queda reservado como eje longitudinal del elemento. `coordinate_system` serializa el origen `(0, 0)` en el centroide del contorno bruto y la vista desde `+x` hacia el origen, con `+y` a la derecha y `+z` arriba. La variante rectangular exige que el contorno esté centrado en ese origen. Una fuente con otros ejes u origen debe transformarse explícitamente en una frontera V2 antes de crear este contrato.
+
+La geometría está etiquetada por `geometry_type`. Esta entrega valida `rectangle` para el contorno y `rectangular_domain` para regiones; sus límites son coordenadas `y/z` mínimas y máximas. La forma serializada admite incorporar en una Issue posterior variantes poligonales u otras geometrías sin introducir comandos de solver. Cada `ConcreteRegion` tiene `region_id`, `role`, `material_id` y geometría propia. En la variante actual, `cover` es el contorno rectangular **menos** el hueco del `core`; `core` es un rectángulo macizo estrictamente interior. Así se evitan solapes evidentes y se podrán añadir otras variantes de regiones después.
+
+Cada `LongitudinalBar` declara `bar_id` opcional, `y_mm`, `z_mm`, `area_mm2` y `material_id`. `TransverseReinforcement` declara su material, separación, diámetro **o** área, disposición, orientación (`y`, `z` o ambas) y ramas correspondientes. Estos datos permitirán una caracterización posterior del confinamiento; el refuerzo transversal **no** se trata como fibra longitudinal resistente.
+
+Las unidades internas son longitud `mm`, área `mm^2`, esfuerzo `MPa` y fuerza `kN`. El contrato rechaza unidades externas sin convertirlas. Todas las asignaciones usan `material_id` de 1A y no copian `fc`, `fy` ni parámetros constitutivos. `validate_material_references()` permite comprobar explícitamente que los IDs suministrados existen como `MaterialDefinition` y que regiones y barras apuntan al tipo físico correcto. La procedencia y SHA-256 de una sección publicada corresponden al `ArtifactManifest` y `ProcessProvenance` V2 de su artefacto, sin incrustar resultados de análisis en esta definición.
+
+Quedan fuera de 1B la geometría poligonal ejecutable, discretización de fibras, `patch`/`layer`/`fiber`, OpenSeesPy, cálculo `M-φ`, interacción `P-M`, flexión biaxial, importación/exportación ETABS/SAP2000, rótulas y reglas ACI/NSR de diseño. El importador M–φ existente y los resultados V1 no cambian.
+
+**Verificación:** tests de 1B y suite V1+V2 completas: **343 passed, 0 failed, 0 errors, 0 skipped**. Los 268 outputs históricos y las 137 fixtures científicas originales conservaron sus hashes.
